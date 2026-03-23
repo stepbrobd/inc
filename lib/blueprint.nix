@@ -16,7 +16,8 @@ let
     { hostName # e.g. "bachtel"
     , platform # e.g. "x86_64-linux"
     , os # e.g. "darwin" or "nixos"
-    , provider # e.g. "aws", "garnix", "hetzner", "owned", "ssdnodes", "vultr", "xtom"
+    , provider # e.g. "aws", "hetzner", "vultr" lowercase tag for colmena deployment filtering
+    , providerName ? provider # e.g. "AWS", "Hetzner", "Vultr" display name for DNS comments
     , type # e.g. "laptop", "desktop", "server", "rpi"
     , domain ? "sd.ysun.co"
     , tags ? [ ]
@@ -29,7 +30,7 @@ let
     , ranet ? { }
     , services ? { }
     }: {
-      inherit platform os provider type; # metadata
+      inherit platform os provider providerName type; # metadata
       inherit hostName name domain interface ipv4 ipv6 ipam ranet meta; # networking
       inherit services;
       fqdn = "${hostName}.${domain}";
@@ -76,6 +77,7 @@ in
     platform = "x86_64-linux";
     os = "nixos";
     provider = "virtua";
+    providerName = "Virtua";
     type = "server";
     tags = [ "anycast" "router" "ranet" ];
     meta = { city = "Paris"; region = "FR-IDF"; country = "FR"; continent = "Europe"; postal = "75000"; };
@@ -98,6 +100,7 @@ in
     platform = "x86_64-linux";
     os = "nixos";
     provider = "garnix";
+    providerName = "Garnix";
     type = "server";
     tags = [ "routee" "grafana" "ranet" ];
     meta = { city = "Helsinki"; region = "FI-18"; country = "FI"; continent = "Europe"; postal = "00100"; };
@@ -120,6 +123,7 @@ in
     platform = "aarch64-linux";
     os = "nixos";
     provider = "owned";
+    providerName = "Raspberry Pi 5B";
     type = "rpi";
     tags = [ "routee" "home-assistant" "vaultwarden" "ntpd-rs" "ranet" ];
     meta = { city = "Grenoble"; region = "FR-ARA"; country = "FR"; continent = "Europe"; postal = "38000"; };
@@ -142,6 +146,7 @@ in
     platform = "x86_64-linux";
     os = "nixos";
     provider = "neptune";
+    providerName = "Neptune Networks";
     type = "server";
     tags = [ "anycast" "router" "ranet" ];
     meta = { city = "New York City"; region = "US-NY"; country = "US"; continent = "North America"; postal = "10001"; };
@@ -164,6 +169,7 @@ in
     platform = "x86_64-linux";
     os = "nixos";
     provider = "vultr";
+    providerName = "Vultr";
     type = "server";
     tags = [ "anycast" "router" "ranet" ];
     meta = { city = "Osaka"; region = "JP-27"; country = "JP"; continent = "Asia"; postal = "540-0001"; };
@@ -186,6 +192,7 @@ in
     platform = "x86_64-linux";
     os = "nixos";
     provider = "aws";
+    providerName = "AWS";
     type = "server";
     tags = [ "routee" "jitsi" "ranet" ];
     meta = { city = "Zurich"; region = "CH-ZH"; country = "CH"; continent = "Europe"; postal = "8001"; };
@@ -208,6 +215,7 @@ in
     platform = "x86_64-linux";
     os = "nixos";
     provider = "ssdnodes";
+    providerName = "SSDNodes";
     type = "server";
     tags = [ "routee" "attic" "hydra" "neogrok" "ranet" ];
     meta = { city = "Tokyo"; region = "JP-13"; country = "JP"; continent = "Asia"; postal = "100-0001"; };
@@ -230,6 +238,7 @@ in
     platform = "x86_64-linux";
     os = "nixos";
     provider = "misaka";
+    providerName = "Misaka Network";
     type = "server";
     tags = [ "anycast" "router" "ranet" ];
     meta = { city = "Singapore"; region = "SG"; country = "SG"; continent = "Asia"; postal = "139963"; };
@@ -252,6 +261,7 @@ in
     platform = "x86_64-linux";
     os = "nixos";
     provider = "xtom";
+    providerName = "xTom";
     type = "server";
     tags = [ "anycast" "router" "calibre" "plausible" "ranet" ];
     meta = { city = "Tallinn"; region = "EE-37"; country = "EE"; continent = "Europe"; postal = "10111"; };
@@ -274,6 +284,7 @@ in
     platform = "x86_64-linux";
     os = "nixos";
     provider = "hetzner";
+    providerName = "Hetzner Cloud";
     type = "server";
     tags = [ "routee" "glance" "golink" "kanidm" "ranet" ];
     meta = { city = "Falkenstein"; region = "DE-SN"; country = "DE"; continent = "Europe"; postal = "08223"; };
