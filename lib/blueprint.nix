@@ -175,7 +175,7 @@ in
     meta = { city = "Osaka"; region = "JP-27"; country = "JP"; continent = "Asia"; postal = "540-0001"; };
     interface = "enp1s0";
     ipv4 = "45.32.59.137";
-    ipv6 = "2001:19f0:7002:0327:5400:05ff:febb:599b";
+    ipv6 = "2001:19f0:7002:327:5400:5ff:febb:599b";
     ipam = {
       interface = "dummy0";
       ipv4 = "23.161.104.130";
