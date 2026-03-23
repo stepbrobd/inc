@@ -10,6 +10,7 @@ builds:
     - legacyPackages.*.*
     - devShells.*.*
   exclude:
+    - packages.aarch64-darwin.bird3 # not supported
     - packages.aarch64-darwin.hydra # not supported
     - packages.aarch64-linux.mac-app-util # not available
     - packages.x86_64-linux.mac-app-util # not available
