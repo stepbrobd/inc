@@ -24,6 +24,7 @@ in
     router_ips = lib.sort lib.lessThan (mapAttrsToList
       (_: host: host.ipam.ipv4 or host.ipv4)
       (filterAttrs (_: host: host ? interface && host.interface != null) lib.blueprint.hosts));
+    warp_devices = [ ];
   };
 
   resource.cloudflare_zero_trust_access_identity_provider.idp = {
