@@ -4,6 +4,7 @@
   config = lib.mkIf config.wayland.windowManager.hyprland.enable {
     gtk = {
       enable = true;
+      gtk4.theme = config.gtk.theme;
 
       theme = {
         package = pkgs.nordic;
