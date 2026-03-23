@@ -4,7 +4,10 @@
   imports = [ inputs.self.nixosModules.garnix ];
 
   networking = {
-    defaultGateway = "172.31.1.1";
+    defaultGateway = {
+      address = "172.31.1.1";
+      interface = "enp1s0";
+    };
     defaultGateway6 = {
       address = "fe80::1";
       interface = "enp1s0";

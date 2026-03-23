@@ -34,5 +34,6 @@
     };
   };
 
-  networking.useNetworkd = lib.mkForce false;
+  # try and see if i can use networkd
+  # networking.useNetworkd = lib.mkForce false;
 }

@@ -98,11 +98,11 @@ in
     interface = "enp1s0";
     ipv4 = "37.27.181.83";
     ipv6 = "2a01:4f9:c012:7b3a::1";
-    # ipam = {
-    #   interface = "dummy0";
-    #   ipv4 = "23.161.104.134";
-    #   ipv6 = "2602:f590::23:161:104:134";
-    # };
+    ipam = {
+      interface = "dummy0";
+      ipv4 = "23.161.104.134";
+      ipv6 = "2602:f590::23:161:104:134";
+    };
   };
 
   hosts.isere = newHost (lib.fix (self: {
