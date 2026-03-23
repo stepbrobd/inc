@@ -28,19 +28,19 @@
           subvolumes = {
             "@/nix" = {
               mountpoint = "/nix";
-              mountOptions = [ "nofail" "noatime" "usebackuproot" "compress=lzo" ];
+              mountOptions = [ "nofail" "noatime" "rescue=usebackuproot" "compress=lzo" ];
             };
             "@/root" = {
               mountpoint = "/";
-              mountOptions = [ "nofail" "noatime" "usebackuproot" "compress=lzo" ];
+              mountOptions = [ "nofail" "noatime" "rescue=usebackuproot" "compress=lzo" ];
             };
             "@/home" = {
               mountpoint = "/home";
-              mountOptions = [ "nofail" "usebackuproot" "compress=lzo" ];
+              mountOptions = [ "nofail" "rescue=usebackuproot" "compress=lzo" ];
             };
             "@/swap" = {
               mountpoint = "/swap";
-              mountOptions = [ "nofail" "noatime" "usebackuproot" ];
+              mountOptions = [ "nofail" "noatime" "rescue=usebackuproot" ];
               swap.swapfile.size = "16G";
             };
           };
