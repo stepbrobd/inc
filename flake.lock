@@ -251,15 +251,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1758561011,
-        "narHash": "sha256-yYXd4qOH22Oe5PaaoGms0imXYweQeEeme+VUoMm4zwY=",
+        "lastModified": 1774297302,
+        "narHash": "sha256-aG5QcK/gdVQPsgWW7PNdBYxDvfPBf1NHqA+UU3sLgLY=",
         "owner": "garnix-io",
         "repo": "garnix-lib",
-        "rev": "fbd9865a68c8f7f4bd9d4e136f27be04098fe1ee",
+        "rev": "ca6e31599a9c709c998ab8afec6e72604c9601bf",
         "type": "github"
       },
       "original": {
         "owner": "garnix-io",
+        "ref": "systemd-networkd-experiment",
         "repo": "garnix-lib",
         "type": "github"
       }
@@ -401,11 +402,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774274572,
-        "narHash": "sha256-YtpNRYSv0CQn+MjhHHqFcIR5L0Urex2tTwS42kP6nuc=",
+        "lastModified": 1774293042,
+        "narHash": "sha256-OEBV+Y5I4Ldu98k0KvGXRfJYh+jjE8ocCSL/dxTGs1s=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "90913f831383a599c556cba59eac8cae9b5195a9",
+        "rev": "bc357c75e3142a31b849ba49c5299fb52c61cf59",
         "type": "github"
       },
       "original": {
