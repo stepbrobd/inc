@@ -20,7 +20,7 @@ let
   };
 
   # override measurements to pick up the same software probe (with correct user
-  # in measurement.conf) — the C code reads ATLAS_DATADIR from atlas_path.h
+  # in measurement.conf) the C code reads ATLAS_DATADIR from atlas_path.h
   measurements = pkgs.ripe-atlas-probe-measurements.override {
     ripe-atlas-software-probe = pkg;
   };
@@ -39,7 +39,7 @@ let
   # policy routing: force all probe traffic through a specific interface/address.
   # uid is resolved at runtime because isSystemUser gets auto-assigned at activation
   # copy the main table's default route but override the source address.
-  # packets still exit through the real gateway — the interface option only
+  # packets still exit through the real gateway the interface option only
   # determines which address is used as the source
   routeSetup = pkgs.writeShellScript "ripe-atlas-route-setup" ''
     uid=$(id -u ${cfg.user})
