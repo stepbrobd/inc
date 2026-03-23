@@ -5,11 +5,6 @@
 let
   inherit (lib) map filter attrNames readDir filterAttrs mapAttrsToList;
   inherit (lib.terranix) acnsSettings;
-
-  # IPs from which RFM sends IPFIX flow data (must match prometheus module's ipfix.bind.host)
-  routerIps = mapAttrsToList
-    (_: host: host.ipam.ipv4 or host.ipv4)
-    (filterAttrs (_: host: host ? interface && host.interface != null) lib.blueprint.hosts);
 in
 {
   imports = map
@@ -25,7 +20,10 @@ in
     name = "StepBroBD";
     # should match prometheus module rfm sample_rate
     default_sampling = 10;
-    router_ips = routerIps;
+    # IPs from which RFM sends IPFIX flow data (must match prometheus module's ipfix.bind.host)
+    router_ips = lib.sort lib.lessThan (mapAttrsToList
+      (_: host: host.ipam.ipv4 or host.ipv4)
+      (filterAttrs (_: host: host ? interface && host.interface != null) lib.blueprint.hosts));
   };
 
   resource.cloudflare_zero_trust_access_identity_provider.idp = {
