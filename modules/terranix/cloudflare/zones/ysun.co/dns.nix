@@ -5,14 +5,59 @@ let
 
   bp = lib.blueprint.hosts;
 
-  # resolve the public-facing IP for a host:
-  # prefer ipam (anycast tunnel) over provider IP
-  ip4 = host: host.ipam.ipv4 or host.ipv4;
-  ip6 = host: host.ipam.ipv6 or host.ipv6;
+  # hosts with IPAM addresses
+  ipamHosts = lib.filterAttrs (_: h: h ? ipam && h.ipam ? ipv4 && h.ipam ? ipv6) bp;
+
+  # hosts with provider addresses
+  ifHosts = lib.filterAttrs (_: h: h ? ipv4 && h.ipv4 != null && h ? ipv6 && h.ipv6 != null) bp;
+
+  comment = host: "${host.providerName} - ${host.meta.city}, ${host.meta.country}";
+
+  # *.sd.ysun.co IPAM addresses only
+  sdRecords = lib.foldlAttrs
+    (acc: name: host: acc // {
+      "co_ysun_sd_${name}_v4" = {
+        type = "A";
+        proxied = false;
+        name = "${name}.sd";
+        content = host.ipam.ipv4;
+        comment = comment host;
+      };
+      "co_ysun_sd_${name}_v6" = {
+        type = "AAAA";
+        proxied = false;
+        name = "${name}.sd";
+        content = host.ipam.ipv6;
+        comment = comment host;
+      };
+    })
+    { }
+    ipamHosts;
+
+  # *.if.ysun.co provider interface addresses only
+  ifRecords = lib.foldlAttrs
+    (acc: name: host: acc // {
+      "co_ysun_if_${name}_v4" = {
+        type = "A";
+        proxied = false;
+        name = "${name}.if";
+        content = host.ipv4;
+        comment = comment host;
+      };
+      "co_ysun_if_${name}_v6" = {
+        type = "AAAA";
+        proxied = false;
+        name = "${name}.if";
+        content = host.ipv6;
+        comment = comment host;
+      };
+    })
+    { }
+    ifHosts;
 in
 {
   resource.cloudflare_dns_record = forZone "ysun.co"
-    {
+    ({
       # dependency: all sites using `lib.terranix.mkPersonalSiteRebind`
       co_ysun_apex_v4 = {
         type = "A";
@@ -45,158 +90,15 @@ in
         };
         comment = "HTTPS Service Binding - Personal Site";
       };
-
-      # sd.ysun.co - server DNS records
-      co_ysun_sd_butte_v4 = {
-        type = "A";
-        proxied = false;
-        name = "butte.sd";
-        content = ip4 bp.butte;
-        comment = "Virtua - Paris";
-      };
-      co_ysun_sd_butte_v6 = {
-        type = "AAAA";
-        proxied = false;
-        name = "butte.sd";
-        content = ip6 bp.butte;
-        comment = "Virtua - Paris";
-      };
-
-      co_ysun_sd_halti_v4 = {
-        type = "A";
-        proxied = false;
-        name = "halti.sd";
-        content = ip4 bp.halti;
-        comment = "Garnix - Hosting";
-      };
-      co_ysun_sd_halti_v6 = {
-        type = "AAAA";
-        proxied = false;
-        name = "halti.sd";
-        content = ip6 bp.halti;
-        comment = "Garnix - Hosting";
-      };
-
-      co_ysun_sd_highline_v4 = {
-        type = "A";
-        proxied = false;
-        name = "highline.sd";
-        content = ip4 bp.highline;
-        comment = "Neptune - New York";
-      };
-      co_ysun_sd_highline_v6 = {
-        type = "AAAA";
-        proxied = false;
-        name = "highline.sd";
-        content = ip6 bp.highline;
-        comment = "Neptune - New York";
-      };
-
-      co_ysun_sd_isere_v4 = {
-        type = "A";
-        proxied = false;
-        name = "isere.sd";
-        content = ip4 bp.isere;
-        comment = "Raspberry Pi 5B - Grenoble";
-      };
-      co_ysun_sd_isere_v6 = {
-        type = "AAAA";
-        proxied = false;
-        name = "isere.sd";
-        content = ip6 bp.isere;
-        comment = "Raspberry Pi 5B - Grenoble";
-      };
-
-      co_ysun_sd_kongo_v4 = {
-        type = "A";
-        proxied = false;
-        name = "kongo.sd";
-        content = ip4 bp.kongo;
-        comment = "Vultr - Osaka";
-      };
-      co_ysun_sd_kongo_v6 = {
-        type = "AAAA";
-        proxied = false;
-        name = "kongo.sd";
-        content = ip6 bp.kongo;
-        comment = "Vultr - Osaka";
-      };
-
-      co_ysun_sd_lagern_v4 = {
-        type = "A";
-        proxied = false;
-        name = "lagern.sd";
-        content = ip4 bp.lagern;
-        comment = "AWS - EU Central 2";
-      };
-      co_ysun_sd_lagern_v6 = {
-        type = "AAAA";
-        proxied = false;
-        name = "lagern.sd";
-        content = ip6 bp.lagern;
-        comment = "AWS - EU Central 2";
-      };
-
-      co_ysun_sd_odake_v4 = {
-        type = "A";
-        proxied = false;
-        name = "odake.sd";
-        content = ip4 bp.odake;
-        comment = "SSDNodes - Tokyo 2";
-      };
-      co_ysun_sd_odake_v6 = {
-        type = "AAAA";
-        proxied = false;
-        name = "odake.sd";
-        content = ip6 bp.odake;
-        comment = "SSDNodes - Tokyo 2";
-      };
-
-      co_ysun_sd_timah_v4 = {
-        type = "A";
-        proxied = false;
-        name = "timah.sd";
-        content = ip4 bp.timah;
-        comment = "Misaka - Singapore";
-      };
-      co_ysun_sd_timah_v6 = {
-        type = "AAAA";
-        proxied = false;
-        name = "timah.sd";
-        content = ip6 bp.timah;
-        comment = "Misaka - Singapore";
-      };
-
-      co_ysun_sd_toompea_v4 = {
-        type = "A";
-        proxied = false;
-        name = "toompea.sd";
-        content = ip4 bp.toompea;
-        comment = "xTom - Tallinn, Estonia";
-      };
-      co_ysun_sd_toompea_v6 = {
-        type = "AAAA";
-        proxied = false;
-        name = "toompea.sd";
-        content = ip6 bp.toompea;
-        comment = "xTom - Tallinn, Estonia";
-      };
-
-      co_ysun_sd_walberla_v4 = {
-        type = "A";
-        proxied = false;
-        name = "walberla.sd";
-        content = ip4 bp.walberla;
-        comment = "Hetzner - Falkenstein";
-      };
-      co_ysun_sd_walberla_v6 = {
-        type = "AAAA";
-        proxied = false;
-        name = "walberla.sd";
-        content = ip6 bp.walberla;
-        comment = "Hetzner - Falkenstein";
-      };
-
+    }
+    //
+    sdRecords
+    //
+    ifRecords
+    //
+    mkPurelyMailRecord "ysun.co" "co_ysun"
+    //
+    {
       # service CNAME records
       co_ysun_cache = {
         type = "CNAME";
@@ -327,8 +229,5 @@ in
         content = ''"cloudflare_dashboard_sso=16225a3c3e10d1b53d78b2e3886f8a99"'';
         comment = "Cloudflare - SSO Verification";
       };
-    } // mkPurelyMailRecord
-    "ysun.co"
-    "co_ysun"
-  ;
+    });
 }
