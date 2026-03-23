@@ -13,7 +13,6 @@ builds:
     - packages.aarch64-darwin.hydra # not supported
     - packages.aarch64-linux.mac-app-util # not available
     - packages.x86_64-linux.mac-app-util # not available
-    - packages.*.calibre # temporary patch
     - packages.*.jitsi-meet # insecure
     - packages.*.ntpd-rs # temporary patch
     - packages.*.ocamlPackages # scope

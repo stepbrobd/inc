@@ -16,7 +16,6 @@ jobs:
       BLACKLIST: |-
         alacritty
         caddy
-        calibre
         calibre-web
         hydra
         jitsi-meet
