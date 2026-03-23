@@ -88,13 +88,13 @@ in
     ];
   }));
 
-  hosts.halti = newHost {
+  hosts.halti = newHost (lib.fix (self: {
     hostName = "halti";
     platform = "x86_64-linux";
     os = "nixos";
     provider = "garnix";
     type = "server";
-    tags = [ "routee" "grafana" ];
+    tags = [ "routee" "grafana" "ranet" ];
     interface = "enp1s0";
     ipv4 = "37.27.181.83";
     ipv6 = "2a01:4f9:c012:7b3a::1";
@@ -103,7 +103,10 @@ in
       ipv4 = "23.161.104.134";
       ipv6 = "2602:f590::23:161:104:134";
     };
-  };
+    ranet.endpoints = [
+      { serial_number = "0"; address_family = "ip6"; address = self.ipv6; port = 13000; }
+    ];
+  }));
 
   hosts.isere = newHost (lib.fix (self: {
     hostName = "isere";
