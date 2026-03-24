@@ -18,6 +18,7 @@ jobs:
         bird3
         caddy
         calibre-web
+        gravity
         hydra
         jitsi-meet
         kanidm
