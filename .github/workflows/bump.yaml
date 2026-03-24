@@ -15,6 +15,7 @@ jobs:
     env:
       BLACKLIST: |-
         alacritty
+        bird3
         caddy
         calibre-web
         hydra
