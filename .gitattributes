@@ -67,3 +67,6 @@
 .gitattributes export-ignore
 .gitignore export-ignore
 .gitkeep export-ignore
+
+# SOPS
+secrets.yaml diff=sops
