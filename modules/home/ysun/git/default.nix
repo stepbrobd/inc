@@ -39,6 +39,7 @@
       diff.colorMoved = "plain";
       diff.mnemonicPrefix = true;
       diff.renames = true;
+      diff.sops.textconv = "sops decrypt";
       fetch.all = true;
       fetch.prune = true;
       fetch.pruneTags = true;
