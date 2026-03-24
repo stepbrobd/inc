@@ -5,15 +5,15 @@
 
 pkgsPrev.bird3.overrideAttrs (oldAttrs: {
   patches = (oldAttrs.patches or [ ]) ++ [
-    # rtt: https://github.com/nickcao/bird
+    # link quality algo selection
     (fetchpatch2 {
       url = "https://github.com/nickcao/bird/commit/2912d03c99f99bbe2f7d5041b43a551d3156ce93.patch";
       hash = "sha256-osVfPQAw5qcLhirGtSZDSUA8/ZosJNz1utwhO87sL8c=";
     })
-    # https://github.com/nickcao/flakes/blob/master/pkgs/bird-babel-rtt/fix-vrf-if-delete-notification.patch
+    # iface deletion race
     (fetchpatch2 {
-      url = "https://raw.githubusercontent.com/nickcao/flakes/3358dc18efa4478f5eef69803d6e38fbbc4fe248/pkgs/bird-babel-rtt/fix-vrf-if-delete-notification.patch";
-      hash = "sha256-Deyz+6kAxlQr5sDBEnKY4KbeafDHzw+RJHm9G9MkypM=";
+      url = "https://github.com/nickcao/bird/commit/36f9f42912a1adc376886de6a569aff38313326b.patch";
+      hash = "sha256-h6WC/EJr+iA+tZbKlDFJfiRmZP8MnSSyY2cJg+JNMXc=";
     })
   ];
 })
