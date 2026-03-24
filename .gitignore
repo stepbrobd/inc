@@ -1,7 +1,7 @@
 # Nix
-**/.direnv/
-**/result/
-**/result-*/
+.direnv
+result
+result-*
 
 # Terraform
 *.tfstate
