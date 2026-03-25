@@ -24,14 +24,6 @@ in
       wireplumber
     ];
 
-    services.wpaperd = {
-      enable = true;
-      settings.default = {
-        apply-shadow = false;
-        path = ../hyprland/wallpaper.jpg;
-      };
-    };
-
     gtk = {
       enable = true;
 
