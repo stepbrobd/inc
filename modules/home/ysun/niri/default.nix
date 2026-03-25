@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ inputs, lib, ... }:
 
 { pkgs
 , osConfig ? { services.desktopManager.enabled = null; }
@@ -9,13 +9,7 @@ let
   isNiri = osConfig.services.desktopManager.enabled == "niri";
 in
 {
-  imports = [
-    ./dunst.nix
-    ./rofi.nix
-    ./theme.nix
-    ./waybar.nix
-    ./wpaperd.nix
-  ];
+  imports = [ inputs.self.homeManagerModules.ysun.noctalia ];
 
   config = lib.mkIf isNiri {
     home.packages = with pkgs; [
@@ -29,6 +23,39 @@ in
       rofi
       wireplumber
     ];
+
+    services.wpaperd = {
+      enable = true;
+      settings.default = {
+        apply-shadow = false;
+        path = ../hyprland/wallpaper.jpg;
+      };
+    };
+
+    gtk = {
+      enable = true;
+
+      theme = {
+        package = pkgs.nordic;
+        name = "Nordic";
+      };
+
+      cursorTheme = {
+        package = pkgs.nordzy-cursor-theme;
+        name = "Nordzy-cursors";
+        size = 24;
+      };
+    };
+
+    home.pointerCursor = {
+      size = 24;
+
+      package = pkgs.nordzy-cursor-theme;
+      name = "Nordzy-cursors";
+
+      gtk.enable = true;
+      x11.enable = true;
+    };
 
     xdg.configFile."niri/config.kdl".text = ''
       input {
