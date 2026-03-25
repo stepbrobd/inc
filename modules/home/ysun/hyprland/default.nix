@@ -1,4 +1,4 @@
-# { inputs, lib, ... }:
+{ inputs, lib, ... }:
 
 { pkgs
 , osConfig ? { services.desktopManager.enabled = null; }
@@ -10,8 +10,11 @@
     ./dunst.nix
     ./rofi.nix
     ./theme.nix
-    ./waybar.nix
+    # ./waybar.nix
     ./wpaperd.nix
+
+    inputs.noctalia.homeModules.default
+    ./noctalia.nix
   ];
 
   home.packages = with pkgs; [
@@ -65,7 +68,8 @@
         exec-once = gnome-keyring-daemon --start --components=pkcs11,secrets,ssh &
 
         exec-once = dunst &
-        exec-once = waybar &
+        exec-once = noctalia-shell &
+        # exec-once = waybar &
         exec-once = wpaperd &
         exec-once = fcitx5 -d
 
