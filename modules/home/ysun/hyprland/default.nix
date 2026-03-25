@@ -37,15 +37,13 @@
 
   home.packages = with pkgs; [
     brightnessctl
-    dunst
+    cliphist
+    ddcutil
     gnome-keyring
     grimblast
-    gtklock
     hyprmon
     networkmanagerapplet
-    pavucontrol
-    playerctl
-    rofi
+    wl-clipboard
     wireplumber
   ];
 
@@ -74,9 +72,7 @@
       exec-once = ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1 &
       exec-once = gnome-keyring-daemon --start --components=pkcs11,secrets,ssh &
 
-      exec-once = dunst &
       exec-once = noctalia-shell &
-      # exec-once = waybar &
       exec-once = wpaperd &
       exec-once = fcitx5 -d
 
@@ -123,11 +119,22 @@
         active_opacity = 1.0
         inactive_opacity = 1.0
         blur {
-          enabled = false
+          enabled = true
+          size = 3
+          passes = 2
+          vibrancy = 0.1696
         }
         shadow {
           enabled = false
         }
+      }
+
+      layerrule {
+        name = noctalia
+        match:namespace = noctalia-background-.*$
+        ignore_alpha = 0.5
+        blur = true
+        blur_popups = true
       }
 
       animations {
@@ -151,16 +158,17 @@
         preserve_split = true
       }
 
-      # change to another locker
-      bind = CTRL SUPER, Q, exec, gtklock --daemonize
-      bind = , XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && dunstify --timeout=1000 --replace=1 "Volume: Mute/Unmute"
-      bind = , XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && dunstify --timeout=1000 --replace=1 "$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"
-      bind = , XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && dunstify --timeout=1000 --replace=1 "$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"
-      bind = , XF86AudioPrev, exec, playerctl previous && dunstify --timeout=1000 --replace=1 "Media: Previous"
-      bind = , XF86AudioPlay, exec, playerctl play-pause && dunstify --timeout=1000 --replace=1 "Media: Play/Pause"
-      bind = , XF86AudioNext, exec, playerctl next && dunstify --timeout=1000 --replace=1 "Media: Next"
-      bind = , XF86MonBrightnessUp, exec, brightnessctl set 5%+ && dunstify --timeout=1000 --replace=1 "Brightness: $(brightnessctl get)"
-      bind = , XF86MonBrightnessDown, exec, brightnessctl set 5%- && dunstify --timeout=1000 --replace=1 "Brightness: $(brightnessctl get)"
+      $ipc = noctalia-shell ipc call
+
+      bind = CTRL SUPER, Q, exec, $ipc lockScreen lock
+      bindl = , XF86AudioMute, exec, $ipc volume muteOutput
+      bindel = , XF86AudioRaiseVolume, exec, $ipc volume increase
+      bindel = , XF86AudioLowerVolume, exec, $ipc volume decrease
+      bindl = , XF86AudioPrev, exec, $ipc media previous
+      bindl = , XF86AudioPlay, exec, $ipc media playPause
+      bindl = , XF86AudioNext, exec, $ipc media next
+      bindel = , XF86MonBrightnessUp, exec, $ipc brightness increase
+      bindel = , XF86MonBrightnessDown, exec, $ipc brightness decrease
       bind = SUPER SHIFT, 3, exec, grimblast save screen
       bind = SUPER SHIFT, 4, exec, grimblast save active
       bind = SUPER SHIFT, 5, exec, grimblast save area
@@ -168,10 +176,10 @@
       $mod = SUPER
 
       bind = $mod, T, exec, alacritty
-      bind = $mod, S, exec, pavucontrol
-      bind = $mod, SPACE, exec, pgrep -x rofi > /dev/null && pkill -x rofi || rofi -show-icons -combi-modi window,drun,run,ssh -show combi
+      bind = $mod, S, exec, $ipc volume togglePanel
+      bind = $mod, SPACE, exec, $ipc launcher toggle
 
-      bind = $mod, M, exit,
+      bind = $mod, M, exec, $ipc sessionMenu toggle
       bind = $mod, Q, killactive,
       bind = $mod, F, fullscreen,
       bind = $mod, A, pseudo,

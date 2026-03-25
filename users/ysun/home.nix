@@ -73,7 +73,6 @@ in
     ripgrep
     slack
     stepbrobd
-    wl-clipboard
     zoom-us
     zotero
     # yt-dlp
