@@ -23,7 +23,7 @@
       };
 
       font = {
-        size = 16.00;
+        size = 12.00;
         normal = {
           family = "IntoneMono Nerd Font";
           style = "Regular";
