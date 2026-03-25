@@ -7,15 +7,6 @@
 
 let
   isNiri = osConfig.services.desktopManager.enabled == "niri";
-
-  gtkStyle = pkgs.writeText "gtk.css" ''
-    @import url("${pkgs.nordic}/share/themes/Nordic/gtk-3.0/gtk.css");
-    window {
-      background-image: url("${../hyprland/wallpaper.jpg}");
-      background-size: cover;
-      background-position: center;
-    }
-  '';
 in
 {
   imports = [
@@ -165,7 +156,7 @@ in
         Mod+Ctrl+0 { move-window-to-workspace 10; }
 
         // lock screen
-        Ctrl+Super+Q { spawn "gtklock" "--daemonize" "--style" "${gtkStyle}"; }
+        Ctrl+Super+Q { spawn "gtklock" "--daemonize"; }
 
         // media keys
         XF86AudioMute { spawn "sh" "-c" "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && dunstify --timeout=1000 --replace=1 \"Volume: Mute/Unmute\""; }
