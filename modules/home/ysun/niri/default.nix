@@ -9,7 +9,7 @@ let
   isNiri = osConfig.services.desktopManager.enabled == "niri";
 in
 {
-  imports = [ inputs.self.homeManagerModules.ysun.noctalia ];
+  # imports = [ inputs.self.homeManagerModules.ysun.noctalia ];
 
   config = lib.mkIf isNiri {
     home.packages = with pkgs; [
