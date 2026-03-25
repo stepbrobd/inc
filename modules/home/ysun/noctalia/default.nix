@@ -223,11 +223,9 @@
               { id = "Network"; }
               { id = "Bluetooth"; }
               { id = "WallpaperSelector"; }
-              { id = "NoctaliaPerformance"; }
             ];
             right = [
               { id = "Notifications"; }
-              { id = "PowerProfile"; }
               { id = "KeepAwake"; }
               { id = "NightLight"; }
             ];
