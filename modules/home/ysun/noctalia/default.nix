@@ -576,7 +576,7 @@
           enabled = true;
           favorites = [ ];
           fillColor = "#000000";
-          fillMode = "center";
+          fillMode = "crop";
           hideWallpaperFilenames = false;
           monitorDirectories = [ ];
           overviewBlur = 0.4;
