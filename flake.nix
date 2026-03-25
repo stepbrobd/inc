@@ -67,7 +67,7 @@
     bun2nix.inputs.nixpkgs.follows = "nixpkgs";
     bun2nix.inputs.systems.follows = "systems";
     bun2nix.inputs.flake-parts.follows = "parts";
-    bun2nix.inputs.treefmt-nix.follows = "";
+    bun2nix.inputs.treefmt-nix.follows = "treefmt";
     # c
     colmena.url = "github:zhaofengli/colmena";
     colmena.inputs.nixpkgs.follows = "nixpkgs";
@@ -139,6 +139,13 @@
     miroir.inputs.utils.follows = "utils";
     miroir.inputs.gomod2nix.follows = "gomod2nix";
     # n
+    noctalia.url = "github:noctalia-dev/noctalia-shell";
+    noctalia.inputs.nixpkgs.follows = "nixpkgs";
+    noctalia.inputs.noctalia-qs.follows = "noctalia-qs";
+    noctalia-qs.url = "github:noctalia-dev/noctalia-qs";
+    noctalia-qs.inputs.nixpkgs.follows = "nixpkgs";
+    noctalia-qs.inputs.systems.follows = "systems";
+    noctalia-qs.inputs.treefmt-nix.follows = "treefmt";
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.inputs.flake-parts.follows = "parts";
