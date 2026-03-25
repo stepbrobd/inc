@@ -195,6 +195,11 @@ visibility = "public"
 archived = false
 
 ## Forks
+[repo."brew"]
+description = "forked from homebrew/brew"
+visibility = "public"
+archived = false
+
 [repo."cfspeedtest"]
 description = "forked from code-inflation/cfspeedtest"
 visibility = "public"
