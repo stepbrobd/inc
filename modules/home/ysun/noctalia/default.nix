@@ -569,7 +569,7 @@
           enabled = true;
           favorites = [ ];
           fillColor = "#000000";
-          fillMode = "crop";
+          fillMode = "center";
           hideWallpaperFilenames = false;
           monitorDirectories = [ ];
           overviewBlur = 0.4;
@@ -579,20 +579,13 @@
           randomIntervalSec = 300;
           setWallpaperOnAllMonitors = true;
           showHiddenFiles = false;
-          skipStartupTransition = false;
+          skipStartupTransition = true;
           solidColor = "#1a1a2e";
           sortOrder = "name";
           transitionDuration = 1500;
           transitionEdgeSmoothness = 0.05;
-          transitionType = [
-            "fade"
-            "disc"
-            "stripes"
-            "wipe"
-            "pixelate"
-            "honeycomb"
-          ];
-          useOriginalImages = false;
+          transitionType = [ ];
+          useOriginalImages = true;
           useSolidColor = false;
           useWallhaven = false;
           viewMode = "single";
