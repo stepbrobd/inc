@@ -6,14 +6,6 @@
   imports = [ inputs.noctalia.homeModules.default ];
 
   config = lib.mkIf config.wayland.windowManager.hyprland.enable {
-    services.wpaperd = {
-      enable = true;
-      settings.default = {
-        apply-shadow = false;
-        path = ./wallpaper.jpg;
-      };
-    };
-
     programs.noctalia-shell = {
       enable = true;
 
@@ -303,7 +295,7 @@
           animationDisabled = false;
           animationSpeed = 1;
           autoStartAuth = true;
-          avatarImage = ./ysun.jpg;
+          avatarImage = ./profile/ysun.jpg;
           boxRadiusRatio = 1;
           clockFormat = "hh\\nmm";
           clockStyle = "digital";
@@ -572,9 +564,9 @@
         };
         wallpaper = {
           automationEnabled = false;
-          directory = "";
+          directory = ./wallpaper;
           enableMultiMonitorDirectories = false;
-          enabled = false;
+          enabled = true;
           favorites = [ ];
           fillColor = "#000000";
           fillMode = "crop";

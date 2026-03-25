@@ -94,7 +94,7 @@ in
             style = pkgs.writeText "gtk.css" ''
               @import url("${pkgs.nordic}/share/themes/Nordic/gtk-3.0/gtk.css");
               window {
-                background-image: url("${../home/ysun/noctalia/wallpaper.jpg}");
+                background-image: url("${../home/ysun/noctalia/wallpaper/wallpaper.jpg}");
                 background-size: cover;
                 background-position: center;
               }
@@ -149,7 +149,7 @@ in
             style = pkgs.writeText "gtk.css" ''
               @import url("${pkgs.nordic}/share/themes/Nordic/gtk-3.0/gtk.css");
               window {
-                background-image: url("${../home/ysun/noctalia/wallpaper.jpg}");
+                background-image: url("${../home/ysun/noctalia/wallpaper/wallpaper.jpg}");
                 background-size: cover;
                 background-position: center;
               }

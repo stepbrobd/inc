@@ -110,7 +110,6 @@ in
       spawn-at-startup "nm-applet" "--indicator"
       spawn-at-startup "dunst"
       spawn-at-startup "waybar"
-      spawn-at-startup "wpaperd"
       spawn-at-startup "fcitx5" "-d"
 
       binds {

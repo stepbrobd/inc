@@ -73,7 +73,6 @@
       exec-once = gnome-keyring-daemon --start --components=pkcs11,secrets,ssh &
 
       exec-once = noctalia-shell &
-      exec-once = wpaperd &
       exec-once = fcitx5 -d
 
       ecosystem {
