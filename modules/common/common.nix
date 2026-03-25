@@ -94,6 +94,7 @@ in
         "https://colmena.cachix.org?priority=20"
         "https://stepbrobd.cachix.org?priority=20"
         "https://cache.ysun.co/public?priority=30"
+        "https://noctalia.cachix.org?priority=40"
       ];
 
       trusted-public-keys = [
@@ -105,6 +106,7 @@ in
         "colmena.cachix.org-1:7BzpDnjjH8ki2CT3f6GdOk7QAzPOl+1t3LvTLXqYcSg="
         "stepbrobd.cachix.org-1:Aa5jdkPVrCOvzaLTC0kVP5PYQ5BtNnLg1tG1Qa/QuE4="
         "public:Y9EARSt+KLUY1JrY4X8XWmzs6uD+Zh2hRqN9eCUg55U="
+        "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       ];
     };
   };
