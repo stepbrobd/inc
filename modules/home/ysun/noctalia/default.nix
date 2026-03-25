@@ -137,6 +137,15 @@
                 usePadding = false;
               }
               {
+                deviceNativePath = "__default__";
+                displayMode = "icon-always";
+                hideIfIdle = false;
+                hideIfNotDetected = false;
+                id = "Battery";
+                showNoctaliaPerformance = false;
+                showPowerProfiles = false;
+              }
+              {
                 clockColor = "none";
                 customFont = "Sans Serif";
                 formatHorizontal = "HH:mm";
@@ -376,7 +385,7 @@
           use12hourFormat = false;
           useFahrenheit = false;
           weatherEnabled = true;
-          weatherShowEffects = true;
+          weatherShowEffects = false;
         };
         network = {
           airplaneModeEnabled = false;
