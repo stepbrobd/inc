@@ -42,6 +42,8 @@
   services.hardware.bolt.enable = true;
 
   # power
+  # battery reporting (needed by noctalia battery widget)
+  services.upower.enable = true;
   services.tlp = {
     enable = true;
     settings = {
