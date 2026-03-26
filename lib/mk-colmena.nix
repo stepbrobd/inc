@@ -37,6 +37,20 @@ in
               targetUser = null;
               targetHost = "${config.networking.hostName}.${lib.blueprint.tailscale.tailnet}";
 
+              # fix hanging issue
+              sshOptions = [
+                "-o"
+                "ConnectTimeout=10"
+                "-o"
+                "ControlMaster=auto"
+                "-o"
+                "ServerAliveCountMax=3"
+                "-o"
+                "ServerAliveInterval=10"
+                "-o"
+                "TCPKeepAlive=no"
+              ];
+
               # inherit all the tags so its easier to filter
               tags = lib.unique (
                 (if bp != null then bp.tags else [ ])
