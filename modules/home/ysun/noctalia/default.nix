@@ -302,7 +302,7 @@
           animationDisabled = false;
           animationSpeed = 1;
           autoStartAuth = true;
-          avatarImage = ./profile/ysun.jpg;
+          avatarImage = lib.blueprint.users.ysun.meta.profilePicture;
           boxRadiusRatio = 1;
           clockFormat = "hh\\nmm";
           clockStyle = "digital";
@@ -571,7 +571,7 @@
         };
         wallpaper = {
           automationEnabled = false;
-          directory = ./wallpaper;
+          directory = lib.blueprint.users.ysun.meta.wallpapersDir;
           enableMultiMonitorDirectories = false;
           enabled = true;
           favorites = [ ];
