@@ -40,7 +40,7 @@ in
 
     services.glance.settings = {
       server = {
-        host = "::1";
+        host = "[::1]";
         port = 30069;
       };
       theme = {
