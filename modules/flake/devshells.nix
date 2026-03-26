@@ -1,10 +1,10 @@
 {
-  perSystem = { pkgs, inputs', self', ... }: {
+  perSystem = { pkgs, inputs', ... }: {
     devShells.default = pkgs.mkShell {
       packages = with pkgs; [
-        self'.packages.stepbrobd
-
-        inputs'.colmena.packages.colmena
+        # from local overlay
+        colmena
+        stepbrobd
 
         direnv
         git
