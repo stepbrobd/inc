@@ -33,7 +33,7 @@ in
         extraConfig = ''
           import common
           header Cache-Control "public, max-age=600, must-revalidate"
-          reverse_proxy [${settings.server.host}]:${toString settings.server.port}
+          reverse_proxy ${settings.server.host}:${toString settings.server.port}
         '';
       };
     };
