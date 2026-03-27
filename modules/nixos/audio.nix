@@ -2,9 +2,10 @@
 
 {
   environment.systemPackages = with pkgs; [
+    alsa-utils
+    easyeffects
     pavucontrol
     roomeqwizard
-    easyeffects
   ];
 
   security.rtkit.enable = true;
