@@ -1,6 +1,1 @@
-{
-  services.grafana = {
-    enable = true;
-    domain = "otel.ysun.co";
-  };
-}
+{ services.grafana.enable = true; }
