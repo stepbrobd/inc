@@ -3,6 +3,7 @@
 
   services.tlp = {
     enable = true;
+    pd.enable = true;
     settings = {
       # max performance for dev on ac
       CPU_SCALING_GOVERNOR_ON_AC = "performance";
