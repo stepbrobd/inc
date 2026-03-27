@@ -1,0 +1,18 @@
+[allowlist]
+paths = ['''\.sops\.yaml$''', '''secrets\.yaml$''']
+
+[[rules]]
+id = "gpg-signing-key"
+description = "GPG public key fingerprints are not secrets"
+regex = '''signingkey\s*=\s*[0-9A-Fa-f]{40}'''
+[rules.allowlist]
+regexTarget = "match"
+regexes = ['''.*''']
+
+[[rules]]
+id = "grafana-secret-key"
+description = "Grafana settings.security.secret_key is not a real secret in this context"
+regex = '''secret_key\s*=\s*"[0-9a-f]{64}"'''
+[rules.allowlist]
+regexTarget = "match"
+regexes = ['''.*''']
