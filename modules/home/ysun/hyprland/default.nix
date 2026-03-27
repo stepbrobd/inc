@@ -52,8 +52,8 @@
     xwayland.enable = true;
 
     extraConfig = ''
-      monitor = eDP-1, highres, 0x0, 1.5, bitdepth, 10, cm, hdredid
-      monitor = , preferred, auto, auto, bitdepth, 10, cm, hdredid
+      monitor = eDP-1, highres, 0x0, 1.5, bitdepth, 8, cm, srgb, vrr, 1
+      monitor = , preferred, auto, auto, bitdepth, 8, cm, srgb
 
       env = GDK_SCALE,1
       env = ELM_SCALE,1
