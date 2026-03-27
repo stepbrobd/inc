@@ -51,7 +51,7 @@
         bar = {
           autoHideDelay = 500;
           autoShowDelay = 150;
-          backgroundOpacity = 1;
+          backgroundOpacity = 0.75;
           barType = "simple";
           capsuleColorKey = "none";
           capsuleOpacity = 1;
@@ -59,7 +59,7 @@
           density = "comfortable";
           displayMode = "always_visible";
           enableExclusionZoneInset = true;
-          fontScale = 1.4;
+          fontScale = 1.25;
           frameRadius = 12;
           frameThickness = 8;
           hideOnOverview = false;
@@ -71,7 +71,7 @@
           monitors = [ ];
           mouseWheelAction = "none";
           mouseWheelWrap = true;
-          outerCorners = true;
+          outerCorners = false;
           position = "top";
           reverseScroll = false;
           rightClickAction = "none";
@@ -86,7 +86,7 @@
           showCapsule = false;
           showOnWorkspaceSwitch = true;
           showOutline = false;
-          useSeparateOpacity = false;
+          useSeparateOpacity = true;
           widgetSpacing = 6;
           widgets = {
             center = [ ];
@@ -316,7 +316,7 @@
           clockFormat = "hh\\nmm";
           clockStyle = "digital";
           compactLockScreen = false;
-          dimmerOpacity = 0;
+          dimmerOpacity = 0.2;
           enableBlurBehind = true;
           enableLockScreenCountdown = true;
           enableLockScreenMediaControls = true;
@@ -571,11 +571,11 @@
           fontDefaultScale = 1;
           fontFixed = "monospace";
           fontFixedScale = 1;
-          panelBackgroundOpacity = 0.75;
+          panelBackgroundOpacity = 0.93;
           panelsAttachedToBar = true;
           scrollbarAlwaysVisible = true;
-          settingsPanelMode = "window";
-          settingsPanelSideBarCardStyle = false;
+          settingsPanelMode = "attached";
+          settingsPanelSideBarCardStyle = true;
           tooltipsEnabled = true;
           translucentWidgets = false;
         };
