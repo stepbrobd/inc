@@ -182,9 +182,6 @@
     terranix.inputs.systems.follows = "systems";
     treefmt.url = "github:numtide/treefmt-nix";
     treefmt.inputs.nixpkgs.follows = "nixpkgs";
-    tsnsrv.url = "github:boinkor-net/tsnsrv";
-    tsnsrv.inputs.nixpkgs.follows = "nixpkgs";
-    tsnsrv.inputs.flake-parts.follows = "parts";
     # u
     uad2.url = "github:stepbrobd/uad2";
     uad2.inputs.nixpkgs.follows = "nixpkgs";

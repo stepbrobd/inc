@@ -756,7 +756,6 @@
         "systems": "systems",
         "terranix": "terranix",
         "treefmt": "treefmt",
-        "tsnsrv": "tsnsrv",
         "uad2": "uad2",
         "utils": "utils",
         "ysun": "ysun"
@@ -961,29 +960,6 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "tsnsrv": {
-      "inputs": {
-        "flake-parts": [
-          "parts"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1773758407,
-        "narHash": "sha256-DqieJ48Jf+gmJtfMnE7QXpnJnW7acnT624N/iA6pzVI=",
-        "owner": "boinkor-net",
-        "repo": "tsnsrv",
-        "rev": "9f36a4f264540d05b8f758a67eee3e57dca4eea6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "boinkor-net",
-        "repo": "tsnsrv",
         "type": "github"
       }
     },
