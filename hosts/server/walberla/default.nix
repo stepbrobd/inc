@@ -3,9 +3,6 @@
     ./hardware.nix
 
     ./as10779.nix
-    ./glance.nix
-    ./golink.nix
-    ./kanidm.nix
   ];
 
   networking = {

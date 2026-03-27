@@ -8,7 +8,7 @@ newHost (lib.fix (self: {
   provider = "vultr";
   providerName = "Vultr";
   type = "server";
-  tags = [ "anycast" "router" "ranet" ];
+  tags = [ "ysun" "router" "ranet" ];
   meta = { city = "Osaka"; region = "JP-27"; country = "JP"; continent = "Asia"; postal = "540-0001"; };
   interface = "enp1s0";
   ipv4 = "45.32.59.137";

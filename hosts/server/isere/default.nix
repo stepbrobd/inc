@@ -3,9 +3,7 @@
     ./hardware.nix
 
     ./as10779.nix
-    ./home-assistant.nix
     ./time.nix
-    ./vaultwarden.nix
   ];
 
   networking = {

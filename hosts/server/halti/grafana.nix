@@ -1,1 +1,0 @@
-{ services.grafana.enable = true; }

@@ -1,11 +1,8 @@
-{ inputs, ... }:
-
 {
   imports = [
     ./hardware.nix
 
     ./as10779.nix
-    inputs.self.nixosModules.anycast
   ];
 
   networking = {

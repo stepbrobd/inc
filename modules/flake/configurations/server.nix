@@ -13,6 +13,7 @@ let
       modules = with inputs; [
         disko.nixosModules.disko
         self.nixosModules.acme
+        self.nixosModules.ysun
         self.nixosModules.as10779
         self.nixosModules.attic
         self.nixosModules.caddy
@@ -25,6 +26,7 @@ let
         self.nixosModules.home-assistant
         self.nixosModules.ip-forwarding
         self.nixosModules.jitsi
+        self.nixosModules.kanidm
         self.nixosModules.maxmind
         self.nixosModules.minimal
         self.nixosModules.neogrok

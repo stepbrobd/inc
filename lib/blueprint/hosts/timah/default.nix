@@ -8,7 +8,7 @@ newHost (lib.fix (self: {
   provider = "misaka";
   providerName = "Misaka Network";
   type = "server";
-  tags = [ "anycast" "router" "ranet" ];
+  tags = [ "ysun" "router" "ranet" ];
   meta = { city = "Singapore"; region = "SG"; country = "SG"; continent = "Asia"; postal = "139963"; };
   interface = "enp3s0";
   ipv4 = "194.114.138.187";

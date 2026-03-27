@@ -5,7 +5,6 @@
     ./as10779.nix
     ./attic.nix
     ./hydra.nix
-    ./neogrok.nix
   ];
 
   networking = {

@@ -3,7 +3,6 @@
     ./hardware.nix
 
     ./as10779.nix
-    ./grafana.nix
   ];
 
   networking = {
