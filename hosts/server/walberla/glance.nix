@@ -1,6 +1,1 @@
-{
-  services.glance = {
-    enable = true;
-    domain = "home.ysun.co";
-  };
-}
+{ services.glance.enable = true; }

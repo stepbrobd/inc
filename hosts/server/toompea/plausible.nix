@@ -1,6 +1,1 @@
-{
-  services.plausible = {
-    enable = true;
-    domain = "stats.ysun.co";
-  };
-}
+{ services.plausible.enable = true; }

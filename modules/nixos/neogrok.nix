@@ -6,6 +6,7 @@ let
   inherit (lib) mkIf mkOption types;
 
   cfg = config.services.neogrok;
+  inherit (lib.blueprint.services.neogrok) domain;
 in
 {
   options.services.neogrok = {
@@ -27,11 +28,6 @@ in
       type = types.port;
     };
 
-    domain = mkOption {
-      default = "grep.ysun.co";
-      description = "Domain to serve neogrok on";
-      type = types.str;
-    };
   };
 
   config = mkIf cfg.enable {
@@ -51,7 +47,7 @@ in
 
     services.caddy = {
       enable = true;
-      virtualHosts.${cfg.domain}.extraConfig = ''
+      virtualHosts.${domain}.extraConfig = ''
         import common
         import auth
         reverse_proxy [${cfg.host}]:${lib.toString cfg.port}

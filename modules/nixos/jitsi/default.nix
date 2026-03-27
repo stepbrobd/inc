@@ -4,17 +4,11 @@
 
 let
   cfg = config.services.jitsi;
+  inherit (lib.blueprint.services.jitsi) domain;
 in
 {
   options.services.jitsi = {
     enable = lib.mkEnableOption "Jitsi Meet";
-
-    domain = lib.mkOption {
-      default = "meet.ysun.co";
-      description = "Main domain to serve Jitsi Meet on";
-      example = "meet.ysun.co";
-      type = lib.types.str;
-    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -22,7 +16,7 @@ in
       "jitsi-meet-1.0.8792"
     ];
 
-    services.caddy.virtualHosts.${cfg.domain} = {
+    services.caddy.virtualHosts.${domain} = {
       extraConfig = lib.mkBefore ''
         import common
       '';
@@ -33,7 +27,7 @@ in
 
     services.jitsi-meet = {
       enable = true;
-      hostName = cfg.domain;
+      hostName = domain;
 
       caddy.enable = true;
       nginx.enable = false;

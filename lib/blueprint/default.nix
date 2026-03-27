@@ -69,6 +69,21 @@ in
     args = { inherit newHost lib; };
   };
 
+  services = {
+    attic.domain = "cache.ysun.co";
+    calibre-web.domain = "read.ysun.co";
+    glance.domain = "home.ysun.co";
+    grafana.domain = "otel.ysun.co";
+    home-assistant.domain = "ha.ysun.co";
+    hydra.domain = "hydra.ysun.co";
+    jitsi.domain = "meet.ysun.co";
+    kanidm.domain = "sso.ysun.co";
+    neogrok.domain = "grep.ysun.co";
+    ntpd-rs.domain = "time.ysun.co";
+    plausible.domain = "stats.ysun.co";
+    vaultwarden.domain = "vault.ysun.co";
+  };
+
   prefixes = {
     experimental = {
       ipv4 = [ ];

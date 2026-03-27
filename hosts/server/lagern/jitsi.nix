@@ -1,6 +1,1 @@
-{
-  services.jitsi = {
-    enable = true;
-    domain = "meet.ysun.co";
-  };
-}
+{ services.jitsi.enable = true; }

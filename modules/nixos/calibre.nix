@@ -2,6 +2,9 @@
 
 { config, ... }:
 
+let
+  inherit (lib.blueprint.services.calibre-web) domain;
+in
 {
   config = lib.mkIf config.services.calibre-web.enable {
     services.calibre-web = {
@@ -17,7 +20,7 @@
 
     services.caddy = {
       enable = true;
-      virtualHosts."read.ysun.co".extraConfig =
+      virtualHosts.${domain}.extraConfig =
         with config.services.calibre-web.listen ;
         ''
           import common

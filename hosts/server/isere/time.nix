@@ -1,5 +1,8 @@
 { lib, pkgs, config, ... }:
 
+let
+  inherit (lib.blueprint.services.ntpd-rs) domain;
+in
 {
   systemd.services."serial-getty@ttyAMA0".enable = false;
 
@@ -73,7 +76,7 @@
 
   services.ntpd-rs.server = {
     enable = true;
-    domain = "time.ysun.co";
+    inherit domain;
   };
 
   # bind NTP and NTS-KE to addresses in my own block so reply packets have the correct
@@ -154,14 +157,14 @@
     wants = [ "gpsd-socket-shim.service" ];
   };
 
-  # embed the public grafana dashboard on time.ysun.co
+  # embed the public grafana dashboard
   services.caddy = {
     enable = true;
-    virtualHosts."time.ysun.co" = {
+    virtualHosts.${domain} = {
       extraConfig = ''
         import common
         header Content-Type "text/html; charset=utf-8"
-        respond `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111217"><title>time.ysun.co</title><style>*{margin:0;padding:0}html,body{background:#111217}html,body,iframe{width:100%;height:100%;border:none;overflow:hidden}</style><script defer data-domain="time.ysun.co" src="https://stats.ysun.co/js/script.file-downloads.hash.outbound-links.js"></script></head><body><iframe src="https://otel.ysun.co/public-dashboards/ab5eeb9da69842ebaaf75819d8a62b15"></iframe></body></html>` 200
+        respond `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111217"><title>${domain}</title><style>*{margin:0;padding:0}html,body{background:#111217}html,body,iframe{width:100%;height:100%;border:none;overflow:hidden}</style><script defer data-domain="${domain}" src="https://${lib.blueprint.services.plausible.domain}/js/script.file-downloads.hash.outbound-links.js"></script></head><body><iframe src="https://${lib.blueprint.services.grafana.domain}/public-dashboards/ab5eeb9da69842ebaaf75819d8a62b15"></iframe></body></html>` 200
       '';
     };
   };

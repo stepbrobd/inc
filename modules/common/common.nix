@@ -92,7 +92,7 @@ in
         "https://nix-community.cachix.org?priority=20"
         "https://nixpkgs-update.cachix.org?priority=20"
         "https://stepbrobd.cachix.org?priority=20"
-        "https://cache.ysun.co/public?priority=30"
+        "https://${lib.blueprint.services.attic.domain}/public?priority=30"
         "https://noctalia.cachix.org?priority=40"
       ];
 

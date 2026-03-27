@@ -4,7 +4,7 @@
 
 let
   cfg = config.services.vaultwarden;
-  domain = "vault.ysun.co";
+  inherit (lib.blueprint.services.vaultwarden) domain;
 in
 {
   config = lib.mkIf cfg.enable {

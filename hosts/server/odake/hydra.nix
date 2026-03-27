@@ -1,10 +1,13 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
+let
+  inherit (lib.blueprint.services.hydra) domain;
+in
 {
   services.caddy = {
     enable = true;
 
-    virtualHosts."hydra.ysun.co".extraConfig = ''
+    virtualHosts.${domain}.extraConfig = ''
       import common
       reverse_proxy ${toString config.services.hydra.listenHost}:${toString config.services.hydra.port}
     '';
@@ -24,7 +27,7 @@
     minimumDiskFree = 5;
     minimumDiskFreeEvaluator = 5;
 
-    hydraURL = "https://hydra.ysun.co";
+    hydraURL = "https://${domain}";
     listenHost = "127.0.0.1"; # starman/net::server cannot parse ipv6 in -h flag
     port = 10069;
     notificationSender = "hydra@localhost";
@@ -32,7 +35,7 @@
     extraConfig =
       # basic config
       ''
-        tracker = <script defer data-domain="hydra.ysun.co" src="https://stats.ysun.co/js/script.file-downloads.hash.outbound-links.js"></script>
+        tracker = <script defer data-domain="${domain}" src="https://${lib.blueprint.services.plausible.domain}/js/script.file-downloads.hash.outbound-links.js"></script>
 
         email_notification = 0
 

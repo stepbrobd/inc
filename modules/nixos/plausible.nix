@@ -3,19 +3,12 @@
 { config, pkgs, ... }:
 
 let
-  inherit (lib) mkIf mkOption toString types;
+  inherit (lib) mkIf toString;
 
   cfg = config.services.plausible;
+  inherit (lib.blueprint.services.plausible) domain;
 in
 {
-  options.services.plausible = {
-    domain = mkOption {
-      default = "stats.ysun.co";
-      description = "Main domain to serve plausible analytics on";
-      example = "stats.ysun.co";
-      type = types.str;
-    };
-  };
 
   config = mkIf config.services.plausible.enable {
     services.caddy.enable = true;
@@ -69,7 +62,7 @@ in
       package = pkgs.plausible.overrideAttrs (_: {
         prePatch = ''
           substituteInPlace lib/plausible_web/templates/layout/app.html.heex \
-            --replace-fail '</head>' '<script defer data-domain="${cfg.domain}" src="/js/script.file-downloads.hash.outbound-links.js"></script></head>'
+            --replace-fail '</head>' '<script defer data-domain="${domain}" src="/js/script.file-downloads.hash.outbound-links.js"></script></head>'
         '';
       });
 
@@ -85,7 +78,7 @@ in
       };
 
       server = {
-        baseUrl = "https://${cfg.domain}";
+        baseUrl = "https://${domain}";
         disableRegistration = "invite_only";
         listenAddress = "::1";
         port = 20069;
@@ -94,7 +87,7 @@ in
     };
 
     services.caddy = {
-      virtualHosts.${cfg.domain} = {
+      virtualHosts.${domain} = {
         extraConfig = with config.services.plausible.server; ''
           import common
           reverse_proxy [${toString listenAddress}]:${toString port} {

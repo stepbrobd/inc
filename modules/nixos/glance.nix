@@ -3,30 +3,21 @@
 { config, ... }:
 
 let
-  inherit (lib) mkIf mkOption toString types;
+  inherit (lib) mkIf toString;
 
   cfg = config.services.glance;
+  inherit (lib.blueprint.services.glance) domain;
 in
 {
-  options.services.glance = {
-    domain = mkOption {
-      default = "home.ysun.co";
-      description = "Main domain to serve glance on";
-      example = "home.ysun.co";
-      type = types.str;
-    };
-
-  };
-
   config = mkIf cfg.enable {
-    services.caddy = with cfg; {
+    services.caddy = {
       enable = true;
 
-      virtualHosts.${cfg.domain} = {
+      virtualHosts.${domain} = {
         extraConfig = ''
           import common
           header Cache-Control "public, max-age=600, must-revalidate"
-          reverse_proxy ${settings.server.host}:${toString settings.server.port}
+          reverse_proxy ${cfg.settings.server.host}:${toString cfg.settings.server.port}
         '';
       };
     };
@@ -43,7 +34,7 @@ in
         positive-color = "92 33 65";
         negative-color = "354 47 56";
       };
-      document.head = ''<script defer data-domain="home.ysun.co" src="https://stats.ysun.co/js/script.file-downloads.hash.outbound-links.js"></script>'';
+      document.head = ''<script defer data-domain="${domain}" src="https://${lib.blueprint.services.plausible.domain}/js/script.file-downloads.hash.outbound-links.js"></script>'';
       branding = {
         hide-footer = true;
         favicon-url = "https://ysun.co/favicon.ico";

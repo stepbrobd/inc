@@ -19,7 +19,7 @@
         ntp-version = "auto";
       })
       [
-        "time.ysun.co"
+        lib.blueprint.services.ntpd-rs.domain
         "time.cloudflare.com"
         "virginia.time.system76.com"
         "ohio.time.system76.com"

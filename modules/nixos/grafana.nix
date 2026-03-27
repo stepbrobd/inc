@@ -6,7 +6,7 @@ let
   inherit (lib) mkIf toString;
 
   cfg = config.services.grafana;
-  domain = "otel.ysun.co";
+  inherit (lib.blueprint.services.grafana) domain;
 in
 {
   config = mkIf cfg.enable {
@@ -32,7 +32,7 @@ in
       package = pkgs.grafana.overrideAttrs (_: {
         preFixup = ''
           substituteInPlace $out/share/grafana/public/views/index.html \
-            --replace-fail '</head>' '<script defer data-domain="${domain}" src="https://stats.ysun.co/js/script.file-downloads.hash.outbound-links.js"></script></head>'
+            --replace-fail '</head>' '<script defer data-domain="${domain}" src="https://${lib.blueprint.services.plausible.domain}/js/script.file-downloads.hash.outbound-links.js"></script></head>'
         '';
       });
 

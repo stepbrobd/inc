@@ -4,6 +4,7 @@
 
 let
   cfg = config.services.home-assistant;
+  inherit (lib.blueprint.services.home-assistant) domain;
 in
 {
   config = lib.mkIf config.services.home-assistant.enable {
@@ -70,7 +71,7 @@ in
       allowedUDPPorts = [ 5353 ];
     };
 
-    services.caddy.virtualHosts."ha.ysun.co".extraConfig = ''
+    services.caddy.virtualHosts.${domain}.extraConfig = ''
       import common
       reverse_proxy [::1]:${lib.toString cfg.config.http.server_port}
     '';

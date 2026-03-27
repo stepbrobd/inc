@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, ... }:
 
 {
   services.attic = {
@@ -9,7 +9,7 @@
   services.caddy = {
     enable = true;
 
-    virtualHosts."cache.ysun.co".extraConfig = ''
+    virtualHosts.${lib.blueprint.services.attic.domain}.extraConfig = ''
       import common
       reverse_proxy ${config.services.attic.settings.listen}
     '';
