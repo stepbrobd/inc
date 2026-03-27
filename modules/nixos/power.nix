@@ -34,5 +34,5 @@
   };
 
   # keep awake with lid closed on ac
-  services.logind.lidSwitchExternalPower = "ignore";
+  services.logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
 }
