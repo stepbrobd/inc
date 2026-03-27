@@ -142,8 +142,8 @@
                 hideIfIdle = false;
                 hideIfNotDetected = false;
                 id = "Battery";
-                showNoctaliaPerformance = false;
-                showPowerProfiles = false;
+                showNoctaliaPerformance = true;
+                showPowerProfiles = true;
               }
               {
                 colorizeDistroLogo = false;
@@ -342,7 +342,7 @@
           lockScreenCountdownDuration = 10000;
           lockScreenMonitors = [ ];
           lockScreenTint = 0;
-          passwordChars = false;
+          passwordChars = true;
           radiusRatio = 1;
           reverseScroll = false;
           scaleRatio = 1;
