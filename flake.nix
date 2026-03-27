@@ -176,10 +176,6 @@
     ranet.inputs.nixpkgs.follows = "nixpkgs";
     ranet.inputs.flake-utils.follows = "utils";
     # t
-    # tangled.url = "git+https://tangled.sh/@tangled.sh/core";
-    # tangled.inputs.nixpkgs.follows = "nixpkgs";
-    # tangled.inputs.gitignore.follows = "gitignore";
-    # tangled.inputs.gomod2nix.follows = "gomod2nix";
     terranix.url = "github:terranix/terranix";
     terranix.inputs.nixpkgs.follows = "nixpkgs";
     terranix.inputs.flake-parts.follows = "parts";

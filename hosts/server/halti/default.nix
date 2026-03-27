@@ -4,7 +4,6 @@
 
     ./as10779.nix
     ./grafana.nix
-    # ./tangled.nix
   ];
 
   networking = {
