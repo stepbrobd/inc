@@ -82,8 +82,6 @@
     # d
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
-    devshell.url = "github:numtide/devshell";
-    devshell.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     # f
@@ -94,10 +92,6 @@
     generators.url = "github:nix-community/nixos-generators";
     generators.inputs.nixpkgs.follows = "nixpkgs";
     generators.inputs.nixlib.follows = "nixpkgs";
-    git-hooks.url = "github:cachix/git-hooks.nix";
-    git-hooks.inputs.nixpkgs.follows = "nixpkgs";
-    git-hooks.inputs.flake-compat.follows = "compat";
-    git-hooks.inputs.gitignore.follows = "gitignore";
     gitignore.url = "github:hercules-ci/gitignore.nix";
     gitignore.inputs.nixpkgs.follows = "nixpkgs";
     golink.url = "github:tailscale/golink";
