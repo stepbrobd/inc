@@ -74,7 +74,7 @@
           outerCorners = true;
           position = "top";
           reverseScroll = false;
-          rightClickAction = "controlCenter";
+          rightClickAction = "none";
           rightClickCommand = "";
           rightClickFollowMouse = true;
           screenOverrides = [
@@ -146,12 +146,21 @@
                 showPowerProfiles = false;
               }
               {
+                colorizeDistroLogo = false;
+                colorizeSystemIcon = "none";
+                customIconPath = "";
+                enableColorization = false;
+                icon = "adjustments";
+                id = "ControlCenter";
+                useDistroLogo = false;
+              }
+              {
                 clockColor = "none";
                 customFont = "Sans Serif";
-                formatHorizontal = "HH:mm";
-                formatVertical = "HH mm";
+                formatHorizontal = "ddd MMM d HH:mm:ss";
+                formatVertical = "";
                 id = "Clock";
-                tooltipFormat = "HH:mm ddd, MMM dd";
+                tooltipFormat = "";
                 useCustomFont = false;
               }
               {
@@ -345,6 +354,7 @@
           showHibernateOnLockScreen = false;
           showScreenCorners = false;
           showSessionButtonsOnLockScreen = false;
+          smoothScrollEnabled = true;
           telemetryEnabled = false;
         };
         hooks = {
