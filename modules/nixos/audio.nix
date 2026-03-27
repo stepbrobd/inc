@@ -1,4 +1,6 @@
-{ pkgs, ... }:
+{ inputs, ... }:
+
+{ config, pkgs, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -7,6 +9,17 @@
     pavucontrol
     roomeqwizard
   ];
+
+  # universal audio thunderbolt driver
+  # https://github.com/stepbrobd/uad2
+  boot = {
+    kernelModules = [ "uad2" ];
+    extraModulePackages = [
+      (inputs.uad2.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
+        linuxPackages = config.boot.kernelPackages;
+      })
+    ];
+  };
 
   security.rtkit.enable = true;
 
