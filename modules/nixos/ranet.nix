@@ -6,7 +6,7 @@ let
   cfg = config.networking.ranet;
   bp = lib.blueprint;
   host = bp.hosts.${config.networking.hostName} or null;
-  hasTag = tag: host != null && lib.elem tag (host.tags or [ ]);
+  hasTag = lib.hasTag config.networking.hostName;
 
   registryHosts = lib.filterAttrs
     (_: h: h ? ranet && h.ranet ? endpoints)
