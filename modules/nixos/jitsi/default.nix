@@ -9,38 +9,22 @@ in
   options.services.jitsi = {
     enable = lib.mkEnableOption "Jitsi Meet";
 
-    mainDomain = lib.mkOption {
+    domain = lib.mkOption {
       default = "meet.ysun.co";
       description = "Main domain to serve Jitsi Meet on";
       example = "meet.ysun.co";
       type = lib.types.str;
     };
-
-    extraDomains = lib.mkOption {
-      default = [ ];
-      description = "List of extra domains aside from main domain to serve Jitsi Meet on";
-      example = [ "meet.ysun.co" ];
-      type = lib.types.listOf lib.types.str;
-    };
   };
 
-  config = lib.mkIf (config.services.jitsi.enable) {
+  config = lib.mkIf cfg.enable {
     nixpkgs.config.permittedInsecurePackages = [
       "jitsi-meet-1.0.8792"
     ];
 
-    services.caddy.virtualHosts.${cfg.mainDomain} = {
+    services.caddy.virtualHosts.${cfg.domain} = {
       extraConfig = lib.mkBefore ''
         import common
-      '';
-    };
-
-    services.caddy.virtualHosts.${lib.head cfg.extraDomains} = {
-      serverAliases = lib.tail cfg.extraDomains;
-      logFormat = lib.mkForce config.services.caddy.virtualHosts.${cfg.mainDomain}.logFormat;
-      extraConfig = lib.mkBefore ''
-        import common
-        redir https://${cfg.mainDomain}{uri} permanent
       '';
     };
 
@@ -49,7 +33,7 @@ in
 
     services.jitsi-meet = {
       enable = true;
-      hostName = cfg.mainDomain;
+      hostName = cfg.domain;
 
       caddy.enable = true;
       nginx.enable = false;

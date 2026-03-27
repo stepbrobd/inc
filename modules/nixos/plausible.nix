@@ -9,18 +9,11 @@ let
 in
 {
   options.services.plausible = {
-    mainDomain = mkOption {
+    domain = mkOption {
       default = "stats.ysun.co";
       description = "Main domain to serve plausible analytics on";
       example = "stats.ysun.co";
       type = types.str;
-    };
-
-    extraDomains = mkOption {
-      default = [ ];
-      description = "List of extra domains aside from main domain to serve plausible analytics on";
-      example = [ "stats.ysun.co" ];
-      type = types.listOf types.str;
     };
   };
 
@@ -76,7 +69,7 @@ in
       package = pkgs.plausible.overrideAttrs (_: {
         prePatch = ''
           substituteInPlace lib/plausible_web/templates/layout/app.html.heex \
-            --replace-fail '</head>' '<script defer data-domain="${cfg.mainDomain}" src="/js/script.file-downloads.hash.outbound-links.js"></script></head>'
+            --replace-fail '</head>' '<script defer data-domain="${cfg.domain}" src="/js/script.file-downloads.hash.outbound-links.js"></script></head>'
         '';
       });
 
@@ -92,7 +85,7 @@ in
       };
 
       server = {
-        baseUrl = "https://${cfg.mainDomain}";
+        baseUrl = "https://${cfg.domain}";
         disableRegistration = "invite_only";
         listenAddress = "::1";
         port = 20069;
@@ -101,8 +94,7 @@ in
     };
 
     services.caddy = {
-      virtualHosts.${cfg.mainDomain} = {
-        serverAliases = cfg.extraDomains;
+      virtualHosts.${cfg.domain} = {
         extraConfig = with config.services.plausible.server; ''
           import common
           reverse_proxy [${toString listenAddress}]:${toString port} {

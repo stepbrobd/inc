@@ -1,6 +1,6 @@
 {
   services.glance = {
     enable = true;
-    mainDomain = "home.ysun.co";
+    domain = "home.ysun.co";
   };
 }

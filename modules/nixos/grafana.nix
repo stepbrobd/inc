@@ -9,26 +9,18 @@ let
 in
 {
   options.services.grafana = {
-    mainDomain = mkOption {
+    domain = mkOption {
       default = "otel.ysun.co";
-      description = "Main domain to serve grafana on";
+      description = "Domain to serve grafana on";
       example = "otel.ysun.co";
       type = types.str;
-    };
-
-    extraDomains = mkOption {
-      default = [ ];
-      description = "List of extra domains aside from main domain to serve grafana on";
-      example = [ "otel.ysun.co" ];
-      type = types.listOf types.str;
     };
   };
 
   config = mkIf cfg.enable {
     services.caddy = {
       enable = true;
-      virtualHosts.${cfg.mainDomain} = {
-        serverAliases = cfg.extraDomains;
+      virtualHosts.${cfg.domain} = {
         extraConfig = with config.services.grafana.settings.server; ''
           import common
           import csp
@@ -48,7 +40,7 @@ in
       package = pkgs.grafana.overrideAttrs (_: {
         preFixup = ''
           substituteInPlace $out/share/grafana/public/views/index.html \
-            --replace-fail '</head>' '<script defer data-domain="${cfg.mainDomain}" src="https://stats.ysun.co/js/script.file-downloads.hash.outbound-links.js"></script></head>'
+            --replace-fail '</head>' '<script defer data-domain="${cfg.domain}" src="https://stats.ysun.co/js/script.file-downloads.hash.outbound-links.js"></script></head>'
         '';
       });
 
@@ -68,8 +60,8 @@ in
         server = {
           http_addr = "::1";
           http_port = 25000;
-          domain = cfg.mainDomain;
-          root_url = "https://${cfg.mainDomain}/";
+          domain = cfg.domain;
+          root_url = "https://${cfg.domain}/";
         };
 
         # oncall

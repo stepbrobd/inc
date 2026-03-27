@@ -9,27 +9,20 @@ let
 in
 {
   options.services.glance = {
-    mainDomain = mkOption {
+    domain = mkOption {
       default = "home.ysun.co";
       description = "Main domain to serve glance on";
       example = "home.ysun.co";
       type = types.str;
     };
 
-    extraDomains = mkOption {
-      default = [ ];
-      description = "List of domains to serve glance on";
-      example = [ "home.ysun.co" ];
-      type = types.listOf types.str;
-    };
   };
 
   config = mkIf cfg.enable {
     services.caddy = with cfg; {
       enable = true;
 
-      virtualHosts.${cfg.mainDomain} = {
-        serverAliases = cfg.extraDomains;
+      virtualHosts.${cfg.domain} = {
         extraConfig = ''
           import common
           header Cache-Control "public, max-age=600, must-revalidate"
