@@ -56,6 +56,7 @@ in
         self.nixosModules.ip-forwarding
         self.nixosModules.minimal
         self.nixosModules.passwordless
+        self.nixosModules.power
         srvos.nixosModules.desktop
       ];
     in

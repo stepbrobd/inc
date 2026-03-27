@@ -41,44 +41,14 @@
   # thunderbolt
   services.hardware.bolt.enable = true;
 
-  # power
-  # battery reporting (needed by noctalia battery widget)
-  services.upower.enable = true;
-  services.tlp = {
-    enable = true;
-    settings = {
-      # run `ls /sys/class/power_supply` to check available power supplies
-      # run `tlp fullcharge` to charge to 100%
-      START_CHARGE_THRESH_BAT0 = 70;
-      STOP_CHARGE_THRESH_BAT0 = 75;
-      START_CHARGE_THRESH_BAT1 = 70;
-      STOP_CHARGE_THRESH_BAT1 = 75;
-      CPU_SCALING_GOVERNOR_ON_AC = "powersave";
-      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
-      CPU_ENERGY_PERF_POLICY_ON_BAT = "balance_power";
-    };
+  # power (common settings in modules/nixos/power.nix)
+  # run `tlp fullcharge` to charge to 100%
+  services.tlp.settings = {
+    START_CHARGE_THRESH_BAT0 = 70;
+    STOP_CHARGE_THRESH_BAT0 = 75;
+    START_CHARGE_THRESH_BAT1 = 70;
+    STOP_CHARGE_THRESH_BAT1 = 75;
   };
-  services.thermald.enable = true;
-  powerManagement = {
-    enable = true;
-    powertop.enable = true;
-  };
-  # services.auto-cpufreq = {
-  #   enable = true;
-  #   # governor: powersave, ondemand, performance
-  #   # turbo: never, always, auto
-  #   settings = {
-  #     battery = {
-  #       governor = "powersave";
-  #       turbo = "never";
-  #     };
-  #     charger = {
-  #       governor = "performance";
-  #       turbo = "auto";
-  #     };
-  #   };
-  # };
 
   # bluetooth
   hardware.bluetooth.enable = true;
