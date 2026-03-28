@@ -205,6 +205,40 @@ NixCon 2025:
 [media.ccc.de](https://media.ccc.de/v/nixcon2025-56390-internet-scale-routing),
 [repo](https://github.com/stepbrobd/router)).
 
+## Repo management
+
+Everything else in this repo is declarative, so why not git repos too?
+
+[Miroir](https://github.com/stepbrobd/miroir) is a CLI tool (and index daemon)
+that manages repos across multiple git forges from a single TOML config
+([`repos/config.toml`](repos/config.toml)). Each repo declares its description,
+visibility, and archive status. Each platform declares a forge domain and
+username. Miroir converges the declared state onto all configured forges:
+creating repos that don't exist, updating metadata on ones that do, and
+archiving repos marked `archived = true`.
+
+The practical motivation is multi-forge redundancy. All repos are mirrored to
+GitHub, GitLab, Codeberg, and SourceHut so that no single forge going down (or
+going sideways? I'm looking at you GitHub?) loses anything. `miroir push -a`
+concurrently pushes to every configured remote, `miroir init -a` clones
+everything onto a fresh machine with all remotes already wired up.
+
+The same config also drives a server side code search engine. The NixOS module
+([`modules/nixos/neogrok.nix`](modules/nixos/neogrok.nix)) imports
+`repos/config.toml`, overlays server-specific settings (listen address, SSH key
+from sops), and runs `miroir index` as a systemd service. miroir periodically
+fetches and indexes every declared repo into
+[zoekt](https://github.com/sourcegraph/zoekt), served through
+[neogrok](https://github.com/isker/neogrok) behind Caddy with SSO at
+[`grep.ysun.co`](https://grep.ysun.co).
+
+Forge metadata sync currently supports GitHub, GitLab (official or self-hosted),
+Codeberg (and derivative Forgejo/Gitea instances), and SourceHut. This also
+doubles as a migration tool if you want to jump ship from one forge to another.
+
+See more on
+[NixOS Discourse](https://discourse.nixos.org/t/declare-and-manage-your-repositories-on-multiple-platforms-code-search-engine/76332).
+
 ## License
 
 The contents inside this repository, excluding all submodules, are licensed
