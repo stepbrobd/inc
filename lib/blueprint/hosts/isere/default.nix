@@ -7,8 +7,8 @@ newHost (lib.fix (self: {
   os = "nixos";
   provider = "owned";
   providerName = "Raspberry Pi 5B";
-  type = "rpi";
-  tags = [ "routee" "home-assistant" "vaultwarden" "ntpd-rs" "ranet" ];
+  type = "server";
+  tags = [ "rpi" "routee" "home-assistant" "vaultwarden" "ntpd-rs" "ranet" ];
   meta = { city = "Grenoble"; region = "FR-ARA"; country = "FR"; continent = "Europe"; postal = "38000"; };
   interface = "end0";
   ipv4 = "88.140.186.193";

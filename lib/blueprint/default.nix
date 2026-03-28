@@ -21,8 +21,8 @@ let
     , platform # e.g. "x86_64-linux"
     , os # e.g. "darwin" or "nixos"
     , provider # e.g. "aws", "hetzner", "vultr" lowercase tag for colmena deployment filtering
-    , providerName ? provider # e.g. "AWS", "Hetzner", "Vultr" display name for DNS comments
-    , type # e.g. "laptop", "desktop", "server", "rpi"
+    , providerName # e.g. "AWS", "Hetzner", "Vultr" display name for DNS comments
+    , type # e.g. "laptop", "desktop", "server"
     , domain ? "sd.ysun.co"
     , tags ? [ ]
     , interface ? null # e.g. "eth0", "enp1s0" primary outbound network interface
@@ -38,7 +38,7 @@ let
       inherit hostName name domain interface ipv4 ipv6 ipam ranet meta; # networking
       inherit services;
       fqdn = "${hostName}.${domain}";
-      tags = [ "server" ] ++ tags;
+      tags = [ os platform provider type ] ++ tags;
     };
 in
 {
