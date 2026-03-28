@@ -31,6 +31,7 @@
             };
             overlays = with inputs; [
               self.overlays.default
+              colmena.overlays.default
               golink.overlays.default
               llm.overlays.default
               mac-style-plymouth.overlays.default
@@ -69,7 +70,7 @@
     bun2nix.inputs.flake-parts.follows = "parts";
     bun2nix.inputs.treefmt-nix.follows = "treefmt";
     # c
-    colmena.url = "github:zhaofengli/colmena";
+    colmena.url = "github:stepbrobd/colmena/detached";
     colmena.inputs.nixpkgs.follows = "nixpkgs";
     colmena.inputs.stable.follows = "nixpkgs";
     colmena.inputs.flake-compat.follows = "compat";

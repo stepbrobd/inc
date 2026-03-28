@@ -57,6 +57,7 @@ in
     beeper
     cfspeedtest
     cider-2
+    colmena
     comma
     discord # (discord.override { withEquicord = true; }) nixpkgs#430391
     epiphany
@@ -81,6 +82,7 @@ in
     ++ (lib.optionals pkgs.stdenv.isDarwin [
     cfspeedtest
     cocoapods
+    colmena
     comma
     gitleaks
     miroir
