@@ -55,6 +55,9 @@ in
           {
             deployment =
               {
+                # yolo
+                allowLocalDeployment = true;
+
                 targetUser = null;
                 targetHost = "${config.networking.hostName}.${lib.blueprint.tailscale.tailnet}";
 
