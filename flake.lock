@@ -112,11 +112,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774716698,
-        "narHash": "sha256-qdL6T19+v8b6bkYOnmNhXfC1UKtIf0jlWRPhZZqC8fY=",
+        "lastModified": 1774726877,
+        "narHash": "sha256-mahJvYpwikFMqORS4mdjwHQt59Wrr9MglOIKrkjCbe4=",
         "owner": "stepbrobd",
         "repo": "colmena",
-        "rev": "21deb3aa62428ef64a6a65c96b48267b91e47a0a",
+        "rev": "82d9187ce96ea014b209945ef08a19ef6591a9fe",
         "type": "github"
       },
       "original": {
@@ -359,11 +359,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774647770,
-        "narHash": "sha256-UNNi14XiqRWWjO8ykbFwA5wRwx7EscsC+GItOVpuGjc=",
+        "lastModified": 1774719742,
+        "narHash": "sha256-+pk+eMkOE4HTWIvTUgmTvIEaeL8ICzbLNezyckQ8bco=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "02371c05a04a2876cf92e2d67a259e8f87399068",
+        "rev": "43c0145a48a0179fe4c32793d3da61e1f45cf1ba",
         "type": "github"
       },
       "original": {
@@ -456,11 +456,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774684080,
-        "narHash": "sha256-eJIUxivNSrQG8XSdr5L1Wd22D4rk7tBFe9cu232Ko24=",
+        "lastModified": 1774708037,
+        "narHash": "sha256-QtK5uT2mYDIgeyAzgNU7nOHeoIMasf6MNXSnSV8vHyc=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "7176adaf9eff4f30fc4ec1c635da530c083cd52e",
+        "rev": "f502eea6e03d9220a5db5645f6bbcc8dc2b029ba",
         "type": "github"
       },
       "original": {
@@ -602,11 +602,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774660386,
-        "narHash": "sha256-gXsUqjhm7qiEq6bwnRMOTPxwuK+WmNp9BKaMO9VmmAE=",
+        "lastModified": 1774721184,
+        "narHash": "sha256-kY697ewSfuoMSblqkO0PFaGNS+1xvmTn8wC32N0PCpg=",
         "owner": "noctalia-dev",
         "repo": "noctalia-shell",
-        "rev": "ed1a2b54de22f0841f61fbcb8c26f4959a1dc205",
+        "rev": "a5fc30988036c2c8711bb6cf949ed8cbd02cbae2",
         "type": "github"
       },
       "original": {
