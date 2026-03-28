@@ -65,7 +65,7 @@ visibility = "public"
 archived = false
 
 [repo."dotfiles"]
-description = "yet another dotfiles repo with nix"
+description = "the second largest nix monorepo"
 visibility = "public"
 archived = false
 
