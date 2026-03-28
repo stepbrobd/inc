@@ -30,9 +30,6 @@ in
         { config, ... }:
         {
           deployment =
-            let
-              bp = lib.blueprint.hosts.${config.networking.hostName} or null;
-            in
             {
               targetUser = null;
               targetHost = "${config.networking.hostName}.${lib.blueprint.tailscale.tailnet}";
@@ -52,11 +49,11 @@ in
               ];
 
               # inherit all the tags so its easier to filter
-              tags = lib.unique (
-                (if bp != null then bp.tags else [ ])
-                ++ lib.optional (bp != null && bp ? platform) bp.platform
-                ++ lib.optional (bp != null && bp ? provider) bp.provider
-              );
+              tags =
+                let
+                  bp = lib.blueprint.hosts.${config.networking.hostName} or null;
+                in
+                if bp != null then bp.tags else [ ];
             };
         }
       )
