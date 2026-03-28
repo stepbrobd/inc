@@ -34,6 +34,9 @@ in
       hostConfigs;
 
     inherit specialArgs;
+
+    # no yolo ;)
+    allowApplyAll = false;
   };
 } // genAttrs allHostNames (host:
   let
@@ -43,6 +46,8 @@ in
   {
     # at hive node top-level so getNodeSystemType can detect it before evaluation
     deployment.systemType = cfg.os;
+    # yolo
+    deployment.allowLocalDeployment = true;
 
     imports =
       genHostModules
@@ -55,9 +60,6 @@ in
           {
             deployment =
               {
-                # yolo
-                allowLocalDeployment = true;
-
                 targetUser = null;
                 targetHost = "${config.networking.hostName}.${lib.blueprint.tailscale.tailnet}";
 
