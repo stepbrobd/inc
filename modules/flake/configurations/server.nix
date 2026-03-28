@@ -40,29 +40,26 @@ let
         srvos.nixosModules.server
       ];
     in
-    (mkColmena rec {
-      inherit os inputs specialArgs modules users;
-      platform = "x86_64-linux";
-      nixpkgs = (getSystem platform).allModuleArgs.pkgs;
-      hosts = [
-        "butte" # Virtua Cloud, 1 vCPU, 2GB RAM, 20GB Storage
-        "halti" # Garnix.io Hosting, test server
-        "highline" # Neptune Networks, 2 vCPU, 2GB RAM, 80GB Storage
-        "kongo" # Vultr, 1 vCPU, 2GB RAM, 64GB Storage
-        "lagern" # AWS, T3.Large, 25GB Storage
-        "odake" # SSDNodes NRT Performance, 8 vCPU, 32GB RAM, 640GB Storage
-        "timah" # Misaka Networks, 1 vCPU, 2GB RAM, 32 GB Storage
-        "toompea" # V.PS Pro Tallinn, 4 vCPU, 4GB RAM, 40GB Storage
-        "walberla" # Hetzner Cloud CX32, 4 vCPU, 8GB RAM, 80GB Storage
-      ];
-    }) // (mkColmena rec {
-      inherit os inputs specialArgs modules users;
-      platform = "aarch64-linux";
-      nixpkgs = (getSystem platform).allModuleArgs.pkgs;
-      hosts = [
-        "isere" # Raspberry Pi 4, 8GB RAM, 500GB Storage
-      ];
-    });
+    mkColmena {
+      inherit os inputs specialArgs modules users getSystem;
+      nixpkgs = inputs.nixpkgs;
+      hosts = {
+        x86_64-linux = [
+          "butte" # Virtua Cloud, 1 vCPU, 2GB RAM, 20GB Storage
+          "halti" # Garnix.io Hosting, test server
+          "highline" # Neptune Networks, 2 vCPU, 2GB RAM, 80GB Storage
+          "kongo" # Vultr, 1 vCPU, 2GB RAM, 64GB Storage
+          "lagern" # AWS, T3.Large, 25GB Storage
+          "odake" # SSDNodes NRT Performance, 8 vCPU, 32GB RAM, 640GB Storage
+          "timah" # Misaka Networks, 1 vCPU, 2GB RAM, 32 GB Storage
+          "toompea" # V.PS Pro Tallinn, 4 vCPU, 4GB RAM, 40GB Storage
+          "walberla" # Hetzner Cloud CX32, 4 vCPU, 8GB RAM, 80GB Storage
+        ];
+        aarch64-linux = [
+          "isere" # Raspberry Pi 4, 8GB RAM, 500GB Storage
+        ];
+      };
+    };
 
   colmenaHive = lib.makeHive colmena;
 

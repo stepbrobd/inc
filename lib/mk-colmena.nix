@@ -5,21 +5,39 @@ let
 in
 { inputs
 , os
-, platform
-, hosts ? [ ] # [ "server1" "server2" ]
+, hosts ? { } # { "x86_64-linux" = [ "host1" ]; "aarch64-linux" = [ "host2" ]; }
 , users ? { } # { "username" -> [ module ] }
 , modules ? [ ] # nixos/darwin modules
-, nixpkgs ? { }
+, nixpkgs # raw nixpkgs flake input
+, getSystem # platform -> perSystem attrset
 , specialArgs ? { }
 }:
 
+let
+  # invert { platform -> [ hosts ] } to { host -> platform }
+  hostPlatforms = lib.mergeAttrsList (lib.mapAttrsToList
+    (platform: hostList: lib.genAttrs hostList (_: platform))
+    hosts);
+
+  allHostNames = lib.attrNames hostPlatforms;
+in
 {
   meta = {
-    inherit nixpkgs specialArgs;
+    # only used for colmena bootstrapping (lib, eval-config.nix path);
+    # each node's actual pkgs comes from nodeNixpkgs
+    nixpkgs = import nixpkgs { system = "x86_64-linux"; };
+
+    nodeNixpkgs = lib.mapAttrs
+      (_: platform: (getSystem platform).allModuleArgs.pkgs)
+      hostPlatforms;
+
+    # nodeSpecialArgs not needed
+    inherit specialArgs;
   };
-} // lib.genAttrs hosts (host: {
+} // lib.genAttrs allHostNames (host: {
   imports =
     let
+      platform = hostPlatforms.${host};
       entrypoint = "${inputs.self}/hosts/server/${host}";
     in
     genHostModules
