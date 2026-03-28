@@ -1,12 +1,12 @@
 { newHost, ... }:
 
 newHost {
-  name = "Framework";
-  hostName = "framework";
+  name = "XPS";
+  hostName = "xps";
   platform = "x86_64-linux";
   os = "nixos";
   provider = "owned";
-  providerName = "Framework";
+  providerName = "Dell";
   type = "laptop";
   tags = [ "graphical" "hyprland" ];
 }
