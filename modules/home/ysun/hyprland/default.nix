@@ -5,15 +5,9 @@
 
 {
   home.packages = with pkgs; [
-    brightnessctl
-    cliphist
-    ddcutil
     gnome-keyring
     grimblast
     hyprmon
-    networkmanagerapplet
-    wl-clipboard
-    wireplumber
   ];
 
   wayland.windowManager.hyprland = {
@@ -37,7 +31,6 @@
       }
 
       exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-      exec-once = nm-applet --indicator &
       exec-once = ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1 &
       exec-once = gnome-keyring-daemon --start --components=pkcs11,secrets,ssh &
 

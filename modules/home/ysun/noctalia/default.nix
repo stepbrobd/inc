@@ -20,6 +20,14 @@ in
     })
 
     (lib.mkIf cfg.enable {
+      home.packages = with pkgs; [
+        brightnessctl
+        cliphist
+        ddcutil
+        wl-clipboard
+        wireplumber
+      ];
+
       gtk = {
         enable = true;
         gtk4.theme = config.gtk.theme;
