@@ -641,32 +641,6 @@
         "type": "github"
       }
     },
-    "osync": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "parts": [
-          "parts"
-        ],
-        "systems": [
-          "systems"
-        ]
-      },
-      "locked": {
-        "lastModified": 1774794855,
-        "narHash": "sha256-0oXSiaCF5FYxS6S3r9fK1qNbV0XgtTUypH9ql/IEJEc=",
-        "owner": "stepbrobd",
-        "repo": "osync",
-        "rev": "fb3d9e73b7a1659b9557387f915c9fddcaa5c5b9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "stepbrobd",
-        "repo": "osync",
-        "type": "github"
-      }
-    },
     "parts": {
       "inputs": {
         "nixpkgs-lib": [
@@ -770,7 +744,6 @@
         "nixvim": "nixvim",
         "noctalia": "noctalia",
         "noctalia-qs": "noctalia-qs",
-        "osync": "osync",
         "parts": "parts",
         "ranet": "ranet",
         "rfm": "rfm",

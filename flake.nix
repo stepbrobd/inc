@@ -35,7 +35,6 @@
               golink.overlays.default
               llm.overlays.default
               mac-style-plymouth.overlays.default
-              osync.overlays.default
               ranet.overlays.default
               rust-overlay.overlays.default
             ];
@@ -146,10 +145,6 @@
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.inputs.flake-parts.follows = "parts";
     nixvim.inputs.systems.follows = "systems";
-    osync.url = "github:stepbrobd/osync";
-    osync.inputs.nixpkgs.follows = "nixpkgs";
-    osync.inputs.parts.follows = "parts";
-    osync.inputs.systems.follows = "systems";
     # p
     parts.url = "github:hercules-ci/flake-parts";
     parts.inputs.nixpkgs-lib.follows = "nixpkgs";
