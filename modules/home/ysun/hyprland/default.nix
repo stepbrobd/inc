@@ -104,7 +104,7 @@
           }
       }
 
-      gesture = 3, vertical, workspace
+      gesture = 4, vertical, workspace
 
       misc {
         disable_hyprland_logo = true
