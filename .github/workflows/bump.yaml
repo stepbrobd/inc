@@ -129,7 +129,7 @@ jobs:
           git push -f -u origin HEAD
 
           body=$(git log origin/master..HEAD --format="- %s" | sort)
-          pr_url=$(gh pr create \
+          gh pr create \
             --title "pkgs: bump ${TODAY}" \
             --body "$body" \
-            --reviewer stepbrobd) || true
+            --reviewer stepbrobd || true

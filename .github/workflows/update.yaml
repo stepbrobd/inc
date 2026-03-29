@@ -45,7 +45,7 @@ jobs:
           git push -f -u origin HEAD
 
           body=$(git log -1 --format='%b')
-          pr_url=$(gh pr create \
+          gh pr create \
             --title "flake: bump inputs" \
             --body "$body" \
-            --reviewer stepbrobd) || true
+            --reviewer stepbrobd || true
