@@ -1,8 +1,8 @@
 {
   perSystem = { lib, pkgs, ... }: {
     formatter = pkgs.writeShellScriptBin "formatter" ''
-      set -eoux pipefail
       shopt -s globstar
+      set -eoux pipefail
 
       root="$PWD"
       while [[ ! -f "$root/.git/index" ]]; do
@@ -13,8 +13,9 @@
       done
       pushd "$root" > /dev/null
 
+      ${lib.getExe pkgs.actionlint} -color
       ${lib.getExe pkgs.deno} fmt .
-      ${lib.getExe pkgs.gitleaks} git --pre-commit --staged --verbose
+      ${lib.getExe pkgs.gitleaks} git --no-banner --pre-commit --staged
       ${lib.getExe pkgs.nixpkgs-fmt} .
       ${lib.getExe pkgs.taplo} format **/*.toml
 
