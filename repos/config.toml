@@ -119,6 +119,11 @@ description = "nordic yazi"
 visibility = "public"
 archived = false
 
+[repo."osync"]
+description = "bidirectional sync tool for osu! maps and settings"
+visibility = "public"
+archived = false
+
 [repo."rfm"]
 description = "router flow monitor"
 visibility = "public"
