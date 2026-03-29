@@ -23,6 +23,12 @@
     package = null; # pkgs.coqPackages.coq-lsp;
   };
 
+  # F#
+  plugins.lsp.servers.fsharp_language_server = {
+    enable = true;
+    package = null;
+  };
+
   # Go
   plugins.lsp.servers.gopls = {
     enable = true;
