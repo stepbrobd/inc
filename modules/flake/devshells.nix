@@ -9,6 +9,7 @@
         direnv
         git
         nix-direnv
+        nixpkgs-fmt
         sops
 
         inputs'.terranix.packages.default

@@ -3,9 +3,12 @@
   plugins.lsp.inlayHints = true;
   plugins.lspkind.enable = true;
 
-  plugins.lsp-format = {
+  plugins.conform-nvim = {
     enable = true;
-    lspServersToEnable = "all";
+    settings = {
+      format_on_save.lsp_format = "fallback";
+      formatters_by_ft.nix = [ "nixpkgs-fmt" ];
+    };
   };
 
   # C/C++
