@@ -120,7 +120,7 @@ visibility = "public"
 archived = false
 
 [repo."osync"]
-description = "bidirectional sync tool for osu! maps and settings"
+description = "osu!lazer maps/scores/settings bidirectional diff/export/sync tool"
 visibility = "public"
 archived = false
 
