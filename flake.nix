@@ -145,6 +145,10 @@
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.inputs.flake-parts.follows = "parts";
     nixvim.inputs.systems.follows = "systems";
+    osync.url = "github:stepbrobd/osync";
+    osync.inputs.nixpkgs.follows = "nixpkgs";
+    osync.inputs.parts.follows = "parts";
+    osync.inputs.systems.follows = "systems";
     # p
     parts.url = "github:hercules-ci/flake-parts";
     parts.inputs.nixpkgs-lib.follows = "nixpkgs";
