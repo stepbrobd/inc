@@ -7,7 +7,11 @@
     enable = true;
     settings = {
       format_on_save.lsp_format = "fallback";
-      formatters_by_ft.nix = [ "nixpkgs-fmt" ];
+      formatters_by_ft.nix = {
+        __unkeyed-1 = "nixpkgs_fmt";
+        __unkeyed-2 = "nixfmt";
+        stop_after_first = true;
+      };
     };
   };
 
