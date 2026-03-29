@@ -2,12 +2,16 @@ name: "Bump"
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 5 * * 6"
   workflow_dispatch:
 
 permissions:
   contents: write
   pull-requests: write
+
+concurrency:
+  group: bump
+  cancel-in-progress: true
 
 jobs:
   Bump:
@@ -59,8 +63,9 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           SYSTEM=$(nix eval --raw --impure --expr 'builtins.currentSystem')
-          BRANCH="bump/$(date +%Y-%m-%d)"
-          git checkout -b "$BRANCH"
+          TODAY=$(date +%Y-%m-%d)
+          BRANCH="bump/${TODAY}"
+          git switch --force-create "$BRANCH"
 
           # parse blacklist
           mapfile -t blacklist <<< "$BLACKLIST"
@@ -89,6 +94,7 @@ jobs:
             if ! nix-update --flake --use-update-script "$legacy_path"; then
               echo "::warning::nix-update failed for ${pkg}"
               git checkout -- .
+              git clean -fd
               echo "::endgroup::"
               return 0
             fi
@@ -126,11 +132,21 @@ jobs:
             exit 0
           fi
 
+          # close any existing bump/ PR
+          gh pr list --json number,headRefName \
+            --jq '.[] | select(.headRefName | startswith("bump/")) | .number' \
+          | while read -r num; do
+            gh pr close "$num" --delete-branch || true
+          done
+
           git push -f -u origin HEAD
 
           body=$(git log origin/master..HEAD --format="- %s" | sort)
-          gh pr create \
-            --title "pkgs: bump $(date +%Y-%m-%d)" \
+          pr_url=$(gh pr create \
+            --title "pkgs: bump ${TODAY}" \
             --body "$body" \
-            --reviewer stepbrobd \
-            || true
+            --reviewer stepbrobd) || true
+
+          if [[ "$pr_url" == https://* ]]; then
+            gh pr merge --auto --rebase "$pr_url"
+          fi

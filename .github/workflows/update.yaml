@@ -2,26 +2,66 @@ name: "Update"
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 3 * * 6"
   workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: update
+  cancel-in-progress: true
 
 jobs:
   Update:
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "actions/checkout@v6"
-        name: "Checkout"
-        with:
-          fetch-depth: 0
+      - name: "Checkout"
+        uses: "actions/checkout@v6"
+
       - name: "Install Nix"
         uses: "cachix/install-nix-action@v31"
         with:
+          nix_path: "nixpkgs=https://github.com/nixos/nixpkgs/archive/refs/heads/nixos-unstable.tar.gz"
           extra_nix_config: |
+            accept-flake-config = true
             trusted-public-keys = cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
             substituters = https://cache.garnix.io https://cache.nixos.org/
+
       - name: "Update"
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          git config --global user.name "GitHub Action"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          nix flake update --commit-lock-file
-          git push
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          nix flake update --commit-lock-file --commit-lock-file-summary "flake: bump inputs"
+
+          if git diff --quiet HEAD~1 HEAD; then
+            echo "No input changes."
+            exit 0
+          fi
+
+          # close any existing update/ PR
+          gh pr list --json number,headRefName \
+            --jq '.[] | select(.headRefName | startswith("update/")) | .number' \
+          | while read -r num; do
+            gh pr close "$num" --delete-branch || true
+          done
+
+          BRANCH="update/$(date +%Y-%m-%d)"
+          git switch --force-create "$BRANCH"
+          git push -f -u origin HEAD
+
+          body=$(git log -1 --format='%b')
+          pr_url=$(gh pr create \
+            --title "flake: bump inputs" \
+            --body "$body" \
+            --reviewer stepbrobd) || true
+
+          if [[ "$pr_url" == https://* ]]; then
+            gh pr merge --auto --rebase "$pr_url"
+          fi
