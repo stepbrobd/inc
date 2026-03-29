@@ -69,6 +69,7 @@ in
     nixvim
     obs-studio
     (osu-lazer-bin.override { nativeWayland = true; })
+    osync
     pinentry-all
     remmina
     ripgrep
@@ -89,6 +90,7 @@ in
     monocle
     nix-output-monitor
     nixvim
+    osync
     pinentry_mac
     ripgrep
     stepbrobd

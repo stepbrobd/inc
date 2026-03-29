@@ -35,6 +35,7 @@
               golink.overlays.default
               llm.overlays.default
               mac-style-plymouth.overlays.default
+              osync.overlays.default
               ranet.overlays.default
               rust-overlay.overlays.default
             ];
