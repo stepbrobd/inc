@@ -1,15 +1,52 @@
-{ inputs, ... }:
+{ lib, inputs, ... }:
 
-{ config, lib, ... }:
+{ config
+, pkgs
+, osConfig ? { networking.hostName = ""; }
+, ...
+}:
 
+let
+  cfg = config.programs.noctalia-shell;
+
+  hasTag = lib.hasTag osConfig.networking.hostName;
+in
 {
   imports = [ inputs.noctalia.homeModules.default ];
 
-  config = lib.mkIf config.wayland.windowManager.hyprland.enable {
-    programs.noctalia-shell = {
-      enable = true;
+  config = lib.mkMerge [
+    (lib.mkIf (hasTag "noctalia") {
+      programs.noctalia-shell.enable = lib.mkDefault true;
+    })
 
-      settings = {
+    (lib.mkIf cfg.enable {
+      gtk = {
+        enable = true;
+        gtk4.theme = config.gtk.theme;
+
+        theme = {
+          package = pkgs.nordic;
+          name = "Nordic";
+        };
+
+        cursorTheme = {
+          package = pkgs.nordzy-cursor-theme;
+          name = "Nordzy-cursors";
+          size = 24;
+        };
+      };
+
+      home.pointerCursor = {
+        size = 24;
+
+        package = pkgs.nordzy-cursor-theme;
+        name = "Nordzy-cursors";
+
+        gtk.enable = true;
+        x11.enable = true;
+      };
+
+      programs.noctalia-shell.settings = {
         appLauncher = {
           autoPasteClipboard = false;
           clipboardWatchImageCommand = "wl-paste --type image --watch cliphist store";
@@ -619,6 +656,6 @@
           wallpaperChangeMode = "random";
         };
       };
-    };
-  };
+    })
+  ];
 }

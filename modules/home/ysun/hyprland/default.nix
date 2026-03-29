@@ -1,40 +1,9 @@
-{ inputs, ... }:
-
 { pkgs
-, config
 , osConfig ? { services.desktopManager.enabled = null; }
 , ...
 }:
 
 {
-  imports = [ inputs.self.homeManagerModules.ysun.noctalia ];
-
-  gtk = {
-    enable = true;
-    gtk4.theme = config.gtk.theme;
-
-    theme = {
-      package = pkgs.nordic;
-      name = "Nordic";
-    };
-
-    cursorTheme = {
-      package = pkgs.nordzy-cursor-theme;
-      name = "Nordzy-cursors";
-      size = 24;
-    };
-  };
-
-  home.pointerCursor = {
-    size = 24;
-
-    package = pkgs.nordzy-cursor-theme;
-    name = "Nordzy-cursors";
-
-    gtk.enable = true;
-    x11.enable = true;
-  };
-
   home.packages = with pkgs; [
     brightnessctl
     cliphist

@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ lib, ... }:
 
 { pkgs
 , osConfig ? { services.desktopManager.enabled = null; }
@@ -9,8 +9,6 @@ let
   isNiri = osConfig.services.desktopManager.enabled == "niri";
 in
 {
-  # imports = [ inputs.self.homeManagerModules.ysun.noctalia ];
-
   config = lib.mkIf isNiri {
     home.packages = with pkgs; [
       brightnessctl
@@ -23,31 +21,6 @@ in
       rofi
       wireplumber
     ];
-
-    gtk = {
-      enable = true;
-
-      theme = {
-        package = pkgs.nordic;
-        name = "Nordic";
-      };
-
-      cursorTheme = {
-        package = pkgs.nordzy-cursor-theme;
-        name = "Nordzy-cursors";
-        size = 24;
-      };
-    };
-
-    home.pointerCursor = {
-      size = 24;
-
-      package = pkgs.nordzy-cursor-theme;
-      name = "Nordzy-cursors";
-
-      gtk.enable = true;
-      x11.enable = true;
-    };
 
     xdg.configFile."niri/config.kdl".text = ''
       input {
