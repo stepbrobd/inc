@@ -26,7 +26,6 @@ jobs:
         miroir
         neovide
         nixvim
-        ntpd-rs
         ocamlPackages.omd
         pixelmplus
         ripe-atlas-software-probe
