@@ -1,5 +1,4 @@
 { config
-, inputs
 , lib
 , osConfig
 , pkgs
@@ -7,7 +6,9 @@
 }:
 
 let
-  nixvim = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.nixvim;
+  hasTag = lib.hasTag osConfig.networking.hostName;
+  isGraphical = hasTag "graphical";
+  isDarwin = pkgs.stdenv.isDarwin;
 in
 {
   home.stateVersion = "25.05";
@@ -52,48 +53,36 @@ in
   };
 
   home.packages = with pkgs; [ ]
-    # linux only and when kde plasma is enabled
-    ++ (lib.optionals (pkgs.stdenv.isLinux && osConfig.services.desktopManager.enabled != null) [
-    beeper
+    ++ (lib.optionals (isGraphical || isDarwin) [
     cfspeedtest
-    cider-2
     colmena
     comma
-    discord # (discord.override { withEquicord = true; }) nixpkgs#430391
-    epiphany
     gitleaks
     miroir
     monocle
-    mpv
     nix-output-monitor
     nixvim
+    ripgrep
+    stepbrobd
+  ])
+    ++ (lib.optionals isGraphical [
+    beeper
+    cider-2
+    discord # (discord.override { withEquicord = true; }) nixpkgs#430391
+    epiphany
+    mpv
     obs-studio
     (osu-lazer-bin.override { nativeWayland = true; })
-    osync
     pinentry-all
     remmina
-    ripgrep
     slack
-    stepbrobd
     zoom-us
     zotero
     # yt-dlp
   ])
-    # darwin only
-    ++ (lib.optionals pkgs.stdenv.isDarwin [
-    cfspeedtest
+    ++ (lib.optionals isDarwin [
     cocoapods
-    colmena
-    comma
-    gitleaks
-    miroir
-    monocle
-    nix-output-monitor
-    nixvim
-    osync
     pinentry_mac
-    ripgrep
-    stepbrobd
     # yt-dlp
   ]);
 
