@@ -4,7 +4,6 @@
       packages = with pkgs; [
         # from local overlay
         colmena
-        stepbrobd
 
         direnv
         git

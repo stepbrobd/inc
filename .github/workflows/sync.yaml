@@ -7,20 +7,77 @@ on:
 
 jobs:
   Sync:
+    name: "Sync Forks"
     runs-on: "ubuntu-latest"
+    env:
+      GH_TOKEN: ${{ secrets.TOKEN }}
+      TOKEN: ${{ secrets.TOKEN }}
     steps:
-      - uses: "actions/checkout@v6"
-        name: "Checkout"
-        with:
-          fetch-depth: 0
-      - name: "Install Nix"
-        uses: "cachix/install-nix-action@v31"
-        with:
-          extra_nix_config: |
-            trusted-public-keys = cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
-            substituters = https://cache.garnix.io https://cache.nixos.org/
       - name: "Sync"
-        run: nix run --accept-flake-config .#stepbrobd -- sync
-        env:
-          GH_TOKEN: ${{ secrets.TOKEN }}
-          TOKEN: ${{ secrets.TOKEN }}
+        run: |
+          set -uo pipefail
+
+          forks=$(gh repo list --limit 1000 --fork --json 'owner,name,parent,isArchived')
+
+          while read -r repo; do
+            own=$(echo "$repo" | jq -r '.owner.login + "/" + .name')
+            upstream=$(echo "$repo" | jq -r '.parent.owner.login + "/" + .parent.name')
+
+            if [ "$upstream" = "/" ]; then
+              echo "Skipping $own (no upstream)"
+              continue
+            fi
+
+            echo "Syncing $own from $upstream"
+
+            if gh repo sync "$own" --source "$upstream"; then
+              echo "Done"
+            else
+              echo "Failed to sync $own from $upstream"
+            fi
+          done < <(echo "$forks" | jq -c '.[] | select(.isArchived == false)')
+
+  Discord:
+    name: "Discord Webhooks"
+    runs-on: "ubuntu-latest"
+    env:
+      GH_TOKEN: ${{ secrets.TOKEN }}
+      TOKEN: ${{ secrets.TOKEN }}
+      WEBHOOK: ${{ secrets.WEBHOOK }}
+    steps:
+      - name: "Setup Webhooks"
+        run: |
+          set -uo pipefail
+
+          repos=$(gh repo list --limit 1000 --json nameWithOwner)
+
+          for repo in $(echo "$repos" | jq -r '.[] | .nameWithOwner'); do
+            echo "$repo:"
+
+            hooks=$(gh api \
+              -H 'Accept: application/vnd.github+json' \
+              -H 'X-GitHub-Api-Version: 2022-11-28' \
+              "/repos/$repo/hooks")
+
+            present=false
+            for hook in $(echo "$hooks" | jq -r '.[] | .config.url'); do
+              if [[ "$hook" == "$WEBHOOK" ]]; then
+                present=true
+              fi
+            done
+
+            if [[ "$present" == false ]]; then
+              curl -s -L \
+                -X POST \
+                -H 'Accept: application/vnd.github+json' \
+                -H 'X-GitHub-Api-Version: 2022-11-28' \
+                -H "Authorization: Bearer $TOKEN" \
+                "https://api.github.com/repos/$repo/hooks" \
+                -d "{\"name\":\"web\",\"active\":true,\"events\":[\"*\"],\"config\":{\"url\":\"$WEBHOOK\",\"content_type\":\"json\",\"insecure_ssl\":\"0\"}}" >/dev/null
+            fi
+
+            gh api \
+              -H 'Accept: application/vnd.github+json' \
+              -H 'X-GitHub-Api-Version: 2022-11-28' \
+              "/repos/$repo/hooks" --jq '.[] | {events: .events.[], created_at: .created_at, status: .last_response.status}'
+          done

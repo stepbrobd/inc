@@ -63,7 +63,6 @@ in
     nix-output-monitor
     nixvim
     ripgrep
-    stepbrobd
   ])
     ++ (lib.optionals isGraphical [
     beeper
