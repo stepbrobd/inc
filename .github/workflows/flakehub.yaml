@@ -1,4 +1,4 @@
-name: "FlakeHub"
+name: FlakeHub
 
 on:
   push:
@@ -7,22 +7,25 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "The existing tag to publish to FlakeHub"
-        type: "string"
+        description: The existing tag to publish to FlakeHub
+        type: string
         required: true
 
 jobs:
   FlakeHub:
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
     permissions:
-      id-token: "write"
-      contents: "read"
+      id-token: write
+      contents: read
     steps:
-      - uses: "actions/checkout@v6"
+      - name: Checkout
+        uses: actions/checkout@v6
         with:
           ref: "${{ (inputs.tag != null) && format('refs/tags/{0}', inputs.tag) || '' }}"
-      - uses: "determinatesystems/nix-installer-action@main"
-      - uses: "determinatesystems/flakehub-push@main"
+      - name: Install Nix
+        uses: determinatesystems/nix-installer-action@main
+      - name: Publish
+        uses: determinatesystems/flakehub-push@main
         with:
-          visibility: "public"
-          tag: "${{ inputs.tag }}"
+          visibility: public
+          tag: ${{ inputs.tag }}

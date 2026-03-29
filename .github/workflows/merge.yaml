@@ -1,4 +1,4 @@
-name: "Merge"
+name: Merge
 
 on:
   schedule:
@@ -11,9 +11,9 @@ permissions:
 
 jobs:
   Merge:
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
     steps:
-      - name: "Merge"
+      - name: Merge
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}

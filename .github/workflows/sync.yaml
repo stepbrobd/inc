@@ -1,4 +1,4 @@
-name: "Sync"
+name: Sync
 
 on:
   schedule:
@@ -7,13 +7,13 @@ on:
 
 jobs:
   Sync:
-    name: "Sync Forks"
-    runs-on: "ubuntu-latest"
+    name: Sync Forks
+    runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.TOKEN }}
       TOKEN: ${{ secrets.TOKEN }}
     steps:
-      - name: "Sync"
+      - name: Sync
         run: |
           set -uo pipefail
 
@@ -38,14 +38,14 @@ jobs:
           done < <(echo "$forks" | jq -c '.[] | select(.isArchived == false)')
 
   Discord:
-    name: "Discord Webhooks"
-    runs-on: "ubuntu-latest"
+    name: Discord Webhooks
+    runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.TOKEN }}
       TOKEN: ${{ secrets.TOKEN }}
       WEBHOOK: ${{ secrets.WEBHOOK }}
     steps:
-      - name: "Setup Webhooks"
+      - name: Setup Webhooks
         run: |
           set -uo pipefail
 

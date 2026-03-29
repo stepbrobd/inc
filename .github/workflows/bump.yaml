@@ -1,4 +1,4 @@
-name: "Bump"
+name: Bump
 
 on:
   schedule:
@@ -35,25 +35,24 @@ jobs:
         ripe-atlas-software-probe
         san-francisco
         spotify
-        stepbrobd
 
     steps:
-      - name: "Checkout"
-        uses: "actions/checkout@v6"
+      - name: Checkout
+        uses: actions/checkout@v6
 
-      - name: "Install Nix"
-        uses: "cachix/install-nix-action@v31"
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
         with:
-          nix_path: "nixpkgs=https://github.com/nixos/nixpkgs/archive/refs/heads/nixos-unstable.tar.gz"
+          nix_path: nixpkgs=https://github.com/nixos/nixpkgs/archive/refs/heads/nixos-unstable.tar.gz
           extra_nix_config: |
             accept-flake-config = true
             trusted-public-keys = cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
             substituters = https://cache.garnix.io https://cache.nixos.org/
 
-      - name: "Install Dependencies"
+      - name: Install Dependencies
         run: nix profile add nixpkgs#nix-update
 
-      - name: "Bump"
+      - name: Bump
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
