@@ -28,6 +28,8 @@ in
         wireplumber
       ];
 
+      home.sessionVariables.QT_QPA_PLATFORMTHEME = "gtk3";
+
       gtk = {
         enable = true;
         gtk4.theme = config.gtk.theme;
@@ -35,6 +37,11 @@ in
         theme = {
           package = pkgs.nordic;
           name = "Nordic";
+        };
+
+        iconTheme = {
+          package = pkgs.nordzy-icon-theme;
+          name = "Nordzy-dark";
         };
 
         cursorTheme = {
