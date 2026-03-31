@@ -63,6 +63,7 @@ in
     nix-output-monitor
     nixvim
     ripgrep
+    yubikey-manager
   ])
     ++ (lib.optionals isGraphical [
     beeper
