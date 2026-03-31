@@ -14,7 +14,7 @@
     }];
 
     extraConfig = ''
-      AuthorizedPrincipalsFile        none
+      TrustedUserCAKeys               /etc/ssh/ca.pub
       ChallengeResponseAuthentication no
       KbdInteractiveAuthentication    no
       PasswordAuthentication          no
@@ -29,6 +29,8 @@
       AllowAgentForwarding            no
     '';
   };
+
+  environment.etc."ssh/ca.pub".text = lib.blueprint.ssh.ca;
 
   environment.etc."ssh/sshd_config".text = ''
     Include            /etc/ssh/sshd_config.d/*

@@ -27,9 +27,13 @@
 
   users.mutableUsers = false;
 
+  environment.etc."ssh/ca.pub".text = lib.blueprint.ssh.ca;
   services.openssh = {
     enable = true;
     hostKeys = lib.mkForce [{ type = "ed25519"; path = "/etc/ssh/ssh_host_ed25519_key"; }];
+    extraConfig = ''
+      TrustedUserCAKeys /etc/ssh/ca.pub
+    '';
     # mostly pq but have fallback for legacy clients
     settings = {
       PermitRootLogin = lib.mkForce "no";

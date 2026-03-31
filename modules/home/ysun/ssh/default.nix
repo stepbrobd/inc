@@ -1,6 +1,8 @@
 { lib, ... }:
 
 {
+  home.file.".ssh/known_hosts_ca".text = "@cert-authority * ${lib.blueprint.ssh.ca}";
+
   programs.ssh = {
     enable = true;
 
@@ -11,6 +13,10 @@
       compression = lib.mkDefault false;
       serverAliveInterval = 60;
       hashKnownHosts = lib.mkDefault false;
+      userKnownHostsFile = lib.concatStringsSep " " [
+        "~/.ssh/known_hosts"
+        "~/.ssh/known_hosts_ca"
+      ];
     };
 
     extraConfig = "\n" + ''
