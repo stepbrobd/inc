@@ -32,6 +32,7 @@
     # nushell # imported in minimal
     openconnect
     openvpn
+    ripgrep
     ssh
     # tmux # imported in minimal
     vscode

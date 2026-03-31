@@ -62,7 +62,6 @@ in
     monocle
     nix-output-monitor
     nixvim
-    ripgrep
     yubikey-manager
   ])
     ++ (lib.optionals isGraphical [
