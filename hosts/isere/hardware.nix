@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ inputs, ... }:
 
 {
   imports = with inputs.rpi.nixosModules; [
@@ -114,7 +114,8 @@
   };
 
   # HE tunnel broker (6in4) for public IPv6
-  networking.ranet.interfaces = [ "he0" ];
+  # end0 needed for IPv4 IKE
+  networking.ranet.interfaces = [ "he0" "end0" ];
 
   systemd.services.strongswan-swanctl.after = [ "systemd-networkd.service" ];
   systemd.services.strongswan-swanctl.wants = [ "systemd-networkd.service" ];
