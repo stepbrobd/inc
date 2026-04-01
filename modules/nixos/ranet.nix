@@ -8,42 +8,6 @@ let
   host = bp.hosts.${config.networking.hostName} or null;
   hasTag = lib.hasTag config.networking.hostName;
 
-  registryHosts = lib.filterAttrs
-    (_: h: h ? ranet && h.ranet ? endpoints)
-    bp.hosts;
-
-  registry = (pkgs.formats.json { }).generate "registry.json" [
-    {
-      public_key = lib.trim bp.ranet.publicKey;
-      organization = bp.ranet.organization;
-      nodes = lib.mapAttrsToList
-        (name: h: {
-          common_name = name;
-          endpoints = h.ranet.endpoints;
-        })
-        registryHosts;
-    }
-  ];
-
-  updown = pkgs.writeShellScript "ranet-updown" ''
-    LINK=ranet$(printf '%05x' "$PLUTO_IF_ID_OUT")
-    case "$PLUTO_VERB" in
-      up-client)
-        ip link add "$LINK" type xfrm if_id "$PLUTO_IF_ID_OUT"
-        ip link set "$LINK" multicast on mtu 1400 up
-        ;;
-      down-client)
-        ip link del "$LINK"
-        ;;
-    esac
-  '';
-
-  ranetConfig = (pkgs.formats.json { }).generate "ranet-config.json" (
-    cfg.settings // {
-      endpoints = lib.map (ep: ep // { inherit updown; }) cfg.settings.endpoints;
-    }
-  );
-
   port = (lib.head cfg.settings.endpoints).port;
 in
 {
@@ -108,14 +72,53 @@ in
         pkgs.ranet
       ];
 
-      environment.etc."ranet/config.json".source = ranetConfig;
+      environment.etc."ranet/config.json".source = (pkgs.formats.json { }).generate "ranet.json" (
+        cfg.settings // {
+          endpoints = lib.map
+            (ep: ep // {
+              # local endpoint address is omitted so strongswan resolves the source via routing table
+              # required for NATted hosts (AWS, ISP DMZ) where the advertised public IP is not on any local interface
+              # registry still advertises the real addresses for peers to connect to
+              address = null;
+
+              updown = pkgs.writeShellScript "updown" ''
+                LINK=ranet$(printf '%05x' "$PLUTO_IF_ID_OUT")
+                case "$PLUTO_VERB" in
+                  up-client)
+                    ip link add "$LINK" type xfrm if_id "$PLUTO_IF_ID_OUT"
+                    ip link set "$LINK" multicast on mtu 1400 up
+                    ;;
+                  down-client)
+                    ip link del "$LINK"
+                    ;;
+                esac
+              '';
+            })
+            cfg.settings.endpoints;
+        }
+      );
+
+      environment.etc."ranet/registry.json".source = (pkgs.formats.json { }).generate "registry.json" [
+        {
+          public_key = lib.trim bp.ranet.publicKey;
+          organization = bp.ranet.organization;
+          nodes = lib.mapAttrsToList
+            (name: h: {
+              common_name = name;
+              endpoints = h.ranet.endpoints;
+            })
+            (lib.filterAttrs
+              (_: h: h ? ranet && h.ranet ? endpoints)
+              bp.hosts);
+        }
+      ];
 
       systemd.services.ranet =
         let
           ranetExec = subcmd: lib.concatStringsSep " " [
             "${pkgs.ranet}/bin/ranet"
             "--config=/etc/ranet/config.json"
-            "--registry=${registry}"
+            "--registry=/etc/ranet/registry.json"
             "--key=${cfg.privateKeyFile}"
             subcmd
           ];
