@@ -20,5 +20,6 @@ newHost (lib.fix (self: {
   };
   ranet.endpoints = [
     { serial_number = "0"; address_family = "ip6"; address = self.ipv6; port = 13000; }
+    { serial_number = "1"; address_family = "ip4"; address = self.ipv4; port = 13000; }
   ];
 }))
