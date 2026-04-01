@@ -4,9 +4,6 @@ description: Checkout, install Nix with caches, and configure git for bot commit
 runs:
   using: composite
   steps:
-    - name: Checkout
-      uses: actions/checkout@v6
-
     - name: Install Nix
       uses: cachix/install-nix-action@v31
       with:
