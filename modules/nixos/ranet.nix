@@ -76,11 +76,6 @@ in
         cfg.settings // {
           endpoints = lib.map
             (ep: ep // {
-              # local endpoint address is omitted so strongswan resolves the source via routing table
-              # required for NATted hosts (AWS, ISP DMZ) where the advertised public IP is not on any local interface
-              # registry still advertises the real addresses for peers to connect to
-              address = null;
-
               updown = pkgs.writeShellScript "updown" ''
                 LINK=ranet$(printf '%05x' "$PLUTO_IF_ID_OUT")
                 case "$PLUTO_VERB" in
