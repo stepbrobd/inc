@@ -10,7 +10,6 @@ let
       serverModules = with inputs; [
         disko.nixosModules.disko
         self.nixosModules.acme
-        self.nixosModules.ysun
         self.nixosModules.as10779
         self.nixosModules.attic
         self.nixosModules.caddy
@@ -26,12 +25,13 @@ let
         self.nixosModules.kanidm
         self.nixosModules.maxmind
         self.nixosModules.minimal
+        self.nixosModules.monitoring
         self.nixosModules.neogrok
         self.nixosModules.passwordless
         self.nixosModules.plausible
-        self.nixosModules.prometheus
         self.nixosModules.server
         self.nixosModules.vaultwarden
+        self.nixosModules.ysun
         rfm.nixosModules.default
         srvos.nixosModules.common
         srvos.nixosModules.server
