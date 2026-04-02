@@ -11,7 +11,7 @@ in
     networking.firewall.allowedTCPPorts = [ 80 443 ];
     networking.firewall.allowedUDPPorts = [ 443 ];
 
-    services.prometheus.scrapeConfigs = [{
+    services.prometheus.scrapeConfigs = lib.mkIf config.services.victoriametrics.enable [{
       job_name = "caddy";
       static_configs = [{ targets = [ metricsTarget ]; }];
       metrics_path = metricsPath;
