@@ -243,9 +243,7 @@ in
         };
       };
 
-      systemd.tmpfiles.rules = [
-        "d /var/lib/fluent-bit 0750 DynamicUser DynamicUser -"
-      ];
+      systemd.services.fluent-bit.serviceConfig.StateDirectory = "fluent-bit";
 
       services.geoipupdate.enable = true;
 
