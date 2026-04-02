@@ -18,15 +18,15 @@ in
       if config.services.caddy.enable
       then config.services.caddy.user
       else null;
-    extraSetFlags = pkgs.lib.mkIf config.services.prometheus.enable [ "--webclient" ];
+    extraSetFlags = pkgs.lib.mkIf config.services.victoriametrics.enable [ "--webclient" ];
   };
 
   # in case nftables is used
   systemd.services.tailscaled.environment.TS_DEBUG_FIREWALL_MODE = config.networking.firewall.package.pname;
 
   # scrape tailscale metrics
-  services.prometheus.scrapeConfigs = pkgs.lib.mkIf config.services.prometheus.enable [{
-    job_name = "prometheus-tailscale-exporter";
+  services.prometheus.scrapeConfigs = pkgs.lib.mkIf config.services.victoriametrics.enable [{
+    job_name = "tailscale";
     static_configs = [{ targets = [ "100.100.100.100:80" ]; }];
     metrics_path = "/metrics";
   }];
