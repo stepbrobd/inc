@@ -93,20 +93,8 @@ in
         }
       );
 
-      environment.etc."ranet/registry.json".source = (pkgs.formats.json { }).generate "registry.json" [
-        {
-          public_key = lib.trim bp.ranet.publicKey;
-          organization = bp.ranet.organization;
-          nodes = lib.mapAttrsToList
-            (name: h: {
-              common_name = name;
-              endpoints = h.ranet.endpoints;
-            })
-            (lib.filterAttrs
-              (_: h: h ? ranet && h.ranet ? endpoints)
-              bp.hosts);
-        }
-      ];
+      environment.etc."ranet/registry.json".source =
+        (pkgs.formats.json { }).generate "registry.json" [ pkgs.gravity.passthru.registry ];
 
       systemd.services.ranet =
         let

@@ -18,8 +18,9 @@ newHost (lib.fix (self: {
     ipv4 = "23.161.104.132";
     ipv6 = "2602:f590::23:161:104:132";
   };
-  ranet.endpoints = [
-    { serial_number = "0"; address_family = "ip6"; address = self.ipv6; port = 13000; }
-    { serial_number = "1"; address_family = "ip4"; address = self.ipv4; port = 13000; }
+  ranet.endpoints = let fqdn = "${self.hostName}.${lib.blueprint.provider.domain}"; in [
+    { serial_number = "0"; address_family = "ip6"; address = fqdn; port = 13000; }
+    { serial_number = "1"; address_family = "ip4"; address = fqdn; port = 13000; }
   ];
+  ranet.gravity.prefix = "2a0c:b641:69c:2900::/60";
 }))

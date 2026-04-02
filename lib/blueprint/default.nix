@@ -45,6 +45,9 @@ in
   # check the yubikeys
   ssh.ca = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINVmkIESgegjH4mEwir2mWxZelyAM1wZcbqsn4xGN6l7";
 
+  # provider interface ip addr @ <hostname>.if.ysun.co
+  provider.domain = "if.ysun.co";
+
   ranet = {
     organization = "ysun";
     publicKey = ''
