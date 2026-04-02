@@ -25,7 +25,7 @@ in
   systemd.services.tailscaled.environment.TS_DEBUG_FIREWALL_MODE = config.networking.firewall.package.pname;
 
   # scrape tailscale metrics
-  services.prometheus.scrapeConfigs = pkgs.lib.mkIf config.services.victoriametrics.enable [{
+  services.victoriametrics.prometheusConfig.scrape_configs = pkgs.lib.mkIf config.services.victoriametrics.enable [{
     job_name = "tailscale";
     static_configs = [{ targets = [ "100.100.100.100:80" ]; }];
     metrics_path = "/metrics";

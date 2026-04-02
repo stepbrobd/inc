@@ -45,24 +45,6 @@ in
         port = 9100;
       };
 
-      # local scrape targets contributed here; other modules (caddy, tailscale, time)
-      # contribute via services.prometheus.scrapeConfigs which is bridged below
-      services.prometheus.scrapeConfigs = [
-        {
-          job_name = "node";
-          static_configs = [{
-            targets = [ "${config.services.prometheus.exporters.node.listenAddress}:${toString config.services.prometheus.exporters.node.port}" ];
-          }];
-        }
-        {
-          job_name = "rfm";
-          static_configs = [{
-            targets = [ "[${config.services.rfm.settings.agent.prometheus.host}]:${toString config.services.rfm.settings.agent.prometheus.port}" ];
-          }];
-        }
-      ];
-
-      # bridge: collect all services.prometheus.scrapeConfigs and feed to VictoriaMetrics
       services.victoriametrics = {
         enable = true;
         listenAddress = "[::1]:8428";
@@ -71,10 +53,21 @@ in
           "-memory.allowedPercent=40"
           "-search.maxConcurrentRequests=2"
         ];
-        prometheusConfig = {
-          global.scrape_interval = "30s";
-          scrape_configs = config.services.prometheus.scrapeConfigs;
-        };
+        prometheusConfig.global.scrape_interval = "30s";
+        prometheusConfig.scrape_configs = [
+          {
+            job_name = "node";
+            static_configs = [{
+              targets = [ "${config.services.prometheus.exporters.node.listenAddress}:${toString config.services.prometheus.exporters.node.port}" ];
+            }];
+          }
+          {
+            job_name = "rfm";
+            static_configs = [{
+              targets = [ "[${config.services.rfm.settings.agent.prometheus.host}]:${toString config.services.rfm.settings.agent.prometheus.port}" ];
+            }];
+          }
+        ];
       };
 
       services.geoipupdate.enable = true;

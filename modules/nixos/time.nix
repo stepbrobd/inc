@@ -80,7 +80,7 @@ in
         settings.observability.metrics-exporter-listen = "[${bind}]:${lib.toString port}";
       };
 
-      services.prometheus.scrapeConfigs = lib.mkIf config.services.victoriametrics.enable [{
+      services.victoriametrics.prometheusConfig.scrape_configs = lib.mkIf config.services.victoriametrics.enable [{
         job_name = "ntpd-rs";
         static_configs = [{ targets = [ "[${bind}]:${lib.toString port}" ]; }];
       }];

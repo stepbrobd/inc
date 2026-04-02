@@ -631,27 +631,25 @@ in
         '');
     }
     {
-      services.prometheus = {
-        exporters.bird = {
-          enable = with config.services; bird.enable && victoriametrics.enable;
-          listenAddress = "[::1]";
-          port = 9324;
-        };
-        scrapeConfigs = [
-          {
-            job_name = "bird";
-            static_configs = [
-              { targets = [ "${config.services.prometheus.exporters.bird.listenAddress}:${lib.toString config.services.prometheus.exporters.bird.port}" ]; }
-            ];
-          }
-          {
-            job_name = "bgptools";
-            scheme = "https";
-            static_configs = [{ targets = [ "prometheus.bgp.tools:443" ]; }];
-            metrics_path = "/prom/1dafeced-2b12-40c0-a173-e9296ddb6df4";
-          }
-        ];
+      services.prometheus.exporters.bird = {
+        enable = with config.services; bird.enable && victoriametrics.enable;
+        listenAddress = "[::1]";
+        port = 9324;
       };
+      services.victoriametrics.prometheusConfig.scrape_configs = [
+        {
+          job_name = "bird";
+          static_configs = [
+            { targets = [ "${config.services.prometheus.exporters.bird.listenAddress}:${lib.toString config.services.prometheus.exporters.bird.port}" ]; }
+          ];
+        }
+        {
+          job_name = "bgptools";
+          scheme = "https";
+          static_configs = [{ targets = [ "prometheus.bgp.tools:443" ]; }];
+          metrics_path = "/prom/1dafeced-2b12-40c0-a173-e9296ddb6df4";
+        }
+      ];
     }
   ]);
 }
