@@ -199,7 +199,7 @@ in
               labels = "job=systemd-journal, host=${config.networking.hostName}";
               label_keys = "$unit";
               line_format = "json";
-              remove_keys = "$ip";
+              remove_keys = "$discard_before, $discard_after";
             }];
           };
 
