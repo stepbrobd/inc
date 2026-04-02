@@ -8,7 +8,7 @@ newHost (lib.fix (self: {
   provider = "garnix";
   providerName = "Garnix";
   type = "server";
-  tags = [ "routee" "grafana" "ranet" ];
+  tags = [ "routee" "grafana" "ranet" "prometheus" "loki" ];
   meta = { city = "Helsinki"; region = "FI-18"; country = "FI"; continent = "Europe"; postal = "00100"; };
   interface = "enp1s0";
   ipv4 = "37.27.181.83";

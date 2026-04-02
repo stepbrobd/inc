@@ -8,7 +8,7 @@ newHost (lib.fix (self: {
   provider = "neptune";
   providerName = "Neptune Networks";
   type = "server";
-  tags = [ "ysun" "router" "ranet" ];
+  tags = [ "ysun" "router" "ranet" "prometheus" "loki" ];
   meta = { city = "New York City"; region = "US-NY"; country = "US"; continent = "North America"; postal = "10001"; };
   interface = "ens3";
   ipv4 = "172.82.22.183";

@@ -8,7 +8,7 @@ newHost (lib.fix (self: {
   provider = "hetzner";
   providerName = "Hetzner Cloud";
   type = "server";
-  tags = [ "routee" "glance" "golink" "kanidm" "ranet" ];
+  tags = [ "routee" "glance" "golink" "kanidm" "ranet" "prometheus" "loki" ];
   meta = { city = "Falkenstein"; region = "DE-SN"; country = "DE"; continent = "Europe"; postal = "08223"; };
   interface = "eth0";
   ipv4 = "23.88.126.45";

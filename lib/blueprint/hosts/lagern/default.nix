@@ -8,7 +8,7 @@ newHost (lib.fix (self: {
   provider = "aws";
   providerName = "AWS";
   type = "server";
-  tags = [ "routee" "jitsi" "ranet" ];
+  tags = [ "routee" "jitsi" "ranet" "prometheus" "loki" ];
   meta = { city = "Zurich"; region = "CH-ZH"; country = "CH"; continent = "Europe"; postal = "8001"; };
   interface = "ens5";
   ipv4 = "16.62.113.214";

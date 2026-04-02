@@ -8,7 +8,7 @@ newHost (lib.fix (self: {
   provider = "owned";
   providerName = "Raspberry Pi 5B";
   type = "server";
-  tags = [ "rpi" "routee" "home-assistant" "vaultwarden" "ntpd-rs" "ranet" ];
+  tags = [ "rpi" "routee" "home-assistant" "vaultwarden" "ntpd-rs" "ranet" "prometheus" "loki" ];
   meta = { city = "Grenoble"; region = "FR-ARA"; country = "FR"; continent = "Europe"; postal = "38000"; };
   interface = "end0";
   ipv4 = "88.140.186.193";

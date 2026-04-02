@@ -8,7 +8,7 @@ newHost (lib.fix (self: {
   provider = "ssdnodes";
   providerName = "SSDNodes";
   type = "server";
-  tags = [ "routee" "attic" "hydra" "neogrok" "ranet" ];
+  tags = [ "routee" "attic" "hydra" "neogrok" "ranet" "prometheus" "loki" ];
   meta = { city = "Tokyo"; region = "JP-13"; country = "JP"; continent = "Asia"; postal = "100-0001"; };
   interface = "enp3s0";
   ipv4 = "209.182.234.194";

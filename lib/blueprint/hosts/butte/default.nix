@@ -8,7 +8,7 @@ newHost (lib.fix (self: {
   provider = "virtua";
   providerName = "Virtua";
   type = "server";
-  tags = [ "ysun" "router" "ranet" ];
+  tags = [ "ysun" "router" "ranet" "prometheus" "loki" ];
   meta = { city = "Paris"; region = "FR-IDF"; country = "FR"; continent = "Europe"; postal = "75000"; };
   interface = "eth0";
   ipv4 = "185.234.100.120";
