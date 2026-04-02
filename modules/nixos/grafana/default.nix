@@ -1,15 +1,20 @@
-{ lib, ... }:
+{ lib, ... } @ args:
 
 { config, pkgs, ... }:
 
 let
-  inherit (lib) mkIf mkDefault mkMerge toString filterAttrs blueprint foldlAttrs elem toLower;
+  inherit (lib) mkIf mkDefault mkMerge blueprint;
 
   cfg = config.services.grafana;
   hasTag = lib.hasTag config.networking.hostName;
   inherit (blueprint.services.grafana) domain;
 in
 {
+  imports = [
+    (import ./datasources.nix args)
+    (import ./alerting.nix args)
+  ];
+
   config = mkMerge [
     (mkIf (hasTag "grafana") {
       services.grafana.enable = mkDefault true;
@@ -33,24 +38,6 @@ in
       sops.secrets."grafana/oauth".mode = "440";
       sops.secrets."grafana/smtp".group = "grafana";
       sops.secrets."grafana/smtp".mode = "440";
-
-      services.grafana.provision.datasources.settings =
-        let
-          mkDatasources = label: jsonData:
-            let type = toLower label;
-            in foldlAttrs
-              (acc: name: host: acc ++ [{
-                inherit type jsonData;
-                name = "${host.name} - ${label}";
-                url = "https://${name}.${blueprint.tailscale.tailnet}/${type}";
-                access = "proxy";
-              }]) [ ]
-              (filterAttrs (_: h: elem type h.tags) blueprint.hosts);
-        in
-        {
-          apiVersion = 1;
-          datasources = mkDatasources "Prometheus" { httpMethod = "POST"; } ++ mkDatasources "Loki" { manageAlerts = false; };
-        };
 
       services.grafana = {
         package = pkgs.grafana.overrideAttrs (_: {
