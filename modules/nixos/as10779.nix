@@ -636,20 +636,20 @@ in
         listenAddress = "[::1]";
         port = 9324;
       };
-      services.victoriametrics.prometheusConfig.scrape_configs = [
-        {
-          job_name = "bird";
-          static_configs = [
-            { targets = [ "${config.services.prometheus.exporters.bird.listenAddress}:${lib.toString config.services.prometheus.exporters.bird.port}" ]; }
-          ];
-        }
-        {
+      services.victoriametrics.prometheusConfig.scrape_configs =
+        lib.optional config.services.bird.enable
+          {
+            job_name = "bird";
+            static_configs = [
+              { targets = [ "${config.services.prometheus.exporters.bird.listenAddress}:${lib.toString config.services.prometheus.exporters.bird.port}" ]; }
+            ];
+          }
+        ++ [{
           job_name = "bgptools";
           scheme = "https";
           static_configs = [{ targets = [ "prometheus.bgp.tools:443" ]; }];
           metrics_path = "/prom/1dafeced-2b12-40c0-a173-e9296ddb6df4";
-        }
-      ];
+        }];
     }
   ]);
 }
