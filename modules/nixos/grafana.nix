@@ -42,7 +42,7 @@ in
               (acc: name: host: acc ++ [{
                 inherit type jsonData;
                 name = "${host.name} - ${label}";
-                url = "https://${name}.${blueprint.tailscale.domain}/${type}";
+                url = "https://${name}.${blueprint.tailscale.tailnet}/${type}";
                 access = "proxy";
               }]) [ ]
               (filterAttrs (_: h: elem type h.tags) blueprint.hosts);

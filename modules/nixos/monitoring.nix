@@ -8,7 +8,7 @@ let
   hasTag = lib.hasTag config.networking.hostName;
   hasProm = hasTag "prometheus";
   hasLoki = hasTag "loki";
-  tsDomain = "${config.networking.hostName}.${lib.blueprint.tailscale.domain}";
+  tsDomain = "${config.networking.hostName}.${lib.blueprint.tailscale.tailnet}";
 in
 {
   # "prometheus" tag: VictoriaMetrics (drop in prometheus replacement) + node exporter + RFM
@@ -258,12 +258,7 @@ in
     })
 
     (mkIf (hasProm || hasLoki) {
-      services.caddy.virtualHosts.${tsDomain} = {
-        logFormat = mkForce "output discard";
-        extraConfig = ''
-          import common
-        '';
-      };
+      services.caddy.virtualHosts.${tsDomain}.logFormat = mkForce "output discard";
     })
   ];
 }
