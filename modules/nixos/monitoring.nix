@@ -144,6 +144,14 @@ in
         };
       };
 
+      # expose loki metrics to VictoriaMetrics when both tags are present
+      services.victoriametrics.prometheusConfig.scrape_configs = lib.mkIf hasProm [{
+        job_name = "loki";
+        static_configs = [{
+          targets = [ "[${config.services.loki.configuration.server.http_listen_address}]:${toString config.services.loki.configuration.server.http_listen_port}" ];
+        }];
+      }];
+
       services.fluent-bit = {
         enable = true;
         settings = {
