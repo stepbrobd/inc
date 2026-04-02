@@ -12,7 +12,7 @@ in
     networking.firewall.allowedUDPPorts = [ 443 ];
 
     services.prometheus.scrapeConfigs = [{
-      job_name = "prometheus-caddy-exporter";
+      job_name = "caddy";
       static_configs = [{ targets = [ metricsTarget ]; }];
       metrics_path = metricsPath;
     }];
