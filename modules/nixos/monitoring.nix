@@ -259,7 +259,12 @@ in
     })
 
     (mkIf (hasProm || hasLoki) {
-      services.caddy.virtualHosts.${tsDomain}.logFormat = mkForce "output discard";
+      services.caddy.virtualHosts.${tsDomain} = {
+        logFormat = mkForce "output discard";
+        extraConfig = ''
+          import common
+        '';
+      };
     })
   ];
 }
