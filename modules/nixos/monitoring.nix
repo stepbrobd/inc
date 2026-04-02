@@ -50,6 +50,7 @@ in
         listenAddress = "[::1]:8428";
         retentionPeriod = "6M";
         extraOptions = [
+          "-enableTCP6"
           "-memory.allowedPercent=40"
           "-search.maxConcurrentRequests=2"
         ];
