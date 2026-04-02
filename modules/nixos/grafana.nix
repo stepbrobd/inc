@@ -3,17 +3,18 @@
 { config, pkgs, ... }:
 
 let
-  inherit (lib) mkIf toString;
+  inherit (lib) mkIf mkDefault mkMerge toString filterAttrs blueprint foldlAttrs elem toLower;
 
   cfg = config.services.grafana;
   hasTag = lib.hasTag config.networking.hostName;
-  inherit (lib.blueprint.services.grafana) domain;
+  inherit (blueprint.services.grafana) domain;
 in
 {
-  config = lib.mkMerge [
+  config = mkMerge [
     (mkIf (hasTag "grafana") {
-      services.grafana.enable = lib.mkDefault true;
+      services.grafana.enable = mkDefault true;
     })
+
     (mkIf cfg.enable {
       services.caddy = {
         enable = true;
@@ -33,11 +34,29 @@ in
       sops.secrets."grafana/smtp".group = "grafana";
       sops.secrets."grafana/smtp".mode = "440";
 
+      services.grafana.provision.datasources.settings =
+        let
+          mkDatasources = label: jsonData:
+            let type = toLower label;
+            in foldlAttrs
+              (acc: name: host: acc ++ [{
+                inherit type jsonData;
+                name = "${host.name} - ${label}";
+                url = "https://${name}.${blueprint.tailscale.domain}/${type}";
+                access = "proxy";
+              }]) [ ]
+              (filterAttrs (_: h: elem type h.tags) blueprint.hosts);
+        in
+        {
+          apiVersion = 1;
+          datasources = mkDatasources "Prometheus" { httpMethod = "POST"; } ++ mkDatasources "Loki" { manageAlerts = false; };
+        };
+
       services.grafana = {
         package = pkgs.grafana.overrideAttrs (_: {
           preFixup = ''
             substituteInPlace $out/share/grafana/public/views/index.html \
-              --replace-fail '</head>' '<script defer data-domain="${domain}" src="https://${lib.blueprint.services.plausible.domain}/js/script.file-downloads.hash.outbound-links.js"></script></head>'
+              --replace-fail '</head>' '<script defer data-domain="${domain}" src="https://${blueprint.services.plausible.domain}/js/script.file-downloads.hash.outbound-links.js"></script></head>'
           '';
         });
 
