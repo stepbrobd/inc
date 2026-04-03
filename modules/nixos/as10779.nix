@@ -386,10 +386,6 @@ in
     };
   };
 
-  # require nftables and tailscale
-  # already imported in minimal
-  # imports = with inputs.self.nixosModules; [ nftables tailscale ];
-
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
       networking.firewall.allowedTCPPorts = lib.optional cfg.router.exit 179;
@@ -659,7 +655,7 @@ in
               #   ip saddr { ${lib.concatMapStringsSep ", " (r: r.prefix) cfg.router.static.ipv4.routes} } oifname "${cfg.local.interface.primary}" masquerade
               # ''}
               ""}
-              ip saddr != { ${lib.concatMapStringsSep ", " (r: r.prefix) cfg.router.static.ipv4.routes} } oifname { "${cfg.local.interface.primary}", "${config.services.tailscale.interfaceName}" } masquerade
+              ip saddr != { ${lib.concatMapStringsSep ", " (r: r.prefix) cfg.router.static.ipv4.routes} } oifname "${cfg.local.interface.primary}" masquerade
             }
           '';
         };
@@ -681,26 +677,11 @@ in
               #   ip6 saddr { ${lib.concatMapStringsSep ", " (r: r.prefix) cfg.router.static.ipv6.routes} } oifname "${cfg.local.interface.primary}" masquerade
               # ''}
               ""}
-              ip6 saddr != { ${lib.concatMapStringsSep ", " (r: r.prefix) cfg.router.static.ipv6.routes} } oifname { "${cfg.local.interface.primary}", "${config.services.tailscale.interfaceName}" } masquerade
+              ip6 saddr != { ${lib.concatMapStringsSep ", " (r: r.prefix) cfg.router.static.ipv6.routes} } oifname "${cfg.local.interface.primary}" masquerade
             }
           '';
         };
       };
-
-      services.tailscale.extraSetFlags =
-        let
-          v4s = lib.concatStringsSep "," cfg.local.ipv4.addresses;
-          v6s = lib.concatStringsSep "," cfg.local.ipv6.addresses;
-          addresses =
-            if v4s == "" then v6s
-            else if v6s == "" then v4s
-            else v4s + "," + v6s;
-        in
-        [
-          "--accept-routes"
-          "--advertise-exit-node"
-          "--advertise-routes=${addresses}"
-        ] ++ lib.optional cfg.router.exit "--snat-subnet-routes=false";
 
       # switch to networkd dispatcher?
       networking.localCommands =
@@ -719,11 +700,16 @@ in
       systemd.network.networks."10-loopback" = {
         name = "lo";
         address = [ gravityAddr ];
-        # on exit nodes, babel routes go to a separate kernel table
-        # to avoid conflicting with bgp kernel protocols on the main table
-        routingPolicyRules = lib.optionals cfg.router.exit [
-          { Table = babelKernelTable; Priority = 100; }
-        ];
+        # on exit nodes babel routes go to a separate kernel table to avoid conflicting with bgp kernel protocols on the main table
+        # on exit nodes only internal traffic (from advertized addrs and gravity sources) should use the ranet table
+        # external internet traffic must NOT be intercepted because it creates asymmetric return paths
+        routingPolicyRules = lib.optionals cfg.router.exit (
+          lib.map (r: { From = r.prefix; Table = babelKernelTable; Priority = 100; })
+            cfg.router.static.ipv4.routes
+          ++ lib.map (r: { From = r.prefix; Table = babelKernelTable; Priority = 100; })
+            cfg.router.static.ipv6.routes
+          ++ [{ From = "2a0c:b641:69c::/48"; Table = babelKernelTable; Priority = 100; }]
+        );
       };
     })
     {

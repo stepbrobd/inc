@@ -13,12 +13,19 @@ in
 {
   services.tailscale = {
     openFirewall = true;
+
     useRoutingFeatures = "both";
+
     permitCertUid =
       if config.services.caddy.enable
       then config.services.caddy.user
       else null;
-    extraSetFlags = pkgs.lib.mkIf config.services.victoriametrics.enable [ "--webclient" ];
+
+    # tailscale is for control plane only (ssh, monitoring, ldap, etc.)
+    extraSetFlags = [
+      "--accept-routes"
+      "--advertise-exit-node"
+    ] ++ pkgs.lib.mkIf config.services.victoriametrics.enable [ "--webclient" ];
   };
 
   # in case nftables is used
