@@ -105,6 +105,7 @@ in
                 case "$PLUTO_VERB" in
                   up-client)
                     ip link add "$LINK" type xfrm if_id "$PLUTO_IF_ID_OUT"
+                    ip link set dev "$LINK" addrgenmode random
                     ip link set "$LINK" multicast on mtu 1400 master gravity up
                     ;;
                   down-client)
