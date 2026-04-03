@@ -716,11 +716,9 @@ in
         # bird's exitdefault (via "gravity") is for babel propagation only
         # on the exit node itself it's a dead end (self-referential VRF loop)
         (lib.optionalString (babelEnabled && cfg.router.exit) ''
-          gw4=$(ip -4 route show default table main | awk '{print $3; exit}')
-          dev4=$(ip -4 route show default table main | awk '{print $5; exit}')
+          read _ _ gw4 _ dev4 _ < <(ip -4 route show default table main)
           [ -n "$gw4" ] && ip -4 route replace default via $gw4 dev $dev4 table ${lib.toString babelKernelTable} metric 1 || true
-          gw6=$(ip -6 route show default table main | awk '{print $3; exit}')
-          dev6=$(ip -6 route show default table main | awk '{print $5; exit}')
+          read _ _ gw6 _ dev6 _ < <(ip -6 route show default table main)
           [ -n "$gw6" ] && ip -6 route replace default via $gw6 dev $dev6 table ${lib.toString babelKernelTable} metric 1 || true
         '');
     }
