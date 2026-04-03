@@ -59,8 +59,13 @@ in
           ] ++ lib.blueprint.prefixes.experimental.ipv6;
         };
       kernel = {
-        ipv4.export = "export all;";
-        ipv6.export = "export all;";
+        ipv4.export = ''export where proto = "${cfg.router.static.ipv4.name}";'';
+        ipv6.export = ''export where proto = "${cfg.router.static.ipv6.name}";'';
+      };
+      # upstream bgp gateway differs from main interface gateway
+      outboundGateway = {
+        ipv4 = "185.194.53.4";
+        ipv6 = "2a04:6f00:4::4";
       };
       sessions = [
         {
