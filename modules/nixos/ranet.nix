@@ -156,6 +156,11 @@ in
 
       networking.firewall.allowedUDPPorts = [ port ];
       networking.firewall.trustedInterfaces = [ "ranet*" ];
+
+      # ranet interfaces receive packets with source addresses that are
+      # routed via other interfaces (e.g. public IPs routed via eth0),
+      # so strict rp_filter would drop them
+      boot.kernel.sysctl."net.ipv4.conf.default.rp_filter" = lib.mkDefault 2;
     })
   ];
 }
