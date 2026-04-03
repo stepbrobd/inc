@@ -720,20 +720,23 @@ in
         name = "gravity";
         address = [ gravityAddr ];
         linkConfig.RequiredForOnline = false;
-        routingPolicyRules = lib.optionals cfg.router.exit (
-          # inbound: external internet traffic for IPAM → look up in VRF table
+        # all nodes: direct IPAM/gravity traffic into VRF table
+        routingPolicyRules =
           lib.map (r: { To = r.prefix; Table = babelKernelTable; Priority = 100; })
             cfg.router.static.ipv4.routes
           ++ lib.map (r: { To = r.prefix; Table = babelKernelTable; Priority = 100; })
             cfg.router.static.ipv6.routes
           ++ [{ To = "2a0c:b641:69c::/48"; Table = babelKernelTable; Priority = 100; }]
-          # outbound: IPAM-sourced traffic exiting VRF → leak to main for internet egress
-          ++ lib.map (r: { IncomingInterface = "gravity"; From = r.prefix; Table = "main"; Priority = 200; })
-            cfg.router.static.ipv4.routes
-          ++ lib.map (r: { IncomingInterface = "gravity"; From = r.prefix; Table = "main"; Priority = 200; })
-            cfg.router.static.ipv6.routes
-          ++ [{ IncomingInterface = "gravity"; From = "2a0c:b641:69c::/48"; Table = "main"; Priority = 200; }]
-        );
+          # exit nodes only: IPAM-sourced traffic -> leak to main for internet egress
+          # no iif constraint: must match both locally-generated VRF packets
+          # (services replying) and forwarded packets (anycast return traffic)
+          ++ lib.optionals cfg.router.exit (
+            lib.map (r: { From = r.prefix; Table = "main"; Priority = 150; })
+              cfg.router.static.ipv4.routes
+            ++ lib.map (r: { From = r.prefix; Table = "main"; Priority = 150; })
+              cfg.router.static.ipv6.routes
+            ++ [{ From = "2a0c:b641:69c::/48"; Table = "main"; Priority = 150; }]
+          );
       };
     })
     {
