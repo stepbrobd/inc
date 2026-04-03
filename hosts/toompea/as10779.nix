@@ -34,6 +34,8 @@ in
 
     router = {
       secret = config.sops.secrets.bgp.path;
+      advertiseDefault = false;
+      localEgress = "mesh";
       source = { inherit (lib.blueprint.hosts.toompea) ipv4 ipv6; };
       static =
         let
