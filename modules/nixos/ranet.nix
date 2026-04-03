@@ -155,6 +155,7 @@ in
       };
 
       networking.firewall.allowedUDPPorts = [ port ];
+      networking.firewall.trustedInterfaces = [ "ranet*" ];
     })
   ];
 }
