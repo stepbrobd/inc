@@ -67,6 +67,30 @@ in
     })
 
     (lib.mkIf cfg.enable {
+      boot.kernelModules = [ "vrf" ];
+      boot.kernel.sysctl = {
+        "net.vrf.strict_mode" = 1;
+        # allow sockets in the default VRF to accept connections arriving
+        # via the gravity VRF (services bind to 0.0.0.0/[::] but receive
+        # traffic on IPAM addresses which are in the gravity VRF)
+        "net.ipv4.tcp_l3mdev_accept" = 1;
+        "net.ipv4.udp_l3mdev_accept" = 1;
+        "net.ipv4.raw_l3mdev_accept" = 0;
+      };
+
+      systemd.network.netdevs."20-gravity" = {
+        netdevConfig = {
+          Kind = "vrf";
+          Name = "gravity";
+        };
+        vrfConfig.Table = 200;
+      };
+
+      systemd.network.networks."20-gravity" = {
+        name = "gravity";
+        linkConfig.RequiredForOnline = false;
+      };
+
       environment.systemPackages = [
         config.services.strongswan-swanctl.package
         pkgs.ranet
@@ -81,7 +105,7 @@ in
                 case "$PLUTO_VERB" in
                   up-client)
                     ip link add "$LINK" type xfrm if_id "$PLUTO_IF_ID_OUT"
-                    ip link set "$LINK" multicast on mtu 1400 up
+                    ip link set "$LINK" multicast on mtu 1400 master gravity up
                     ;;
                   down-client)
                     ip link del "$LINK"
@@ -116,7 +140,7 @@ in
           };
           bindsTo = [ "strongswan-swanctl.service" ];
           wants = [ "network-online.target" "strongswan-swanctl.service" ];
-          after = [ "network-online.target" "strongswan-swanctl.service" ];
+          after = [ "network-online.target" "strongswan-swanctl.service" "systemd-networkd.service" ];
           wantedBy = [ "multi-user.target" ];
           reloadTriggers = [
             config.environment.etc."ranet/config.json".source
@@ -155,12 +179,7 @@ in
       };
 
       networking.firewall.allowedUDPPorts = [ port ];
-      networking.firewall.trustedInterfaces = [ "ranet*" ];
-
-      # ranet interfaces receive packets with source addresses that are
-      # routed via other interfaces (e.g. public IPs routed via eth0),
-      # so strict rp_filter would drop them
-      boot.kernel.sysctl."net.ipv4.conf.default.rp_filter" = lib.mkDefault 2;
+      networking.firewall.trustedInterfaces = [ "ranet*" "gravity" ];
     })
   ];
 }

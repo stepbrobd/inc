@@ -405,29 +405,33 @@ in
           }
         ''
 
-        # babel over ranet mesh
+        # babel over ranet mesh (gravity VRF)
         (lib.optionalString babelEnabled ''
 
           ipv4 table babel4;
           ipv6 sadr table babel6;
 
           protocol direct dbabel0 {
-            interface "${cfg.local.interface.local}", "lo";
+            vrf "gravity";
+            interface "${cfg.local.interface.local}", "gravity";
             ipv4 { table babel4; };
             ipv6 sadr;
           }
 
           protocol kernel kbabel4 {
-            ${lib.optionalString cfg.router.exit "kernel table ${lib.toString babelKernelTable};"}
+            kernel table ${lib.toString babelKernelTable};
             ipv4 {
               table babel4;
-              export all;
+              export filter {
+                krt_prefsrc = ${host.ipam.ipv4};
+                accept;
+              };
               import none;
             };
           }
 
           protocol kernel kbabel6 {
-            ${lib.optionalString cfg.router.exit "kernel table ${lib.toString babelKernelTable};"}
+            kernel table ${lib.toString babelKernelTable};
             metric 2048;
             ipv6 sadr {
               export all;
@@ -436,14 +440,15 @@ in
           }
 
           protocol babel babel0 {
+            vrf "gravity";
             randomize router id;
             ipv4 {
               table babel4;
-              export where proto = "dbabel0";
+              export where proto = "dbabel0" ${lib.optionalString cfg.router.exit ''|| proto = "exitdefault4" ''};
               import all;
             };
             ipv6 sadr {
-              export where proto = "dbabel0" && net !~ [ fe80::/10+ ];
+              export where (proto = "dbabel0" ${lib.optionalString cfg.router.exit ''|| proto = "exitdefault6" ''}) && net !~ [ fe80::/10+ ];
               import all;
             };
             interface "ranet*" {
@@ -455,6 +460,21 @@ in
               rtt max 1024 ms;
               rx buffer 1500;
             };
+          }
+        '')
+
+        # exit nodes: inject default route into babel so non-exit nodes
+        # route internet-bound IPAM traffic to the nearest exit via mesh
+        (lib.optionalString (babelEnabled && cfg.router.exit) ''
+
+          protocol static exitdefault4 {
+            ipv4 { table babel4; };
+            route 0.0.0.0/0 via "gravity";
+          }
+
+          protocol static exitdefault6 {
+            ipv6 sadr;
+            route ::/0 from ::/0 via "gravity";
           }
         '')
 
@@ -616,8 +636,7 @@ in
       systemd.network.networks."40-${cfg.local.interface.local}" = {
         name = cfg.local.interface.local;
         address = with cfg.local; ipv4.addresses ++ ipv6.addresses;
-        # only needed when announced prefixes' outbound gateway is
-        # different from the default gateway of the main interface
+        networkConfig = lib.optionalAttrs babelEnabled { VRF = "gravity"; };
         routingPolicyRules = lib.remove { } (lib.flatten [
           (lib.optionalAttrs (lib.isString cfg.router.outboundGateway.ipv4) (lib.map
             (r: {
@@ -697,18 +716,23 @@ in
       networking.iproute2.enable = true;
       networking.iproute2.rttablesExtraConfig = "${lib.toString babelKernelTable} ranet";
 
-      systemd.network.networks."10-loopback" = {
-        name = "lo";
+      systemd.network.networks."20-gravity" = {
+        name = "gravity";
         address = [ gravityAddr ];
-        # on exit nodes babel routes go to a separate kernel table to avoid conflicting with bgp kernel protocols on the main table
-        # on exit nodes only internal traffic (from advertized addrs and gravity sources) should use the ranet table
-        # external internet traffic must NOT be intercepted because it creates asymmetric return paths
+        linkConfig.RequiredForOnline = false;
         routingPolicyRules = lib.optionals cfg.router.exit (
-          lib.map (r: { From = r.prefix; Table = babelKernelTable; Priority = 100; })
+          # inbound: external internet traffic for IPAM → look up in VRF table
+          lib.map (r: { To = r.prefix; Table = babelKernelTable; Priority = 100; })
             cfg.router.static.ipv4.routes
-          ++ lib.map (r: { From = r.prefix; Table = babelKernelTable; Priority = 100; })
+          ++ lib.map (r: { To = r.prefix; Table = babelKernelTable; Priority = 100; })
             cfg.router.static.ipv6.routes
-          ++ [{ From = "2a0c:b641:69c::/48"; Table = babelKernelTable; Priority = 100; }]
+          ++ [{ To = "2a0c:b641:69c::/48"; Table = babelKernelTable; Priority = 100; }]
+          # outbound: IPAM-sourced traffic exiting VRF → leak to main for internet egress
+          ++ lib.map (r: { IncomingInterface = "gravity"; From = r.prefix; Table = "main"; Priority = 200; })
+            cfg.router.static.ipv4.routes
+          ++ lib.map (r: { IncomingInterface = "gravity"; From = r.prefix; Table = "main"; Priority = 200; })
+            cfg.router.static.ipv6.routes
+          ++ [{ IncomingInterface = "gravity"; From = "2a0c:b641:69c::/48"; Table = "main"; Priority = 200; }]
         );
       };
     })
