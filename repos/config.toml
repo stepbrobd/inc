@@ -124,6 +124,11 @@ description = "osu!lazer maps/scores/settings bidirectional diff/export/sync too
 visibility = "public"
 archived = false
 
+[repo."oxide"]
+description = "nixos image for oxide silo"
+visibility = "public"
+archived = false
+
 [repo."rfm"]
 description = "router flow monitor"
 visibility = "public"
