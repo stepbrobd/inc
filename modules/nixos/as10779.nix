@@ -14,6 +14,7 @@ let
     else null;
 
   babelEnabled = config.networking.ranet.enable && gravityPrefix != null;
+  babelKernelTable = 200;
 
   gravityParts = if gravityPrefix != null then lib.splitString "/" gravityPrefix else [ ];
 
@@ -421,6 +422,7 @@ in
           }
 
           protocol kernel kbabel4 {
+            ${lib.optionalString cfg.router.exit "kernel table ${lib.toString babelKernelTable};"}
             ipv4 {
               table babel4;
               export all;
@@ -429,6 +431,7 @@ in
           }
 
           protocol kernel kbabel6 {
+            ${lib.optionalString cfg.router.exit "kernel table ${lib.toString babelKernelTable};"}
             metric 2048;
             ipv6 sadr {
               export all;
@@ -710,9 +713,17 @@ in
         '');
     }
     (lib.mkIf babelEnabled {
+      networking.iproute2.enable = true;
+      networking.iproute2.rttablesExtraConfig = "${lib.toString babelKernelTable} ranet";
+
       systemd.network.networks."10-loopback" = {
         name = "lo";
         address = [ gravityAddr ];
+        # on exit nodes, babel routes go to a separate kernel table
+        # to avoid conflicting with bgp kernel protocols on the main table
+        routingPolicyRules = lib.optionals cfg.router.exit [
+          { Table = babelKernelTable; Priority = 100; }
+        ];
       };
     })
     {
