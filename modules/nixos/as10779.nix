@@ -6,6 +6,22 @@
 let
   cfg = config.services.as10779;
 
+  host = lib.blueprint.hosts.${config.networking.hostName} or null;
+
+  gravityPrefix =
+    if host != null && host ? ranet && host.ranet ? gravity
+    then host.ranet.gravity.prefix
+    else null;
+
+  babelEnabled = config.networking.ranet.enable && gravityPrefix != null;
+
+  gravityParts = if gravityPrefix != null then lib.splitString "/" gravityPrefix else [ ];
+
+  gravityAddr =
+    if gravityParts != [ ]
+    then "${lib.head gravityParts}1/${lib.last gravityParts}"
+    else null;
+
   routeType = lib.types.submodule {
     options = {
       prefix = lib.mkOption {
@@ -67,6 +83,7 @@ in
     router = {
       id = lib.mkOption {
         type = lib.types.str;
+        default = lib.blueprint.hosts.${config.networking.hostName}.ipv4;
         description = "router ID";
       };
 
@@ -375,156 +392,233 @@ in
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
       networking.firewall.allowedTCPPorts = lib.optional cfg.router.exit 179;
-      services.bird.enable = cfg.router.exit;
-      services.bird.checkConfig = false;
+
+      # router and ranet nodes all need to have bird
+      services.bird.enable = cfg.router.exit || babelEnabled;
       services.bird.package = pkgs.bird3;
-      services.bird.config = ''
-        include "${cfg.router.secret}";
+      services.bird.checkConfig = false;
 
-        router id ${cfg.router.id};
+      services.bird.config = lib.concatStrings [
+        # base
+        ''
+          router id ${cfg.router.id};
 
-        roa4 table ${cfg.router.rpki.ipv4.table};
-        roa6 table ${cfg.router.rpki.ipv6.table};
-
-        ${lib.concatMapStringsSep
-        "\n\n"
-        (validator: ''
-          protocol rpki rpki${lib.toString validator.id} {
-            roa4 { table ${cfg.router.rpki.ipv4.table}; };
-            roa6 { table ${cfg.router.rpki.ipv6.table}; };
-
-            remote "${validator.remote}" port ${lib.toString validator.port};
-
-            retry keep ${lib.toString cfg.router.rpki.retry};
-            refresh keep ${lib.toString cfg.router.rpki.refresh};
-            expire ${lib.toString cfg.router.rpki.expire};
-          }'')
-        cfg.router.rpki.validators}
-
-        filter ${cfg.router.rpki.ipv4.filter} {
-          if (roa_check(${cfg.router.rpki.ipv4.table}, net, bgp_path.last) = ROA_INVALID) then {
-            print "Ignore RPKI invalid ", net, " for ASN ", bgp_path.last;
-            reject;
+          protocol device ${cfg.router.device.name} {
+            scan time ${lib.toString cfg.router.scantime};
           }
-          accept;
-        }
+        ''
 
-        filter ${cfg.router.rpki.ipv6.filter} {
-          if (roa_check(${cfg.router.rpki.ipv6.table}, net, bgp_path.last) = ROA_INVALID) then {
-            print "Ignore RPKI invalid ", net, " for ASN ", bgp_path.last;
-            reject;
+        # babel over ranet mesh
+        (lib.optionalString babelEnabled ''
+
+          ipv4 table babel4;
+          ipv6 table babel6;
+          ipv6 sadr table sadr6;
+
+          protocol direct dbabel0 {
+            interface "${cfg.local.interface.local}";
+            ipv4 { table babel4; };
+            ipv6 { table babel6; };
+            ipv6 sadr;
           }
-          accept;
-        }
 
-        protocol device ${cfg.router.device.name} {
-          scan time ${lib.toString cfg.router.scantime};
-        }
+          protocol kernel kbabel4 {
+            ipv4 {
+              table babel4;
+              export all;
+              import none;
+            };
+          }
 
-        protocol direct ${cfg.router.direct.name} {
-          interface "${cfg.local.interface.local}";
-          ipv4;
-          ipv6;
-        }
+          protocol kernel kbabel6 {
+            ipv6 {
+              table babel6;
+              export all;
+              import none;
+            };
+          }
 
-        protocol kernel ${cfg.router.kernel.ipv4.name} {
-          scan time ${lib.toString cfg.router.scantime};
+          protocol kernel ksadr6 {
+            metric 2048;
+            ipv6 sadr {
+              export all;
+              import none;
+            };
+          }
 
-          learn;
-          persist;
+          protocol babel babel0 {
+            randomize router id;
+            ipv4 {
+              table babel4;
+              export where proto = "dbabel0";
+              import all;
+            };
+            ipv6 {
+              table babel6;
+              export where proto = "dbabel0" && net !~ [ fe80::/10+ ];
+              import all;
+            };
+            ipv6 sadr {
+              export where proto = "dbabel0" && net !~ [ fe80::/10+ ];
+              import all;
+            };
+            interface "ranet*" {
+              type tunnel;
+              link quality etx;
+              rxcost 32;
+              hello interval 20 s;
+              rtt cost 1024;
+              rtt max 1024 ms;
+              rx buffer 1500;
+            };
+          }
+        '')
 
-          ipv4 {
-            ${cfg.router.kernel.ipv4.import}
-            ${cfg.router.kernel.ipv4.export}
-          };
-        }
+        # only on bgp exit nodes with sessions
+        (lib.optionalString cfg.router.exit ''
 
-        protocol kernel ${cfg.router.kernel.ipv6.name} {
-          scan time ${lib.toString cfg.router.scantime};
+          include "${cfg.router.secret}";
 
-          learn;
-          persist;
-
-          ipv6 {
-            ${cfg.router.kernel.ipv6.import}
-            ${cfg.router.kernel.ipv6.export}
-          };
-        }
-
-        protocol static ${cfg.router.static.ipv4.name} {
-          ipv4;
+          roa4 table ${cfg.router.rpki.ipv4.table};
+          roa6 table ${cfg.router.rpki.ipv6.table};
 
           ${lib.concatMapStringsSep
-            "\n  "
-            (r: ''route ${r.prefix} ${r.option};'')
-            cfg.router.static.ipv4.routes}
-        }
+          "\n\n"
+          (validator: ''
+            protocol rpki rpki${lib.toString validator.id} {
+              roa4 { table ${cfg.router.rpki.ipv4.table}; };
+              roa6 { table ${cfg.router.rpki.ipv6.table}; };
 
-        protocol static ${cfg.router.static.ipv6.name} {
-          ipv6;
+              remote "${validator.remote}" port ${lib.toString validator.port};
 
-          ${lib.concatMapStringsSep
-          "\n  "
-            (r: ''route ${r.prefix} ${r.option};'')
-            cfg.router.static.ipv6.routes}
-        }
+              retry keep ${lib.toString cfg.router.rpki.retry};
+              refresh keep ${lib.toString cfg.router.rpki.refresh};
+              expire ${lib.toString cfg.router.rpki.expire};
+            }'')
+          cfg.router.rpki.validators}
 
-        ${lib.concatMapStringsSep
-        "\n\n"
-        (session: (lib.optionalString (session.type.ipv4 != "disabled") ''
-          protocol bgp ${session.name}4 {
-            graceful restart on;
-
-            ${session.type.ipv4};
-            ${if (lib.isNull session.source.ipv4) then "" else ''source address ${session.source.ipv4};'' }
-            local as ${lib.toString cfg.asn};
-            neighbor ${session.neighbor.ipv4} as ${lib.toString session.neighbor.asn};${
-              if lib.isNull session.password
-              then ""
-              else "\n  password ${session.password};"
+          filter ${cfg.router.rpki.ipv4.filter} {
+            if (roa_check(${cfg.router.rpki.ipv4.table}, net, bgp_path.last) = ROA_INVALID) then {
+              print "Ignore RPKI invalid ", net, " for ASN ", bgp_path.last;
+              reject;
             }
+            accept;
+          }
+
+          filter ${cfg.router.rpki.ipv6.filter} {
+            if (roa_check(${cfg.router.rpki.ipv6.table}, net, bgp_path.last) = ROA_INVALID) then {
+              print "Ignore RPKI invalid ", net, " for ASN ", bgp_path.last;
+              reject;
+            }
+            accept;
+          }
+
+          protocol direct ${cfg.router.direct.name} {
+            interface "${cfg.local.interface.local}";
+            ipv4;
+            ipv6;
+          }
+
+          protocol kernel ${cfg.router.kernel.ipv4.name} {
+            scan time ${lib.toString cfg.router.scantime};
+
+            learn;
+            persist;
 
             ipv4 {
-              add paths ${session.addpath};
-              ${lib.optionalString (!lib.isNull session.nexthop.ipv4) session.nexthop.ipv4}
-              ${session.import.ipv4}
-              ${session.export.ipv4}
+              ${cfg.router.kernel.ipv4.import}
+              ${cfg.router.kernel.ipv4.export}
             };
-            ${lib.optionalString (session.mp == "v6 over v4") ''
-              ipv6 {
-                  add paths ${session.addpath};
-                  ${lib.optionalString (!lib.isNull session.nexthop.ipv6) session.nexthop.ipv6}
-                  ${session.import.ipv6}
-                  ${session.export.ipv6}
-                };''}
           }
-          '') + "\n" + (lib.optionalString (session.type.ipv6 != "disabled") ''
-          protocol bgp ${session.name}6 {
-            graceful restart on;
 
-            ${session.type.ipv6};
-            ${if (lib.isNull session.source.ipv6) then "" else ''source address ${session.source.ipv6};'' }
-            local as ${lib.toString cfg.asn};
-            neighbor ${session.neighbor.ipv6} as ${lib.toString session.neighbor.asn};${
-              if lib.isNull session.password
-              then ""
-              else "\n  password ${session.password};"
-            }
+          protocol kernel ${cfg.router.kernel.ipv6.name} {
+            scan time ${lib.toString cfg.router.scantime};
+
+            learn;
+            persist;
 
             ipv6 {
-              add paths ${session.addpath};
-              ${lib.optionalString (!lib.isNull session.nexthop.ipv6) session.nexthop.ipv6}
-              ${session.import.ipv6}
-              ${session.export.ipv6}
+              ${cfg.router.kernel.ipv6.import}
+              ${cfg.router.kernel.ipv6.export}
             };
-            ${lib.optionalString (session.mp == "v4 over v6") ''
+          }
+
+          protocol static ${cfg.router.static.ipv4.name} {
+            ipv4;
+
+            ${lib.concatMapStringsSep
+              "\n  "
+              (r: ''route ${r.prefix} ${r.option};'')
+              cfg.router.static.ipv4.routes}
+          }
+
+          protocol static ${cfg.router.static.ipv6.name} {
+            ipv6;
+
+            ${lib.concatMapStringsSep
+            "\n  "
+              (r: ''route ${r.prefix} ${r.option};'')
+              cfg.router.static.ipv6.routes}
+          }
+
+          ${lib.concatMapStringsSep
+          "\n\n"
+          (session: (lib.optionalString (session.type.ipv4 != "disabled") ''
+            protocol bgp ${session.name}4 {
+              graceful restart on;
+
+              ${session.type.ipv4};
+              ${if (lib.isNull session.source.ipv4) then "" else ''source address ${session.source.ipv4};'' }
+              local as ${lib.toString cfg.asn};
+              neighbor ${session.neighbor.ipv4} as ${lib.toString session.neighbor.asn};${
+                if lib.isNull session.password
+                then ""
+                else "\n  password ${session.password};"
+              }
+
               ipv4 {
-                  add paths ${session.addpath};
-                  ${lib.optionalString (!lib.isNull session.nexthop.ipv4) session.nexthop.ipv4}
-                  ${session.import.ipv4}
-                  ${session.export.ipv4}
-                };''}
-          }'')) cfg.router.sessions}'';
+                add paths ${session.addpath};
+                ${lib.optionalString (!lib.isNull session.nexthop.ipv4) session.nexthop.ipv4}
+                ${session.import.ipv4}
+                ${session.export.ipv4}
+              };
+              ${lib.optionalString (session.mp == "v6 over v4") ''
+                ipv6 {
+                    add paths ${session.addpath};
+                    ${lib.optionalString (!lib.isNull session.nexthop.ipv6) session.nexthop.ipv6}
+                    ${session.import.ipv6}
+                    ${session.export.ipv6}
+                  };''}
+            }
+            '') + "\n" + (lib.optionalString (session.type.ipv6 != "disabled") ''
+            protocol bgp ${session.name}6 {
+              graceful restart on;
+
+              ${session.type.ipv6};
+              ${if (lib.isNull session.source.ipv6) then "" else ''source address ${session.source.ipv6};'' }
+              local as ${lib.toString cfg.asn};
+              neighbor ${session.neighbor.ipv6} as ${lib.toString session.neighbor.asn};${
+                if lib.isNull session.password
+                then ""
+                else "\n  password ${session.password};"
+              }
+
+              ipv6 {
+                add paths ${session.addpath};
+                ${lib.optionalString (!lib.isNull session.nexthop.ipv6) session.nexthop.ipv6}
+                ${session.import.ipv6}
+                ${session.export.ipv6}
+              };
+              ${lib.optionalString (session.mp == "v4 over v6") ''
+                ipv4 {
+                    add paths ${session.addpath};
+                    ${lib.optionalString (!lib.isNull session.nexthop.ipv4) session.nexthop.ipv4}
+                    ${session.import.ipv4}
+                    ${session.export.ipv4}
+                  };''}
+            }'')) cfg.router.sessions}
+        '')
+      ];
     }
     {
       boot.kernelModules = [ "dummy" ];
@@ -537,7 +631,8 @@ in
 
       systemd.network.networks."40-${cfg.local.interface.local}" = {
         name = cfg.local.interface.local;
-        address = with cfg.local; ipv4.addresses ++ ipv6.addresses;
+        address = with cfg.local; ipv4.addresses ++ ipv6.addresses
+          ++ lib.optional (gravityAddr != null) gravityAddr;
         # only needed when announced prefixes' outbound gateway is
         # different from the default gateway of the main interface
         routingPolicyRules = lib.remove { } (lib.flatten [
