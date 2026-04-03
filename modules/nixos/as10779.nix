@@ -412,13 +412,11 @@ in
         (lib.optionalString babelEnabled ''
 
           ipv4 table babel4;
-          ipv6 table babel6;
-          ipv6 sadr table sadr6;
+          ipv6 sadr table babel6;
 
           protocol direct dbabel0 {
             interface "${cfg.local.interface.local}";
             ipv4 { table babel4; };
-            ipv6 { table babel6; };
             ipv6 sadr;
           }
 
@@ -431,14 +429,6 @@ in
           }
 
           protocol kernel kbabel6 {
-            ipv6 {
-              table babel6;
-              export all;
-              import none;
-            };
-          }
-
-          protocol kernel ksadr6 {
             metric 2048;
             ipv6 sadr {
               export all;
@@ -451,11 +441,6 @@ in
             ipv4 {
               table babel4;
               export where proto = "dbabel0";
-              import all;
-            };
-            ipv6 {
-              table babel6;
-              export where proto = "dbabel0" && net !~ [ fe80::/10+ ];
               import all;
             };
             ipv6 sadr {
