@@ -125,6 +125,15 @@ let
 in
 {
   config = mkIf config.services.grafana.enable {
+    services.grafana.provision.alerting.policies.settings = {
+      apiVersion = 1;
+      policies = [{
+        orgId = 1;
+        receiver = "Discord";
+        group_by = [ "grafana_folder" "alertname" ];
+      }];
+    };
+
     services.grafana.provision.alerting.rules.settings = {
       apiVersion = 1;
       groups =
