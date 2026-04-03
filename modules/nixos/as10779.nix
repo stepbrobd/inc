@@ -415,7 +415,7 @@ in
           ipv6 sadr table babel6;
 
           protocol direct dbabel0 {
-            interface "${cfg.local.interface.local}";
+            interface "${cfg.local.interface.local}", "lo";
             ipv4 { table babel4; };
             ipv6 sadr;
           }
@@ -616,8 +616,7 @@ in
 
       systemd.network.networks."40-${cfg.local.interface.local}" = {
         name = cfg.local.interface.local;
-        address = with cfg.local; ipv4.addresses ++ ipv6.addresses
-          ++ lib.optional (gravityAddr != null) gravityAddr;
+        address = with cfg.local; ipv4.addresses ++ ipv6.addresses;
         # only needed when announced prefixes' outbound gateway is
         # different from the default gateway of the main interface
         routingPolicyRules = lib.remove { } (lib.flatten [
@@ -710,6 +709,12 @@ in
           ip -6 route replace default via ${cfg.router.outboundGateway.ipv6} table ${lib.toString cfg.asn}
         '');
     }
+    (lib.mkIf babelEnabled {
+      systemd.network.networks."10-loopback" = {
+        name = "lo";
+        address = [ gravityAddr ];
+      };
+    })
     {
       services.prometheus.exporters.bird = {
         enable = with config.services; bird.enable && victoriametrics.enable;
