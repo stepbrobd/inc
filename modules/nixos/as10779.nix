@@ -710,11 +710,30 @@ in
         +
         (lib.optionalString (lib.isString cfg.router.outboundGateway.ipv6) ''
           ip -6 route replace default via ${cfg.router.outboundGateway.ipv6} table ${lib.toString cfg.asn}
+        '')
+        +
+        # exit nodes: add real default route in VRF table for internet egress
+        # bird's exitdefault (via "gravity") is for babel propagation only
+        # on the exit node itself it's a dead end (self-referential VRF loop)
+        (lib.optionalString (babelEnabled && cfg.router.exit) ''
+          gw4=$(ip -4 route show default table main | awk '{print $3; exit}')
+          dev4=$(ip -4 route show default table main | awk '{print $5; exit}')
+          [ -n "$gw4" ] && ip -4 route replace default via $gw4 dev $dev4 table ${lib.toString babelKernelTable} metric 1 || true
+          gw6=$(ip -6 route show default table main | awk '{print $3; exit}')
+          dev6=$(ip -6 route show default table main | awk '{print $5; exit}')
+          [ -n "$gw6" ] && ip -6 route replace default via $gw6 dev $dev6 table ${lib.toString babelKernelTable} metric 1 || true
         '');
     }
     (lib.mkIf babelEnabled {
       networking.iproute2.enable = true;
       networking.iproute2.rttablesExtraConfig = "${lib.toString babelKernelTable} ranet";
+
+      # IPAM addresses on lo so default-namespace services can bind to them
+      # (dummy0 is in the gravity VRF bind() from default namespace fails without this)
+      systemd.network.networks."10-loopback" = {
+        name = "lo";
+        address = with cfg.local; ipv4.addresses ++ ipv6.addresses;
+      };
 
       systemd.network.networks."20-gravity" = {
         name = "gravity";
