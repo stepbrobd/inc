@@ -94,6 +94,21 @@ in
         description = "is this node capable of sending outboud traffic (i.e. have BGP session or not)";
       };
 
+      advertiseDefault = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "whether this node injects its default route into Babel for other mesh nodes";
+      };
+
+      localEgress = lib.mkOption {
+        type = lib.types.enum [ "upstream" "mesh" ];
+        default = if cfg.router.exit then "upstream" else "mesh";
+        description = ''
+          how locally generated IPAM-sourced traffic leaves this node
+          "upstream" prefers the node's provider route, "mesh" prefers the Babel/VRF table
+        '';
+      };
+
       outboundGateway = {
         ipv4 = lib.mkOption {
           type = with lib.types; nullOr str;
@@ -444,11 +459,11 @@ in
             randomize router id;
             ipv4 {
               table babel4;
-              export where proto = "dbabel0" ${lib.optionalString cfg.router.exit ''|| proto = "exitdefault4" ''};
+              export where proto = "dbabel0" ${lib.optionalString (cfg.router.exit && cfg.router.advertiseDefault) ''|| proto = "exitdefault4" ''};
               import all;
             };
             ipv6 sadr {
-              export where (proto = "dbabel0" ${lib.optionalString cfg.router.exit ''|| proto = "exitdefault6" ''}) && net !~ [ fe80::/10+ ];
+              export where (proto = "dbabel0" ${lib.optionalString (cfg.router.exit && cfg.router.advertiseDefault) ''|| proto = "exitdefault6" ''}) && net !~ [ fe80::/10+ ];
               import all;
             };
             interface "ranet*" {
@@ -463,9 +478,9 @@ in
           }
         '')
 
-        # exit nodes: inject default route into babel so non-exit nodes
-        # route internet-bound IPAM traffic to the nearest exit via mesh
-        (lib.optionalString (babelEnabled && cfg.router.exit) ''
+        # nodes that advertise a default route inject it into Babel so other
+        # mesh nodes can send internet-bound IPAM traffic to them
+        (lib.optionalString (babelEnabled && cfg.router.exit && cfg.router.advertiseDefault) ''
 
           protocol static exitdefault4 {
             ipv4 { table babel4; };
@@ -712,11 +727,10 @@ in
           ip -6 route replace default via ${cfg.router.outboundGateway.ipv6} table ${lib.toString cfg.asn}
         '')
         +
-        # exit nodes: add real default route in VRF table for internet egress
-        # bird's exitdefault (via "gravity") is for babel propagation only
-        # on the exit node itself it's a dead end (self-referential VRF loop)
-        # when outboundGateway is set, use it (the default gw may filter IPAM source)
-        (lib.optionalString (babelEnabled && cfg.router.exit) (
+        # exit nodes using their own upstream: add a real default route in the
+        # VRF table for internet egress. bird's exitdefault (via "gravity") is
+        # only for Babel propagation and is a dead end on the exit node itself.
+        (lib.optionalString (babelEnabled && cfg.router.exit && cfg.router.localEgress == "upstream") (
           (if lib.isString cfg.router.outboundGateway.ipv4 then ''
             ip -4 route replace default via ${cfg.router.outboundGateway.ipv4} dev ${cfg.local.interface.primary} table ${lib.toString babelKernelTable} metric 1 || true
           '' else ''
@@ -730,7 +744,12 @@ in
             read _ _ gw6 _ dev6 _ < <(ip -6 route show default table main)
             [ -n "$gw6" ] && ip -6 route replace default via $gw6 dev $dev6 table ${lib.toString babelKernelTable} metric 1 || true
           '')
-        ));
+        ))
+        +
+        (lib.optionalString (babelEnabled && cfg.router.exit && cfg.router.localEgress == "mesh") ''
+          ip -4 route del default table ${lib.toString babelKernelTable} metric 1 || true
+          ip -6 route del default table ${lib.toString babelKernelTable} metric 1 || true
+        '');
     }
     (lib.mkIf babelEnabled {
       networking.iproute2.enable = true;
@@ -754,19 +773,22 @@ in
           ++ lib.map (r: { To = r.prefix; Table = babelKernelTable; Priority = 100; })
             cfg.router.static.ipv6.routes
           ++ [{ To = "2a0c:b641:69c::/48"; Table = babelKernelTable; Priority = 100; }]
-          # exit nodes only: IPAM-sourced traffic -> leak for internet egress
-          # no iif constraint: must match both locally-generated VRF packets
-          # (services replying) and forwarded packets (anycast return traffic)
-          # when outboundGateway is set, use its table (e.g. 10779) instead of main
-          # because some upstreams (xtom) filter IPAM source on the default gateway
-          ++ lib.optionals cfg.router.exit (
+          # no iif constraint: must match both locally-generated traffic
+          # (service replies) and forwarded packets (anycast return traffic)
+          ++ (
             let
               ipv4Table =
-                if lib.isString cfg.router.outboundGateway.ipv4
-                then toString cfg.asn else "main";
+                if cfg.router.localEgress == "mesh"
+                then toString babelKernelTable
+                else if lib.isString cfg.router.outboundGateway.ipv4
+                then toString cfg.asn
+                else "main";
               ipv6Table =
-                if lib.isString cfg.router.outboundGateway.ipv6
-                then toString cfg.asn else "main";
+                if cfg.router.localEgress == "mesh"
+                then toString babelKernelTable
+                else if lib.isString cfg.router.outboundGateway.ipv6
+                then toString cfg.asn
+                else "main";
             in
             lib.map (r: { From = r.prefix; Table = ipv4Table; Priority = 150; })
               cfg.router.static.ipv4.routes
