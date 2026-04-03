@@ -33,7 +33,6 @@ in
     };
 
     router = {
-      id = lib.blueprint.hosts.timah.ipv4;
       secret = config.sops.secrets.bgp.path;
       source = { inherit (lib.blueprint.hosts.timah) ipv4 ipv6; };
       static =
