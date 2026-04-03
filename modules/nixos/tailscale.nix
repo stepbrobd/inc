@@ -21,11 +21,15 @@ in
       then config.services.caddy.user
       else null;
 
-    # tailscale is for control plane only (ssh, monitoring, ldap, etc.)
-    extraSetFlags = [
-      "--accept-routes"
-      "--advertise-exit-node"
-    ] ++ pkgs.lib.mkIf config.services.victoriametrics.enable [ "--webclient" ];
+    extraSetFlags =
+      pkgs.lib.optionals config.services.victoriametrics.enable [
+        "--webclient"
+      ] ++
+      # tailscale is for control plane only (ssh, monitoring, ldap, etc.)
+      [
+        "--accept-routes"
+        "--advertise-exit-node"
+      ];
   };
 
   # in case nftables is used
