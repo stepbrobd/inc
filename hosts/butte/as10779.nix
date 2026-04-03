@@ -37,13 +37,14 @@ in
       source = { inherit (lib.blueprint.hosts.butte) ipv4 ipv6; };
       static =
         let
-          option = lib.trim ''
-            reject {
-                # dont announce
-                bgp_community.add((35661, 6074)); # Hurricane Electric
-                bgp_community.add((35661, 7004)); # Cogent
-              }
-          '';
+          option = "reject";
+          # option = lib.trim ''
+          #   reject {
+          #       # dont announce
+          #       bgp_community.add((35661, 6074)); # Hurricane Electric
+          #       bgp_community.add((35661, 7004)); # Cogent
+          #     }
+          # '';
         in
         {
           ipv4.routes = [

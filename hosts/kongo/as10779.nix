@@ -40,27 +40,28 @@ in
       source = { inherit (lib.blueprint.hosts.kongo) ipv4 ipv6; };
       static =
         let
-          option = lib.trim ''
-            reject {
-                # geotag
-                bgp_community.add((20473, 23)); # Tokyo
-                # metric 0
-                bgp_large_community.add((20473, 6009, 2914));  # NTT
-                bgp_large_community.add((20473, 6009, 17676)); # SoftBank
-                # prepend 1x
-                bgp_large_community.add((20473, 6001, 3320)); # DTAG
-                # prepend 2x
-                bgp_large_community.add((20473, 6002, 701));  # Verizon
-                bgp_large_community.add((20473, 6002, 1299)); # Arelion
-                bgp_large_community.add((20473, 6002, 3491)); # PCCW
-                bgp_large_community.add((20473, 6002, 6830)); # Liberty Global
-                # prepend 3x
-                bgp_large_community.add((20473, 6003, 174));  # Cogent
-                bgp_large_community.add((20473, 6003, 1221)); # Telstra
-                bgp_large_community.add((20473, 6003, 3356)); # Level3
-                bgp_large_community.add((20473, 6003, 4826)); # Vocus
-              }
-          '';
+          option = "reject";
+          # option = lib.trim ''
+          #   reject {
+          #       # geotag
+          #       bgp_community.add((20473, 23)); # Tokyo
+          #       # metric 0
+          #       bgp_large_community.add((20473, 6009, 2914));  # NTT
+          #       bgp_large_community.add((20473, 6009, 17676)); # SoftBank
+          #       # prepend 1x
+          #       bgp_large_community.add((20473, 6001, 3320)); # DTAG
+          #       # prepend 2x
+          #       bgp_large_community.add((20473, 6002, 701));  # Verizon
+          #       bgp_large_community.add((20473, 6002, 1299)); # Arelion
+          #       bgp_large_community.add((20473, 6002, 3491)); # PCCW
+          #       bgp_large_community.add((20473, 6002, 6830)); # Liberty Global
+          #       # prepend 3x
+          #       bgp_large_community.add((20473, 6003, 174));  # Cogent
+          #       bgp_large_community.add((20473, 6003, 1221)); # Telstra
+          #       bgp_large_community.add((20473, 6003, 3356)); # Level3
+          #       bgp_large_community.add((20473, 6003, 4826)); # Vocus
+          #     }
+          # '';
         in
         {
           ipv4.routes = [
