@@ -12,7 +12,7 @@ newHost (lib.fix (self: {
   meta = { city = "Fremont"; region = "US-CA"; country = "US"; continent = "North America"; postal = "94536"; };
   interface = "enp0s8";
   ipv4 = "134.195.24.131";
-  # ipv6 = "";
+  ipv6 = "2a11:6c7:f33:41::2";
   # ipam = {
   #   interface = "dummy0";
   #   ipv4 = "";
