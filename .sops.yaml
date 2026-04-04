@@ -11,6 +11,7 @@ keys:
     - &kongo age18np64w0h4adalpwxgdysppjy4hqd6adhrrmz7q2xekjyczzfes4qkj52uj
     - &lagern age17q42dw293nnu5pdkargd09f090zlss9ee5wp78vwh54mez729yzqp9kfk6
     - &odake age16urcveanputmn5vrt579xnk2pk87mlv0d2fmwzn2059qtzklmq9smj34a5
+    - &oxide age1mry0f60kadfgkqwdyqydlrjypwhg38m4dfu8j8ytefzhj8lk0q5qysxrxu
     - &timah age1e466tkanyx0fa5pykvyqggsefnkefg5vp8jw3nmcxjljl5y4j45sm7zh2m
     - &toompea age1ma866cuslrcgvtdjnnezy58smq66p2zsdduetm0deud2c4xxygts9vvm0k
     - &walberla age1s3syz6jhdj9qqz4lcu42uxckpn8na56qa3sehuy6cpwtypf3349qkjry6v
@@ -29,6 +30,7 @@ creation_rules:
           - *kongo
           - *lagern
           - *odake
+          - *oxide
           - *timah
           - *toompea
           - *walberla
