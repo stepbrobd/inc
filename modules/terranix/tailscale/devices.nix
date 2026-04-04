@@ -9,18 +9,16 @@ in
   data.tailscale_devices.all = { };
 
   data.tailscale_device = mkDevices [
-    # server, routee
-    "isere"
-    # server, router
     "butte"
-    "highline"
-    "kongo"
-    "timah"
-    "toompea"
-    # server
     "halti"
+    "highline"
+    "isere"
+    "kongo"
     "lagern"
     "odake"
+    "oxide"
+    "timah"
+    "toompea"
     "walberla"
     # aperture
     "aperture"
