@@ -34,7 +34,7 @@ rec {
         terraform.backend.s3 = {
           region = "auto";
           bucket = "terraform";
-          key = "github.com/stepbrobd/dotfiles/terraform.tfstate";
+          key = "github.com/stepbrobd/inc/terraform.tfstate";
           endpoints.s3 = "https://6ff6fca6d9ffe9c77dd15a9095076b3b.eu.r2.cloudflarestorage.com";
           encrypt = true;
           use_lockfile = true;

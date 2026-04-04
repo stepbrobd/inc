@@ -51,7 +51,7 @@ Start a new terminal to activate `nix`.
 Activate the system:
 
 ```shell
-nix --extra-experimental-features "nix-command flakes" run github:lnl7/nix-darwin -- switch --flake github:stepbrobd/dotfiles#macbook
+nix --extra-experimental-features "nix-command flakes" run github:lnl7/nix-darwin -- switch --flake github:stepbrobd/inc#macbook
 ```
 
 That's it!

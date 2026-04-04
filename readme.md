@@ -1,6 +1,6 @@
 # The second largest Nix monorepo
 
-[![Garnix](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2Fstepbrobd%2Fdotfiles)](https://garnix.io/repo/stepbrobd/dotfiles)
+[![Garnix](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2Fstepbrobd%2Fdotfiles)](https://garnix.io/repo/stepbrobd/inc)
 
 Maybe the title isn't that clickbaity? As of this commit there are about 15k
 lines of Nix...

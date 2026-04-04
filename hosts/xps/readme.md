@@ -17,13 +17,13 @@ Boot into minimal NixOS installer and switch to root user.
 Format disks:
 
 ```shell
-bash $(nix --extra-experimental-features "nix-command flakes" --accept-flake-config build --no-link --print-out-paths github:stepbrobd/dotfiles#nixosConfigurations.xps.config.system.build.diskoScript)
+bash $(nix --extra-experimental-features "nix-command flakes" --accept-flake-config build --no-link --print-out-paths github:stepbrobd/inc#nixosConfigurations.xps.config.system.build.diskoScript)
 ```
 
 Install:
 
 ```shell
-nixos-install --no-root-password --flake github:stepbrobd/dotfiles#xps --option extra-substituters https://cache.garnix.io
+nixos-install --no-root-password --flake github:stepbrobd/inc#xps --option extra-substituters https://cache.garnix.io
 ```
 
 It's expected to have errors related to
@@ -41,7 +41,7 @@ sbctl create-keys && mv /var/lib/sbctl /mnt/var/lib/sbctl
 Run installation again:
 
 ```shell
-nixos-install --no-root-password --flake github:stepbrobd/dotfiles#xps --option extra-substituters https://cache.garnix.io
+nixos-install --no-root-password --flake github:stepbrobd/inc#xps --option extra-substituters https://cache.garnix.io
 ```
 
 Lanzaboote should not complain this time.

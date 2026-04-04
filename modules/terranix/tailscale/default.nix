@@ -14,7 +14,7 @@ in
 
   resource.tailscale_tailnet_settings.settings = {
     acls_externally_managed_on = true;
-    acls_external_link = "https://github.com/stepbrobd/dotfiles";
+    acls_external_link = "https://github.com/stepbrobd/inc";
     devices_approval_on = true;
     devices_auto_updates_on = true;
     devices_key_duration_days = 180;
