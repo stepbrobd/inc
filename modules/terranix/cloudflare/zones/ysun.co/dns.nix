@@ -102,7 +102,7 @@ in
       # service CNAME records
       co_ysun_cache = {
         type = "CNAME";
-        proxied = true;
+        proxied = false;
         name = "cache";
         content = "odake.sd.ysun.co";
         comment = "SSDNodes - Tokyo 2 - Hydra";
@@ -118,7 +118,7 @@ in
 
       co_ysun_home = {
         type = "CNAME";
-        proxied = true;
+        proxied = false;
         name = "home";
         content = "walberla.sd.ysun.co";
         comment = "Hetzner - Glance";
@@ -126,7 +126,7 @@ in
 
       co_ysun_hydra = {
         type = "CNAME";
-        proxied = true;
+        proxied = false;
         name = "hydra";
         content = "odake.sd.ysun.co";
         comment = "SSDNodes - Tokyo 2 - Hydra";
@@ -151,7 +151,7 @@ in
 
       co_ysun_grep = {
         type = "CNAME";
-        proxied = true;
+        proxied = false;
         name = "grep";
         content = "odake.sd.ysun.co";
         comment = "SSDNodes - Tokyo 2 - Neogrok";
@@ -159,7 +159,7 @@ in
 
       co_ysun_otel = {
         type = "CNAME";
-        proxied = true;
+        proxied = false;
         name = "otel";
         content = "halti.sd.ysun.co";
         comment = "Garnix - Grafana";
@@ -167,7 +167,7 @@ in
 
       co_ysun_read = {
         type = "CNAME";
-        proxied = true;
+        proxied = false;
         name = "read";
         content = "toompea.sd.ysun.co";
         comment = "V.PS - Tallinn, Estonia - Calibre";
@@ -175,16 +175,15 @@ in
 
       co_ysun_sso = {
         type = "CNAME";
-        proxied = true;
+        proxied = false;
         name = "sso";
         content = "walberla.sd.ysun.co";
         comment = "Hetzner - Kanidm";
       };
 
-      # dependency: cloudflare_dns_record.fr_grenug_stats
       co_ysun_stats = {
         type = "CNAME";
-        proxied = true;
+        proxied = false;
         name = "stats";
         content = "toompea.sd.ysun.co";
         comment = "V.PS - Tallinn, Estonia - Plausible Analytics";
