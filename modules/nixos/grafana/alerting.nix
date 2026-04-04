@@ -126,11 +126,6 @@ in
 
     services.grafana.provision.alerting.rules.settings = {
       apiVersion = 1;
-      # one-time cleanup: remove after deploy
-      deleteRules = foldlAttrs
-        (acc: name: _: acc ++ [{ orgId = 1; uid = "alert-${name}-cert-expiry"; }])
-        [ ]
-        promHosts;
       groups =
         (foldlAttrs
           (acc: name: host: acc ++ [
