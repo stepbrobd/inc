@@ -38,7 +38,7 @@ let
       inherit hostName name domain interface ipv4 ipv6 ipam ranet meta; # networking
       inherit services;
       fqdn = "${hostName}.${domain}";
-      tags = lib.unique ([ os platform provider type ] ++ tags);
+      tags = lib.unique ([ os provider type ] ++ tags);
     };
 in
 {
