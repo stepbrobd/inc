@@ -65,6 +65,7 @@ let
         uid = "alert-${name}-scrape-down";
         title = "${host.name} - Scrape Target Down";
         condition = "B";
+        noDataState = "OK";
         "for" = "5m";
         annotations.summary = "A scrape target on ${host.name} has been unreachable for 5 minutes";
         data = [
@@ -92,17 +93,6 @@ let
         data = [
           (mkPromQuery { refId = "A"; inherit uid; expr = ''node_systemd_unit_state{state="failed"}''; })
           (mkThreshold { refId = "B"; expression = "A"; })
-        ];
-      }
-      {
-        uid = "alert-${name}-cert-expiry";
-        title = "${host.name} - Certificate Expiring Soon";
-        condition = "B";
-        "for" = "1h";
-        annotations.summary = "A TLS certificate on ${host.name} expires within 7 days";
-        data = [
-          (mkPromQuery { refId = "A"; inherit uid; expr = "(caddy_tls_certificate_not_after - time()) / 86400"; from = 3600; })
-          (mkThreshold { refId = "B"; expression = "A"; op = "lt"; params = [ 7 ]; })
         ];
       }
     ];
@@ -136,6 +126,11 @@ in
 
     services.grafana.provision.alerting.rules.settings = {
       apiVersion = 1;
+      # one-time cleanup: remove after deploy
+      deleteRules = foldlAttrs
+        (acc: name: _: acc ++ [{ orgId = 1; uid = "alert-${name}-cert-expiry"; }])
+        [ ]
+        promHosts;
       groups =
         (foldlAttrs
           (acc: name: host: acc ++ [
@@ -157,13 +152,6 @@ in
               folder = "Alerts";
               interval = "5m";
               rules = filter (r: r.uid == "alert-${name}-disk-low") (mkPromAlerts name host);
-            }
-            {
-              orgId = 1;
-              name = "${host.name} - Certificates";
-              folder = "Alerts";
-              interval = "1h";
-              rules = filter (r: r.uid == "alert-${name}-cert-expiry") (mkPromAlerts name host);
             }
           ]) [ ]
           promHosts)
