@@ -19,7 +19,7 @@
     });
   };
 }).overrideAttrs {
-  version = "1.97.133+18781";
+  version = "1.97.133";
 
   src = fetchFromGitHub {
     owner = "stepbrobd";
