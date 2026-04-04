@@ -55,7 +55,7 @@
   systemd.network.networks."30-he0" = {
     name = "he0";
     address = [ "2001:470:1f04:460::2/64" ];
-    routes = [{ Gateway = "2001:470:1f04:460::1/64"; }];
+    routes = [{ Gateway = "2001:470:1f04:460::1"; }];
     linkConfig.RequiredForOnline = false;
   };
 
