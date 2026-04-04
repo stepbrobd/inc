@@ -34,6 +34,11 @@ domain = "gitlab.inria.fr"
 user = "yisun"
 
 ## Personal
+[repo."aniremind"]
+description = "sync anilist to apple reminders"
+visibility = "public"
+archived = false
+
 [repo."aoc"]
 description = "advent of code"
 visibility = "public"
