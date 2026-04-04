@@ -64,11 +64,6 @@ description = "cv in typst with auto build and release"
 visibility = "public"
 archived = false
 
-[repo."dotfiles"]
-description = "the second largest nix monorepo"
-visibility = "public"
-archived = false
-
 [repo."finch"]
 description = "hackzurich 2023: finch - a simple neural net framework and visualizer that uses genetic networks to train"
 visibility = "public"
@@ -88,6 +83,11 @@ archived = false
 description = "soft serve configs"
 visibility = "public"
 archived = true
+
+[repo."inc"]
+description = "the second largest nix monorepo"
+visibility = "public"
+archived = false
 
 [repo."metaprocessor"]
 description = "metaprocessor, all-in-one data pipeline for mbientlab metawear series sensors"
