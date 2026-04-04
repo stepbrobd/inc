@@ -1,4 +1,4 @@
-{ lib, modulesPath, ... }:
+{ config, modulesPath, ... }:
 
 {
   imports = [ "${modulesPath}/profiles/qemu-guest.nix" ];
@@ -26,9 +26,9 @@
     "virtio_net"
   ];
 
-  # HE tunnel broker (6in4) for public IPv6
-  # end0 needed for IPv4 IKE
-  networking.ranet.interfaces = [ "he0" "enp0s8" ];
+  # route64 wg tunnel for public ipv6
+  # oxide NAT doesn't forward sit
+  networking.ranet.interfaces = [ "wg0" "enp0s8" ];
 
   # oxide is like aws they 1-1 NAT the public ip
   # null the local address so strongswan resolves source via routing table
@@ -40,22 +40,33 @@
   # systemd.services.strongswan-swanctl.after = [ "systemd-networkd.service" ];
   # systemd.services.strongswan-swanctl.wants = [ "systemd-networkd.service" ];
 
-  systemd.network.netdevs."30-he0" = {
-    netdevConfig = {
-      Kind = "sit";
-      Name = "he0";
-    };
-    tunnelConfig = {
-      Remote = "72.52.104.74";
-      TTL = 255;
-      Independent = true;
-    };
+  sops.secrets.wg0 = {
+    sopsFile = ./secrets.yaml;
+    mode = "440";
+    group = "systemd-network";
   };
 
-  systemd.network.networks."30-he0" = {
-    name = "he0";
-    address = [ "2001:470:1f04:460::2/64" ];
-    routes = [{ Gateway = "2001:470:1f04:460::1"; }];
+  systemd.network.netdevs."30-wg0" = {
+    netdevConfig = {
+      Kind = "wireguard";
+      Name = "wg0";
+    };
+    wireguardConfig.PrivateKeyFile = config.sops.secrets.wg0.path;
+    wireguardPeers = [{
+      PublicKey = "k8u2uzVnJZz429l8Yrpd+XJvaV3VJLdEBQzmeCa3Wnw=";
+      AllowedIPs = [ "::/1" "8000::/1" ];
+      Endpoint = "23.154.8.27:20003";
+      PersistentKeepalive = 15;
+    }];
+  };
+
+  systemd.network.networks."30-wg0" = {
+    name = "wg0";
+    address = [ "2a11:6c7:f33:41::2/64" ];
+    routes = [
+      { Destination = "::/1"; }
+      { Destination = "8000::/1"; }
+    ];
     linkConfig.RequiredForOnline = false;
   };
 
