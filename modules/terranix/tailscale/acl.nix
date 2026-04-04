@@ -41,7 +41,7 @@ in
       grants = [
         # full access for admins and personal devices
         {
-          src = [ autogroup.admin tag.laptop ];
+          src = [ autogroup.admin tag.owned ];
           dst = [ "*" ];
           ip = [ "*" ];
         }
