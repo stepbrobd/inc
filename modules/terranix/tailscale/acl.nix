@@ -105,8 +105,8 @@ in
           ];
         in
         [
-          # laptops get full access
-          { src = tag.laptop; proto = "tcp"; accept = nonssh ++ ssh; }
+          # owned devices get full access
+          { src = tag.owned; proto = "tcp"; accept = nonssh ++ ssh; }
           # servers can reach each other (non-ssh)
           # { src = tag.server; proto = "tcp"; accept = nonssh; }
           # servers cannot ssh to tailnet devices
