@@ -83,7 +83,7 @@ in
         # test https://github.com/tailscale/tailscale/issues/18758
         # and  https://github.com/tailscale/tailscale/pull/18781
         # on timah, allow upstream router packets and drop cgnat range o.w.
-        { target = [ "100.100.20.5" ]; app."ysun.co/tscgnat" = [{ cidr = "100.100.0.0/32"; chain = "both"; verdict = "accept"; } { cidr = "100.64.0.0/10"; chain = "both"; verdict = "drop"; }]; }
+        { target = [ "100.100.101.112" ]; app."ysun.co/tscgnat" = [{ cidr = "100.100.0.0/32"; chain = "both"; verdict = "accept"; } { cidr = "100.64.0.0/10"; chain = "both"; verdict = "drop"; }]; }
         # for other nodes just drop all cgnat range
         # { target = [ "*" ]; app."ysun.co/tscgnat" = [{ cidr = "100.64.0.0/10"; chain = "both"; verdict = "drop"; }]; }
         # see above
@@ -91,24 +91,17 @@ in
         # NodeAttrOneCGNATEnable NodeCapability = "one-cgnat?v=false"
         { target = [ "*" ]; attr = [ "one-cgnat?v=false" "funnel" "nextdns:d8664a" ]; }
         { target = [ self.email ]; attr = [ "mullvad" ]; }
-        # 100.100.10.0/24 for nodes that are shared in
-        { target = [ tag.aperture tag.golink ]; ipPool = [ "100.100.20.0/24" ]; }
-        { target = [ tag.server ]; ipPool = [ "100.100.30.0/24" ]; }
-        { target = [ tag.laptop ]; ipPool = [ "100.100.40.0/24" ]; }
-        { target = [ autogroup.admin self.email ]; ipPool = [ "100.100.50.0/24" ]; }
+        { target = [ "*" ]; ipPool = [ "100.100.101.0/24" ]; }
       ];
 
       tests =
         let
           nonssh = [
-            "100.100.30.0:443"
-            "100.100.30.0:179"
+            "100.100.101.0:443"
+            "100.100.101.0:179"
           ];
           ssh = [
-            "100.100.20.0:22"
-            "100.100.30.0:22"
-            "100.100.40.0:22"
-            "100.100.50.0:22"
+            "100.100.101.0:22"
           ];
         in
         [
