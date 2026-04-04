@@ -17,15 +17,13 @@
 
   programs.claude-code = {
     enable = true;
-  }
-  // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
     package = pkgs.llm-agents.claude-code;
   };
 
-  programs.codex = {
-    enable = true;
-  }
-  // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
-    package = pkgs.llm-agents.codex;
-  };
+  # programs.codex = {
+  #   enable = true;
+  # }
+  # // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+  #   package = pkgs.llm-agents.codex;
+  # };
 }
