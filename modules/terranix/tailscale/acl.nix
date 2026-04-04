@@ -3,14 +3,14 @@
 { ... }:
 
 let
-  tag = {
-    golink = "tag:golink";
-    routee = "tag:routee";
-    router = "tag:router";
-    server = "tag:server";
-    # alpha: https://aperture.tailscale.com
-    aperture = "tag:aperture";
-  };
+  # derive all tailscale tags from blueprint host tags
+  # plus non-blueprint tailscale devices (aperture)
+  allHosts = lib.attrValues lib.blueprint.hosts;
+  extraTags = [ "aperture" ];
+  allTags = lib.unique (lib.concatMap (h: h.tags) allHosts ++ extraTags);
+  mkTag = t: "tag:${t}";
+
+  tag = lib.listToAttrs (map (t: { name = t; value = mkTag t; }) allTags);
 
   autogroup = {
     admin = "autogroup:admin";
@@ -32,13 +32,12 @@ in
     reset_acl_on_destroy = true;
 
     acl = lib.toJSON {
-      tagOwners = {
-        ${tag.aperture} = [ autogroup.admin ];
-        ${tag.golink} = [ autogroup.admin ];
-        ${tag.routee} = [ autogroup.admin ];
-        ${tag.router} = [ autogroup.admin ];
-        ${tag.server} = [ autogroup.admin ];
-      };
+      tagOwners = lib.listToAttrs (map
+        (t: {
+          name = mkTag t;
+          value = [ autogroup.admin ];
+        })
+        allTags);
 
       grants = [
         # full access for admins
