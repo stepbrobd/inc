@@ -35,11 +35,15 @@ let
   # devices that have blueprint entries get their tags synced
   blueprintDevices = lib.filter (d: bp ? ${d}) devices;
 
+  # ACL must be applied first so tagOwners exist before assigning tags
+  acl_dep = [ "tailscale_acl.acl" ];
+
   mkDeviceTags = d: tags: {
     name = d;
     value = {
       device_id = tfRef "data.tailscale_device.${d}.id";
       tags = map (t: "tag:${t}") tags;
+      depends_on = acl_dep;
     };
   };
 
@@ -60,6 +64,7 @@ in
       (d: tags: {
         device_id = tfRef "data.tailscale_device.${d}.id";
         tags = map (t: "tag:${t}") tags;
+        depends_on = acl_dep;
       })
       extraDeviceTags;
 }
