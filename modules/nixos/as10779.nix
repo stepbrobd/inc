@@ -746,11 +746,11 @@ in
               ip -6 route replace default via ${cfg.router.outboundGateway.ipv6} dev ${dev} table ${vrfTable} metric 1
             ''}
             ${lib.optionalString (isUpstreamExit && !hasStaticGw4) ''
-              read _ _ gw4 _ dev4 _ < <(ip -4 route show default table main)
+              read -r _ _ gw4 _ dev4 _ < <(ip -4 route show default table main)
               [ -n "$gw4" ] && ip -4 route replace default via "$gw4" dev "$dev4" table ${vrfTable} metric 1
             ''}
             ${lib.optionalString (isUpstreamExit && !hasStaticGw6) ''
-              read _ _ gw6 _ dev6 _ < <(ip -6 route show default table main)
+              read -r _ _ gw6 _ dev6 _ < <(ip -6 route show default table main)
               [ -n "$gw6" ] && ip -6 route replace default via "$gw6" dev "$dev6" table ${vrfTable} metric 1
             ''}
             ${lib.optionalString isMeshExit ''
