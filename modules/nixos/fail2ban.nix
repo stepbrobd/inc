@@ -2,6 +2,10 @@
   services.fail2ban = {
     enable = true;
 
+    # drop all traffic from banned IPs
+    banaction = "nftables[type=custom,blocktype=drop]";
+    banaction-allports = "nftables[type=custom,blocktype=drop]";
+
     bantime = "24h";
     bantime-increment = {
       enable = true;
