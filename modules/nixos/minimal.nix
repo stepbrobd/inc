@@ -11,6 +11,7 @@
   boot.kernelPackages = lib.mkOverride 1250 pkgs.linuxPackages_latest;
 
   imports = with inputs.self.nixosModules; [
+    blocklist
     fail2ban
     nftables
     ranet
