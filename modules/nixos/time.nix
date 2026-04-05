@@ -122,8 +122,8 @@ in
         StateDirectory = "ntpd-rs";
         StateDirectoryMode = "0750";
         DynamicUser = lib.mkForce false;
-        User = "ntpd-rs";
-        Group = "ntpd-rs";
+        User = lib.mkForce "ntpd-rs";
+        Group = lib.mkForce "ntpd-rs";
       };
     })
   ];
