@@ -93,6 +93,12 @@ in
         reloadServices = [ "ntpd-rs.service" ];
       };
 
+      # acme-setup runs chown acme:ntpd-rs before nss is ready on slow boots
+      systemd.services.acme-setup = {
+        after = [ "nss-user-lookup.target" ];
+        wants = [ "nss-user-lookup.target" ];
+      };
+
       networking.firewall = {
         # NTS-KE
         allowedTCPPorts = [ 4460 ];
