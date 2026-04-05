@@ -15,6 +15,14 @@ in
   # "loki" tag: Loki + Fluent Bit (promtail replacement) + geoip enrichment
   config = mkMerge [
     (mkIf hasProm {
+      # rfm binds to my own prefix address for ipfix export
+      # which requires ranet tunnels to be established
+      # space out retries on slow boots
+      systemd.services.rfm.serviceConfig = {
+        RestartSec = 5;
+        StartLimitBurst = 20;
+      };
+
       services.rfm =
         let
           host = lib.blueprint.hosts.${config.networking.hostName};
