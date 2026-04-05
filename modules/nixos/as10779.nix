@@ -717,39 +717,54 @@ in
         };
       };
 
-      # switch to networkd dispatcher?
-      networking.localCommands =
-        (lib.optionalString (lib.isString cfg.router.outboundGateway.ipv4) ''
-          ip -4 route replace default via ${cfg.router.outboundGateway.ipv4} table ${lib.toString cfg.asn}
-        '')
-        +
-        (lib.optionalString (lib.isString cfg.router.outboundGateway.ipv6) ''
-          ip -6 route replace default via ${cfg.router.outboundGateway.ipv6} table ${lib.toString cfg.asn}
-        '')
-        +
-        # exit nodes using their own upstream: add a real default route in the
-        # VRF table for internet egress. bird's exitdefault (via "gravity") is
-        # only for Babel propagation and is a dead end on the exit node itself.
-        (lib.optionalString (babelEnabled && cfg.router.exit && cfg.router.localEgress == "upstream") (
-          (if lib.isString cfg.router.outboundGateway.ipv4 then ''
-            ip -4 route replace default via ${cfg.router.outboundGateway.ipv4} dev ${cfg.local.interface.primary} table ${lib.toString babelKernelTable} metric 1 || true
-          '' else ''
-            read _ _ gw4 _ dev4 _ < <(ip -4 route show default table main)
-            [ -n "$gw4" ] && ip -4 route replace default via $gw4 dev $dev4 table ${lib.toString babelKernelTable} metric 1 || true
-          '')
-          +
-          (if lib.isString cfg.router.outboundGateway.ipv6 then ''
-            ip -6 route replace default via ${cfg.router.outboundGateway.ipv6} dev ${cfg.local.interface.primary} table ${lib.toString babelKernelTable} metric 1 || true
-          '' else ''
-            read _ _ gw6 _ dev6 _ < <(ip -6 route show default table main)
-            [ -n "$gw6" ] && ip -6 route replace default via $gw6 dev $dev6 table ${lib.toString babelKernelTable} metric 1 || true
-          '')
-        ))
-        +
-        (lib.optionalString (babelEnabled && cfg.router.exit && cfg.router.localEgress == "mesh") ''
-          ip -4 route del default table ${lib.toString babelKernelTable} metric 1 || true
-          ip -6 route del default table ${lib.toString babelKernelTable} metric 1 || true
-        '');
+      services.networkd-dispatcher.rules =
+        let
+          asnTable = lib.toString cfg.asn;
+          vrfTable = lib.toString babelKernelTable;
+          dev = cfg.local.interface.primary;
+          hasStaticGw4 = lib.isString cfg.router.outboundGateway.ipv4;
+          hasStaticGw6 = lib.isString cfg.router.outboundGateway.ipv6;
+          isUpstreamExit = babelEnabled && cfg.router.exit && cfg.router.localEgress == "upstream";
+          isMeshExit = babelEnabled && cfg.router.exit && cfg.router.localEgress == "mesh";
+          needsRule = hasStaticGw4 || hasStaticGw6 || isUpstreamExit || isMeshExit;
+
+          script = ''
+            #!${pkgs.runtimeShell}
+
+            export PATH=${pkgs.lib.makeBinPath (with pkgs; [ coreutils iproute2 ])}
+
+            ${lib.optionalString hasStaticGw4 ''
+              ip -4 route replace default via ${cfg.router.outboundGateway.ipv4} table ${asnTable}
+            ''}
+            ${lib.optionalString hasStaticGw6 ''
+              ip -6 route replace default via ${cfg.router.outboundGateway.ipv6} table ${asnTable}
+            ''}
+            ${lib.optionalString (isUpstreamExit && hasStaticGw4) ''
+              ip -4 route replace default via ${cfg.router.outboundGateway.ipv4} dev ${dev} table ${vrfTable} metric 1
+            ''}
+            ${lib.optionalString (isUpstreamExit && hasStaticGw6) ''
+              ip -6 route replace default via ${cfg.router.outboundGateway.ipv6} dev ${dev} table ${vrfTable} metric 1
+            ''}
+            ${lib.optionalString (isUpstreamExit && !hasStaticGw4) ''
+              read _ _ gw4 _ dev4 _ < <(ip -4 route show default table main)
+              [ -n "$gw4" ] && ip -4 route replace default via "$gw4" dev "$dev4" table ${vrfTable} metric 1
+            ''}
+            ${lib.optionalString (isUpstreamExit && !hasStaticGw6) ''
+              read _ _ gw6 _ dev6 _ < <(ip -6 route show default table main)
+              [ -n "$gw6" ] && ip -6 route replace default via "$gw6" dev "$dev6" table ${vrfTable} metric 1
+            ''}
+            ${lib.optionalString isMeshExit ''
+              ip -4 route del default table ${vrfTable} metric 1 2>/dev/null || true
+              ip -6 route del default table ${vrfTable} metric 1 2>/dev/null || true
+            ''}
+          '';
+        in
+        lib.mkIf needsRule {
+          "40-gravity-routes" = {
+            onState = [ "routable" ];
+            inherit script;
+          };
+        };
     }
     (lib.mkIf babelEnabled {
       networking.iproute2.enable = true;

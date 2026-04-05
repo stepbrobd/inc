@@ -64,13 +64,6 @@
     };
   };
 
-  systemd.services.network-local-commands = {
-    before = lib.mkForce [ ];
-    after = lib.mkForce [ "network-online.target" "systemd-networkd.service" ];
-    wants = lib.mkForce [ "network-online.target" ];
-    wantedBy = lib.mkForce [ "multi-user.target" ];
-  };
-
   boot.kernelPatches = lib.singleton {
     name = "kconfig-optimizations";
     patch = null;
