@@ -87,16 +87,14 @@ in
     }
     (lib.mkIf serverConfig.enable {
 
+      # ntpd-rs group is normally provided by systemd's DynamicUser at service
+      # start, but acme-setup needs it at boot for chown before ntpd-rs starts
+      users.groups.ntpd-rs = { };
+
       security.acme.certs.${serverConfig.domain} = {
         domain = serverConfig.domain;
         group = "ntpd-rs";
         reloadServices = [ "ntpd-rs.service" ];
-      };
-
-      # acme-setup runs chown acme:ntpd-rs before nss is ready on slow boots
-      systemd.services.acme-setup = {
-        after = [ "nss-user-lookup.target" ];
-        wants = [ "nss-user-lookup.target" ];
       };
 
       networking.firewall = {
