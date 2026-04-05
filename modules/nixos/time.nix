@@ -86,11 +86,6 @@ in
       }];
     }
     (lib.mkIf serverConfig.enable {
-
-      # ntpd-rs group is normally provided by systemd's DynamicUser at service
-      # start, but acme-setup needs it at boot for chown before ntpd-rs starts
-      users.groups.ntpd-rs = { };
-
       security.acme.certs.${serverConfig.domain} = {
         domain = serverConfig.domain;
         group = "ntpd-rs";
@@ -120,10 +115,15 @@ in
         keyset.key-storage-path = "/var/lib/ntpd-rs/keyset";
       };
 
-      # for storing keysets
+      users.users.ntpd-rs.group = "ntpd-rs";
+      users.users.ntpd-rs.isSystemUser = true;
+      users.groups.ntpd-rs = { };
       systemd.services.ntpd-rs.serviceConfig = {
         StateDirectory = "ntpd-rs";
         StateDirectoryMode = "0750";
+        DynamicUser = lib.mkForce false;
+        User = "ntpd-rs";
+        Group = "ntpd-rs";
       };
     })
   ];
