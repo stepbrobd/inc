@@ -123,10 +123,9 @@ nested scopes (should we "fix" this?).
 
 `lib.blueprint` has all the metadata. It defines hosts, users, services, network
 prefixes, and Tailscale/ranet configuration as plain attrsets. Each host
-declaration (`lib/blueprint/hosts/<name>/default.nix`) specifies OS,
-provider, type, tags, etc. Auto generated tags include the OS,
-provider, and type, so for example `lib.blueprint.hosts.walberla.tags` evaluates
-to
+declaration (`lib/blueprint/hosts/<name>/default.nix`) specifies OS, provider,
+type, tags, etc. Auto generated tags include the OS, provider, and type, so for
+example `lib.blueprint.hosts.walberla.tags` evaluates to
 `["nixos" "hetzner" "server" "routee" "glance" "golink" "kanidm" "ranet"]`.
 
 Most NixOS service modules use `lib.hasTag` to conditionally enable themselves:
@@ -188,8 +187,8 @@ includes detached activation for NixOS nodes (activation launched via
 ## Networking
 
 Those servers in here run my personal autonomous system. Some nodes maintain BGP
-sessions with upstream providers and originate prefixes, the rest are routee nodes
-that receive traffic via the internal mesh.
+sessions with upstream providers and originate prefixes, the rest are routee
+nodes that receive traffic via the internal mesh.
 
 The internal mesh migrated from Tailscale (wg mesh) to
 [ranet](https://github.com/NickCao/ranet) (IPsec mesh). Tailscale consumes the
