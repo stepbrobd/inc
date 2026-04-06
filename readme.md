@@ -144,7 +144,7 @@ literally just a one line tag addition.
 Blueprint data is also consumed by:
 
 - **Colmena**: `deployment.tags` are populated from blueprint, enabling
-  `colmena apply -t server`, `colmena apply -t hyprland`, etc.
+  `colmena apply --on @server`, `colmena apply --on framework,xps`, etc.
 - **terranix**: Cloudflare resources (DNS zones, reverse DNS, buckets, SSO
   settings) and Tailscale DNS entries are derived from blueprint host metadata.
 - **Prometheus**: monitoring targets are generated from blueprint service
@@ -153,7 +153,7 @@ Blueprint data is also consumed by:
 
 ## Deployment
 
-Currently all hosts (10 NixOS servers, 2 NixOS laptops, 1 macbook on nix-darwin)
+Currently all hosts (11 NixOS servers, 2 NixOS laptops, 1 MacBook on nix-darwin)
 are managed through Colmena. The `mkColmena` function accepts a list of host
 groups, each specifying OS, platform, modules, users, and host names:
 
@@ -188,10 +188,10 @@ includes detached activation for NixOS nodes (activation launched via
 ## Networking
 
 Those servers in here run my personal autonomous system. Some nodes maintain BGP
-sessions with their providers and originate prefixes; the rest are routee nodes
+sessions with upstream providers and originate prefixes, the rest are routee nodes
 that receive traffic via the internal mesh.
 
-The internal mesh is migrating from Tailscale (wg mesh) to
+The internal mesh migrated from Tailscale (wg mesh) to
 [ranet](https://github.com/NickCao/ranet) (IPsec mesh). Tailscale consumes the
 entire CGNAT range with no way to preserve source IP addresses across multiple
 hops, does not support multicast (ruling out protocols like babel), and upstream
