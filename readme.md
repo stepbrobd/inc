@@ -2,7 +2,7 @@
 
 [![Garnix](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2Fstepbrobd%2Fdotfiles)](https://garnix.io/repo/stepbrobd/inc)
 
-Maybe the title isn't that clickbaity? As of this commit there are about 15k
+Maybe the title isn't that clickbaity? As of this commit there are about 16.5k
 lines of Nix...
 
 I have strong opinions on how Nix configurations should be structured and
@@ -43,7 +43,7 @@ overlay (from `pkgs/`) and external overlays. The resulting `pkgs` is exposed to
 all flake-parts `perSystem` scopes.
 
 **`flake-parts` eval**: modules under `modules/flake/` are auto-discovered and
-loaded. Each receives the extended `lib`, `inputs`, and `getSystem` in scope.
+loaded. Each receives the extended `lib`, `inputs`, etc. in scope.
 
 ## Library extension
 
@@ -123,11 +123,11 @@ nested scopes (should we "fix" this?).
 
 `lib.blueprint` has all the metadata. It defines hosts, users, services, network
 prefixes, and Tailscale/ranet configuration as plain attrsets. Each host
-declaration (`lib/blueprint/hosts/<name>/default.nix`) specifies platform, OS,
-provider, type, tags, etc. Auto generated tags include the OS, platform,
+declaration (`lib/blueprint/hosts/<name>/default.nix`) specifies OS,
+provider, type, tags, etc. Auto generated tags include the OS,
 provider, and type, so for example `lib.blueprint.hosts.walberla.tags` evaluates
 to
-`["nixos" "x86_64-linux" "hetzner" "server" "routee" "glance" "golink" "kanidm" "ranet"]`.
+`["nixos" "hetzner" "server" "routee" "glance" "golink" "kanidm" "ranet"]`.
 
 Most NixOS service modules use `lib.hasTag` to conditionally enable themselves:
 
