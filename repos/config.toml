@@ -64,6 +64,11 @@ description = "consistency semantics with z3"
 visibility = "private"
 archived = false
 
+[repo."crouton"]
+description = "extra crunchy ;)"
+visibility = "public"
+archived = false
+
 [repo."cv"]
 description = "cv in typst with auto build and release"
 visibility = "public"
