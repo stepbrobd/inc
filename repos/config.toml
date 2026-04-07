@@ -215,6 +215,11 @@ visibility = "public"
 archived = false
 
 ## Forks
+[repo."bird"]
+description = "forked from cz-nic/bird"
+visibility = "public"
+archived = false
+
 [repo."brew"]
 description = "forked from homebrew/brew"
 visibility = "public"
