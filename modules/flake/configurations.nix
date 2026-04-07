@@ -96,7 +96,7 @@ let
             "kongo" # Vultr, 1 vCPU, 2GB RAM, 64GB Storage
             "lagern" # AWS, T3.Large, 25GB Storage
             "odake" # SSDNodes NRT Performance, 8 vCPU, 32GB RAM, 640GB Storage
-            "oxide" # Oxide Computer, 16 vCPU, 32GB RAM, 256GB Storage
+            "oxide" # Oxide Computer, 16 vCPU, 128GB RAM, 256GB Storage
             "timah" # Misaka Networks, 1 vCPU, 2GB RAM, 32 GB Storage
             "toompea" # V.PS Pro Tallinn, 4 vCPU, 4GB RAM, 40GB Storage
             "walberla" # Hetzner Cloud CX32, 4 vCPU, 8GB RAM, 80GB Storage
