@@ -1,12 +1,30 @@
 version: 2
+
 updates:
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: daily
-      time: "00:00"
+      interval: weekly
+      day: saturday
+      time: "03:00"
       timezone: "Etc/UTC"
-    open-pull-requests-limit: 10
     commit-message:
-      prefix: "chore"
-      include: "scope"
+      prefix: "ci"
+    groups:
+      actions:
+        patterns:
+          - "*"
+
+  - package-ecosystem: nix
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: saturday
+      time: "03:00"
+      timezone: "Etc/UTC"
+    commit-message:
+      prefix: "flake"
+    groups:
+      inputs:
+        patterns:
+          - "*"

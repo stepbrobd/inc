@@ -20,8 +20,10 @@ jobs:
         run: |
           set -euo pipefail
 
-          gh pr list --author "app/github-actions" --state open --json number --jq '.[].number' \
-          | while read -r pr; do
+          {
+            gh pr list --author "app/github-actions" --state open --json number --jq '.[].number'
+            gh pr list --author "app/dependabot" --state open --json number --jq '.[].number'
+          } | sort -u | while read -r pr; do
             if gh pr checks "$pr" 2>/dev/null; then
               echo "All checks passed for PR #${pr}, merging."
               gh pr merge "$pr" --rebase --delete-branch || true
