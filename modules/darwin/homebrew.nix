@@ -60,6 +60,7 @@
       "hey-desktop"
       "kindavim"
       "loop"
+      "macs-fan-control"
       "notchnook"
       "obs"
       "orion"
