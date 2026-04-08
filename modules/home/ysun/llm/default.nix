@@ -6,10 +6,8 @@
   programs.opencode = {
     enable = true;
 
-    settings = {
-      autoupdate = false;
-      theme = "nord";
-    };
+    settings.autoupdate = false;
+    tui.theme = "nord";
   }
   // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
     package = pkgs.llm-agents.opencode;
