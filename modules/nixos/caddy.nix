@@ -25,6 +25,8 @@ in
       globalConfig = ''
         admin unix/${config.services.caddy.dataDir}/admin.sock
 
+        metrics { per_host }
+
         # dns cloudflare {env.CF_API_TOKEN}
         # ech ech.ysun.co
 
