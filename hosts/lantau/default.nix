@@ -1,6 +1,8 @@
 {
   imports = [
     ./hardware.nix
+
+    ./as10779.nix
   ];
 
   networking = {
