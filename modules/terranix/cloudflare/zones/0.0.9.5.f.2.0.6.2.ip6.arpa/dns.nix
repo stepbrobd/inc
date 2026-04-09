@@ -95,6 +95,54 @@ in
         content = "walberla.sd.ysun.co";
         comment = "Hetzner - Falkenstein";
       };
+
+      arpa_ip6_2_6_0_2_f_5_9_0_0_0_0_0_0_2_3_1_6_1_0_1_4_0_1_3_8 = {
+        type = "PTR";
+        proxied = false;
+        name = "8.3.1.0.4.0.1.0.1.6.1.0.3.2.0.0.0.0.0.0.0.0.0";
+        content = "oxide.sd.ysun.co";
+        comment = "Oxide Computer - Fremont";
+      };
+
+      arpa_ip6_2_6_0_2_f_5_9_0_0_0_0_0_0_2_3_1_6_1_0_1_4_0_1_3_9 = {
+        type = "PTR";
+        proxied = false;
+        name = "9.3.1.0.4.0.1.0.1.6.1.0.3.2.0.0.0.0.0.0.0.0.0";
+        content = "baldy.sd.ysun.co";
+        comment = "NetActuate - Los Angeles";
+      };
+
+      arpa_ip6_2_6_0_2_f_5_9_0_0_0_0_0_0_2_3_1_6_1_0_1_4_0_1_4_0 = {
+        type = "PTR";
+        proxied = false;
+        name = "0.4.1.0.4.0.1.0.1.6.1.0.3.2.0.0.0.0.0.0.0.0.0";
+        content = "cradle.sd.ysun.co";
+        comment = "NetActuate - Sydney";
+      };
+
+      arpa_ip6_2_6_0_2_f_5_9_0_0_0_0_0_0_2_3_1_6_1_0_1_4_0_1_4_1 = {
+        type = "PTR";
+        proxied = false;
+        name = "1.4.1.0.4.0.1.0.1.6.1.0.3.2.0.0.0.0.0.0.0.0.0";
+        content = "lantau.sd.ysun.co";
+        comment = "NetActuate - Hong Kong";
+      };
+
+      arpa_ip6_2_6_0_2_f_5_9_0_0_0_0_0_0_2_3_1_6_1_0_1_4_0_1_4_2 = {
+        type = "PTR";
+        proxied = false;
+        name = "2.4.1.0.4.0.1.0.1.6.1.0.3.2.0.0.0.0.0.0.0.0.0";
+        content = "roraima.sd.ysun.co";
+        comment = "NetActuate - Sao Paulo";
+      };
+
+      arpa_ip6_2_6_0_2_f_5_9_0_0_0_0_0_0_2_3_1_6_1_0_1_4_0_1_4_3 = {
+        type = "PTR";
+        proxied = false;
+        name = "3.4.1.0.4.0.1.0.1.6.1.0.3.2.0.0.0.0.0.0.0.0.0";
+        content = "rysy.sd.ysun.co";
+        comment = "NetActuate - Warsaw";
+      };
     } // mkPurelyMailRecord
     "0.0.9.5.f.2.0.6.2.ip6.arpa"
     "arpa_ip6_2_6_0_2_f_5_9_0_0"

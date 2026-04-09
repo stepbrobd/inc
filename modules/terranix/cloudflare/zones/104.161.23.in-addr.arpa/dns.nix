@@ -95,6 +95,54 @@ in
         content = "walberla.sd.ysun.co";
         comment = "Hetzner - Falkenstein";
       };
+
+      arpa_in_addr_23_161_104_138 = {
+        type = "PTR";
+        proxied = false;
+        name = "138";
+        content = "oxide.sd.ysun.co";
+        comment = "Oxide Computer - Fremont";
+      };
+
+      arpa_in_addr_23_161_104_139 = {
+        type = "PTR";
+        proxied = false;
+        name = "139";
+        content = "baldy.sd.ysun.co";
+        comment = "NetActuate - Los Angeles";
+      };
+
+      arpa_in_addr_23_161_104_140 = {
+        type = "PTR";
+        proxied = false;
+        name = "140";
+        content = "cradle.sd.ysun.co";
+        comment = "NetActuate - Sydney";
+      };
+
+      arpa_in_addr_23_161_104_141 = {
+        type = "PTR";
+        proxied = false;
+        name = "141";
+        content = "lantau.sd.ysun.co";
+        comment = "NetActuate - Hong Kong";
+      };
+
+      arpa_in_addr_23_161_104_142 = {
+        type = "PTR";
+        proxied = false;
+        name = "142";
+        content = "roraima.sd.ysun.co";
+        comment = "NetActuate - Sao Paulo";
+      };
+
+      arpa_in_addr_23_161_104_143 = {
+        type = "PTR";
+        proxied = false;
+        name = "143";
+        content = "rysy.sd.ysun.co";
+        comment = "NetActuate - Warsaw";
+      };
     } // mkPurelyMailRecord
     "104.161.23.in-addr.arpa"
     "arpa_in_addr_23_161_104"
