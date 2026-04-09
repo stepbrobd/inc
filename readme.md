@@ -152,7 +152,7 @@ Blueprint data is also consumed by:
 
 ## Deployment
 
-Currently all hosts (11 NixOS servers, 2 NixOS laptops, 1 MacBook on nix-darwin)
+Currently all hosts (16 NixOS servers, 2 NixOS laptops, 1 MacBook on nix-darwin)
 are managed through Colmena. The `mkColmena` function accepts a list of host
 groups, each specifying OS, platform, modules, users, and host names:
 
