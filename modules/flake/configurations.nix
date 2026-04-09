@@ -90,13 +90,18 @@ let
           modules = serverModules;
           users = serverUsers;
           names = [
+            "baldy" # NetActuate Los Angeles, 2 vCPU, 8GB RAM, 100GB Storage
             "butte" # Virtua Cloud, 1 vCPU, 2GB RAM, 20GB Storage
+            "cradle" # NetActuate Sydney, 2 vCPU, 8GB RAM, 100GB Storage
             "halti" # Garnix.io Hosting, test server
             "highline" # Neptune Networks, 2 vCPU, 2GB RAM, 80GB Storage
             "kongo" # Vultr, 1 vCPU, 2GB RAM, 64GB Storage
             "lagern" # AWS, T3.Large, 25GB Storage
+            "lantau" # NetActuate Hong Kong, 2 vCPU, 8GB RAM, 100GB Storage
             "odake" # SSDNodes NRT Performance, 8 vCPU, 32GB RAM, 640GB Storage
             "oxide" # Oxide Computer, 16 vCPU, 128GB RAM, 256GB Storage
+            "roraima" # NetActuate Sao Paulo, 2 vCPU, 8GB RAM, 100GB Storage
+            "rysy" # NetActuate Warsaw, 2 vCPU, 8GB RAM, 100GB Storage
             "timah" # Misaka Networks, 1 vCPU, 2GB RAM, 32 GB Storage
             "toompea" # V.PS Pro Tallinn, 4 vCPU, 4GB RAM, 40GB Storage
             "walberla" # Hetzner Cloud CX32, 4 vCPU, 8GB RAM, 80GB Storage
