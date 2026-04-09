@@ -8,14 +8,19 @@ let
 
   # all devices in tailnet
   devices = [
+    "baldy"
     "butte"
+    "cradle"
     "halti"
     "highline"
     "isere"
     "kongo"
     "lagern"
+    "lantau"
     "odake"
     "oxide"
+    "roraima"
+    "rysy"
     "timah"
     "toompea"
     "walberla"
