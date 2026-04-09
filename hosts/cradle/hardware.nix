@@ -1,7 +1,10 @@
 { lib, modulesPath, ... }:
 
 {
-  imports = [ "${modulesPath}/profiles/qemu-guest.nix" ];
+  imports = [
+    ./disko.nix
+    "${modulesPath}/profiles/qemu-guest.nix"
+  ];
   services.qemuGuest.enable = true;
 
   hardware.facter.reportPath = ./facter.json;
