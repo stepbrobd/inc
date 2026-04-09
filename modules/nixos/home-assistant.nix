@@ -52,21 +52,13 @@ in
           auth_oidc
           midea_ac_lan
           spook
-          (gtfs-realtime.overrideAttrs {
-            version = "0.4.6";
-            src = pkgs.fetchFromGitHub {
-              owner = "bcpearce";
-              repo = "homeassistant-gtfs-realtime";
-              tag = "0.4.6";
-              hash = "sha256-gsrEbcoFdbDkXR0qvrqkDXymXcyzLr48YcL87wfOAjU=";
-            };
-            # gtfs-rt feeds for grenoble were previously served at data.metromobilite.fr but that domain has been decommed
-            # the replacement api at data.mobilites-m.fr serves static gtfs data but does not expose gtfs-rt
-            # realtime data is only available via proprietary json api:
-            # - https://data.mobilites-m.fr/api/routers/default/index/clusters/{SEM:id}/stoptimes
-            # - see: https://www.mobilites-m.fr/pages/opendata/OpenDataApi.html
-            # - static feed: https://data.mobilites-m.fr/api/gtfs/SEM
-          })
+          # gtfs-rt feeds for grenoble were previously served at data.metromobilite.fr but that domain has been decommed
+          # the replacement api at data.mobilites-m.fr serves static gtfs data but does not expose gtfs-rt
+          # realtime data is only available via proprietary json api:
+          # - https://data.mobilites-m.fr/api/routers/default/index/clusters/{SEM:id}/stoptimes
+          # - see: https://www.mobilites-m.fr/pages/opendata/OpenDataApi.html
+          # - static feed: https://data.mobilites-m.fr/api/gtfs/SEM
+          gtfs-realtime
         ];
       };
 
