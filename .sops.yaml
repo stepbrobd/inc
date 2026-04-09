@@ -4,14 +4,19 @@ keys:
     - &framework age102w4y6gsntvw93n590agqdg9v3tt8rs0x2kpunvu39jh6lyvdpeq7ct844
     - &macbook age1cfd003wlk8w2hhtlwflyuc6lzwsswc48kpl9cafrg4kc5jp3u5rqckcf5l
     - &xps age13gw6zx7lnjwed6eml0u23xr3j239ftysdxv3afpq5gycnsvfwvaq28wnxp
+    - &baldy age1z9lj8dhfs84z9gngjgydn5zmyftnn58ns2llxckd2kpd6j7nd4nq0pgya5
     - &butte age1js9g9de2g2hqtzfhaepn9uff3n8f3m0xnkneyslsd28xs4pnmfxsuvthaj
+    - &cradle age13ezermywyfeu7c04nka0jm4vj6gqnhg7cqh0lg75k9r0zuqfhajse7zndt
     - &halti age1lchn0h0a63g7k9zl76f7nuylp5cl9ak2f6ucy87q0gyk8qa8negst87jle
     - &highline age1qvcaxsqwqf4cs83pc646w22g4kq44xuvj2jvy2g3a67pjem2cazqn7x0tl
     - &isere age176zkrrgc4p4r49lm7aeck633t3xlh90dqwzqayqe0evk68q7vy7saacjrv
     - &kongo age18np64w0h4adalpwxgdysppjy4hqd6adhrrmz7q2xekjyczzfes4qkj52uj
     - &lagern age17q42dw293nnu5pdkargd09f090zlss9ee5wp78vwh54mez729yzqp9kfk6
+    - &lantau age1rlm9fps8u5yhpwg0xwa7cp5lengkuz0ws5n7j5szqcr4lhnzzflsazze4g
     - &odake age16urcveanputmn5vrt579xnk2pk87mlv0d2fmwzn2059qtzklmq9smj34a5
     - &oxide age1mry0f60kadfgkqwdyqydlrjypwhg38m4dfu8j8ytefzhj8lk0q5qysxrxu
+    - &roraima age1a6ecdm7kqslt2xg52q6grdy8emqrlxz4mzgd707w5k238k9p8stsn5tttp
+    - &rysy age1224uy4x89k8qg5ml3wvfx9w707necz44g7kk83aytjgvenzwmphqd9ynsj
     - &timah age1e466tkanyx0fa5pykvyqggsefnkefg5vp8jw3nmcxjljl5y4j45sm7zh2m
     - &toompea age1ma866cuslrcgvtdjnnezy58smq66p2zsdduetm0deud2c4xxygts9vvm0k
     - &walberla age1s3syz6jhdj9qqz4lcu42uxckpn8na56qa3sehuy6cpwtypf3349qkjry6v
@@ -23,14 +28,19 @@ creation_rules:
           - *framework
           - *macbook
           - *xps
+          - *baldy
           - *butte
+          - *cradle
           - *halti
           - *highline
           - *isere
           - *kongo
           - *lagern
+          - *lantau
           - *odake
           - *oxide
+          - *roraima
+          - *rysy
           - *timah
           - *toompea
           - *walberla
