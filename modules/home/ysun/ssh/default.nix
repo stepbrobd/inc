@@ -20,23 +20,27 @@
     };
 
     extraConfig = "\n" + ''
+      Host *
+        ForwardAgent no
+        ServerAliveInterval 60
+        Compression no
+        AddKeysToAgent no
+        HashKnownHosts no
+        UserKnownHostsFile ~/.ssh/known_hosts ~/.ssh/known_hosts_ca
+
       Host g5k
         WarnWeakCrypto no
         User yisun
         Hostname access.grid5000.fr
 
+      Host *.*.g5k
+        WarnWeakCrypto no
+        ProxyCommand sh -c 'h=%h; node="''${h%%%%.*}"; site="''${h#*.}"; site="''${site%%.g5k}"; ssh "''${site}.g5k" -W "''${node}:%p"'
+
       Host *.g5k
         WarnWeakCrypto no
         User yisun
         ProxyCommand sh -c 'ssh g5k -W "$(basename %h .g5k):%p"'
-    ''
-      /* + "\n" +
-      (if pkgs.stdenv.isLinux then ''
-      Host *
-          IdentityAgent "~/.1password/agent.sock"
-      '' else if pkgs.stdenv.isDarwin then ''
-      Host *
-        IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-      '' else abort "Unsupported OS") */;
+    '';
   };
 }
