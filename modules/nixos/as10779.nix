@@ -775,6 +775,9 @@ in
       systemd.network.networks."10-loopback" = {
         name = "lo";
         address = with cfg.local; ipv4.addresses ++ ipv6.addresses;
+        # TODO: FIXME: make 192.104.136.0/24 temporarily pingable on BGP exit nodes
+        routes = lib.optionals cfg.router.exit [{ Destination = "192.104.136.0/24"; Type = "local"; }];
+        # can be removed directly once not needed anymore
       };
 
       systemd.network.networks."20-gravity" = {
