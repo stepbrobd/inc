@@ -7,7 +7,7 @@ let
 
   ipamHosts = lib.filterAttrs (_: h: h ? ipam && h.ipam ? ipv4 && h.ipam ? ipv6) bp;
 
-  comment = host: "${host.providerName} - ${host.meta.city}";
+  comment = host: "${host.providerName} - ${host.meta.city}, ${host.meta.country}";
 
   zone = "104.161.23.in-addr.arpa";
   zonePrefix = "arpa_in_addr_23_161_104";
