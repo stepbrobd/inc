@@ -76,6 +76,12 @@ in
         "net.ipv4.tcp_l3mdev_accept" = 1;
         "net.ipv4.udp_l3mdev_accept" = 1;
         "net.ipv4.raw_l3mdev_accept" = 0;
+        # ranet creates xfrm interfaces with link/none (no MAC)
+        # for which systemd-udev default IPv6AddressGenerationMode falls back to "none" (addr_gen_mode=1)
+        # meaning no link-local then also means babel cant run on the interface
+        # force "random" at the kernel-level default so fresh interfaces inherit it at creation time
+        # before any userspace daemon (udevd/networkd/strongswan) gets a chance to race
+        "net.ipv6.conf.default.addr_gen_mode" = 3;
       };
 
       systemd.network.netdevs."20-gravity" = {
