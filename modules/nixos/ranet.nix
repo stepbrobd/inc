@@ -103,34 +103,14 @@ in
               updown = pkgs.writeShellScript "updown" ''
                   LINK=ranet$(printf '%05x' "$PLUTO_IF_ID_OUT")
 
-                  has_link_local() {
-                    ip -o -6 addr show dev "$LINK" scope link | grep -q 'inet6 fe80::'
-                  }
-
-                  wait_for_link_local() {
-                    for _ in 1 2 3; do
-                      has_link_local && return 0
-                      sleep 1
-                    done
-
-                    return 1
-                  }
-
                   case "$PLUTO_VERB" in
                     up-client)
                       ip link add "$LINK" type xfrm if_id "$PLUTO_IF_ID_OUT"
                       ip link set "$LINK" mtu 1400
                       ip link set "$LINK" multicast on
                       ip link set "$LINK" master gravity
-                      ip link set "$LINK" up
                       ip link set dev "$LINK" addrgenmode random
-                      if ! wait_for_link_local; then
-                        ip link set "$LINK" down
-                        sleep 1
-                        ip link set "$LINK" up
-                        ip link set dev "$LINK" addrgenmode random
-                        wait_for_link_local || true
-                      fi
+                      ip link set "$LINK" up
                       ;;
                     down-client)
                       ip link del "$LINK"
