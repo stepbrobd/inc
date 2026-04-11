@@ -147,7 +147,7 @@ in
       #   (pkgs.formats.json { }).generate "registry.json" [ pkgs.gravity.registry ];
 
       # use the following to use all gravity nodes
-      sops.secrets.ranet = {
+      sops.secrets.gravity = {
         sopsFile = pkgs.gravity.full;
         path = "/etc/ranet/registry.json";
         mode = "444";
@@ -182,7 +182,7 @@ in
             # if using our own nodes
             # config.environment.etc."ranet/registry.json".source
             # if using full gravity mesh
-            config.sops.secrets.ranet.path
+            config.sops.secrets.gravity.path
           ];
         };
 
