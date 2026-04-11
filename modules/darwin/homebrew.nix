@@ -42,6 +42,8 @@
       "sqlite"
     ];
 
+    caskArgs.no_quarantine = null;
+
     casks = [
       # my own casks
       "stepbrobd/tap/opentabletdriver"
