@@ -489,7 +489,10 @@ in
 
           protocol static exitdefault6 {
             ipv6 sadr;
-            route ::/0 from ::/0 via "gravity";
+            ${lib.concatMapStringsSep
+              "\n  "
+              (r: ''route ::/0 from ${r.prefix} via "gravity";'')
+              cfg.router.static.ipv6.routes}
           }
         '')
 
