@@ -32,5 +32,5 @@ let
   };
 in
 ((formats.json { }).generate "gravity.json" registry).overrideAttrs {
-  passthru = { inherit registry; };
+  passthru = { inherit registry; full = ./secrets.yaml; };
 }

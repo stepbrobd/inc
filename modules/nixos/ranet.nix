@@ -142,8 +142,17 @@ in
         }
       );
 
-      environment.etc."ranet/registry.json".source =
-        (pkgs.formats.json { }).generate "registry.json" [ pkgs.gravity.passthru.registry ];
+      # use the following to only use my nodes
+      # environment.etc."ranet/registry.json".source =
+      #   (pkgs.formats.json { }).generate "registry.json" [ pkgs.gravity.registry ];
+
+      # use the following to use all gravity nodes
+      sops.secrets.ranet = {
+        sopsFile = pkgs.gravity.full;
+        path = "/etc/ranet/registry.json";
+        mode = "444";
+        reloadUnits = [ config.systemd.services.ranet.name ];
+      };
 
       systemd.services.ranet =
         let
