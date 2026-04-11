@@ -52,15 +52,15 @@
       # sonarworks soundid
       "lyraphase/av-casks/soundid-reference"
 
+      # "antinote" # i dont really keep note that much
+      # "dockdoor" # dont seem to work that well with aerospace
       # "lulu" # removed cause too annoying
 
       "alcove"
-      "antinote"
       "beeper"
       "betterdisplay"
       "container"
       "discord"
-      "dockdoor"
       "google-chrome"
       "hey-desktop"
       "kindavim"
