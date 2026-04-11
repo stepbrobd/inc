@@ -177,8 +177,12 @@ in
           after = [ "network-online.target" "strongswan-swanctl.service" "systemd-networkd.service" ];
           wantedBy = [ "multi-user.target" ];
           reloadTriggers = [
+            # must watch this
             config.environment.etc."ranet/config.json".source
-            config.environment.etc."ranet/registry.json".source
+            # if using our own nodes
+            # config.environment.etc."ranet/registry.json".source
+            # if using full gravity mesh
+            config.sops.secrets.ranet.path
           ];
         };
 
