@@ -52,10 +52,13 @@
 
       # "lulu" # removed cause too annoying
 
+      "alcove"
+      "antinote"
       "beeper"
       "betterdisplay"
       "container"
       "discord"
+      "dockdoor"
       "google-chrome"
       "hey-desktop"
       "kindavim"
