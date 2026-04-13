@@ -25,6 +25,7 @@
     # tmux # imported in minimal
     # vscode # imported in graphical
     # zathura # imported in graphical
+    zen
     # zoxide # imported in graphical
     # zsh # imported in minimal
   ];

@@ -195,6 +195,9 @@
     ysun.inputs.nixpkgs.follows = "nixpkgs";
     ysun.inputs.parts.follows = "parts";
     ysun.inputs.systems.follows = "systems";
+    # z
+    zen.url = "github:youwen5/zen-browser-flake";
+    zen.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   nixConfig = {

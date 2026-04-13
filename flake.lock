@@ -759,7 +759,8 @@
         "treefmt": "treefmt",
         "uad2": "uad2",
         "utils": "utils",
-        "ysun": "ysun"
+        "ysun": "ysun",
+        "zen": "zen"
       }
     },
     "rpi": {
@@ -1033,6 +1034,26 @@
       "original": {
         "owner": "stepbrobd",
         "repo": "ysun",
+        "type": "github"
+      }
+    },
+    "zen": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1775710180,
+        "narHash": "sha256-sCokvdNvl8zIzsnjgG0TN5h3RUI7GJyWW9ErfmEj0rM=",
+        "owner": "youwen5",
+        "repo": "zen-browser-flake",
+        "rev": "2c138beb648d1cbbfae76695a8230ee04e4db25a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "youwen5",
+        "repo": "zen-browser-flake",
         "type": "github"
       }
     }
