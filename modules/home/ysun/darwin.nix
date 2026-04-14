@@ -11,7 +11,6 @@
     # chromium # linux only
     # direnv # imported in graphical
     # firefox # linux only
-    # floorp # linux only
     # fzf # imported in graphical
     # git # imported in graphical
     # gpg # imported in graphical

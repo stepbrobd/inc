@@ -15,7 +15,6 @@
     email
     direnv
     # firefox # linux only
-    # floorp # linux only
     fzf
     gh
     git
