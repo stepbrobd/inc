@@ -55,6 +55,7 @@
       # "antinote" # i dont really keep note that much
       # "dockdoor" # dont seem to work that well with aerospace
       # "lulu" # removed cause too annoying
+      # "orion" # too unstable
 
       "alcove"
       "beeper"
@@ -68,7 +69,6 @@
       "macs-fan-control"
       "notchnook"
       "obs"
-      "orion"
       "osu"
       "slack"
       "thaw"

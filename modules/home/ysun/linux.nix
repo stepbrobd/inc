@@ -20,7 +20,6 @@
     # lsd # imported in graphical
     mpd # linux only
     # nushell # imported in graphical
-    orion
     # tmux # imported in minimal
     # vscode # imported in graphical
     # zathura # imported in graphical
