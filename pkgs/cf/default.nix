@@ -12,10 +12,8 @@ buildNpmPackage (finalAttrs: {
     hash = "sha256-THzx9MeRD1sFyYn8VwRhJzqWCj6b+ASfrVqGhsRa3R4=";
   };
 
-  patchPhase = ''
-    runHook prePatch
+  postPatch = ''
     cp ${./package-lock.json} package-lock.json
-    runHook postPatch
   '';
 
   npmDepsHash = "sha256-qZHkg0AtojD/1wMVn/fka7o/N9Aq7f6t4h8jSBTR1cQ=";
