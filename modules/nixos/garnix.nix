@@ -28,6 +28,7 @@
 
   garnix.server = {
     enable = true;
+    dangerouslyAllowSystemdNetworkd = true;
     persistence = {
       enable = true;
       name = config.networking.hostName;

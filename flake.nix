@@ -88,7 +88,7 @@
     # f
     flatpak.url = "github:gmodena/nix-flatpak";
     # g
-    garnix.url = "github:garnix-io/garnix-lib/systemd-networkd-experiment";
+    garnix.url = "github:stepbrobd/garnix-lib";
     garnix.inputs.nixpkgs.follows = "nixpkgs";
     generators.url = "github:nix-community/nixos-generators";
     generators.inputs.nixpkgs.follows = "nixpkgs";

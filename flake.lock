@@ -234,16 +234,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1774297302,
-        "narHash": "sha256-aG5QcK/gdVQPsgWW7PNdBYxDvfPBf1NHqA+UU3sLgLY=",
-        "owner": "garnix-io",
+        "lastModified": 1776182355,
+        "narHash": "sha256-MfCDBpUax2WyTrNAHQ4jSzO9J1mY3w3VYtab5DoFsGk=",
+        "owner": "stepbrobd",
         "repo": "garnix-lib",
-        "rev": "ca6e31599a9c709c998ab8afec6e72604c9601bf",
+        "rev": "a7beac3fbe2621a90df213449c451d2e9a0b9017",
         "type": "github"
       },
       "original": {
-        "owner": "garnix-io",
-        "ref": "systemd-networkd-experiment",
+        "owner": "stepbrobd",
         "repo": "garnix-lib",
         "type": "github"
       }
