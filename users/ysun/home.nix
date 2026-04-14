@@ -68,7 +68,6 @@ in
     beeper
     cider-2
     discord # (discord.override { withEquicord = true; }) nixpkgs#430391
-    epiphany
     mpv
     obs-studio
     (osu-lazer-bin.override { nativeWayland = true; })
