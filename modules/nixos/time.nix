@@ -79,7 +79,10 @@ in
         );
 
         metrics.enable = config.services.victoriametrics.enable;
-        settings.observability.metrics-exporter-listen = "[${bind}]:${lib.toString port}";
+        settings.observability = {
+          log-level = lib.mkDefault "warn";
+          metrics-exporter-listen = "[${bind}]:${lib.toString port}";
+        };
       };
 
       services.victoriametrics.prometheusConfig.scrape_configs = lib.mkIf config.services.victoriametrics.enable [{
