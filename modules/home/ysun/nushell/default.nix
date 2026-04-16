@@ -30,8 +30,6 @@ in
   programs.nushell = {
     enable = true;
 
-    plugins = with pkgs; [ nu_plugin_dns ];
-
     shellAliases = lib.mkMerge [
       # bat
       (lib.mkIf config.programs.bat.enable { cat = "bat --plain"; })
