@@ -28,6 +28,8 @@
         "brazil.time.system76.com"
         "ntppool1.time.nl"
         "ntppool2.time.nl"
+        "nts.teambelgium.net"
+        "nts.netnod.se"
         # https://experimental.ntspooltest.org/use
         "0.ke.experimental.ntspooltest.org"
         "1.ke.experimental.ntspooltest.org"
