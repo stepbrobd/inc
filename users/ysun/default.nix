@@ -22,6 +22,7 @@
       "audio"
       "docker"
       "input"
+      "librepods"
       "networkmanager"
       "podman"
       "video"
