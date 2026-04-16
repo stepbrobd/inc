@@ -202,6 +202,37 @@ in
         '';
       };
 
+      # on some kernels (notably 6.12 aarch64) xfrm interfaces created by strongswan
+      # race with systemd-udev over addr_gen_mode leaving about half of ranet iface
+      # w/o v6 ll addr (babel requires ll so those mesh tunnels are basically useless)
+      # this timer here periodically scans for broken iface and bounce them
+      # on kernels where the race dont happen (6.19+) its basically a no op
+      systemd.services.ranet-ll-heal = {
+        description = "Heal ranet interfaces missing IPv6 link-local";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = pkgs.writeShellScript "ranet-ll-heal" ''
+            export PATH=${lib.makeBinPath (with pkgs; [ iproute2 gnugrep gawk ])}
+            for ifname in $(ip -br link show | awk '/ranet/ {sub(/@.*/, "", $1); print $1}'); do
+              if ! ip -6 addr show dev "$ifname" 2>/dev/null | grep -q 'fe80::'; then
+                ip link set "$ifname" down
+                ip link set dev "$ifname" addrgenmode random
+                ip link set "$ifname" up
+              fi
+            done
+          '';
+        };
+      };
+      systemd.timers.ranet-ll-heal = {
+        description = "Periodically heal ranet interfaces missing IPv6 link-local";
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnBootSec = "30s";
+          OnUnitActiveSec = "30s";
+          AccuracySec = "5s";
+        };
+      };
+
       networking.firewall.allowedUDPPorts = [ port ];
       networking.firewall.trustedInterfaces = [ "ranet*" "gravity" ];
     })
