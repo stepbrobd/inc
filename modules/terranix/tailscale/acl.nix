@@ -80,16 +80,10 @@ in
       OneCGNATRoute = "";
 
       nodeAttrs = [
-        # test https://github.com/tailscale/tailscale/issues/18758
-        # and  https://github.com/tailscale/tailscale/pull/18781
-        # on timah, allow upstream router packets and drop cgnat range o.w.
-        { target = [ "100.100.101.112" ]; app."ysun.co/tscgnat" = [{ cidr = "100.100.0.0/32"; chain = "both"; verdict = "accept"; } { cidr = "100.64.0.0/10"; chain = "both"; verdict = "drop"; }]; }
-        # for other nodes just drop all cgnat range
-        # { target = [ "*" ]; app."ysun.co/tscgnat" = [{ cidr = "100.64.0.0/10"; chain = "both"; verdict = "drop"; }]; }
-        # see above
-        # in tailscale/tailcfg/tailcfg.go:
-        # NodeAttrOneCGNATEnable NodeCapability = "one-cgnat?v=false"
-        { target = [ "*" ]; attr = [ "one-cgnat?v=false" "funnel" "nextdns:d8664a" ]; }
+        # https://github.com/tailscale/tailscale/issues/18758
+        # https://github.com/tailscale/tailscale/pull/18781
+        # https://github.com/tailscale/tailscale/pull/19315
+        { target = [ "*" ]; attr = [ "disable-linux-cgnat-drop-rule" "funnel" "nextdns:d8664a" ]; }
         { target = [ self.email ]; attr = [ "mullvad" ]; }
         { target = [ "*" ]; ipPool = [ "100.100.101.0/24" ]; }
       ];
