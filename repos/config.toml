@@ -400,6 +400,11 @@ description = "forked from charmbracelet/soft-serve"
 visibility = "public"
 archived = false
 
+[repo."ranet"]
+description = "forked from nickcao/ranet"
+visibility = "public"
+archived = false
+
 [repo."raven"]
 description = "forked from raven-ml/raven"
 visibility = "public"
