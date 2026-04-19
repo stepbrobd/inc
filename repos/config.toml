@@ -265,6 +265,11 @@ description = "forked from gbury/dolmen"
 visibility = "public"
 archived = false
 
+[repo."ebpf"]
+description = "forked from cilium/ebpf"
+visibility = "public"
+archived = false
+
 [repo."figure"]
 description = "forked from ruanyf/markdown-it-image-lazy-loading"
 visibility = "public"
