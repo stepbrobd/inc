@@ -177,17 +177,17 @@ archived = false
 [repo."tailscale-acls"]
 description = "tailscale access controls"
 visibility = "public"
-archived = false
+archived = true
 
 [repo."tailscale-on-fly"]
 description = "run a vpn service with global exit nodes with fly.io and tailscale"
 visibility = "public"
-archived = false
+archived = true
 
 [repo."tailscale-on-openwrt"]
 description = "brings tailscale to low powered openwrt devices"
 visibility = "public"
-archived = false
+archived = true
 
 [repo."tbot"]
 description = "teeebot..."
