@@ -107,7 +107,7 @@
   };
 
   # TeX
-  plugins.lsp.servers.ltex = {
+  plugins.lsp.servers.ltex_plus = {
     enable = true;
     package = null;
   };
