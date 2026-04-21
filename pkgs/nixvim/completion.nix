@@ -46,24 +46,17 @@
       };
 
       window = {
-        completion.__raw = ''cmp.config.window.bordered()'';
-        documentation.__raw = ''cmp.config.window.bordered()'';
+        completion.__raw = ''
+          cmp.config.window.bordered({
+            winhighlight = "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+          })
+        '';
+        documentation.__raw = ''
+          cmp.config.window.bordered({
+            winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,Search:None",
+          })
+        '';
       };
-
-      # window = {
-      #   completion = {
-      #     winhighlight =
-      #       "FloatBorder:CmpBorder,Normal:CmpPmenu,CursorLine:CmpSel,Search:PmenuSel";
-      #     scrollbar = false;
-      #     sidePadding = 0;
-      #     border = [ "╭" "─" "╮" "│" "╯" "─" "╰" "│" ];
-      #   };
-      #   settings.documentation = {
-      #     border = [ "╭" "─" "╮" "│" "╯" "─" "╰" "│" ];
-      #     winhighlight =
-      #       "FloatBorder:CmpBorder,Normal:CmpPmenu,CursorLine:CmpSel,Search:PmenuSel";
-      #   };
-      # };
 
       mapping = {
         "<Down>" = "cmp.mapping.select_next_item()";
