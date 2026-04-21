@@ -21,7 +21,6 @@ builds:
     - packages.*.ripe-atlas-software-probe # weird shit
     - packages.*.spotify # unfree
     - packages.*.verus # no one uses this shit anyways
-    - "*.x86_64-darwin.*" # useless :(
 
 servers:
   - configuration: halti
