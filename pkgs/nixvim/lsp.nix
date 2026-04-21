@@ -7,10 +7,25 @@
     enable = true;
     settings = {
       format_on_save.lsp_format = "fallback";
-      formatters_by_ft.nix = {
-        __unkeyed-1 = "nixpkgs_fmt";
-        __unkeyed-2 = "nixfmt";
-        stop_after_first = true;
+      formatters_by_ft = {
+        nix = {
+          __unkeyed-1 = "nixpkgs_fmt";
+          __unkeyed-2 = "nixfmt";
+          stop_after_first = true;
+        };
+        go = [ "goimports" "gofmt" ];
+        ocaml = [ "ocamlformat" ];
+        c = [ "clang-format" ];
+        cpp = [ "clang-format" ];
+        markdown = [ "deno_fmt" ];
+        html = [ "deno_fmt" ];
+        css = [ "deno_fmt" ];
+        json = [ "deno_fmt" ];
+        jsonc = [ "deno_fmt" ];
+        javascript = [ "deno_fmt" ];
+        javascriptreact = [ "deno_fmt" ];
+        typescript = [ "deno_fmt" ];
+        typescriptreact = [ "deno_fmt" ];
       };
     };
   };
@@ -114,4 +129,61 @@
 
   # Typst
   plugins.lsp.servers.tinymist.enable = true;
+
+  keymaps = [
+    {
+      mode = "n";
+      key = "gd";
+      action.__raw = "function() Snacks.picker.lsp_definitions() end";
+      options = { silent = true; desc = "Goto definition"; };
+    }
+    {
+      mode = "n";
+      key = "gD";
+      action = "<cmd>lua vim.lsp.buf.declaration()<CR>";
+      options = { silent = true; desc = "Goto declaration"; };
+    }
+    {
+      mode = "n";
+      key = "gi";
+      action.__raw = "function() Snacks.picker.lsp_implementations() end";
+      options = { silent = true; desc = "Goto implementation"; };
+    }
+    {
+      mode = "n";
+      key = "gr";
+      action.__raw = "function() Snacks.picker.lsp_references() end";
+      options = { silent = true; desc = "List references"; };
+    }
+    {
+      mode = "n";
+      key = "gy";
+      action.__raw = "function() Snacks.picker.lsp_type_definitions() end";
+      options = { silent = true; desc = "Goto type definition"; };
+    }
+    {
+      mode = "n";
+      key = "K";
+      action = "<cmd>lua vim.lsp.buf.hover()<CR>";
+      options = { silent = true; desc = "Hover documentation"; };
+    }
+    {
+      mode = "n";
+      key = "<leader>rn";
+      action = "<cmd>lua vim.lsp.buf.rename()<CR>";
+      options = { silent = true; desc = "Rename symbol"; };
+    }
+    {
+      mode = "n";
+      key = "<leader>ca";
+      action = "<cmd>lua vim.lsp.buf.code_action()<CR>";
+      options = { silent = true; desc = "Code action"; };
+    }
+    {
+      mode = [ "i" "s" ];
+      key = "<C-s>";
+      action = "<cmd>lua vim.lsp.buf.signature_help()<CR>";
+      options = { silent = true; desc = "Signature help"; };
+    }
+  ];
 }
