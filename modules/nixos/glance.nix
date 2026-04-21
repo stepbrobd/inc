@@ -118,7 +118,7 @@ in
                       { title = "Attic"; url = "https://cache.ysun.co"; icon = "si:googlecloudstorage"; same-tab = true; }
                       { title = "Calibre"; url = "https://read.ysun.co"; icon = "si:calibreweb"; same-tab = true; }
                       { title = "Glance"; url = "https://home.ysun.co"; icon = "si:homepage"; same-tab = true; }
-                      { title = "GoLink"; url = "https://go.${lib.blueprint.tailscale.tailnet}"; icon = "si:linktree"; same-tab = true; }
+                      { title = "Time"; url = "https://time.ysun.co"; icon = "si:clock"; same-tab = true; }
                       { title = "Grafana"; url = "https://otel.ysun.co"; icon = "si:grafana"; same-tab = true; }
                       { title = "Homepage"; url = "https://ysun.co"; icon = "si:googlehome"; same-tab = true; }
                       { title = "Home Assistant"; url = "https://ha.ysun.co"; icon = "si:homeassistant"; same-tab = true; }
