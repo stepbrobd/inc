@@ -17,5 +17,30 @@
     pumheight = 10;
     foldlevel = 99;
     termguicolors = true;
+
+    scrolloff = 8;
+    sidescrolloff = 8;
+    cursorline = true;
+    cursorlineopt = "number";
+
+    splitright = true;
+    splitbelow = true;
+
+    updatetime = 250;
+    timeoutlen = 300;
+
+    signcolumn = "yes";
+    confirm = true;
+    shiftwidth = 2;
+    tabstop = 2;
+    softtabstop = 2;
   };
+
+  autoCmd = [
+    {
+      event = [ "TextYankPost" ];
+      callback.__raw = ''function() vim.hl.on_yank() end'';
+      desc = "Highlight yanked text";
+    }
+  ];
 }
