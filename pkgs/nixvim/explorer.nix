@@ -1,13 +1,17 @@
 {
   plugins.nvim-tree = {
     enable = true;
-    openOnSetupFile = true;
+    openOnSetupFile = false;
 
     settings = {
       auto_reload_on_write = true;
       diagnostics.enable = true;
       modified.enable = true;
       sync_root_with_cwd = true;
+      update_focused_file = {
+        enable = true;
+        update_root = true;
+      };
     };
   };
 
@@ -21,7 +25,7 @@
     {
       mode = "n";
       key = "<leader><tab>";
-      action = "<cmd>:NvimTreeToggle<cr>";
+      action = "<cmd>:NvimTreeFindFileToggle<cr>";
       options = {
         silent = true;
         desc = "Toggle file manager";
