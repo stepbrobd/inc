@@ -171,7 +171,7 @@
     sweep.inputs.nixpkgs.follows = "nixpkgs";
     sweep.inputs.cf.follows = "cornflake";
     sweep.inputs.crane.follows = "crane";
-    systems.url = "github:nix-systems/default";
+    systems.url = "github:nix-systems/triplet";
     # r
     ranet.url = "github:nickcao/ranet";
     ranet.inputs.nixpkgs.follows = "nixpkgs";
