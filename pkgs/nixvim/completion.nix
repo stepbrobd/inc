@@ -1,79 +1,77 @@
-# https://github.com/MikaelFangel/nixvim-config/blob/92924c1938e48fd3b77166e616ae6e6bd4a5587b/config/cmp.nix
+{ pkgs, ... }:
 
 {
-  plugins.cmp = {
+  plugins.blink-cmp = {
     enable = true;
 
     settings = {
-      completion.completeopt = "menu,menuone,noinsert";
-      experimental.ghost_text = true;
-
-      snippet.expand = ''
-        function(args)
-          require('luasnip').lsp_expand(args.body)
-        end
-      '';
-
-      autoEnableSources = true;
-      sources = [
-        { name = "nvim_lsp"; }
-        { name = "nvim_lsp_signature_help"; }
-        { name = "luasnip"; }
-        { name = "nvim_lsp_document_symbol"; }
-        { name = "treesitter"; }
-        { name = "nvim_lua"; }
-        { name = "calc"; }
-        { name = "dap"; }
-        { name = "path"; }
-        { name = "git"; }
-        { name = "buffer"; }
-        { name = "rg"; }
-        { name = "latex_symbols"; }
-        { name = "dictionary"; }
-        { name = "spell"; }
-        { name = "emoji"; }
-      ];
-
-      performance = {
-        debounce = 50;
-        fetching_timeout = 250;
-        max_view_entries = 50;
+      sources = {
+        default = [
+          "lsp"
+          "path"
+          "snippets"
+          "buffer"
+          "dictionary"
+        ];
+        providers.dictionary = {
+          name = "Dict";
+          module = "blink-cmp-dictionary";
+          min_keyword_length = 3;
+          opts.dictionary_files = [ "${pkgs.miscfiles}/share/web2" ];
+        };
       };
 
-      formatting = {
-        expandable_indicator = true;
-        fields = [ "kind" "abbr" "menu" ];
+      keymap = {
+        "<Down>" = [ "select_next" "fallback" ];
+        "<Tab>" = [ "select_next" "fallback" ];
+        "<C-n>" = [ "select_next" "fallback" ];
+        "<C-j>" = [ "select_next" "fallback" ];
+
+        "<Up>" = [ "select_prev" "fallback" ];
+        "<C-p>" = [ "select_prev" "fallback" ];
+        "<C-k>" = [ "select_prev" "fallback" ];
+
+        "<C-d>" = [ "scroll_documentation_up" "fallback" ];
+        "<C-f>" = [ "scroll_documentation_down" "fallback" ];
+
+        "<C-Space>" = [ "show" "show_documentation" "hide_documentation" "fallback" ];
+        "<S-Tab>" = [ "hide" "fallback" ];
+
+        "<CR>" = [ "accept" "fallback" ];
       };
 
-      window = {
-        completion.__raw = ''
-          cmp.config.window.bordered({
-            winhighlight = "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
-          })
-        '';
-        documentation.__raw = ''
-          cmp.config.window.bordered({
-            winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,Search:None",
-          })
-        '';
+      snippets.preset = "luasnip";
+
+      completion = {
+        ghost_text.enabled = true;
+
+        menu = {
+          auto_show = true;
+          border = "rounded";
+          winhighlight = "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None";
+        };
+
+        documentation = {
+          auto_show = true;
+          auto_show_delay_ms = 250;
+          window = {
+            border = "rounded";
+            winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,Search:None";
+          };
+        };
       };
 
-      mapping = {
-        "<Down>" = "cmp.mapping.select_next_item()";
-        "<Tab>" = "cmp.mapping.select_next_item()";
-        "<C-n>" = "cmp.mapping.select_next_item()";
-        "<C-j>" = "cmp.mapping.select_next_item()";
+      signature = {
+        enabled = true;
+        window.border = "rounded";
+      };
 
-        "<Up>" = "cmp.mapping.select_prev_item()";
-        "<C-p>" = "cmp.mapping.select_prev_item()";
-        "<C-k>" = "cmp.mapping.select_prev_item()";
-
-        "<C-d>" = "cmp.mapping.scroll_docs(-4)";
-        "<C-f>" = "cmp.mapping.scroll_docs(4)";
-
-        "<C-Space>" = "cmp.mapping.complete()";
-        "<S-Tab>" = "cmp.mapping.close()";
+      appearance = {
+        nerd_font_variant = "mono";
+        use_nvim_cmp_as_default = false;
       };
     };
   };
+
+  plugins.blink-cmp-dictionary.enable = true;
 }
