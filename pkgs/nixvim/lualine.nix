@@ -6,7 +6,7 @@
       options = {
         theme = "nord";
         icons_enabled = true;
-        disabled_filetypes.statusline = [ "alpha" "NvimTree" ];
+        disabled_filetypes.statusline = [ "snacks_dashboard" "NvimTree" ];
       };
 
       sections = {
