@@ -2,6 +2,12 @@
   plugins.snacks = {
     enable = true;
 
+    settings.styles = {
+      float.backdrop = false;
+      input.backdrop = false;
+      notification.backdrop = false;
+    };
+
     settings.dashboard = {
       preset = {
         header = ''
