@@ -2,7 +2,7 @@
 
 [![Garnix](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2Fstepbrobd%2Finc)](https://garnix.io/repo/stepbrobd/inc)
 
-Maybe the title isn't that clickbaity? As of this commit there are about 16.5k
+Maybe the title isn't that clickbaity? As of this commit there are about 17k
 lines of Nix...
 
 I have strong opinions on how Nix configurations should be structured and
