@@ -19,7 +19,7 @@
     });
   };
 }).overrideAttrs {
-  version = "1.97.231";
+  version = "1.96.5";
 
   src = fetchFromGitHub {
     owner = "tailscale";
