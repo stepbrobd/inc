@@ -9,5 +9,5 @@ pkgsPrev.calibre-web.overridePythonAttrs (prev: {
     prev.dependencies
     ++ lib.flatten (with prev.optional-dependencies; [ comics kobo ldap metadata ]);
 
-  pythonRelaxDeps = prev.pythonRelaxDeps ++ [ "wand" ];
+  pythonRelaxDeps = prev.pythonRelaxDeps ++ [ "requests" "wand" ];
 })
