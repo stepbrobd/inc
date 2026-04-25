@@ -203,7 +203,7 @@
   programs.himalaya = {
     enable = true;
     package = pkgs.himalaya.override {
-      withFeatures = lib.optionals config.programs.notmuch.enable [ "notmuch" ];
+      buildFeatures = lib.optionals config.programs.notmuch.enable [ "notmuch" ];
     };
   };
 
