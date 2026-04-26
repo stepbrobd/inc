@@ -143,6 +143,7 @@ in
           limits_config = {
             reject_old_samples = true;
             reject_old_samples_max_age = "168h";
+            max_entries_limit_per_query = 1000000;
           };
 
           compactor = {

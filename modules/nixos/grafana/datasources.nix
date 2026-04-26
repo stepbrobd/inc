@@ -32,7 +32,7 @@ in
   config = mkIf config.services.grafana.enable {
     services.grafana.provision.datasources.settings = {
       apiVersion = 1;
-      datasources = mkDatasources "Prometheus" { httpMethod = "POST"; } ++ mkDatasources "Loki" { manageAlerts = false; };
+      datasources = mkDatasources "Prometheus" { httpMethod = "POST"; } ++ mkDatasources "Loki" { manageAlerts = false; maxLines = 1000000; };
     };
   };
 }
