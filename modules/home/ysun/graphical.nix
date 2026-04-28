@@ -36,7 +36,6 @@
     # tmux # imported in minimal
     vscode
     yazi
-    zathura
     zoxide
     # zsh # imported in minimal
   ];
