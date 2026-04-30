@@ -110,4 +110,13 @@
     # nic backlog for handling packet bursts
     "net.core.netdev_max_backlog" = 16384;
   };
+
+  # copy.fail
+  boot.blacklistedKernelModules = [
+    "af_alg"
+    "algif_aead"
+    "algif_hash"
+    "algif_rng"
+    "algif_skcipher"
+  ];
 }
