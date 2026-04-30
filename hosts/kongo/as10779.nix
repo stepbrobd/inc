@@ -124,7 +124,6 @@ in
             ipv4 = null;
             ipv6 = "2a0c:2f07:9459::b11";
           };
-          addpath = "tx";
           import = {
             ipv4 = "import none;";
             ipv6 = "import none;";
