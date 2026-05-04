@@ -33,6 +33,7 @@
     enable = true;
     hostKeys = lib.mkForce [{ type = "ed25519"; path = "/etc/ssh/ssh_host_ed25519_key"; }];
     extraConfig = ''
+      HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
       TrustedUserCAKeys /etc/ssh/ca.pub
     '';
     # mostly pq but have fallback for legacy clients

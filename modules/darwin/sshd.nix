@@ -14,7 +14,9 @@
     }];
 
     extraConfig = ''
+      HostCertificate                 /etc/ssh/ssh_host_ed25519_key-cert.pub
       TrustedUserCAKeys               /etc/ssh/ca.pub
+
       ChallengeResponseAuthentication no
       KbdInteractiveAuthentication    no
       PasswordAuthentication          no
