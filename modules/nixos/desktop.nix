@@ -57,8 +57,17 @@ in
       };
     }
 
-    # gpg
-    { programs.gnupg.agent.enable = true; }
+    # yubikey
+    {
+      services.pcscd.enable = true;
+
+      services.udev.packages = [ pkgs.yubikey-personalization ];
+
+      programs.gnupg.agent = {
+        enable = true;
+        enableSSHSupport = true;
+      };
+    }
 
     # basic stuff
     {
