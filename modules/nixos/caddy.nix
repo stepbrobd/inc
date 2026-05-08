@@ -67,8 +67,13 @@ in
 
       extraConfig = ''
         (common) {
-          tls { dns cloudflare {env.CF_API_TOKEN} }
+          tls {
+            dns cloudflare {env.CF_API_TOKEN}
+            resolvers 2606:4700:4700::1111 1.1.1.1
+          }
+
           encode br zstd gzip
+
           header {
             Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
             X-Content-Type-Options "nosniff"
