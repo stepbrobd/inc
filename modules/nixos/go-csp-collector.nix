@@ -10,6 +10,7 @@ in
   config = lib.mkIf (hasTag "go-csp-collector") {
     services.go-csp-collector = {
       enable = true;
+
       settings = {
         output-format = "json";
         log-client-ip = true;
@@ -19,8 +20,11 @@ in
       };
     };
 
+    # TODO: add prometheus metrics exporting and scraping after 0.0.18 release
+
     services.caddy = {
       enable = true;
+
       virtualHosts.${domain}.extraConfig = ''
         import common
 
