@@ -41,9 +41,9 @@ in
             root * ${ysun}/var/www/html
             file_server
 
-            @csp method POST && path /csp/*
+            @csp path /csp
             handle @csp {
-              uri strip_prefix /csp/
+              rewrite * /reporting-api/csp
               reverse_proxy [::1]:${lib.toString config.services.go-csp-collector.settings.port}
             }
 
