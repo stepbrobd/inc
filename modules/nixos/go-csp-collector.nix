@@ -44,7 +44,9 @@ in
           reverse_proxy [::1]:${lib.toString config.services.go-csp-collector.settings.port}
         }
 
-        redir https://ysun.co/ permanent
+        handle {
+          redir https://ysun.co/ permanent
+        }
       '';
     };
   };
