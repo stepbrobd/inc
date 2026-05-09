@@ -4,9 +4,8 @@ updates:
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: weekly
-      day: saturday
-      time: "03:00"
+      interval: daily
+      time: "00:00"
       timezone: "Etc/UTC"
     commit-message:
       prefix: "ci"
@@ -18,9 +17,8 @@ updates:
   - package-ecosystem: nix
     directory: "/"
     schedule:
-      interval: weekly
-      day: saturday
-      time: "03:00"
+      interval: daily
+      time: "00:00"
       timezone: "Etc/UTC"
     commit-message:
       prefix: "flake"
