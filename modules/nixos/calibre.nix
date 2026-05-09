@@ -29,7 +29,7 @@ in
           with config.services.calibre-web.listen ;
           ''
             import common
-            import csp
+            import reporting
             reverse_proxy [${ip}]:${lib.toString port}
           '';
       };

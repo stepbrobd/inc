@@ -22,7 +22,7 @@ in
       enable = true;
       virtualHosts.${domain}.extraConfig = ''
         import common
-        import csp
+        import reporting
         header  Cache-Control      "private, must-revalidate, max-age=0;"
         header >Cache-Control (.*) "private, must-revalidate, max-age=0;"
         tls "${directory}/fullchain.pem" "${directory}/key.pem"

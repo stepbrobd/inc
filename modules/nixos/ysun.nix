@@ -8,23 +8,11 @@ let
 in
 {
   config = lib.mkIf (hasTag "ysun") {
-    # TODO: bind to ::1 when 0.0.17 bump is merged
-    services.go-csp-collector = {
-      enable = true;
-      settings = {
-        output-format = "json";
-        log-client-ip = true;
-        query-params-metadata = true;
-        truncate-query-fragment = false;
-        debug = false;
-      };
-    };
-
     services.caddy =
       let
         common = ''
           import common
-          import csp
+          import reporting
           header X-Served-By "${config.networking.fqdn}"
         '';
 
@@ -40,12 +28,6 @@ in
 
             root * ${ysun}/var/www/html
             file_server
-
-            @csp path /csp
-            handle @csp {
-              rewrite * /reporting-api/csp
-              reverse_proxy [::1]:${lib.toString config.services.go-csp-collector.settings.port}
-            }
 
             handle_errors {
               rewrite * /error

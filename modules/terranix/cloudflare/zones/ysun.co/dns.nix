@@ -173,6 +173,14 @@ in
         comment = "V.PS - Tallinn, Estonia - Calibre";
       };
 
+      co_ysun_report = {
+        type = "CNAME";
+        proxied = false;
+        name = "report";
+        content = "lagern.sd.ysun.co";
+        comment = "AWS - Zurich - CSP/NEL Collector";
+      };
+
       co_ysun_sso = {
         type = "CNAME";
         proxied = false;

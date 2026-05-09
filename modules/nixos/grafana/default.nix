@@ -26,7 +26,7 @@ in
         virtualHosts.${domain} = {
           extraConfig = with config.services.grafana.settings.server; ''
             import common
-            import csp
+            import reporting
             reverse_proxy [${toString http_addr}]:${toString http_port} {
               header_up X-Real-IP {http.request.header.CF-Connecting-IP}
             }
