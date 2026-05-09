@@ -68,8 +68,12 @@ in
       extraConfig = ''
         (common) {
           tls {
-            dns cloudflare {env.CF_API_TOKEN}
-            resolvers 2606:4700:4700::1111 1.1.1.1
+            issuer acme {
+              profile shortlived
+
+              dns cloudflare {env.CF_API_TOKEN}
+              resolvers 2606:4700:4700::1111 1.1.1.1
+            }
           }
 
           encode br zstd gzip
