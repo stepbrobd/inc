@@ -1,29 +1,12 @@
-{ lib, ... }:
-
-{ pkgs, ... }:
-
 {
   programs.opencode = {
     enable = true;
 
     settings.autoupdate = false;
     tui.theme = "nord";
-  }
-  // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
-    package = pkgs.llm-agents.opencode;
   };
 
-  programs.claude-code = {
-    enable = true;
-  }
-  // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
-    package = pkgs.llm-agents.claude-code;
-  };
+  programs.claude-code.enable = true;
 
-  # programs.codex = {
-  #   enable = true;
-  # }
-  # // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
-  #   package = pkgs.llm-agents.codex;
-  # };
+  programs.codex.enable = true;
 }
