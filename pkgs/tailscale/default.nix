@@ -20,7 +20,7 @@
   };
 }).overrideAttrs {
   # go run ./cmd/mkversion
-  version = "1.99.0";
+  version = "1.99.0-pre";
 
   src = fetchFromGitHub {
     owner = "tailscale";
