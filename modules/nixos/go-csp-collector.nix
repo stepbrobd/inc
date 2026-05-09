@@ -12,6 +12,7 @@ in
       enable = true;
 
       settings = {
+        port = 54321;
         output-format = "json";
         log-client-ip = true;
         query-params-metadata = true;
