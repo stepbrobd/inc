@@ -233,8 +233,11 @@ in
         };
       };
 
+      # ranet ipsec
       networking.firewall.allowedUDPPorts = [ port ];
-      networking.firewall.trustedInterfaces = [ "ranet*" "gravity" ];
+
+      # babel multicast
+      networking.firewall.interfaces.gravity.allowedUDPPorts = [ 6696 ];
     })
   ];
 }
