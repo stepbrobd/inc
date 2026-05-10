@@ -174,20 +174,4 @@ rec {
         content = "dmarcroot.purelymail.com";
       };
     };
-
-  # tailscale device data helper
-  mkDevices = devices: lib.listToAttrs
-    (lib.map
-      (d: {
-        name = d;
-        value = {
-          # apparently for some hosts using hostname won't work
-          # fix for this is `tailscale set --hostname <hostname>` on the device
-          # or switch to using fqdn (but hostname/name are mutually exclusive)
-          # hostname = d;
-          name = ''${d}.''${data.sops_file.secrets.data["tailscale.tailnet_name"]}'';
-          wait_for = "10s";
-        };
-      })
-      devices);
 }

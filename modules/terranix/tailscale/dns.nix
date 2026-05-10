@@ -7,13 +7,19 @@ let
 
   subdomain = lib.removeSuffix ".${tailscale.zone}" tailscale.domain;
   get_node_name = name: ''trimsuffix(${name}, ".${tailscale.tailnet}")'';
-  for_each = tfRef "{ for d in data.tailscale_devices.all.devices : ${get_node_name "d.name"} => d }";
+  for_each = tfRef ''
+    { for d in data.tailscale_devices.all.devices :
+        ${get_node_name "d.name"} => d
+        if endswith(d.name, ".${tailscale.tailnet}") }
+  '';
   name = pipe "each.value.name" [ get_node_name tfRef ];
   proxied = false;
   ipv4 = tfRef "each.value.addresses[0]";
   ipv6 = tfRef "each.value.addresses[1]";
 in
 {
+  data.tailscale_devices.all = { };
+
   resource.tailscale_dns_preferences.preferences.magic_dns = true;
 
   resource.tailscale_dns_nameservers.nameservers.nameservers = [
