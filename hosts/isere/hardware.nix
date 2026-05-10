@@ -40,26 +40,6 @@
     "clk-rp1"
   ];
 
-  # apply in order
-  # mainline 7.0.5 has an unfixed pi5-only infinite EPROBE_DEFER loop in vc4_hdmi
-  # (1) merge 45215c589e7f re-introduced a duplicate drm_connector_hdmi_audio_init()
-  #     in vc4_hdmi_connector_init() that c0317ad44f45 had removed
-  #     each call adds a fresh codec_pdev child before audio_init can defer
-  # (2) cf207ea2c39d switched cec to drmm_connector_hdmi_cec_register, which adds a child device
-  #     but called from vc4_hdmi_bind() before vc4_hdmi_audio_init() on pi5 defers forever
-  #     because rp1's audio dma engine isn't supported by mainline
-  #     each defer re-registers the cec adapter -> kernel locked
-  boot.kernelPatches = [
-    {
-      name = "vc4-hdmi-remove-duplicate-audio-init";
-      patch = ./patches/vc4-hdmi-remove-duplicate-audio-init.patch;
-    }
-    {
-      name = "vc4-hdmi-cec-eprobe-defer";
-      patch = ./patches/vc4-hdmi-cec-eprobe-defer.patch;
-    }
-  ];
-
   # bluetooth
   # https://wiki.nixos.org/wiki/NixOS_on_ARM/Raspberry_Pi_5#Bluetooth
   boot.kernelModules = [
