@@ -40,6 +40,8 @@
     "clk-rp1"
   ];
 
+  boot.blacklistedKernelModules = [ "vc4" "v3d" ];
+
   # bluetooth
   # https://wiki.nixos.org/wiki/NixOS_on_ARM/Raspberry_Pi_5#Bluetooth
   boot.kernelModules = [
