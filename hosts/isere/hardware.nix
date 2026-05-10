@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ inputs, lib, pkgs, ... }:
 
 {
   imports = with inputs.rpi.nixosModules; [
@@ -20,6 +20,25 @@
   _module.args.nixos-raspberrypi = inputs.rpi;
 
   boot.loader.raspberry-pi.bootloader = "kernel";
+
+  # rpi flake vendor kernel is set with mkDefault (prio 1000)
+  # minimal nixos module use mkOverride 1250
+  # force again here to use latest anyways
+  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
+
+  # mainline kernel have bcm2712 DTBs but no .dtbo files
+  # source DTBs and overlays from the rpi firmware package so the dt-overlays
+  # declared below actually get applied at boot
+  boot.loader.raspberry-pi.useGenerationDeviceTree = lib.mkForce false;
+
+  # RP1 is the pi5 PCIe-attached MFD that fans out to USB / ethernet / GPIO / clocks
+  # pull drivers into the initrd so udev binds them as soon as PCIe enumerates
+  # o.w. the box looks frozen post-pivot_root
+  boot.initrd.availableKernelModules = [
+    "rp1_pci"
+    "pinctrl-rp1"
+    "clk-rp1"
+  ];
 
   # bluetooth
   # https://wiki.nixos.org/wiki/NixOS_on_ARM/Raspberry_Pi_5#Bluetooth
