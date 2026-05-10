@@ -32,7 +32,6 @@
             overlays = with inputs; [
               self.overlays.default
               colmena.overlays.default
-              golink.overlays.default
               llm.overlays.default
               mac-style-plymouth.overlays.default
               ranet.overlays.default
@@ -95,9 +94,6 @@
     generators.inputs.nixlib.follows = "nixpkgs";
     gitignore.url = "github:hercules-ci/gitignore.nix";
     gitignore.inputs.nixpkgs.follows = "nixpkgs";
-    golink.url = "github:tailscale/golink";
-    golink.inputs.nixpkgs.follows = "nixpkgs";
-    golink.inputs.systems.follows = "systems";
     gomod2nix.url = "github:nix-community/gomod2nix";
     gomod2nix.inputs.nixpkgs.follows = "nixpkgs";
     gomod2nix.inputs.flake-utils.follows = "utils";

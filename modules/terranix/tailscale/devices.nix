@@ -26,8 +26,6 @@ let
     "walberla"
     # aperture
     "aperture"
-    # golink
-    "go"
     # untagged
     "framework"
     "iphone"
@@ -55,7 +53,6 @@ let
   # non-blueprint tailscale devices with specific tags
   extraDeviceTags = {
     aperture = [ "aperture" ];
-    go = [ "golink" ];
   };
 in
 {

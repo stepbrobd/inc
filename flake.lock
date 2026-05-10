@@ -290,29 +290,6 @@
         "type": "github"
       }
     },
-    "golink": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "systems": [
-          "systems"
-        ]
-      },
-      "locked": {
-        "lastModified": 1777992933,
-        "narHash": "sha256-b+eN1E5PAQVexQ9+uDxdGrM5aGsz9hpUNuircAb0bmo=",
-        "owner": "tailscale",
-        "repo": "golink",
-        "rev": "b85eec3e0ed734380a61b31782b72818f214c494",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tailscale",
-        "repo": "golink",
-        "type": "github"
-      }
-    },
     "gomod2nix": {
       "inputs": {
         "flake-utils": [
@@ -730,7 +707,6 @@
         "garnix": "garnix",
         "generators": "generators",
         "gitignore": "gitignore",
-        "golink": "golink",
         "gomod2nix": "gomod2nix",
         "hardware": "hardware",
         "hm": "hm",

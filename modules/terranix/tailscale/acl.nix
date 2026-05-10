@@ -45,17 +45,11 @@ in
           dst = [ "*" ];
           ip = [ "*" ];
         }
-        # users within tailnet get to use golink
-        {
-          src = [ autogroup.member ];
-          dst = [ tag.golink ];
-          app."tailscale.com/cap/golink" = [{ admin = true; }];
-        }
         # users within tailnet get to use
-        # their own devices, golink, and exit nodes
+        # their own devices, and exit nodes
         {
           src = [ autogroup.member ];
-          dst = [ autogroup.self tag.aperture tag.golink autogroup.internet ];
+          dst = [ autogroup.self tag.aperture autogroup.internet ];
           ip = [ "*" ];
         }
         # devices shared outside with other ppl

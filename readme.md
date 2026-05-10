@@ -126,7 +126,7 @@ prefixes, and Tailscale/ranet configuration as plain attrsets. Each host
 declaration (`lib/blueprint/hosts/<name>/default.nix`) specifies OS, provider,
 type, tags, etc. Auto generated tags include the OS, provider, and type, so for
 example `lib.blueprint.hosts.walberla.tags` evaluates to
-`["nixos" "hetzner" "server" "routee" "glance" "golink" "kanidm" "ranet"]`.
+`["nixos" "hetzner" "server" "routee" "glance" "kanidm" "ranet"]`.
 
 Most NixOS service modules use `lib.hasTag` to conditionally enable themselves:
 
