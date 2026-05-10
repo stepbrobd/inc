@@ -3,10 +3,8 @@
 { ... }:
 
 let
-  inherit (lib.terranix) mkDevices tfRef;
-  bp = lib.blueprint.hosts;
+  inherit (lib.terranix) mkDevices;
 
-  # all devices in tailnet
   devices = [
     "baldy"
     "butte"
@@ -24,49 +22,16 @@ let
     "timah"
     "toompea"
     "walberla"
-    # aperture
-    "aperture"
-    # untagged
+
     "framework"
     "iphone"
     "macbook"
-    "tv"
     "vision"
     "xps"
   ];
-
-  # devices that have blueprint entries get their tags synced
-  blueprintDevices = lib.filter (d: bp ? ${d}) devices;
-
-  # ACL must be applied first so tagOwners exist before assigning tags
-  acl_dep = [ "tailscale_acl.acl" ];
-
-  mkDeviceTags = d: tags: {
-    name = d;
-    value = {
-      device_id = tfRef "data.tailscale_device.${d}.id";
-      tags = map (t: "tag:${t}") tags;
-      depends_on = acl_dep;
-    };
-  };
-
-  # non-blueprint tailscale devices with specific tags
-  extraDeviceTags = {
-    aperture = [ "aperture" ];
-  };
 in
 {
   data.tailscale_devices.all = { };
 
   data.tailscale_device = mkDevices devices;
-
-  resource.tailscale_device_tags =
-    lib.listToAttrs (map (d: mkDeviceTags d bp.${d}.tags) blueprintDevices)
-    // lib.mapAttrs
-      (d: tags: {
-        device_id = tfRef "data.tailscale_device.${d}.id";
-        tags = map (t: "tag:${t}") tags;
-        depends_on = acl_dep;
-      })
-      extraDeviceTags;
 }
