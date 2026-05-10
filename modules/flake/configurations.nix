@@ -131,7 +131,6 @@ let
           platform = "x86_64-linux";
           modules = laptopModules ++ (with inputs; [
             hardware.nixosModules.dell-xps-13-9300
-            self.nixosModules.ebpf
           ]);
           users = laptopUsers;
           names = [ "xps" ];
