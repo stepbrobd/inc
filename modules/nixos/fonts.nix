@@ -7,12 +7,12 @@
     enableGhostscriptFonts = true;
 
     packages = with pkgs; [
+      apple-color-emoji
       font-awesome
       nerd-fonts.intone-mono
       nerd-fonts.jetbrains-mono
       noto-fonts
       noto-fonts-cjk-sans
-      noto-fonts-color-emoji
     ];
 
     fontconfig = {
@@ -27,18 +27,18 @@
       };
 
       defaultFonts = {
-        emoji = [ "Noto Color Emoji" ];
+        emoji = [ "Apple Color Emoji" ];
         serif = [
           "Noto Serif"
-          "Noto Color Emoji"
+          "Apple Color Emoji"
         ];
         sansSerif = [
           "Noto Sans"
-          "Noto Color Emoji"
+          "Apple Color Emoji"
         ];
         monospace = [
           "IntoneMono Nerd Font"
-          "Noto Color Emoji"
+          "Apple Color Emoji"
         ];
       };
     };
