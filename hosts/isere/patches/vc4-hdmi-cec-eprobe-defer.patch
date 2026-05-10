@@ -1,0 +1,54 @@
+From: Yifei Sun <ysun@hey.com>
+Subject: [PATCH 2/2] drm/vc4: register CEC adapter after audio_init to avoid probe loop
+
+vc4_hdmi_audio_init() calls devm_snd_dmaengine_pcm_register(), which
+can return -EPROBE_DEFER on platforms where the audio DMA engine
+referenced by the 'dmas' DT property is not yet bound -- notably
+Raspberry Pi 5 / BCM2712, where the RP1 DMA path is not yet supported
+by mainline.
+
+vc4_hdmi_cec_register() registers a CEC adapter as a child of the HDMI
+platform device. Per Documentation/driver-api/driver-model/driver.rst,
+adding a child device before returning -EPROBE_DEFER causes the driver
+core to re-probe the parent. Each re-probe re-registers the CEC adapter
+(creating a new rc-cec input device per iteration), saturating a CPU
+and effectively locking the kernel within seconds.
+
+Reorder vc4_hdmi_bind() so vc4_hdmi_audio_init() runs first, ensuring
+that a deferring audio_init returns to the driver core before the CEC
+adapter is added. This is the CEC-side counterpart to commit
+c0317ad44f45 ("drm/vc4: fix infinite EPROBE_DEFER loop"), which
+addressed the audio-side child-device registration. Note that this
+patch must be applied on top of the duplicate-audio-init removal;
+without that, the connector_init call still adds a child device
+before audio_init defers and the loop persists.
+
+On hardware where audio_init defers indefinitely (Pi 5 + mainline
+today), CEC will not register either. This is a strict improvement
+over the current state, where the system locks up within seconds of
+CEC's first registration.
+
+Fixes: cf207ea2c39d ("drm/vc4: hdmi: switch to generic CEC helpers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yifei Sun <ysun@hey.com>
+---
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -3327,11 +3327,11 @@ static int vc4_hdmi_bind(struct device *dev, struct device *master, void *data)
+ 	if (ret)
+ 		goto err_put_runtime_pm;
+
+-	ret = vc4_hdmi_cec_register(vc4_hdmi);
++	ret = vc4_hdmi_audio_init(vc4_hdmi);
+ 	if (ret)
+ 		goto err_put_runtime_pm;
+
+-	ret = vc4_hdmi_audio_init(vc4_hdmi);
++	ret = vc4_hdmi_cec_register(vc4_hdmi);
+ 	if (ret)
+ 		goto err_put_runtime_pm;
+
