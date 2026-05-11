@@ -7,20 +7,12 @@
 
 let
   isNiri = osConfig.services.desktopManager.enabled == "niri";
+
+  ipc = args: ''spawn "noctalia-shell" "ipc" "call" ${args}'';
 in
 {
   config = lib.mkIf isNiri {
-    home.packages = with pkgs; [
-      brightnessctl
-      dunst
-      gnome-keyring
-      gtklock
-      networkmanagerapplet
-      pavucontrol
-      playerctl
-      rofi
-      wireplumber
-    ];
+    home.packages = [ pkgs.gnome-keyring ];
 
     xdg.configFile."niri/config.kdl".text = ''
       input {
@@ -33,6 +25,8 @@ in
           tap
           natural-scroll
           scroll-method "two-finger"
+          click-method "clickfinger"
+          dwt
         }
         mouse {
           natural-scroll
@@ -42,6 +36,7 @@ in
 
       output "eDP-1" {
         scale 1.5
+        variable-refresh-rate
       }
 
       layout {
@@ -80,18 +75,18 @@ in
       spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
       spawn-at-startup "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
       spawn-at-startup "gnome-keyring-daemon" "--start" "--components=pkcs11,secrets,ssh"
-      spawn-at-startup "nm-applet" "--indicator"
-      spawn-at-startup "dunst"
-      spawn-at-startup "waybar"
+      spawn-at-startup "noctalia-shell"
       spawn-at-startup "fcitx5" "-d"
 
       binds {
         // terminal
         Mod+T { spawn "alacritty"; }
-        // sound control
-        Mod+S { spawn "pavucontrol"; }
-        // app launcher
-        Mod+Space { spawn "sh" "-c" "pgrep -x rofi > /dev/null && pkill -x rofi || rofi -show-icons -combi-modi window,drun,run,ssh -show combi"; }
+
+        // noctalia shell IPC
+        Mod+S        { ${ipc ''"volume" "togglePanel"''}; }
+        Mod+Space    { ${ipc ''"launcher" "toggle"''}; }
+        Mod+M        { ${ipc ''"sessionMenu" "toggle"''}; }
+        Ctrl+Super+Q { ${ipc ''"lockScreen" "lock"''}; }
 
         // window management
         Mod+Q { close-window; }
@@ -99,7 +94,6 @@ in
         Mod+Z { toggle-window-floating; }
         Mod+A { center-column; }
         Mod+X { consume-or-expel-window-left; }
-        Mod+M { quit; }
 
         // focus
         Mod+H { focus-column-left; }
@@ -114,14 +108,16 @@ in
         Mod+Ctrl+J { move-window-down; }
 
         // move workspace to monitor
-        Mod+Left { move-workspace-to-monitor-left; }
+        Mod+Left  { move-workspace-to-monitor-left; }
         Mod+Right { move-workspace-to-monitor-right; }
 
-        // resize
-        Mod+Ctrl+Left { set-column-width "-5%"; }
+        // resize column width (preserved from hyprland)
+        Mod+Ctrl+Left  { set-column-width "-5%"; }
         Mod+Ctrl+Right { set-column-width "+5%"; }
-        Mod+Ctrl+Up { set-window-height "-5%"; }
-        Mod+Ctrl+Down { set-window-height "+5%"; }
+
+        // resize window height (moved off Mod+Ctrl+Up/Down to free that for overview)
+        Mod+Ctrl+Shift+Up   { set-window-height "-5%"; }
+        Mod+Ctrl+Shift+Down { set-window-height "+5%"; }
 
         // workspaces
         Mod+1 { focus-workspace 1; }
@@ -146,23 +142,27 @@ in
         Mod+Ctrl+9 { move-window-to-workspace 9; }
         Mod+Ctrl+0 { move-window-to-workspace 10; }
 
-        // lock screen
-        Ctrl+Super+Q { spawn "gtklock" "--daemonize"; }
+        // mouse drag/resize, niri have these as hardcoded gestures on
+        // Mod+LeftMouse (move floating) and Mod+RightMouse (resize floating)
+        // they cannot be rebound to Mod+Ctrl like hyprland's bindm did
 
-        // media keys
-        XF86AudioMute { spawn "sh" "-c" "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && dunstify --timeout=1000 --replace=1 \"Volume: Mute/Unmute\""; }
-        XF86AudioRaiseVolume { spawn "sh" "-c" "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && dunstify --timeout=1000 --replace=1 \"$(wpctl get-volume @DEFAULT_AUDIO_SINK@)\""; }
-        XF86AudioLowerVolume { spawn "sh" "-c" "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && dunstify --timeout=1000 --replace=1 \"$(wpctl get-volume @DEFAULT_AUDIO_SINK@)\""; }
-        XF86AudioPrev { spawn "sh" "-c" "playerctl previous && dunstify --timeout=1000 --replace=1 \"Media: Previous\""; }
-        XF86AudioPlay { spawn "sh" "-c" "playerctl play-pause && dunstify --timeout=1000 --replace=1 \"Media: Play/Pause\""; }
-        XF86AudioNext { spawn "sh" "-c" "playerctl next && dunstify --timeout=1000 --replace=1 \"Media: Next\""; }
-        XF86MonBrightnessUp { spawn "sh" "-c" "brightnessctl set 5%+ && dunstify --timeout=1000 --replace=1 \"Brightness: $(brightnessctl get)\""; }
-        XF86MonBrightnessDown { spawn "sh" "-c" "brightnessctl set 5%- && dunstify --timeout=1000 --replace=1 \"Brightness: $(brightnessctl get)\""; }
+        // overview
+        Mod+Ctrl+Up { toggle-overview; }
 
-        // screenshots (niri built-in)
+        // media keys via noctalia IPC
+        XF86AudioMute        { ${ipc ''"volume" "muteOutput"''}; }
+        XF86AudioRaiseVolume { ${ipc ''"volume" "increase"''}; }
+        XF86AudioLowerVolume { ${ipc ''"volume" "decrease"''}; }
+        XF86AudioPrev        { ${ipc ''"media" "previous"''}; }
+        XF86AudioPlay        { ${ipc ''"media" "playPause"''}; }
+        XF86AudioNext        { ${ipc ''"media" "next"''}; }
+        XF86MonBrightnessUp   { ${ipc ''"brightness" "increase"''}; }
+        XF86MonBrightnessDown { ${ipc ''"brightness" "decrease"''}; }
+
+        // screenshots
         Mod+Shift+3 { screenshot-screen; }
-        Mod+Shift+4 { screenshot-window; }
-        Mod+Shift+5 { screenshot; }
+        Mod+Shift+4 { screenshot; }
+        Mod+Shift+5 { screenshot-window; }
       }
     '';
   };
