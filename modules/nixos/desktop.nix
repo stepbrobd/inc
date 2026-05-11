@@ -35,16 +35,8 @@ in
   config = mkIf (cfg.enabled != null) (mkMerge [
     # disable boot logs when using a desktop manager
     {
-      boot = {
-        kernelParams = [ "quiet" ];
-        initrd.systemd.enable = true;
-        plymouth = {
-          enable = true;
-          theme = "mac-style";
-          themePackages = [ pkgs.mac-style-plymouth ];
-          font = "${pkgs.noto-fonts}/share/fonts/noto/NotoSans.ttf";
-        };
-      };
+      boot.kernelParams = [ "quiet" ];
+      boot.initrd.systemd.enable = true;
     }
 
     # xdg

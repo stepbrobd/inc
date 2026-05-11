@@ -429,29 +429,6 @@
         "type": "github"
       }
     },
-    "mac-style-plymouth": {
-      "inputs": {
-        "flake-utils": [
-          "utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1756677116,
-        "narHash": "sha256-bjtQvzupAFX5AYAIyBXSFgWhaG4nP4TvgKDoKyUhZ4U=",
-        "owner": "sergioribera",
-        "repo": "s4rchiso-plymouth-theme",
-        "rev": "2f782f4b68ce1c00cef3fde6970d7b4241bb97d4",
-        "type": "github"
-      },
-      "original": {
-        "owner": "sergioribera",
-        "repo": "s4rchiso-plymouth-theme",
-        "type": "github"
-      }
-    },
     "miroir": {
       "inputs": {
         "gomod2nix": [
@@ -697,7 +674,6 @@
         "index": "index",
         "lanzaboote": "lanzaboote",
         "llm": "llm",
-        "mac-style-plymouth": "mac-style-plymouth",
         "miroir": "miroir",
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim",

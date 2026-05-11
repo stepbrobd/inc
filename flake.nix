@@ -33,7 +33,6 @@
               self.overlays.default
               colmena.overlays.default
               llm.overlays.default
-              mac-style-plymouth.overlays.default
               ranet.overlays.default
               rust-overlay.overlays.default
             ];
@@ -120,9 +119,6 @@
     llm.inputs.bun2nix.follows = "bun2nix";
     llm.inputs.treefmt-nix.follows = "treefmt";
     # m
-    mac-style-plymouth.url = "github:sergioribera/s4rchiso-plymouth-theme";
-    mac-style-plymouth.inputs.nixpkgs.follows = "nixpkgs";
-    mac-style-plymouth.inputs.flake-utils.follows = "utils";
     miroir.url = "github:stepbrobd/miroir";
     miroir.inputs.nixpkgs.follows = "nixpkgs";
     miroir.inputs.systems.follows = "systems";
