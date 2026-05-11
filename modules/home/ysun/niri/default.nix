@@ -41,14 +41,13 @@ in
 
       layout {
         gaps 4
+        default-column-width { proportion 0.5; }
 
-        border {
+        focus-ring {
           width 2
           active-color "#4c566a"
           inactive-color "#2e3440"
         }
-
-        default-column-width { proportion 0.5; }
       }
 
       window-rule {
