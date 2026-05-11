@@ -643,7 +643,7 @@ in
           linkLightAndDarkWallpapers = true;
           monitorDirectories = [ ];
           overviewBlur = 0.4;
-          overviewEnabled = false;
+          overviewEnabled = true;
           overviewTint = 0.6;
           panelPosition = "follow_bar";
           randomIntervalSec = 300;

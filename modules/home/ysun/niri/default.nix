@@ -55,6 +55,11 @@ in
         }
       }
 
+      layer-rule {
+        match namespace=r#"^noctalia-overview*"#
+        place-within-backdrop true
+      }
+
       window-rule {
         default-column-width { proportion 0.95; }
         geometry-corner-radius 8 8 8 8
