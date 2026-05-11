@@ -119,6 +119,11 @@ description = "multikernel test"
 visibility = "public"
 archived = false
 
+[repo."nirimon"]
+description = "tui monitor configuration tool for niri with visual layout, drag-and-drop, and profile management"
+visibility = "public"
+archived = false
+
 [repo."nixology"]
 description = "all about nix"
 visibility = "public"
