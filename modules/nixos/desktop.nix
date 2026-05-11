@@ -33,10 +33,19 @@ in
   };
 
   config = mkIf (cfg.enabled != null) (mkMerge [
-    # disable boot logs when using a desktop manager
     {
-      boot.kernelParams = [ "quiet" ];
       boot.initrd.systemd.enable = true;
+
+      # disable boot logs when using a desktop manager
+      boot.consoleLogLevel = 0;
+      boot.kernelParams = [
+        "quiet"
+        "loglevel=3"
+        "rd.systemd.show_status=false"
+        "rd.udev.log_level=3"
+        "udev.log_priority=3"
+        "vt.global_cursor_default=0"
+      ];
     }
 
     # xdg
