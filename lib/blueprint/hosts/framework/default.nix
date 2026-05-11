@@ -8,5 +8,5 @@ newHost {
   provider = "owned";
   providerName = "Framework";
   type = "laptop";
-  tags = [ "graphical" "hyprland" "noctalia" ];
+  tags = [ "graphical" "niri" "noctalia" ];
 }
