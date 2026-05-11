@@ -41,18 +41,27 @@ in
 
       layout {
         gaps 4
-        default-column-width { proportion 0.5; }
+        default-column-width { proportion 0.95; }
 
-        focus-ring {
+        border {
+          on
           width 2
           active-color "#4c566a"
           inactive-color "#2e3440"
         }
+
+        focus-ring {
+          off
+        }
       }
 
       window-rule {
+        default-column-width { proportion 0.95; }
         geometry-corner-radius 8 8 8 8
         clip-to-geometry true
+        open-fullscreen false
+        open-maximized false
+        open-maximized-to-edges false
       }
 
       prefer-no-csd
