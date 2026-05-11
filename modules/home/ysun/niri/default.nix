@@ -12,7 +12,10 @@ let
 in
 {
   config = lib.mkIf (hasTag "niri") {
-    home.packages = [ pkgs.gnome-keyring ];
+    home.packages = with pkgs; [
+      gnome-keyring
+      nirimon
+    ];
 
     xdg.configFile."niri/config.kdl".text = ''
       input {
