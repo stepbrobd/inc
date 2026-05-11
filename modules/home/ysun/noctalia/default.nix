@@ -433,14 +433,14 @@ in
           screenOffCommand = "";
           screenOffTimeout = 3600;
           suspendCommand = "";
-          suspendTimeout = 86400;
+          suspendTimeout = 0;
         };
         location = {
           analogClockInCalendar = false;
+          autoLocate = true;
           firstDayOfWeek = 1;
           hideWeatherCityName = false;
           hideWeatherTimezone = false;
-          name = "Grenoble, France";
           showCalendarEvents = true;
           showCalendarWeather = true;
           showWeekNumberInCalendar = false;
@@ -448,9 +448,9 @@ in
           useFahrenheit = false;
           weatherEnabled = true;
           weatherShowEffects = false;
+          weatherTaliaMascotAlways = false;
         };
         network = {
-          airplaneModeEnabled = false;
           bluetoothAutoConnect = true;
           bluetoothDetailsViewMode = "grid";
           bluetoothHideUnnamedDevices = true;
@@ -640,6 +640,7 @@ in
           fillColor = "#000000";
           fillMode = "crop";
           hideWallpaperFilenames = false;
+          linkLightAndDarkWallpapers = true;
           monitorDirectories = [ ];
           overviewBlur = 0.4;
           overviewEnabled = false;
