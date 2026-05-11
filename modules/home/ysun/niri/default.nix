@@ -66,6 +66,10 @@ in
 
       prefer-no-csd
 
+      hotkey-overlay {
+        skip-at-startup
+      }
+
       screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
       cursor {
