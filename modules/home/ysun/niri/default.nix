@@ -1,17 +1,17 @@
 { lib, ... }:
 
 { pkgs
-, osConfig ? { services.desktopManager.enabled = null; }
+, osConfig ? { networking.hostName = ""; }
 , ...
 }:
 
 let
-  isNiri = osConfig.services.desktopManager.enabled == "niri";
+  hasTag = lib.hasTag osConfig.networking.hostName;
 
   ipc = args: ''spawn "noctalia-shell" "ipc" "call" ${args}'';
 in
 {
-  config = lib.mkIf isNiri {
+  config = lib.mkIf (hasTag "niri") {
     home.packages = [ pkgs.gnome-keyring ];
 
     xdg.configFile."niri/config.kdl".text = ''
