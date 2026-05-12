@@ -94,6 +94,7 @@ in
       security.pam.services.gtklock = { };
       security.pam.services.login.enableGnomeKeyring = true;
       security.pam.services.greetd.enableGnomeKeyring = true;
+      security.pam.services.greetd.fprintAuth = false;
 
       # gnome polkit and keyring
       security.polkit.enable = true;
