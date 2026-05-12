@@ -95,7 +95,8 @@ in
       security.pam.services.login.enableGnomeKeyring = true;
       security.pam.services.greetd.enableGnomeKeyring = true;
 
-      # gnome polkit and keyring are used for hyprland sessions
+      # gnome polkit and keyring
+      security.polkit.enable = true;
       services = {
         dbus.packages = with pkgs; [ gcr ];
         gnome.gnome-keyring.enable = true;
