@@ -1,0 +1,26 @@
+diff --git i/.yarnrc.yml w/.yarnrc.yml
+index c4b2b52..b0bf18a 100644
+--- i/.yarnrc.yml
++++ w/.yarnrc.yml
+@@ -1,4 +1,8 @@
+-yarnPath: .yarn/releases/yarn-4.6.0.cjs
++approvedGitRepositories:
++  - "**"
++
++enableScripts: true
++
+ nodeLinker: node-modules
+ defaultSemverRangePrefix: ""
+ enableTelemetry: false
+diff --git i/yarn.lock w/yarn.lock
+index 6dedb98..52555ec 100644
+--- i/yarn.lock
++++ w/yarn.lock
+@@ -2,7 +2,7 @@
+ # Manual changes might be lost - proceed with caution!
+
+ __metadata:
+-  version: 8
++  version: 9
+   cacheKey: 10c0
+
