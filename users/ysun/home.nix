@@ -57,6 +57,7 @@ in
     cfspeedtest
     colmena
     comma
+    discordo
     gitleaks
     miroir
     monocle
