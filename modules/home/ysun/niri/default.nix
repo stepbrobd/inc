@@ -74,6 +74,8 @@ in
 
       prefer-no-csd
 
+      gestures { hot-corners { off; }; }
+
       hotkey-overlay {
         skip-at-startup
       }
