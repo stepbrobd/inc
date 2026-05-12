@@ -220,6 +220,11 @@ visibility = "public"
 archived = false
 
 ## Forks
+[repo."awesome-niri"]
+description = "forked from niri-wm/awesome-niri"
+visibility = "public"
+archived = false
+
 [repo."bird"]
 description = "forked from cz-nic/bird"
 visibility = "public"
