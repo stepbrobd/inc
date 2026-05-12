@@ -17,7 +17,7 @@ in
       nirimon
     ];
 
-    xdg.configFile."niri/config.kdl".text = ''
+    xdg.configFile."niri/config.kdl".text = /* kdl */ ''
       input {
         keyboard {
           xkb {
@@ -102,6 +102,9 @@ in
         // terminal
         Mod+T { spawn "alacritty"; }
 
+        // overview
+        Mod+O { toggle-overview; }
+
         // noctalia shell IPC
         Mod+S        { ${ipc ''"volume" "togglePanel"''}; }
         Mod+Space    { ${ipc ''"launcher" "toggle"''}; }
@@ -124,20 +127,32 @@ in
         // move window
         Mod+Ctrl+H { move-column-left; }
         Mod+Ctrl+L { move-column-right; }
-        Mod+Ctrl+K { move-window-up; }
-        Mod+Ctrl+J { move-window-down; }
+        Mod+Ctrl+K { move-window-up-or-to-workspace-up; }
+        Mod+Ctrl+J { move-window-down-or-to-workspace-down; }
+
+        // focus monitor
+        Mod+Shift+H { focus-monitor-left; }
+        Mod+Shift+L { focus-monitor-right; }
+        Mod+Shift+K { focus-monitor-up; }
+        Mod+Shift+J { focus-monitor-down; }
+
+        // move window to monitor
+        Mod+Ctrl+Shift+H { move-window-to-monitor-left; }
+        Mod+Ctrl+Shift+L { move-window-to-monitor-right; }
+        Mod+Ctrl+Shift+K { move-window-to-monitor-up; }
+        Mod+Ctrl+Shift+J { move-window-to-monitor-down; }
 
         // move workspace to monitor
         Mod+Left  { move-workspace-to-monitor-left; }
         Mod+Right { move-workspace-to-monitor-right; }
+        Mod+Up    { move-workspace-to-monitor-up; }
+        Mod+Down  { move-workspace-to-monitor-down; }
 
-        // resize column width (preserved from hyprland)
+        // resize column width / window height
         Mod+Ctrl+Left  { set-column-width "-5%"; }
         Mod+Ctrl+Right { set-column-width "+5%"; }
-
-        // resize window height (moved off Mod+Ctrl+Up/Down to free that for overview)
-        Mod+Ctrl+Shift+Up   { set-window-height "-5%"; }
-        Mod+Ctrl+Shift+Down { set-window-height "+5%"; }
+        Mod+Ctrl+Up    { set-window-height "-5%"; }
+        Mod+Ctrl+Down  { set-window-height "+5%"; }
 
         // workspaces
         Mod+1 { focus-workspace 1; }
@@ -162,20 +177,13 @@ in
         Mod+Ctrl+9 { move-window-to-workspace 9; }
         Mod+Ctrl+0 { move-window-to-workspace 10; }
 
-        // mouse drag/resize, niri have these as hardcoded gestures on
-        // Mod+LeftMouse (move floating) and Mod+RightMouse (resize floating)
-        // they cannot be rebound to Mod+Ctrl like hyprland's bindm did
-
-        // overview
-        Mod+Ctrl+Up { toggle-overview; }
-
         // media keys via noctalia IPC
-        XF86AudioMute        { ${ipc ''"volume" "muteOutput"''}; }
-        XF86AudioRaiseVolume { ${ipc ''"volume" "increase"''}; }
-        XF86AudioLowerVolume { ${ipc ''"volume" "decrease"''}; }
-        XF86AudioPrev        { ${ipc ''"media" "previous"''}; }
-        XF86AudioPlay        { ${ipc ''"media" "playPause"''}; }
-        XF86AudioNext        { ${ipc ''"media" "next"''}; }
+        XF86AudioMute         { ${ipc ''"volume" "muteOutput"''}; }
+        XF86AudioRaiseVolume  { ${ipc ''"volume" "increase"''}; }
+        XF86AudioLowerVolume  { ${ipc ''"volume" "decrease"''}; }
+        XF86AudioPrev         { ${ipc ''"media" "previous"''}; }
+        XF86AudioPlay         { ${ipc ''"media" "playPause"''}; }
+        XF86AudioNext         { ${ipc ''"media" "next"''}; }
         XF86MonBrightnessUp   { ${ipc ''"brightness" "increase"''}; }
         XF86MonBrightnessDown { ${ipc ''"brightness" "decrease"''}; }
 
