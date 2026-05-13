@@ -9,7 +9,16 @@
     clock24 = true;
     terminal = "screen-256color";
 
-    plugins = with pkgs.tmuxPlugins; [ nord resurrect continuum ];
+    plugins = with pkgs.tmuxPlugins; [
+      nord
+      continuum
+      {
+        plugin = resurrect;
+        extraConfig = ''
+          set -g @resurrect-dir "${config.xdg.dataHome}/tmux/resurrect"
+        '';
+      }
+    ];
     sensibleOnTop = false;
 
     extraConfig = ''
