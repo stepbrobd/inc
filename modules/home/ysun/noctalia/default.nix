@@ -152,7 +152,7 @@ in
                 followFocusedScreen = false;
                 fontWeight = "bold";
                 groupedBorderOpacity = 1;
-                hideUnoccupied = false;
+                hideUnoccupied = true;
                 iconScale = 0.8;
                 id = "Workspace";
                 labelMode = "index";
