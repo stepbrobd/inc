@@ -275,7 +275,17 @@ in
     })
 
     (mkIf (hasProm || hasLoki) {
-      services.caddy.virtualHosts.${tsDomain}.logFormat = mkForce "output discard";
+      # caddy auto https wires ts cert manager only for .ts.net domains that do NOT already have an automation policy
+      # setting logFormat/extraConfig on this vhost cause caddyfile adapter to emit a site block
+      # changes auto-wiring and makes caddy fall through to default ACME which then 400s with LE
+      services.caddy.virtualHosts.${tsDomain} = {
+        logFormat = mkForce "output discard";
+        extraConfig = ''
+          tls {
+            get_certificate tailscale
+          }
+        '';
+      };
     })
   ];
 }
