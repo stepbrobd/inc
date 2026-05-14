@@ -3,7 +3,7 @@
 # pull caddy from `inputs` directly to prevent infinite recursion
 # as `caddy.withPlugins` is implemented with override
 inputs.nixpkgs.legacyPackages.${stdenv.hostPlatform.system}.caddy.withPlugins {
-  hash = "sha256-wLWFKd3VO/KP/n68fCpBC+fcCZIRcWHkwTTdxNCU2P0=";
+  hash = "sha256-sHihPVP+5Vy7r7jA/2ASD1YgA5F+YO1Tbm+L2986bzA=";
   plugins = [
     "github.com/WeidiDeng/caddy-cloudflare-ip@v0.0.0-20231130002422-f53b62aa13cb"
     "github.com/caddy-dns/cloudflare@v0.2.4"
