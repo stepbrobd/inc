@@ -1,6 +1,10 @@
+{ lib, ... }:
+
 { config, pkgs, ... }:
 
 let
+  hasTag = lib.hasTag config.networking.hostName;
+
   # https://tailscale.com/kb/1320/performance-best-practices#linux-optimizations-for-subnet-routers-and-exit-nodes
   script = ''
     #!${pkgs.runtimeShell}
@@ -21,15 +25,17 @@ in
       then config.services.caddy.user
       else null;
 
-    extraSetFlags =
-      pkgs.lib.optionals config.services.victoriametrics.enable [
-        "--webclient"
-      ] ++
-      # tailscale is for control plane only (ssh, monitoring, ldap, etc.)
-      [
-        "--accept-routes"
-        "--advertise-exit-node"
-      ];
+    extraSetFlags = [
+      "--accept-dns"
+      "--accept-routes=false"
+      "--advertise-exit-node${if !hasTag "server" then "=false" else ""}"
+      "--auto-update=false"
+      "--exit-node-allow-lan-access"
+      "--hostname=${config.networking.hostName}"
+      "--ssh=false"
+    ] ++ pkgs.lib.optionals config.services.victoriametrics.enable [
+      "--webclient"
+    ];
   };
 
   # in case nftables is used
