@@ -21,16 +21,22 @@ jobs:
 
           while read -r repo; do
             own=$(echo "$repo" | jq -r '.owner.login + "/" + .name')
-            upstream=$(gh api "repos/$own" --jq '.parent.nameWithOwner // .parent.full_name // empty' 2>/dev/null)
 
-            if [ -z "$upstream" ]; then
-              echo "Skipping $own (no accessible upstream)"
+            meta=$(gh api "repos/$own" 2>/dev/null) || {
+              echo "Skipping $own (cannot read repo metadata)"
+              continue
+            }
+            upstream=$(echo "$meta" | jq -r '.parent.full_name // empty')
+            branch=$(echo "$meta" | jq -r '.default_branch // empty')
+
+            if [ -z "$upstream" ] || [ -z "$branch" ]; then
+              echo "Skipping $own (no upstream or default branch)"
               continue
             fi
 
-            echo "Syncing $own from $upstream"
+            echo "Syncing $own from $upstream ($branch)"
 
-            if gh repo sync "$own" --source "$upstream"; then
+            if gh api -X POST "repos/$own/merge-upstream" -f "branch=$branch" --silent; then
               echo "Done"
             else
               echo "Failed to sync $own from $upstream"
