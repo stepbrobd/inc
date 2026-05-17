@@ -184,6 +184,11 @@ description = "just another profile readme"
 visibility = "public"
 archived = false
 
+[repo."swproj"]
+description = "toolkit for sonarworks soundid"
+visibility = "public"
+archived = false
+
 [repo."tailscale-acls"]
 description = "tailscale access controls"
 visibility = "public"
