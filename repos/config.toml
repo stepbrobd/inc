@@ -94,6 +94,11 @@ description = "soft serve configs"
 visibility = "public"
 archived = true
 
+[repo."imgmeta"]
+description = "pure ocaml image metadata library"
+visibility = "public"
+archived = false
+
 [repo."inc"]
 description = "the second largest nix monorepo"
 visibility = "public"
