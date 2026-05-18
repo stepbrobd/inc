@@ -18,6 +18,7 @@
       ${lib.getExe pkgs.gitleaks} git --no-banner --pre-commit --staged
       ${lib.getExe pkgs.nixpkgs-fmt} .
       ${lib.getExe pkgs.taplo} format **/*.toml
+      ${lib.getExe pkgs.zizmor} --fix=all .
 
       popd
     '';
