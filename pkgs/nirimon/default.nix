@@ -5,13 +5,13 @@
 
 buildGoModule (finalAttrs: {
   pname = "nirimon";
-  version = "2026.512.0";
+  version = "2026.519.0";
 
   src = fetchFromGitHub {
     owner = "stepbrobd";
     repo = "nirimon";
     tag = finalAttrs.version;
-    hash = "sha256-ba/t9IBMH2I6rVmjr8d6LVvTKh8pXDeZogsEG7sDlY4=";
+    hash = "sha256-1bKC1QkWorzfg87xwuGgkIOlLWCj0cotYhpZXYSSm9w=";
   };
 
   vendorHash = "sha256-/Yihk4SM5s1F7KKZsUnG1ZQgHDPKxi/GPL8blPDgUkk=";
