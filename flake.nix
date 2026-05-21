@@ -66,7 +66,7 @@
     bun2nix.inputs.nixpkgs.follows = "nixpkgs";
     bun2nix.inputs.systems.follows = "systems";
     bun2nix.inputs.flake-parts.follows = "parts";
-    bun2nix.inputs.treefmt-nix.follows = "";
+    bun2nix.inputs.treefmt-nix.follows = "treefmt";
     # c
     colmena.url = "github:stepbrobd/colmena/detached";
     colmena.inputs.nixpkgs.follows = "nixpkgs";
@@ -86,7 +86,7 @@
     direnv-instant.url = "github:mic92/direnv-instant";
     direnv-instant.inputs.nixpkgs.follows = "nixpkgs";
     direnv-instant.inputs.flake-parts.follows = "parts";
-    direnv-instant.inputs.treefmt-nix.follows = "";
+    direnv-instant.inputs.treefmt-nix.follows = "treefmt";
     # f
     flatpak.url = "github:gmodena/nix-flatpak";
     # g
@@ -121,7 +121,7 @@
     llm.inputs.flake-parts.follows = "parts";
     llm.inputs.blueprint.follows = "blueprint";
     llm.inputs.bun2nix.follows = "bun2nix";
-    llm.inputs.treefmt-nix.follows = "";
+    llm.inputs.treefmt-nix.follows = "treefmt";
     # m
     miroir.url = "github:stepbrobd/miroir";
     miroir.inputs.nixpkgs.follows = "nixpkgs";
@@ -136,7 +136,7 @@
     noctalia-qs.url = "github:noctalia-dev/noctalia-qs";
     noctalia-qs.inputs.nixpkgs.follows = "nixpkgs";
     noctalia-qs.inputs.systems.follows = "systems";
-    noctalia-qs.inputs.treefmt-nix.follows = "";
+    noctalia-qs.inputs.treefmt-nix.follows = "treefmt";
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.inputs.flake-parts.follows = "parts";
@@ -177,6 +177,8 @@
     terranix.inputs.nixpkgs.follows = "nixpkgs";
     terranix.inputs.flake-parts.follows = "parts";
     terranix.inputs.systems.follows = "systems";
+    treefmt.url = "github:numtide/treefmt-nix";
+    treefmt.inputs.nixpkgs.follows = "nixpkgs";
     # u
     uad2.url = "github:stepbrobd/uad2";
     uad2.inputs.nixpkgs.follows = "nixpkgs";

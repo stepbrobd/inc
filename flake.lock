@@ -76,7 +76,9 @@
         "systems": [
           "systems"
         ],
-        "treefmt-nix": []
+        "treefmt-nix": [
+          "treefmt"
+        ]
       },
       "locked": {
         "lastModified": 1778446047,
@@ -197,7 +199,9 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "treefmt-nix": []
+        "treefmt-nix": [
+          "treefmt"
+        ]
       },
       "locked": {
         "lastModified": 1779347899,
@@ -433,7 +437,9 @@
         "systems": [
           "systems"
         ],
-        "treefmt-nix": []
+        "treefmt-nix": [
+          "treefmt"
+        ]
       },
       "locked": {
         "lastModified": 1779325288,
@@ -580,7 +586,9 @@
         "systems": [
           "systems"
         ],
-        "treefmt-nix": []
+        "treefmt-nix": [
+          "treefmt"
+        ]
       },
       "locked": {
         "lastModified": 1778983195,
@@ -710,6 +718,7 @@
         "sweep": "sweep",
         "systems": "systems",
         "terranix": "terranix",
+        "treefmt": "treefmt",
         "uad2": "uad2",
         "utils": "utils",
         "ysun": "ysun",
@@ -895,6 +904,26 @@
       "original": {
         "owner": "terranix",
         "repo": "terranix",
+        "type": "github"
+      }
+    },
+    "treefmt": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1775636079,
+        "narHash": "sha256-pc20NRoMdiar8oPQceQT47UUZMBTiMdUuWrYu2obUP0=",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "rev": "790751ff7fd3801feeaf96d7dc416a8d581265ba",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "treefmt-nix",
         "type": "github"
       }
     },
