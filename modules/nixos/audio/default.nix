@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ lib, inputs, ... }:
 
 { config, pkgs, ... }:
 
@@ -38,7 +38,29 @@
     };
     jack.enable = true;
     pulse.enable = true;
-    wireplumber.enable = true;
+
+    wireplumber = {
+      enable = true;
+
+      # UAD shit
+      extraScripts."audio/routing.lua" = lib.readFile ./routing.lua;
+      extraConfig."95-routing" = {
+        "wireplumber.components" = [{
+          name = "audio/routing.lua";
+          type = "script/lua";
+          provides = "custom.routing";
+        }];
+        "wireplumber.profiles".main."custom.routing" = "required";
+      };
+    };
+
+    # same UAD shit
+    # use https://github.com/stepbrobd/swproj to generate new correction profile
+    configPackages = [
+      (pkgs.writeTextDir
+        "share/pipewire/pipewire.conf.d/95-ua.conf"
+        (lib.readFile ./ua.conf))
+    ];
 
     # https://wiki.nixos.org/wiki/PipeWire
     extraConfig = {
