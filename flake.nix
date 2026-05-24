@@ -83,10 +83,6 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
-    direnv-instant.url = "github:mic92/direnv-instant";
-    direnv-instant.inputs.nixpkgs.follows = "nixpkgs";
-    direnv-instant.inputs.flake-parts.follows = "parts";
-    direnv-instant.inputs.treefmt-nix.follows = "treefmt";
     # f
     flatpak.url = "github:gmodena/nix-flatpak";
     # g
