@@ -17,6 +17,7 @@
       ${lib.getExe pkgs.deno} fmt .
       ${lib.getExe pkgs.gitleaks} git --no-banner --pre-commit --staged
       ${lib.getExe pkgs.nixpkgs-fmt} .
+      ${lib.getExe pkgs.stylua} --glob **/*.lua
       ${lib.getExe pkgs.taplo} format **/*.toml
       ${lib.getExe pkgs.zizmor} --fix=all .
 
