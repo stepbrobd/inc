@@ -913,11 +913,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774644659,
-        "narHash": "sha256-U7j9pAhEy8uzhn8rwk+oQ29ptw5f0ajsbaij5qxHwzE=",
+        "lastModified": 1779660593,
+        "narHash": "sha256-gpHwNHFt/MrA3hWP3MS6BD48gq45a/ug9APtMobjl8k=",
         "owner": "stepbrobd",
         "repo": "uad2",
-        "rev": "61c3fc9c144b45d70c94c347a55e872f6ae8c2d4",
+        "rev": "7ed9a82e2b5fbfaa409fd3c96d4a1dbf45eeb096",
         "type": "github"
       },
       "original": {
