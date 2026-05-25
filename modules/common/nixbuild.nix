@@ -36,6 +36,7 @@ in
 
       programs.ssh.extraConfig = ''
         Host eu.nixbuild.net
+          WarnWeakCrypto no
           PubkeyAcceptedKeyTypes ssh-ed25519
           ServerAliveInterval 60
           IPQoS throughput
