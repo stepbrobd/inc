@@ -56,7 +56,7 @@ in
           supportedFeatures = [ "big-parallel" "benchmark" "kvm" "nixos-test" ];
         });
 
-        settings.extra-substituters = [ "ssh://eu.nixbuild.net" ];
+        settings.extra-substituters = [ "ssh-ng://eu.nixbuild.net" ];
         settings.trusted-public-keys = [ "nixbuild.net/CQ9XPX-1:8WFF5qINzG2FrrvIePqdH+XraKME30g3+Es3aCWBw24=" ];
       };
 
