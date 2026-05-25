@@ -26,10 +26,16 @@ in
       nix.nixbuild.enable = mkDefault true;
     })
 
-    # massive hack, use hm user age key to decrypt system keys
-    (mkIf (config ? home-manager && config.home-manager.users ? ysun && config.home-manager.users.ysun ? sops) {
-      sops.age.keyFile = config.home-manager.users.ysun.sops.age.keyFile;
-    })
+
+    (mkIf
+      (cfg.enable # massive hack, use hm user age key to decrypt system keys
+        && hasTag "laptop"
+        && config ? home-manager
+        && config.home-manager.users ? ysun
+        && config.home-manager.users.ysun ? sops)
+      {
+        sops.age.keyFile = config.home-manager.users.ysun.sops.age.keyFile;
+      })
 
     (mkIf cfg.enable {
       sops.secrets."nixbuild/prv" = { };
