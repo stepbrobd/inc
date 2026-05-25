@@ -3,7 +3,7 @@
 { config, pkgs, ... }:
 
 let
-  inherit (lib) forEach mkDefault mkMerge mkEnableOption mkOption types;
+  inherit (lib) forEach mkDefault mkIf mkMerge mkEnableOption mkOption types;
 
   hasTag = lib.hasTag config.networking.hostName;
 
@@ -26,8 +26,12 @@ in
       nix.nixbuild.enable = mkDefault true;
     })
 
+    # massive hack, use hm user age key to decrypt system keys
+    (mkIf (config ? home-manager && config.home-manager.users ? ysun && config.home-manager.users.ysun ? sops) {
+      sops.age.keyFile = config.home-manager.users.ysun.sops.age.keyFile;
+    })
 
-    (lib.mkIf cfg.enable {
+    (mkIf cfg.enable {
       sops.secrets."nixbuild/prv" = { };
 
       programs.ssh.extraConfig = ''
