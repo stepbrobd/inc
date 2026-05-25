@@ -27,6 +27,7 @@ let
         self.nixosModules.minimal
         self.nixosModules.monitoring
         self.nixosModules.neogrok
+        self.nixosModules.nixbuild
         self.nixosModules.passwordless
         self.nixosModules.plausible
         self.nixosModules.server
@@ -48,6 +49,7 @@ let
         self.nixosModules.graphical
         self.nixosModules.ip-forwarding
         self.nixosModules.minimal
+        self.nixosModules.nixbuild
         self.nixosModules.passwordless
         self.nixosModules.power
         srvos.nixosModules.desktop
