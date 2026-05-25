@@ -73,8 +73,6 @@ in
         content = "2602:f590::23:161:104:17";
         comment = "AS10779 - Anycast - Personal Site";
       };
-      co_ysun_wildcard = mkPersonalSiteRebind { name = "*"; };
-
       co_ysun_srvc = {
         type = "HTTPS";
         proxied = false;

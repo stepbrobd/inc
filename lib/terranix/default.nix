@@ -16,7 +16,7 @@ let
       refresh = 10000;
       retry = 2400;
       expire = 604800;
-      min_ttl = 1800;
+      min_ttl = 60;
       ttl = 3600;
     };
     ns_ttl = 86400;

@@ -7,7 +7,6 @@ in
   resource.cloudflare_dns_record = forZone "stepbrobd.com"
     {
       com_stepbrobd_apex = mkPersonalSiteRebind { name = "@"; };
-      com_stepbrobd_wildcard = mkPersonalSiteRebind { name = "*"; };
 
       com_stepbrobd_atproto = {
         type = "TXT";
