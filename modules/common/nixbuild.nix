@@ -15,7 +15,7 @@ in
 
     systems = mkOption {
       type = with types; listOf str;
-      default = [ "x86_64-linux" "aarch64-linux" ];
+      default = [ "aarch64-linux" ];
       example = [ "x86_64-linux" "aarch64-linux" ];
       description = "https://docs.nixbuild.net/getting-started/index.html#quick-nixos-configuration";
     };
