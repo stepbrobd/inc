@@ -11,8 +11,8 @@ let
     multi_provider = false;
     secondary_overrides = false;
     soa = {
-      mname = "dns.ysun.co";
-      rname = "noc.ysun.co";
+      mname = "ns.ysun.co";
+      rname = "ysun.hey.com";
       refresh = 10000;
       retry = 2400;
       expire = 604800;
@@ -91,9 +91,10 @@ rec {
     # for some reason only works with enterprise zones
     # even though ACNS is enabled
     # vanity_name_servers = [
-    #   "dns.ysun.co"
-    #   "mom.ysun.co"
-    #   "dad.ysun.co"
+    #   "ns.ysun.co"
+    #   "ns.ysun.fr"
+    #   "ns.ysun.jp"
+    #   "ns.ysun.us"
     # ];
   } // config;
   acnsSettings = {
