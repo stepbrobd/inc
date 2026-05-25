@@ -66,7 +66,9 @@ in
             "internal.center"
             "stepbrobd.com"
             "xdg.sh"
+            "ysun.fr"
             "ysun.jp"
+            "ysun.us"
             "*.as10779.net"
             "*.as18932.net"
             "*.churn.cards"
@@ -74,7 +76,9 @@ in
             "*.internal.center"
             "*.stepbrobd.com"
             "*.xdg.sh"
+            "*.ysun.fr"
             "*.ysun.jp"
+            "*.ysun.us"
           ];
         };
       };
