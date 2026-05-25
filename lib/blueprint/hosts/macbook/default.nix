@@ -8,4 +8,5 @@ newHost {
   provider = "owned";
   providerName = "Apple";
   type = "laptop";
+  tags = [ "nixbuild" ];
 }

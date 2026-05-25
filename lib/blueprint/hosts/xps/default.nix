@@ -8,5 +8,5 @@ newHost {
   provider = "owned";
   providerName = "Dell";
   type = "laptop";
-  tags = [ "graphical" "niri" "noctalia" ];
+  tags = [ "graphical" "niri" "noctalia" "nixbuild" ];
 }
