@@ -56,7 +56,7 @@ in
       services.victoriametrics = {
         enable = true;
         listenAddress = "[::1]:8428";
-        retentionPeriod = "6M";
+        retentionPeriod = "14d";
         extraOptions = [
           "-enableTCP6"
           "-memory.allowedPercent=40"
@@ -143,12 +143,15 @@ in
           limits_config = {
             reject_old_samples = true;
             reject_old_samples_max_age = "168h";
+            retention_period = "168h";
             max_entries_limit_per_query = 1000000;
           };
 
           compactor = {
             working_directory = config.services.loki.dataDir;
             compactor_ring.kvstore.store = "inmemory";
+            retention_enabled = true;
+            delete_request_store = "filesystem";
           };
         };
       };
