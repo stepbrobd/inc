@@ -64,7 +64,7 @@ in
         (pkgs.writeShellApplication {
           name = "nixbuild";
           runtimeInputs = with pkgs; [ rlwrap ];
-          text = "rlwrap ssh eu.nixbuild.net shell";
+          text = "sudo rlwrap ssh eu.nixbuild.net shell";
         })
       ];
     })
