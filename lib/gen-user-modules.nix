@@ -27,6 +27,8 @@ map (u: "${inputs.self}/users/${u}") usernames ++ [
         ({ config, ... }: { sops.age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt"; })
         # actual user module
         "${inputs.self}/users/${u}/home.nix"
+        # disable version check
+        { home.enableNixpkgsReleaseCheck = false; }
       ] ++ (users.${u});
     });
   }

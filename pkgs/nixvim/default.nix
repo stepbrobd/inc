@@ -18,9 +18,11 @@ lib.makeOverridable nixvim.makeNixvimWithModule {
     lib = lib.extend inputs.nixvim.lib.overlay;
   };
 
-  module.imports = map
-    (f: ./${f})
-    (filter
-      (f: f != "default.nix")
-      (attrNames (readDir ./.)));
+  module.imports = [{ version.enableNixpkgsReleaseCheck = false; }]
+    ++
+    map
+      (f: ./${f})
+      (filter
+        (f: f != "default.nix")
+        (attrNames (readDir ./.)));
 }
