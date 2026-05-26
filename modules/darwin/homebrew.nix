@@ -72,7 +72,6 @@
       "osu"
       "slack"
       "thaw"
-      "webex"
       "yubico-authenticator"
       "zoom"
       "zotero"
