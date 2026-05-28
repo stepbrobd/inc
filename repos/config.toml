@@ -330,6 +330,11 @@ description = "forked from cybergenik/hopper"
 visibility = "public"
 archived = true
 
+[repo."infra"]
+description = "forked from nix-community/infra"
+visibility = "public"
+archived = false
+
 [repo."kanidm"]
 description = "forked from kanidm/kanidm"
 visibility = "public"
