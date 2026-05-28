@@ -1,0 +1,26 @@
+diff --git i/proto/bgp/bgp.c w/proto/bgp/bgp.c
+index 4f726d7e..6fcdc5f9 100644
+--- i/proto/bgp/bgp.c
++++ w/proto/bgp/bgp.c
+@@ -4274,17 +4274,15 @@ bgp_show_proto_info(struct proto *P)
+
+       BGP_PTX_LOCK(c->tx, tx);
+
++      /* bgp_bucket_pending() walks the prefix tree and dereferences slots
++       * whose .pref can be stale during concurrent TX, segfaulting bird on
++       * every "show protocols all" scrape.  Skip the prefix count. */
+       uint bucket_cnt = 0;
+-      uint prefix_cnt = 0;
+       struct bgp_bucket *buck;
+       WALK_LIST(buck, tx->bucket_queue)
+-      {
+    bucket_cnt++;
+-   prefix_cnt += bgp_bucket_pending(buck);
+-      }
+
+-      cli_msg(-1006, "    Pending %u attribute sets with total %u prefixes to send",
+-    bucket_cnt, prefix_cnt);
++      cli_msg(-1006, "    Pending %u attribute sets to send", bucket_cnt);
+     }
+   }
+ }
