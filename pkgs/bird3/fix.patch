@@ -1,7 +1,37 @@
-diff --git i/proto/bgp/bgp.c w/proto/bgp/bgp.c
-index 4f726d7e..6fcdc5f9 100644
---- i/proto/bgp/bgp.c
-+++ w/proto/bgp/bgp.c
+From: Yifei Sun <ysun@hey.com>
+Date: Thu May 28 22:56:05 2026 +0200
+Subject: [PATCH] BGP: skip bgp_bucket_pending() in show proto info
+
+bgp_show_proto_info() walks each BGP channel's tx->bucket_queue under
+BGP_PTX_LOCK and calls bgp_bucket_pending() per bucket to count the prefixes
+still queued for transmission.
+
+bgp_bucket_pending() descends into the bucket's prefix tree (proto/bgp/attrs.c)
+and dereferences row->array[pos].pref->cur_buck without tolerating slots whose
+.pref is NULL or holds a stale/torn value.
+
+In production we see this crash continuously on bird 3.3.0 when
+prometheus-bird-exporter scrapes the daemon every ~30 seconds.
+
+All recorded SIGSEGV cores across multiple hosts land in this code path
+(verified via gdb against fresh core files).
+
+The simplest defensive change is to drop the prefix count from "show protocols
+all".  The bucket count is still useful, and the WALK_LIST itself just walks
+list nodes under the lock, which is safe.  Operators lose the "with total N
+prefixes to send" detail but gain a daemon that does not segfault on every
+scrape.
+
+Downstream stop-gap until the underlying race in the prefix tree walker is
+properly diagnosed and fixed upstream.
+
+---
+ proto/bgp/bgp.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
+
+diff --git a/proto/bgp/bgp.c b/proto/bgp/bgp.c
+--- a/proto/bgp/bgp.c
++++ b/proto/bgp/bgp.c
 @@ -4274,17 +4274,15 @@ bgp_show_proto_info(struct proto *P)
 
        BGP_PTX_LOCK(c->tx, tx);
@@ -14,13 +44,14 @@ index 4f726d7e..6fcdc5f9 100644
        struct bgp_bucket *buck;
        WALK_LIST(buck, tx->bucket_queue)
 -      {
-    bucket_cnt++;
--   prefix_cnt += bgp_bucket_pending(buck);
+ 	bucket_cnt++;
+-	prefix_cnt += bgp_bucket_pending(buck);
 -      }
 
 -      cli_msg(-1006, "    Pending %u attribute sets with total %u prefixes to send",
--    bucket_cnt, prefix_cnt);
+-	 bucket_cnt, prefix_cnt);
 +      cli_msg(-1006, "    Pending %u attribute sets to send", bucket_cnt);
      }
    }
  }
+
