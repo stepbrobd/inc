@@ -7,13 +7,13 @@ pkgsPrev.bird3.overrideAttrs (oldAttrs: {
   patches = (oldAttrs.patches or [ ]) ++ [
     # link quality algo selection
     (fetchpatch2 {
-      url = "https://github.com/nickcao/bird/commit/427cf93908cce6a6f9faeab9d53972e324b8d357.patch";
-      hash = "sha256-osVfPQAw5qcLhirGtSZDSUA8/ZosJNz1utwhO87sL8c=";
+      url = "https://github.com/nickcao/bird/commit/0b21028f41c00097b3232a83258a0c574300f1fc.patch";
+      hash = "sha256-KcAG03qGAaxb/1MGAnWHNzxVrIE5csqBc9+jqxD4ID4=";
     })
     # iface deletion race
     (fetchpatch2 {
-      url = "https://github.com/nickcao/bird/commit/1a4d4a81b3e3ca23edad75c027dc3e19ef1947b8.patch";
-      hash = "sha256-h6WC/EJr+iA+tZbKlDFJfiRmZP8MnSSyY2cJg+JNMXc=";
+      url = "https://github.com/nickcao/bird/commit/18175de3cc75b4e662b5f43d8a93a1c062a8b3ab.patch";
+      hash = "sha256-N11bkhn67fPXPSfrJ32v+t6Gwyh0qIOuisJ7uk1WGPA=";
     })
   ];
 })
