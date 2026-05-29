@@ -44,6 +44,11 @@ description = "advent of code"
 visibility = "public"
 archived = false
 
+[repo."atelier"]
+description = "nix atelier ;)"
+visibility = "public"
+archived = false
+
 [repo."autopilot"]
 description = "flake parts with autoloading"
 visibility = "public"
