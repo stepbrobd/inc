@@ -14,7 +14,7 @@ in
 
   config = (mkMerge [
     (lib.mkIf (hasTag "nix-community") {
-      nix.nixbuild.enable = mkDefault true;
+      nix.nix-community.enable = mkDefault true;
     })
 
     (mkIf
@@ -48,7 +48,10 @@ in
         buildMachines = [{
           system = "aarch64-linux";
           hostName = "aarch64-build-box.nix-community.org";
+          publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUc5dXlmaHlsaStCUnRrNjR5K25pcXRiK3NLcXVSR0daODdmNFlSYzhFRTEK";
           maxJobs = 100;
+          sshUser = "ysun";
+          sshKey = config.sops.secrets."nix-community/prv".path;
           supportedFeatures = [
             "benchmark"
             "big-parallel"
