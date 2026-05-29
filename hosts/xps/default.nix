@@ -40,6 +40,4 @@
   ];
 
   users.mutableUsers = false;
-
-  # nix.nixbuild.enable = true;
 }

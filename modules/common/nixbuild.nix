@@ -11,7 +11,7 @@ let
 in
 {
   options.nix.nixbuild = {
-    enable = mkEnableOption "nixbuild.net";
+    enable = mkEnableOption "nixbuild builder";
 
     systems = mkOption {
       type = with types; listOf str;
@@ -25,7 +25,6 @@ in
     (lib.mkIf (hasTag "nixbuild") {
       nix.nixbuild.enable = mkDefault true;
     })
-
 
     (mkIf
       (cfg.enable # massive hack, use hm user age key to decrypt system keys
@@ -62,9 +61,6 @@ in
           maxJobs = 100;
           supportedFeatures = [ "big-parallel" "benchmark" "kvm" "nixos-test" ];
         });
-
-        settings.extra-substituters = [ "ssh-ng://eu.nixbuild.net" ];
-        settings.trusted-public-keys = [ "nixbuild.net/CQ9XPX-1:8WFF5qINzG2FrrvIePqdH+XraKME30g3+Es3aCWBw24=" ];
       };
 
       environment.systemPackages = [

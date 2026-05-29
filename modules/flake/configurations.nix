@@ -27,6 +27,7 @@ let
         self.nixosModules.minimal
         self.nixosModules.monitoring
         self.nixosModules.neogrok
+        self.nixosModules.nix-community
         self.nixosModules.nixbuild
         self.nixosModules.passwordless
         self.nixosModules.plausible
@@ -49,6 +50,7 @@ let
         self.nixosModules.graphical
         self.nixosModules.ip-forwarding
         self.nixosModules.minimal
+        self.nixosModules.nix-community
         self.nixosModules.nixbuild
         self.nixosModules.passwordless
         self.nixosModules.power
@@ -62,6 +64,7 @@ let
         # hammerspoon
         homebrew
         # linux-builder
+        nix-community
         nixbuild
         ntpd-rs
         passwordless

@@ -91,11 +91,13 @@ in
         "https://nix-community.cachix.org?priority=30"
         "https://temp-cache.nix-community.org?priority=30"
         "https://nixpkgs-update.cachix.org?priority=30"
+        "ssh-ng://eu.nixbuild.net?priority=30"
         "https://nixos-raspberrypi.cachix.org?priority=30"
         "https://stepbrobd.cachix.org?priority=40"
         "https://${lib.blueprint.services.attic.domain}/public?priority=40"
         "https://noctalia.cachix.org?priority=40"
       ];
+
 
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
@@ -103,6 +105,7 @@ in
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "temp-cache.nix-community.org-1:RSXIfGjilfBsilDvj03/VnL/9qAxacBnb1YQvSdCoDc="
         "nixpkgs-update.cachix.org-1:6y6Z2JdoL3APdu6/+Iy8eZX2ajf09e4EE9SnxSML1W8="
+        "nixbuild.net/CQ9XPX-1:8WFF5qINzG2FrrvIePqdH+XraKME30g3+Es3aCWBw24="
         "nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI="
         "stepbrobd.cachix.org-1:Aa5jdkPVrCOvzaLTC0kVP5PYQ5BtNnLg1tG1Qa/QuE4="
         "public:Y9EARSt+KLUY1JrY4X8XWmzs6uD+Zh2hRqN9eCUg55U="
