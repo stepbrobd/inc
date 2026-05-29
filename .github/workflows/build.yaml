@@ -1,0 +1,15 @@
+name: Build
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  Atelier:
+    uses: stepbrobd/atelier/.github/workflows/discover.yaml@master
+    secrets: inherit # zizmor: ignore[secrets-inherit]
