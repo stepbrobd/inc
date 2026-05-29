@@ -7,7 +7,6 @@ keys:
     - &baldy age1z9lj8dhfs84z9gngjgydn5zmyftnn58ns2llxckd2kpd6j7nd4nq0pgya5
     - &butte age1js9g9de2g2hqtzfhaepn9uff3n8f3m0xnkneyslsd28xs4pnmfxsuvthaj
     - &cradle age13ezermywyfeu7c04nka0jm4vj6gqnhg7cqh0lg75k9r0zuqfhajse7zndt
-    - &halti age1lchn0h0a63g7k9zl76f7nuylp5cl9ak2f6ucy87q0gyk8qa8negst87jle
     - &highline age1qvcaxsqwqf4cs83pc646w22g4kq44xuvj2jvy2g3a67pjem2cazqn7x0tl
     - &isere age176zkrrgc4p4r49lm7aeck633t3xlh90dqwzqayqe0evk68q7vy7saacjrv
     - &kongo age18np64w0h4adalpwxgdysppjy4hqd6adhrrmz7q2xekjyczzfes4qkj52uj
@@ -31,7 +30,6 @@ creation_rules:
           - *baldy
           - *butte
           - *cradle
-          - *halti
           - *highline
           - *isere
           - *kongo

@@ -22,9 +22,3 @@ builds:
     - packages.*.ripe-atlas-software-probe # weird shit
     - packages.*.spotify # unfree
     - packages.*.verus # no one uses this shit anyways
-
-servers:
-  - configuration: halti
-    deployment:
-      branch: master
-      type: on-branch
