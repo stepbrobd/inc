@@ -62,6 +62,10 @@ in
           maxJobs = 100;
           supportedFeatures = [ "big-parallel" "benchmark" "kvm" "nixos-test" ];
         });
+
+        # should only be available if have nix build ssh key
+        settings.extra-substituters = [ "ssh-ng://eu.nixbuild.net" ];
+        settings.trusted-public-keys = [ "nixbuild.net/CQ9XPX-1:8WFF5qINzG2FrrvIePqdH+XraKME30g3+Es3aCWBw24=" ];
       };
 
       environment.systemPackages = [
