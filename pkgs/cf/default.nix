@@ -5,11 +5,11 @@
 buildNpmPackage (finalAttrs: {
   meta.mainProgram = "cf";
   pname = "cf";
-  version = "0.0.5";
+  version = "0.0.6";
 
   src = fetchzip {
     url = "https://registry.npmjs.org/cf/-/cf-${finalAttrs.version}.tgz";
-    hash = "sha256-THzx9MeRD1sFyYn8VwRhJzqWCj6b+ASfrVqGhsRa3R4=";
+    hash = "sha256-FaBKniLXo6Wjsnr0KVbgnxaWTUKbOckKsbgUlyUHrYg=";
   };
 
   postPatch = ''
