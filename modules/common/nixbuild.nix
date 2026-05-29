@@ -48,6 +48,7 @@ in
           IdentityFile ${config.sops.secrets."nixbuild/prv".path}
       '';
 
+      # doing it this way because we might need shell access for settings
       programs.ssh.knownHosts.nixbuild = {
         hostNames = [ "eu.nixbuild.net" ];
         publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPIQCZc54poJ8vqawd8TraNryQeJnvH1eLpIDgbiqymM";
