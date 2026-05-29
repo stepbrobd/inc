@@ -159,8 +159,8 @@ in
         type = "CNAME";
         proxied = false;
         name = "otel";
-        content = "halti.sd.ysun.co";
-        comment = "Garnix - Grafana";
+        content = "walberla.sd.ysun.co";
+        comment = "Hetzner - Grafana";
       };
 
       co_ysun_read = {
