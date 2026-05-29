@@ -226,26 +226,6 @@
         "type": "github"
       }
     },
-    "garnix": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1776182355,
-        "narHash": "sha256-MfCDBpUax2WyTrNAHQ4jSzO9J1mY3w3VYtab5DoFsGk=",
-        "owner": "stepbrobd",
-        "repo": "garnix-lib",
-        "rev": "a7beac3fbe2621a90df213449c451d2e9a0b9017",
-        "type": "github"
-      },
-      "original": {
-        "owner": "stepbrobd",
-        "repo": "garnix-lib",
-        "type": "github"
-      }
-    },
     "generators": {
       "inputs": {
         "nixlib": [
@@ -665,7 +645,6 @@
         "darwin": "darwin",
         "disko": "disko",
         "flatpak": "flatpak",
-        "garnix": "garnix",
         "generators": "generators",
         "gitignore": "gitignore",
         "gomod2nix": "gomod2nix",
