@@ -67,6 +67,11 @@ rec {
       };
     };
 
+    fastly = {
+      terraform.required_providers.fastly.source = "fastly/fastly";
+      provider.fastly.api_key = ''''${data.sops_file.secrets.data["fastly.api_key"]}'';
+    };
+
     sops = {
       terraform.required_providers.sops.source = "carlpett/sops";
       provider.sops = { };
