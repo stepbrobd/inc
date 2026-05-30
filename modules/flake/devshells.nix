@@ -12,7 +12,7 @@
         sops
 
         inputs'.terranix.packages.default
-        (opentofu.withPlugins (_: with pkgs.terraform-providers-bin.providers; [ cloudflare.cloudflare carlpett.sops tailscale.tailscale ]))
+        opentofu
       ];
     };
   };

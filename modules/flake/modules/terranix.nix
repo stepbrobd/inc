@@ -27,7 +27,7 @@
         runtimeInputs = with pkgs; [
           gnused
           sops
-          (opentofu.withPlugins (_: with pkgs.terraform-providers-bin.providers; [ cloudflare.cloudflare carlpett.sops tailscale.tailscale ]))
+          opentofu
         ];
 
         text = ''
