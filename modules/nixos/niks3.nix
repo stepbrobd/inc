@@ -1,6 +1,6 @@
 { inputs, lib, ... }:
 
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
   inherit (lib) mkIf mkMerge;
@@ -25,6 +25,9 @@ in
       };
 
       services.niks3 = {
+        package = pkgs.niks3;
+        serverPackage = pkgs.niks3-server;
+
         cacheUrl = "https://cache.ysun.co";
 
         httpAddr = "[::1]:5751";
