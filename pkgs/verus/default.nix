@@ -105,7 +105,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   };
 
   meta = {
-    # broken = true;
+    broken = true;
     mainProgram = "verus";
   };
 })
