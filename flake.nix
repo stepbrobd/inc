@@ -93,6 +93,7 @@
     gomod2nix.inputs.flake-utils.follows = "utils";
     # h
     hardware.url = "github:nixos/nixos-hardware";
+    hardware.inputs.nixpkgs.follows = "nixpkgs";
     hm.url = "github:nix-community/home-manager";
     hm.inputs.nixpkgs.follows = "nixpkgs";
     # hydra.url = "github:ners/hydra/oidc";
@@ -164,6 +165,8 @@
     ranet.inputs.nixpkgs.follows = "nixpkgs";
     ranet.inputs.flake-utils.follows = "utils";
     # t
+    terraform-providers.url = "github:nix-community/nixpkgs-terraform-providers-bin";
+    terraform-providers.inputs.nixpkgs.follows = "nixpkgs";
     terranix.url = "github:terranix/terranix";
     terranix.inputs.nixpkgs.follows = "nixpkgs";
     terranix.inputs.flake-parts.follows = "parts";
