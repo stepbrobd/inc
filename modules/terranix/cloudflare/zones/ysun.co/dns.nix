@@ -98,6 +98,14 @@ in
     //
     {
       # service CNAME records
+      co_ysun_api_cache = {
+        type = "CNAME";
+        proxied = false;
+        name = "api.cache";
+        content = "baldy.sd.ysun.co";
+        comment = "NetActuate - Los Angeles - Cache API (niks3)";
+      };
+
       co_ysun_ha = {
         type = "CNAME";
         proxied = false;
