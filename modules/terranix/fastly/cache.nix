@@ -9,6 +9,10 @@ let
   s3Bucket = "stepbrobd";
   s3Region = "us-east-005";
   s3Host = "${s3Bucket}.s3.${s3Region}.backblazeb2.com";
+
+  # ro b2 key from modules/terranix/b2/default.nix
+  accessKeyId = tfRef "b2_application_key.fastly.application_key_id";
+  secretKey = tfRef "b2_application_key.fastly.application_key";
 in
 {
   resource.fastly_service_vcl.cache = {
@@ -67,6 +71,97 @@ in
         content = ''
           if (beresp.status == 200 && (req.url.path ~ "\.(narinfo|ls)$" || req.url.path ~ "^/realisations/" || req.url.path ~ "^/log/")) {
             set beresp.http.Content-Encoding = "zstd";
+          }
+        '';
+      }
+      {
+        name = "stream";
+        type = "fetch";
+        priority = 100;
+        # stream miss and serve stale
+        content = ''
+          set beresp.do_stream = true;
+
+          if (req.url.path == "/nix-cache-info") {
+            set beresp.ttl = 1h;
+            set beresp.grace = 168h;
+          }
+        '';
+      }
+      {
+        name = "b2";
+        type = "miss";
+        priority = 100;
+        # https://www.fastly.com/documentation/guides/integrations/non-fastly-services/backblaze-b2-cloud-storage/
+        content = ''
+          declare local var.b2AccessKey STRING;
+          declare local var.b2SecretKey STRING;
+          declare local var.b2Bucket STRING;
+          declare local var.b2Region STRING;
+          declare local var.canonicalHeaders STRING;
+          declare local var.signedHeaders STRING;
+          declare local var.canonicalRequest STRING;
+          declare local var.canonicalQuery STRING;
+          declare local var.stringToSign STRING;
+          declare local var.dateStamp STRING;
+          declare local var.signature STRING;
+          declare local var.scope STRING;
+
+          set var.b2AccessKey = "${accessKeyId}";
+          set var.b2SecretKey = "${secretKey}";
+          set var.b2Bucket = "${s3Bucket}";
+          set var.b2Region = "${s3Region}";
+
+          if ((req.method == "GET" || req.method == "HEAD") && !req.backend.is_shield) {
+            set bereq.http.x-amz-content-sha256 = digest.hash_sha256("");
+            set bereq.http.x-amz-date = strftime({"%Y%m%dT%H%M%SZ"}, now);
+            set bereq.http.host = var.b2Bucket ".s3." var.b2Region ".backblazeb2.com";
+            set bereq.url = querystring.remove(bereq.url);
+            set bereq.url = regsuball(urlencode(urldecode(bereq.url.path)), {"%2F"}, "/");
+            set var.dateStamp = strftime({"%Y%m%d"}, now);
+            set var.canonicalHeaders = ""
+              "host:" bereq.http.host LF
+              "x-amz-content-sha256:" bereq.http.x-amz-content-sha256 LF
+              "x-amz-date:" bereq.http.x-amz-date LF
+            ;
+            set var.canonicalQuery = "";
+            set var.signedHeaders = "host;x-amz-content-sha256;x-amz-date";
+            set var.canonicalRequest = ""
+              bereq.method LF
+              bereq.url.path LF
+              var.canonicalQuery LF
+              var.canonicalHeaders LF
+              var.signedHeaders LF
+              digest.hash_sha256("")
+            ;
+
+            set var.scope = var.dateStamp "/" var.b2Region "/s3/aws4_request";
+
+            set var.stringToSign = ""
+              "AWS4-HMAC-SHA256" LF
+              bereq.http.x-amz-date LF
+              var.scope LF
+              regsub(digest.hash_sha256(var.canonicalRequest), "^0x", "")
+            ;
+
+            set var.signature = digest.awsv4_hmac(
+              var.b2SecretKey,
+              var.dateStamp,
+              var.b2Region,
+              "s3",
+              var.stringToSign
+            );
+
+            set bereq.http.Authorization = "AWS4-HMAC-SHA256 "
+              "Credential=" var.b2AccessKey "/" var.scope ", "
+              "SignedHeaders=" var.signedHeaders ", "
+              "Signature=" + regsub(var.signature, "^0x", "")
+            ;
+
+            unset bereq.http.Accept;
+            unset bereq.http.Accept-Language;
+            unset bereq.http.User-Agent;
+            unset bereq.http.Fastly-Client-IP;
           }
         '';
       }

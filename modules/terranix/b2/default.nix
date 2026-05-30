@@ -4,6 +4,7 @@
 
 let
   inherit (lib) map filter attrNames readDir;
+  inherit (lib.terranix) tfRef;
 in
 {
   imports = map
@@ -14,7 +15,7 @@ in
 
   resource.b2_bucket.stepbrobd = {
     bucket_name = "stepbrobd";
-    bucket_type = "allPublic";
+    bucket_type = "allPrivate";
 
     # immutable anyways
     bucket_info."cache-control" = "public, max-age=31536000, immutable";
@@ -29,5 +30,11 @@ in
       # cancel stuck multipart uploads after 1 day
       days_from_starting_to_canceling_unfinished_large_files = 1;
     }];
+  };
+
+  resource.b2_application_key.fastly = {
+    key_name = "fastly-cache-read";
+    capabilities = [ "listBuckets" "listFiles" "readFiles" ];
+    bucket_ids = [ (tfRef "b2_bucket.stepbrobd.bucket_id") ];
   };
 }
