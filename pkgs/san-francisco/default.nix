@@ -15,7 +15,7 @@ stdenvNoCC.mkDerivation {
     })
     (fetchurl {
       url = "https://devimages-cdn.apple.com/design/resources/download/SF-Compact.dmg";
-      hash = "sha256-PlraM6SwH8sTxnVBo6Lqt9B6tAZDC//VCPwr/PNcnlk=";
+      hash = "sha256-RWeq4GFt01r8NLrWvvVH5y/R5lhFMFozlzBkUY0dU0g=";
     })
     (fetchurl {
       url = "https://devimages-cdn.apple.com/design/resources/download/SF-Mono.dmg";
