@@ -8,6 +8,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 
 concurrency:
   group: bump
@@ -142,3 +143,10 @@ jobs:
             --title "pkgs: bump ${TODAY}" \
             --body "$body" \
             --reviewer stepbrobd || true
+
+          # prs opened with the GITHUB_TOKEN do not fire pull_request
+          # but workflow_dispatch is exempt, so trigger the build "manually" on the bump branch
+          # this also means that if the atelier action is renamed or smth else, build.yaml must change as well
+          # also it must allow workflow_dispatch
+          gh workflow run build.yaml --ref "$BRANCH" \
+            || echo "::warning::Could not dispatch build for ${BRANCH}"
