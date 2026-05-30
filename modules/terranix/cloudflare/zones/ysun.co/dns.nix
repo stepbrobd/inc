@@ -100,7 +100,7 @@ in
       # service CNAME records
       co_ysun_api_cache = {
         type = "CNAME";
-        proxied = false;
+        proxied = true;
         name = "api.cache";
         content = "baldy.sd.ysun.co";
         comment = "NetActuate - Los Angeles - Cache API (niks3)";
