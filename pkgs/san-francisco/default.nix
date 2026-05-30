@@ -6,7 +6,7 @@
 
 stdenvNoCC.mkDerivation {
   pname = "san-francisco";
-  version = "0-unstable-2025-03-31";
+  version = "0-unstable-2026-05-30";
 
   src = [
     (fetchurl {
@@ -23,7 +23,7 @@ stdenvNoCC.mkDerivation {
     })
     (fetchurl {
       url = "https://devimages-cdn.apple.com/design/resources/download/SF-Pro.dmg";
-      hash = "sha256-IccB0uWWfPCidHYX6sAusuEZX906dVYo8IaqeX7/O88=";
+      hash = "sha256-W0sZkipBtrduInk0oocbFAXX1qy0Z+yk2xUyFfDWx4s=";
     })
   ];
 
