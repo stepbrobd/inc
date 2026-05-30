@@ -49,13 +49,17 @@ in
       force_ssl = true;
     }];
 
+    # https://git.clan.lol/clan/clan-infra/src/branch/main/modules/terranix/cache-new.nix
     snippet = [
       {
         name = "recv";
         type = "recv";
-        priority = 100;
+        # run before the #FASTLY recv boilerplate (which ends in return)
+        priority = 50;
         # fastly needs segmented caching to cache objects > ~2GB (large nars)
+        # also drop query strings from the cache key
         content = ''
+          set req.url = querystring.remove(req.url);
           if (req.url.path == "/") {
             set req.url = "/index.html";
           }
@@ -65,9 +69,10 @@ in
         '';
       }
       {
-        name = "fetch";
+        name = "encoding";
         type = "fetch";
-        priority = 100;
+        # run after the #FASTLY fetch boilerplate
+        priority = 105;
         # niks3 stores narinfo/.ls/realisations/log zstd-compressed
         # but b2 does not surface Content-Encoding on download
         # re-add here so the nix client decompresses
@@ -78,9 +83,21 @@ in
         '';
       }
       {
+        name = "scrub";
+        type = "fetch";
+        # run after the boilerplate
+        priority = 108;
+        # strip b2/s3 origin request tracking headers
+        content = ''
+          unset beresp.http.x-amz-request-id;
+          unset beresp.http.x-amz-id-2;
+        '';
+      }
+      {
         name = "stream";
         type = "fetch";
-        priority = 100;
+        # must run AFTER the boilerplate to override ttl
+        priority = 110;
         # stream miss and serve stale
         content = ''
           set beresp.do_stream = true;
@@ -88,6 +105,19 @@ in
           if (req.url.path == "/nix-cache-info") {
             set beresp.ttl = 1h;
             set beresp.grace = 168h;
+          }
+        '';
+      }
+      {
+        name = "nix"; # convert 403 to 404 for nix
+        type = "fetch";
+        # run after the boilerplate
+        # so the rewritten 404 inherits the 403 "uncacheable" decision
+        # i.e. a missing path stays a fresh miss instead of 24h cached 404
+        priority = 115;
+        content = ''
+          if (beresp.status == 403 && req.url.path != "/nix-cache-info") {
+            set beresp.status = 404;
           }
         '';
       }
