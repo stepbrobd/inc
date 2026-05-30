@@ -8,7 +8,7 @@ newHost (lib.fix (self: {
   provider = "netactuate";
   providerName = "NetActuate";
   type = "server";
-  tags = [ "ysun" "router" "ranet" "prometheus" "loki" ];
+  tags = [ "ysun" "router" "niks3" "ranet" "prometheus" "loki" ];
   meta = { city = "Los Angeles"; region = "US-CA"; country = "US"; continent = "North America"; postal = "90009"; };
   interface = "ens3";
   ipv4 = "208.111.40.54";

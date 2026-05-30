@@ -26,6 +26,7 @@ let
         self.nixosModules.minimal
         self.nixosModules.monitoring
         self.nixosModules.neogrok
+        self.nixosModules.niks3
         self.nixosModules.nix-community
         self.nixosModules.nixbuild
         self.nixosModules.passwordless
