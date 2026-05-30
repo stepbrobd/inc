@@ -76,6 +76,7 @@ in
   };
 
   services = {
+    cache.domain = "cache.ysun.co";
     calibre-web.domain = "read.ysun.co";
     glance.domain = "home.ysun.co";
     go-csp-collector.domain = "report.ysun.co";
