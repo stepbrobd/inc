@@ -130,6 +130,9 @@
     noctalia-qs.inputs.nixpkgs.follows = "nixpkgs";
     noctalia-qs.inputs.systems.follows = "systems";
     noctalia-qs.inputs.treefmt-nix.follows = "treefmt";
+    niks3.url = "github:mic92/niks3";
+    niks3.inputs.nixpkgs.follows = "nixpkgs";
+    niks3.inputs.treefmt-nix.follows = "treefmt";
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.inputs.flake-parts.follows = "parts";

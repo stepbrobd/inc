@@ -446,6 +446,29 @@
         "type": "github"
       }
     },
+    "niks3": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": [
+          "treefmt"
+        ]
+      },
+      "locked": {
+        "lastModified": 1780048298,
+        "narHash": "sha256-m6dV4M2k+Y649DsJ+CN8nzk01WzXBx8YGl9O68S8LjM=",
+        "owner": "mic92",
+        "repo": "niks3",
+        "rev": "6a99ed756c95629d586deb8a67952a916a65ae30",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mic92",
+        "repo": "niks3",
+        "type": "github"
+      }
+    },
     "nixos-images": {
       "inputs": {
         "nixos-stable": [
@@ -659,6 +682,7 @@
         "lanzaboote": "lanzaboote",
         "llm": "llm",
         "miroir": "miroir",
+        "niks3": "niks3",
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim",
         "noctalia": "noctalia",
