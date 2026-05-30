@@ -4,5 +4,6 @@
   Backblaze.b2
   carlpett.sops
   cloudflare.cloudflare
+  fastly.fastly
   tailscale.tailscale
 ]))
