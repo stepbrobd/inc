@@ -1,8 +1,10 @@
-{ buildNpmPackage
+{ stdenvNoCC
 , fetchzip
+, nodejs
+, makeBinaryWrapper
 }:
 
-buildNpmPackage (finalAttrs: {
+stdenvNoCC.mkDerivation (finalAttrs: {
   meta.mainProgram = "cf";
   pname = "cf";
   version = "0.0.6";
@@ -12,11 +14,17 @@ buildNpmPackage (finalAttrs: {
     hash = "sha256-FaBKniLXo6Wjsnr0KVbgnxaWTUKbOckKsbgUlyUHrYg=";
   };
 
-  postPatch = ''
-    cp ${./package-lock.json} package-lock.json
+  nativeBuildInputs = [ makeBinaryWrapper ];
+
+  installPhase = ''
+    runHook preInstall
+
+    mkdir -p $out/share/cf
+    cp -r bin dist package.json $out/share/cf/
+
+    makeWrapper ${nodejs}/bin/node $out/bin/cf \
+      --add-flags $out/share/cf/bin/cf
+
+    runHook postInstall
   '';
-
-  npmDepsHash = "sha256-qZHkg0AtojD/1wMVn/fka7o/N9Aq7f6t4h8jSBTR1cQ=";
-
-  dontNpmBuild = true;
 })
