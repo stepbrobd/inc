@@ -17,7 +17,7 @@ in
     bucket_type = "allPublic";
 
     # immutable anyways
-    bucket_info."Cache-Control" = "public, max-age=31536000, immutable";
+    bucket_info."cache-control" = "public, max-age=31536000, immutable";
 
     lifecycle_rules = [{
       file_name_prefix = "";
