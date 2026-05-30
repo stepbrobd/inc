@@ -187,14 +187,6 @@
     zen.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  nixConfig = {
-    extra-substituters = [
-      "https://cache.garnix.io"
-      "https://colmena.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-      "colmena.cachix.org-1:7BzpDnjjH8ki2CT3f6GdOk7QAzPOl+1t3LvTLXqYcSg="
-    ];
-  };
+  nixConfig.extra-substituters = [ ];
+  nixConfig.extra-trusted-public-keys = [ ];
 }
