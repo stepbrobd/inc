@@ -3,8 +3,6 @@
     ./hardware.nix
 
     ./as10779.nix
-    ./attic.nix
-    ./hydra.nix
   ];
 
   networking = {

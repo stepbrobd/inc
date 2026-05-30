@@ -98,14 +98,6 @@ in
     //
     {
       # service CNAME records
-      co_ysun_cache = {
-        type = "CNAME";
-        proxied = false;
-        name = "cache";
-        content = "odake.sd.ysun.co";
-        comment = "SSDNodes - Tokyo 2 - Hydra";
-      };
-
       co_ysun_ha = {
         type = "CNAME";
         proxied = false;
@@ -120,14 +112,6 @@ in
         name = "home";
         content = "walberla.sd.ysun.co";
         comment = "Hetzner - Glance";
-      };
-
-      co_ysun_hydra = {
-        type = "CNAME";
-        proxied = false;
-        name = "hydra";
-        content = "odake.sd.ysun.co";
-        comment = "SSDNodes - Tokyo 2 - Hydra";
       };
 
       co_ysun_ldap = {

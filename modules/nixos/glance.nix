@@ -115,14 +115,12 @@ in
                     type = "monitor";
                     title = "Monitor";
                     sites = [
-                      { title = "Attic"; url = "https://cache.ysun.co"; icon = "si:googlecloudstorage"; same-tab = true; }
                       { title = "Calibre"; url = "https://read.ysun.co"; icon = "si:calibreweb"; same-tab = true; }
                       { title = "Glance"; url = "https://home.ysun.co"; icon = "si:homepage"; same-tab = true; }
                       { title = "Time"; url = "https://time.ysun.co"; icon = "si:clockify"; same-tab = true; }
                       { title = "Grafana"; url = "https://otel.ysun.co"; icon = "si:grafana"; same-tab = true; }
                       { title = "Homepage"; url = "https://ysun.co"; icon = "si:googlehome"; same-tab = true; }
                       { title = "Home Assistant"; url = "https://ha.ysun.co"; icon = "si:homeassistant"; same-tab = true; }
-                      { title = "Hydra"; url = "https://hydra.ysun.co"; icon = "si:nixos"; same-tab = true; }
                       { title = "Jitsi"; url = "https://meet.ysun.co"; icon = "si:jitsi"; same-tab = true; }
                       { title = "Kanidm"; url = "https://sso.ysun.co"; icon = "si:adblock"; same-tab = true; }
                       { title = "Plausible"; url = "https://stats.ysun.co"; icon = "si:plausibleanalytics"; same-tab = true; }

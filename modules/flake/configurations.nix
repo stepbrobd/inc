@@ -11,7 +11,6 @@ let
         disko.nixosModules.disko
         self.nixosModules.acme
         self.nixosModules.as10779
-        self.nixosModules.attic
         self.nixosModules.caddy
         self.nixosModules.calibre
         self.nixosModules.common

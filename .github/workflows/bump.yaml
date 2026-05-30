@@ -26,7 +26,6 @@ jobs:
         claude-code
         codex
         gravity
-        hydra
         jitsi-meet
         kanidm
         mac-app-util

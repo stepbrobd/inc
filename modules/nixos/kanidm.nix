@@ -41,8 +41,6 @@ in
     sops.secrets."kanidm/oauth/cloudflare".mode = "440";
     sops.secrets."kanidm/oauth/grafana".group = "kanidm";
     sops.secrets."kanidm/oauth/grafana".mode = "440";
-    sops.secrets."kanidm/oauth/hydra".group = "kanidm";
-    sops.secrets."kanidm/oauth/hydra".mode = "440";
     sops.secrets."kanidm/oauth/vaultwarden".group = "kanidm";
     sops.secrets."kanidm/oauth/vaultwarden".mode = "440";
 
@@ -82,9 +80,6 @@ in
           "cloudflare.admins" = { };
           "cloudflare.users" = { };
 
-          "hydra.admins" = { };
-          "hydra.users" = { };
-
           "grafana.server-admins" = { };
           "grafana.admins" = { };
           "grafana.editors" = { };
@@ -110,9 +105,6 @@ in
               "cloudflare.admins"
               "cloudflare.users"
 
-              "hydra.admins"
-              "hydra.users"
-
               "grafana.server-admins"
               "grafana.admins"
               "grafana.editors"
@@ -136,21 +128,6 @@ in
               "openid"
               "email"
               "profile"
-            ];
-          };
-
-          hydra = {
-            displayName = "Hydra";
-            allowInsecureClientDisablePkce = true;
-            originUrl = "https://${lib.blueprint.services.hydra.domain}/oidc-login";
-            originLanding = "https://${lib.blueprint.services.hydra.domain}/";
-            basicSecretFile = config.sops.secrets."kanidm/oauth/hydra".path;
-            preferShortUsername = true;
-            scopeMaps."hydra.users" = [
-              "openid"
-              "email"
-              "profile"
-              "groups"
             ];
           };
 

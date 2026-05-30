@@ -7,7 +7,6 @@
 
     alacritty
     ani
-    attic
     atuin
     bat
     btop

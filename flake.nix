@@ -97,8 +97,6 @@
     hardware.inputs.nixpkgs.follows = "nixpkgs";
     hm.url = "github:nix-community/home-manager";
     hm.inputs.nixpkgs.follows = "nixpkgs";
-    # hydra.url = "github:ners/hydra/oidc";
-    # hydra.inputs.nixpkgs.follows = "nixpkgs";
     # i
     index.url = "github:nix-community/nix-index-database";
     index.inputs.nixpkgs.follows = "nixpkgs";
