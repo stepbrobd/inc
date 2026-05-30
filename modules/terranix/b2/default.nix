@@ -34,7 +34,7 @@ in
 
   resource.b2_application_key.fastly = {
     key_name = "fastly-cache-read";
-    capabilities = [ "listBuckets" "listFiles" "readFiles" ];
+    capabilities = [ "readFiles" ];
     bucket_ids = [ (tfRef "b2_bucket.stepbrobd.bucket_id") ];
   };
 }

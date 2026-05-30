@@ -56,6 +56,9 @@ in
         priority = 100;
         # fastly needs segmented caching to cache objects > ~2GB (large nars)
         content = ''
+          if (req.url.path == "/") {
+            set req.url = "/index.html";
+          }
           if (req.url.path ~ "^/nar/") {
             set req.enable_segmented_caching = true;
           }
