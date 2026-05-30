@@ -16,6 +16,9 @@ in
     bucket_name = "stepbrobd";
     bucket_type = "allPublic";
 
+    # immutable anyways
+    bucket_info."Cache-Control" = "public, max-age=31536000, immutable";
+
     lifecycle_rules = [{
       file_name_prefix = "";
       # b2 keeps every version by default
