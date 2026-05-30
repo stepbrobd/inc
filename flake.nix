@@ -32,6 +32,7 @@
               llm.overlays.default
               ranet.overlays.default
               rust-overlay.overlays.default
+              terraform-providers.overlays.default
             ];
             instances = {
               pkgs = inputs.nixpkgs;
