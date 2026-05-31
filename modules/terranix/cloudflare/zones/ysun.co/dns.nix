@@ -98,7 +98,7 @@ in
     //
     {
       # service CNAME records
-      co_ysun_api_cache = {
+      co_ysun_cache_api = {
         type = "CNAME";
         proxied = false;
         name = "api.cache";
