@@ -20,7 +20,11 @@
     vxlan
   ];
 
-  services.bpftune.enable = true;
+  # turn off for now
+  # it dynamically reverted boot time sysctls
+  # e.g. change tcp_max_syn_backlog to the kernel default 138,
+  # or overflowing syn queue under ci push bursts and timing out tls handshakes
+  services.bpftune.enable = false;
 
   # services.prometheus.enable = true;
 
@@ -97,12 +101,12 @@
     # listen backlog for busy servers (caddy, bird, etc.)
     "net.core.somaxconn" = 4096;
     "net.ipv4.tcp_max_syn_backlog" = 8192;
-    # raise buffer ceiling so bpftune has room to auto-tune
-    "net.core.rmem_max" = 16777216;
-    "net.core.wmem_max" = 16777216;
+    # 64M buffer ceiling for high bdp links
+    "net.core.rmem_max" = 67108864;
+    "net.core.wmem_max" = 67108864;
     # tcp auto-tuning range: min default max
-    "net.ipv4.tcp_rmem" = "4096 131072 16777216";
-    "net.ipv4.tcp_wmem" = "4096 16384 16777216";
+    "net.ipv4.tcp_rmem" = "4096 131072 67108864";
+    "net.ipv4.tcp_wmem" = "4096 16384 67108864";
     # udp buffer minimums for wireguard/tailscale
     "net.ipv4.udp_rmem_min" = 8192;
     "net.ipv4.udp_wmem_min" = 8192;
