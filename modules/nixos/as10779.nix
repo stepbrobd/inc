@@ -720,10 +720,10 @@ in
         };
 
         # fix PMTU blackhole on the anycast overlay
-        # client packets ingress over the 1400-MTU ranet tunnels (gravity VRF)
+        # client packets ingress over the 1400 MTU ranet tunnels (gravity VRF)
         # but an exit node SYN ACK egresses its native primary iface at 1500
         # so the kernel advertises a 1500 derived mss (1460 on the wire)
-        # big segments (e.g. a post-quantum TLS ClientHello) then overshoot the 1400 ingress and get undropped
+        # big segments (e.g. a post quantum TLS ClientHello) then overshoot the 1400 ingress and get undropped
         mssClamp =
           let
             mss = 1328; # 1400 - 20 - 20 - 12
