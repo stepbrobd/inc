@@ -13,6 +13,7 @@ include = [
 exclude = [
   "legacyPackages.aarch64-darwin.bird3",       # unsupported
   "legacyPackages.aarch64-darwin.nirimon",     # unsupported
+  "legacyPackages.aarch64-darwin.plausible",   # unsupported
   "legacyPackages.aarch64-linux.mac-app-util", # unsupported
   "legacyPackages.x86_64-linux.mac-app-util",  # unsupported
 
@@ -20,6 +21,6 @@ exclude = [
   "legacyPackages.*.jitsi-meet",                    # insecure
   "legacyPackages.*.ripe-atlas-probe-measurements", # weird
   "legacyPackages.*.ripe-atlas-software-probe",     # weird
-  "legacyPackages.*.spotify",                       # unfree
+  "legacyPackages.*.spotify",                       # unused
   "legacyPackages.*.verus",                         # unused
 ]
