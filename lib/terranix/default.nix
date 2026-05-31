@@ -116,6 +116,75 @@ rec {
   mkZoneSettings = zone: {
     zone_id = ''''${data.sops_file.secrets.data["cloudflare.zone_id.${zone}"]}'';
   } // acns;
+
+  zoneSettings = {
+    # tls / transport
+    ssl = "strict";
+    always_use_https = "on";
+    min_tls_version = "1.2";
+    tls_1_3 = "zrt";
+    "0rtt" = "on";
+    automatic_https_rewrites = "on";
+    opportunistic_encryption = "on";
+    opportunistic_onion = "on";
+    ech = "on";
+    pq_keyex = "on";
+    tls_client_auth = "off";
+    ciphers = [ ];
+
+    # security
+    security_level = "medium";
+    security_header.strict_transport_security = {
+      enabled = true;
+      max_age = 31536000;
+      include_subdomains = true;
+      preload = true;
+      nosniff = true;
+    };
+    challenge_ttl = 1800;
+    browser_check = "on";
+    waf = "off";
+    privacy_pass = "on";
+    email_obfuscation = "on";
+    hotlink_protection = "off";
+    server_side_exclude = "on";
+    replace_insecure_js = "on";
+
+    # performance / protocol
+    brotli = "on";
+    early_hints = "on";
+    http3 = "on";
+    websockets = "on";
+    ipv6 = "on";
+    rocket_loader = "off";
+
+    # caching
+    cache_level = "aggressive";
+    browser_cache_ttl = 14400;
+    development_mode = "off";
+    always_online = "off";
+
+    # network / headers / misc
+    ip_geolocation = "on";
+    pseudo_ipv4 = "off";
+    orange_to_orange = "off";
+    visitor_ip = "on";
+    log_to_cloudflare = "on";
+    filter_logs_to_cloudflare = "off";
+    max_upload = 100;
+  };
+
+  # "<slug>_cf_settings_<setting_id>"
+  # e.g. "co_ysun_cf_settings_ssl"
+  mkZoneSettingResources = zone:
+    lib.mapAttrs'
+      (setting: value: lib.nameValuePair "${lib.zoneSlug zone}_cf_settings_${setting}" {
+        zone_id = ''''${data.sops_file.secrets.data["cloudflare.zone_id.${zone}"]}'';
+        setting_id = setting;
+        inherit value;
+      })
+      zoneSettings;
+
   forZone = zone: lib.mapAttrs (_: record: mkRecord zone record);
   mkRecord =
     zone: record: {
