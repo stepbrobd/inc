@@ -3,7 +3,10 @@
 { ... }:
 
 let
-  inherit (lib) map filter flatten attrNames readDir;
+  inherit (lib) map filter flatten attrNames readDir deepMergeAttrsList;
+  inherit (lib.terranix) mkZoneSettingResources;
+
+  zones = filter (f: f != "default.nix") (attrNames (readDir ./.));
 in
 {
   imports = flatten (map
@@ -11,7 +14,8 @@ in
       (import ./${f}/dns.nix args)
       (import ./${f}/zone.nix args)
     ])
-    (filter
-      (f: f != "default.nix")
-      (attrNames (readDir ./.))));
+    zones);
+
+  # common zone settings applied unconditionally
+  resource.cloudflare_zone_setting = deepMergeAttrsList (map mkZoneSettingResources zones);
 }
