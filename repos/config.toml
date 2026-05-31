@@ -45,7 +45,7 @@ visibility = "public"
 archived = false
 
 [repo."atelier"]
-description = "nix atelier ;)"
+description = "nix (hat) atelier?!"
 visibility = "public"
 archived = false
 
