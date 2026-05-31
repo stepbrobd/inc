@@ -46,7 +46,7 @@ jobs:
           done < <(echo "$forks" | jq -c '.[] | select(.isArchived == false)')
 
   Discord:
-    name: Discord Webhooks
+    name: Discord Webhooks + Cache
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.TOKEN }}
@@ -83,6 +83,10 @@ jobs:
                 "https://api.github.com/repos/$repo/hooks" \
                 -d "{\"name\":\"web\",\"active\":true,\"events\":[\"*\"],\"config\":{\"url\":\"$WEBHOOK\",\"content_type\":\"json\",\"insecure_ssl\":\"0\"}}" >/dev/null
             fi
+
+            # https://github.com/stepbrobd/atelier
+            # https://github.com/stepbrobd/inc/blob/master/modules/nixos/niks3.nix
+            gh variable set NIKS3_SERVER -b "https://api.cache.ysun.co" --repo "$repo"
 
             gh api \
               -H 'Accept: application/vnd.github+json' \
