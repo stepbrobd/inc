@@ -718,6 +718,35 @@ in
             }
           '';
         };
+
+        # fix PMTU blackhole on the anycast overlay
+        # client packets ingress over the 1400-MTU ranet tunnels (gravity VRF)
+        # but an exit node SYN ACK egresses its native primary iface at 1500
+        # so the kernel advertises a 1500 derived mss (1460 on the wire)
+        # big segments (e.g. a post-quantum TLS ClientHello) then overshoot the 1400 ingress and get undropped
+        mssClamp =
+          let
+            mss = 1328; # 1400 - 20 - 20 - 12
+            addrs = lib.concatMapStringsSep ", " (a: lib.head (lib.splitString "/" a));
+            v4 = cfg.local.ipv4.addresses;
+            v6 = cfg.local.ipv6.addresses;
+          in
+          {
+            name = "mssclamp";
+            family = "inet";
+            content = ''
+              chain output {
+                type filter hook output priority mangle; policy accept;
+                ${lib.optionalString (v4 != [ ]) ''tcp flags & syn == syn ip saddr { ${addrs v4} } tcp option maxseg size gt ${toString mss} tcp option maxseg size set ${toString mss}''}
+                ${lib.optionalString (v6 != [ ]) ''tcp flags & syn == syn ip6 saddr { ${addrs v6} } tcp option maxseg size gt ${toString mss} tcp option maxseg size set ${toString mss}''}
+              }
+              ${lib.optionalString config.networking.ranet.enable ''
+                chain forward {
+                  type filter hook forward priority mangle; policy accept;
+                  tcp flags & syn == syn tcp option maxseg size gt ${toString mss} tcp option maxseg size set ${toString mss}
+                }''}
+            '';
+          };
       };
 
       services.networkd-dispatcher.rules =
