@@ -122,15 +122,13 @@ rec {
     ssl = "strict";
     always_use_https = "on";
     min_tls_version = "1.2";
-    tls_1_3 = "zrt";
-    "0rtt" = "on";
+    "0rtt" = "on"; # implies tls 1.3 + 0-rtt
     automatic_https_rewrites = "on";
     opportunistic_encryption = "on";
     opportunistic_onion = "on";
     ech = "on";
     pq_keyex = "on";
     tls_client_auth = "off";
-    ciphers = [ ];
 
     # security
     security_level = "medium";
@@ -167,11 +165,14 @@ rec {
     # network / headers / misc
     ip_geolocation = "on";
     pseudo_ipv4 = "off";
-    orange_to_orange = "off";
-    visitor_ip = "on";
-    log_to_cloudflare = "on";
-    filter_logs_to_cloudflare = "off";
     max_upload = 100;
+
+    # cf api rejects even tho dashboard have `editable=true`:
+    #   ciphers (1023 acm required)
+    #   tls_1_3=zrt (83182 non-idempotent),
+    #   orange_to_orange (1024),
+    #   visitor_ip (1025),
+    #   log_to_cloudflare + filter_logs_to_cloudflare (1057 logs entitlement)
   };
 
   # "<slug>_cf_settings_<setting_id>"
