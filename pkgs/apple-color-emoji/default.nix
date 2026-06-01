@@ -3,13 +3,13 @@
 , installFonts
 }:
 
-stdenvNoCC.mkDerivation {
+stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "apple-color-emoji";
-  version = "26.2.1";
+  version = "macos-26-20260218-d5729b24";
 
   src = fetchurl {
-    url = "https://github.com/samuelngs/apple-emoji-ttf/releases/download/macos-26-20260219-2aa12422/AppleColorEmoji-Linux.ttf";
-    hash = "sha256-U1oEOvBHBtJEcQWeZHRb/IDWYXraLuo0NdxWINwPUxg=";
+    url = "https://github.com/samuelngs/apple-emoji-ttf/releases/download/${finalAttrs.version}/AppleColorEmoji-Linux.ttf";
+    hash = "sha256-TvX+SNSkD+cuikrRoJR+GdT+oH1P6Xh+ufZf4YZQRoA=";
   };
 
   dontUnpack = true;
@@ -21,4 +21,4 @@ stdenvNoCC.mkDerivation {
   '';
 
   meta.homepage = "https://github.com/samuelngs/apple-emoji-ttf";
-}
+})
