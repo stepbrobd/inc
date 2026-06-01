@@ -4,9 +4,7 @@
   environment.systemPackages = [ pkgs.mas ];
 
   homebrew = {
-    # currently broken
-    # wait for update
-    enable = false;
+    enable = true;
 
     onActivation = {
       autoUpdate = true;
