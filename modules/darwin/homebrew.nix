@@ -1,4 +1,6 @@
-{ pkgs, ... }:
+{ lib, ... }:
+
+{ config, pkgs, ... }:
 
 {
   environment.systemPackages = [ pkgs.mas ];
@@ -64,14 +66,19 @@
       "discord"
       "google-chrome"
       "hey-desktop"
+      "imazing-profile-editor"
       "kindavim"
       "loop"
       "macs-fan-control"
       "notchnook"
       "obs"
       "osu"
+      "passepartout"
       "slack"
+      "stats"
+      "tailscale-app"
       "thaw"
+      "the-unarchiver"
       "yubico-authenticator"
       "zoom"
       "zotero"
@@ -81,22 +88,23 @@
       "caldigit-thunderbolt-charging"
     ];
 
+
+    # spotlight issue
+    onActivation.extraEnv.HOMEBREW_BUNDLE_MAS_SKIP = lib.concatStringsSep
+      " "
+      (lib.map lib.toString (lib.attrValues config.homebrew.masApps));
+
     masApps = {
       # utils
       "Apple Configurator" = 1037126344;
       "Dropover" = 1355679052;
       "Flighty" = 1358823008;
       "Folder Preview" = 6698876601;
-      "iMazing Profile Editor" = 1487860882;
-      "iStat Menus" = 1319778037;
       "Parcel" = 375589283;
-      "Passepartout" = 1433648537;
       "Pieoneer" = 6739781207;
       "Pixelmator Pro" = 1289583905;
       "Remote Desktop" = 409907375;
       "ServerCat" = 1501532023;
-      "Tailscale" = 1475387142;
-      "The Unarchiver" = 425424353;
       "Xcode" = 497799835;
       # safari
       "AdGuard" = 1440147259;
