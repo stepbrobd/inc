@@ -31,10 +31,16 @@ jobs:
         mac-app-util
         miroir
         neovide
+        niks3
+        niks3-server
+        nirimon
         nixvim
+        ocamlPackages.dune
         ocamlPackages.omd
         opencode
+        opentofu
         pixelmplus
+        plausible
         ripe-atlas-software-probe
         san-francisco
         spotify
