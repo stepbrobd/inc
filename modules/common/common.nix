@@ -34,6 +34,8 @@ in
       options = "--delete-older-than 7d";
     };
 
+    channel.enable = lib.mkForce false;
+
     registry =
       let
         allowed = [ "nixpkgs" ];
@@ -50,12 +52,15 @@ in
       allow-import-from-derivation = true;
       builders-use-substitutes = true;
       fallback = true;
+      flake-registry = "";
       keep-build-log = true;
       keep-derivations = true;
       keep-env-derivations = true;
       keep-failed = true;
       keep-going = true;
       keep-outputs = true;
+      max-free = lib.mkDefault (3000 * 1024 * 1024);
+      min-free = lib.mkDefault (512 * 1024 * 1024);
       narinfo-cache-negative-ttl = 3600;
       narinfo-cache-positive-ttl = 3600;
       use-xdg-base-directories = true;
