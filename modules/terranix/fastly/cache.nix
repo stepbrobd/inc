@@ -21,6 +21,8 @@ in
     # b2 should set immutable cache-control on nix objects
     default_ttl = 86400;
 
+    http3 = true;
+
     domain = [{
       name = domain;
       comment = "Nix Binary Cache";
