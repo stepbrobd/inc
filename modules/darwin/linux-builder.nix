@@ -1,7 +1,6 @@
 { pkgs, ... }:
 
 {
-  nix.settings.trusted-users = [ "@admin" ];
   nix.linux-builder = {
     enable = true;
     ephemeral = true;
