@@ -60,11 +60,34 @@ in
         # also drop query strings from the cache key
         content = ''
           set req.url = querystring.remove(req.url);
-          if (req.url.path == "/") {
-            set req.url = "/index.html";
+
+          if (req.url.path == "/" || req.url.path == "/index.html") {
+            set req.http.X-Redirect-To = "https://ysun.co/setup/";
+            error 618;
           }
+          if (req.url.path == "/favicon.ico") {
+            set req.http.X-Redirect-To = "https://ysun.co/favicon.ico";
+            error 618;
+          }
+
           if (req.url.path ~ "^/nar/") {
             set req.enable_segmented_caching = true;
+          }
+        '';
+      }
+      {
+        name = "redirect";
+        type = "error";
+        # run before the #FASTLY error boilerplate
+        priority = 50;
+        # https://www.fastly.com/documentation/solutions/tutorials/custom-vcl/redirects/
+        content = ''
+          if (obj.status == 618) {
+            set obj.http.Location = req.http.X-Redirect-To;
+            set obj.status = 301;
+            set obj.response = "Moved Permanently";
+            synthetic "";
+            return(deliver);
           }
         '';
       }
