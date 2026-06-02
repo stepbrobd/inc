@@ -129,8 +129,9 @@ in
 
           if (req.url.path == "/nix-cache-info") {
             set beresp.ttl = 1h;
-            set beresp.grace = 168h;
           }
+
+          set beresp.stale_if_error = 168h;
         '';
       }
       {
