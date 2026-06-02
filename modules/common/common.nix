@@ -85,10 +85,10 @@ in
         "pipe-operators"
       ];
 
-      extra-substituters = [
-        "https://cache.nixos.org?priority=10"
-        "https://cache.ysun.co?priority=20"
-        "https://cache.garnix.io?priority=20"
+      substituters = lib.mkForce [
+        "https://cache.ysun.co?priority=10"
+        "https://cache.nixos.org?priority=15"
+        "https://cache.garnix.io?priority=20" # remove after july 15
         "https://nix-community.cachix.org?priority=30"
         "https://temp-cache.nix-community.org?priority=30"
         "https://nixpkgs-update.cachix.org?priority=30"
@@ -97,11 +97,10 @@ in
         "https://noctalia.cachix.org?priority=40"
       ];
 
-
-      trusted-public-keys = [
-        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      trusted-public-keys = lib.mkForce [
         "cache.ysun.co-1:WxPYwT5g3kt9XhUhHPpNLZKI9HIOsVVAuqSHpok8Qt4="
-        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=" # remove after july 15
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "temp-cache.nix-community.org-1:RSXIfGjilfBsilDvj03/VnL/9qAxacBnb1YQvSdCoDc="
         "nixpkgs-update.cachix.org-1:6y6Z2JdoL3APdu6/+Iy8eZX2ajf09e4EE9SnxSML1W8="
