@@ -15,7 +15,9 @@ pkgsPrev.bird3.overrideAttrs (oldAttrs: {
       url = "https://github.com/nickcao/bird/commit/18175de3cc75b4e662b5f43d8a93a1c062a8b3ab.patch";
       hash = "sha256-N11bkhn67fPXPSfrJ32v+t6Gwyh0qIOuisJ7uk1WGPA=";
     })
-    # debug
+    # data race in birdc show proto all segfault
     ./fix.patch
+    # out_limit.count underflow crash, revert of upstream 682d83ea
+    ./underflow.patch
   ];
 })

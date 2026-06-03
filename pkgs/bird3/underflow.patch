@@ -1,0 +1,27 @@
+From: Yifei Sun <ysun@hey.com>
+Date: Wed Jun 3 2026 +0200
+Subject: [PATCH] Table export: don't pop out_limit for a never-exported old route
+
+Effectively reverts upstream commit 682d83ea ("Table export: Drop redundant
+not-seen old route nullification"), forward-ported past the later refactor
+34a8a274 ("Table: Optimal and Any Export refactoring") so it applies to the
+current rt_notify_basic().
+
+---
+ nest/rt-table.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/nest/rt-table.c b/nest/rt-table.c
+--- a/nest/rt-table.c
++++ b/nest/rt-table.c
+@@ -1431,6 +1431,10 @@ rt_notify_basic(struct channel *c, const rte *new, const rte *old, const rte *trt
+       /* Treat old rejected as never seen. */
+       old = NULL;
+     }
++    else if (!bmap_test(&c->export_accepted_map, old->id))
++      /* In neither map => never exported on this channel, so do_rt_notify()
++       * must not pop out_limit for it (would underflow: limit.h:35). */
++      old = NULL;
+
+     /* Accepted bit is dropped in do_rt_notify() */
+   }
