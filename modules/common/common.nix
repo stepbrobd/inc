@@ -26,7 +26,7 @@ in
   };
 
   nix = {
-    package = pkgs.nixVersions.latest;
+    package = pkgs.nix;
 
     optimise.automatic = true;
     gc = {
@@ -53,6 +53,7 @@ in
       builders-use-substitutes = true;
       fallback = true;
       flake-registry = "";
+      http3 = true;
       keep-build-log = true;
       keep-derivations = true;
       keep-env-derivations = true;
