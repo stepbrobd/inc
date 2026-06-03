@@ -69,6 +69,7 @@
             smtp = {
               host = "smtp.ens-lyon.fr";
               port = 587;
+              tls.useStartTls = true;
             };
           }
           {
@@ -97,6 +98,7 @@
             smtp = {
               host = "smtp.inria.fr";
               port = 587;
+              tls.useStartTls = true;
             };
           }
           {
@@ -125,6 +127,7 @@
             smtp = {
               host = "smtp.softbank.jp";
               port = 465;
+              tls.useStartTls = false;
             };
           }
           {
@@ -154,6 +157,7 @@
             smtp = {
               host = "smtp.purelymail.com";
               port = 465;
+              tls.useStartTls = false;
             };
           }
           {
@@ -182,6 +186,7 @@
             smtp = {
               host = "smtps.univ-grenoble-alpes.fr";
               port = 465;
+              tls.useStartTls = false;
             };
           }
           {
