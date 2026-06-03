@@ -52,6 +52,7 @@ in
           maxJobs = 100;
           sshUser = "ysun";
           sshKey = config.sops.secrets."nix-community/prv".path;
+          protocol = "ssh-ng";
           supportedFeatures = [
             "benchmark"
             "big-parallel"

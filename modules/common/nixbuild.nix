@@ -60,6 +60,7 @@ in
           inherit system;
           hostName = "eu.nixbuild.net";
           maxJobs = 100;
+          protocol = "ssh-ng";
           supportedFeatures = [ "big-parallel" "benchmark" "kvm" "nixos-test" ];
         });
 
