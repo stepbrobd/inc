@@ -134,19 +134,21 @@ in
           set beresp.stale_if_error = 168h;
         '';
       }
-      {
-        name = "nix"; # convert 403 to 404 for nix
-        type = "fetch";
-        # run after the boilerplate
-        # so the rewritten 404 inherits the 403 "uncacheable" decision
-        # i.e. a missing path stays a fresh miss instead of 24h cached 404
-        priority = 115;
-        content = ''
-          if (beresp.status == 403 && req.url.path != "/nix-cache-info") {
-            set beresp.status = 404;
-          }
-        '';
-      }
+      # not needed any more feat. mic92
+      # https://github.com/nixos/nix/pull/14350
+      # {
+      #   name = "nix"; # convert 403 to 404 for nix
+      #   type = "fetch";
+      #   # run after the boilerplate
+      #   # so the rewritten 404 inherits the 403 "uncacheable" decision
+      #   # i.e. a missing path stays a fresh miss instead of 24h cached 404
+      #   priority = 115;
+      #   content = ''
+      #     if (beresp.status == 403 && req.url.path != "/nix-cache-info") {
+      #       set beresp.status = 404;
+      #     }
+      #   '';
+      # }
       {
         name = "b2";
         type = "miss";
