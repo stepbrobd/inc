@@ -380,6 +380,11 @@ description = "forked from ngi-nix/ngipkgs"
 visibility = "public"
 archived = false
 
+[repo."niks3"]
+description = "forked from mic92/niks3"
+visibility = "public"
+archived = false
+
 [repo."nix"]
 description = "forked from nixos/nix"
 visibility = "public"
