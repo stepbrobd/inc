@@ -2,6 +2,11 @@
 
 [![atelier](https://github.com/stepbrobd/inc/actions/workflows/ci.yaml/badge.svg)](https://github.com/stepbrobd/atelier)
 
+Binary Cache:
+
+- Cache: <https://cache.ysun.co>
+- Key: `cache.ysun.co-1:WxPYwT5g3kt9XhUhHPpNLZKI9HIOsVVAuqSHpok8Qt4=`
+
 Maybe the title isn't that clickbaity? As of this commit there are about 17k
 lines of Nix...
 
