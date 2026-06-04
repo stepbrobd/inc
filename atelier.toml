@@ -23,4 +23,6 @@ exclude = [
   "legacyPackages.*.ripe-atlas-software-probe",     # weird
   "legacyPackages.*.spotify",                       # unused
   "legacyPackages.*.verus",                         # unused
+
+  "packages.*.*", # not exported
 ]

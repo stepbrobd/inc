@@ -2,13 +2,10 @@
 
 {
   perSystem =
-    { pkgs, ... }:
-    rec {
+    { pkgs, ... }: {
       legacyPackages = lib.localPackagesFrom {
         dir = ../../pkgs;
         scope = pkgs;
       };
-
-      packages = legacyPackages;
     };
 }
