@@ -1,12 +1,8 @@
-{ inputs, ... }:
-
-{ config, pkgs, ... }:
+{ config, ... }:
 
 {
   programs.neovide = {
     enable = true;
-
-    package = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.neovide;
 
     settings = {
       inherit (config.programs.alacritty.settings) font;
