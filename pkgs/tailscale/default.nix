@@ -3,13 +3,13 @@
 (pkgsPrev.tailscale.override {
   buildGoModule = pkgsPrev.buildGoModule.override {
     go = pkgsPrev.go_1_26.overrideAttrs (final: prev: {
-      version = "1.26.3";
+      version = "1.26.4";
 
       src = fetchFromGitHub {
         owner = "tailscale";
         repo = "go";
-        rev = "7104161f96b07474ce312ea116c8b2a1efe1311a";
-        hash = "sha256-uskKJHUzzIQ74VuzoQKrlz+6tCY/YKnv+BjJduPwt6Q=";
+        rev = "c803676bcc7f2b195b167a53d49d728045cd9b36";
+        hash = "sha256-cY5yryX+p/xtoTv+WZEKFagiIl0OREHnJY1Bk5VpVVc=";
       };
 
       postPatch = (prev.postPatch or "") + ''
@@ -20,14 +20,14 @@
   };
 }).overrideAttrs {
   # go run ./cmd/mkversion
-  version = "1.99.120";
+  version = "1.101.14";
 
   src = fetchFromGitHub {
     owner = "tailscale";
     repo = "tailscale";
-    rev = "c234dcc2ef95823f19aaef109ea1e5960a879336";
-    hash = "sha256-unXEp27M2Ia4ZaXM2QbMwE/cH2Zk+rz5Lfhqv7inqQs=";
+    rev = "26864f130233804e2f7c80d3bdf00f8db0942f29";
+    hash = "sha256-0NfUF4b3g9qNnPCGyFblVWCH4ypRQ63JGnJsfOeDyxM=";
   };
 
-  vendorHash = "sha256-O8fayMGE9gM/2IamN1AP6Mk8GQTEYGtEeF35iebRkVs=";
+  vendorHash = "sha256-DUWC+1lbebDwAnhsaGOde3mmD3wHEtMdIyYOMhwxpBU=";
 }
