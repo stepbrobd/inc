@@ -16,6 +16,8 @@ exclude = [
   "legacyPackages.aarch64-darwin.plausible",   # unsupported
   "legacyPackages.aarch64-linux.mac-app-util", # unsupported
   "legacyPackages.x86_64-linux.mac-app-util",  # unsupported
+  "legacyPackages.aarch64-linux.mas",          # unsupported
+  "legacyPackages.x86_64-linux.mas",           # unsupported
 
   "legacyPackages.*.gravity",                       # registry
   "legacyPackages.*.jitsi-meet",                    # insecure
