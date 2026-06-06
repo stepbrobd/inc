@@ -370,6 +370,11 @@ description = "forked from torvalds/linux"
 visibility = "public"
 archived = false
 
+[repo."mas"]
+description = "forked from mac-cli/mas"
+visibility = "public"
+archived = false
+
 [repo."monocle"]
 description = "forked from bgpkit/monocle"
 visibility = "public"
