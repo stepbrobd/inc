@@ -90,9 +90,12 @@
 
 
     # spotlight issue
-    onActivation.extraEnv.HOMEBREW_BUNDLE_MAS_SKIP = lib.concatStringsSep
-      " "
-      (lib.map lib.toString (lib.attrValues config.homebrew.masApps));
+    # only enable this when mas tries to re-download everything
+    # currently should be fix in my fork
+    # https://github.com/stepbrobd/mas/tree/macos26
+    # onActivation.extraEnv.HOMEBREW_BUNDLE_MAS_SKIP = lib.concatStringsSep
+    #   " "
+    #   (lib.map lib.toString (lib.attrValues config.homebrew.masApps));
 
     masApps = {
       # utils
