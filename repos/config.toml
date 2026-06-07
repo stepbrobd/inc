@@ -79,6 +79,11 @@ description = "cv in typst with auto build and release"
 visibility = "public"
 archived = false
 
+[repo."drac"]
+description = "le drac du rhône"
+visibility = "private"
+archived = false
+
 [repo."finch"]
 description = "hackzurich 2023: finch - a simple neural net framework and visualizer that uses genetic networks to train"
 visibility = "public"
