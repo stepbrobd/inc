@@ -26,8 +26,7 @@
         };
 
         himalaya = {
-          # why is this pulling in emacs?
-          enable = false;
+          enable = true;
         };
 
         neomutt = {
@@ -207,7 +206,7 @@
   programs.msmtp.enable = true;
   programs.notmuch.enable = true;
   programs.himalaya = {
-    enable = false;
+    enable = true;
     package = pkgs.himalaya.override {
       buildFeatures = lib.optionals config.programs.notmuch.enable [ "notmuch" ];
     };
