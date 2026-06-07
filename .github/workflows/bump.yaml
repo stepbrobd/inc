@@ -25,6 +25,7 @@ jobs:
         calibre-web
         claude-code
         codex
+        dix
         gravity
         jitsi-meet
         kanidm
