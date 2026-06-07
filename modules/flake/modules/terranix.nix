@@ -11,13 +11,13 @@
       in
       (lib.terranixConfiguration {
         inherit system modules;
-      }).overrideAttrs (_: {
+      }).overrideAttrs {
         passthru = {
           inherit (lib.terranixConfigurationAst {
             inherit system modules;
           }) config;
         };
-      });
+      };
 
     apps.terranix = {
       type = "app";
