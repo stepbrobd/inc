@@ -36,6 +36,7 @@ jobs:
         niks3-server
         nirimon
         nixvim
+        notmuch
         ocamlPackages.dune
         ocamlPackages.omd
         opencode
