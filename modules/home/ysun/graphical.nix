@@ -27,7 +27,6 @@
     # mpd # linux only
     neovide
     niks3
-    # nh
     # nushell # imported in minimal
     openconnect
     openvpn
