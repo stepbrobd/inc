@@ -81,7 +81,7 @@ archived = false
 
 [repo."drac"]
 description = "le drac du rhône"
-visibility = "private"
+visibility = "public"
 archived = false
 
 [repo."finch"]
