@@ -1,6 +1,4 @@
-{ lib, ... }:
-
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   environment.systemPackages = [ pkgs.mas ];
@@ -70,7 +68,6 @@
       "kindavim"
       "loop"
       "macs-fan-control"
-      "notchnook"
       "obs"
       "osu"
       "passepartout"
