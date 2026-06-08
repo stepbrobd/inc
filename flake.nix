@@ -123,6 +123,8 @@
     miroir.inputs.utils.follows = "utils";
     miroir.inputs.gomod2nix.follows = "gomod2nix";
     # n
+    # after v5 release, switch to noctalia-greeter
+    # https://github.com/noctalia-dev/noctalia-greeter
     noctalia.url = "github:noctalia-dev/noctalia-shell";
     noctalia.inputs.nixpkgs.follows = "nixpkgs";
     noctalia.inputs.noctalia-qs.follows = "noctalia-qs";
