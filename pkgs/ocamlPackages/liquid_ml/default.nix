@@ -13,13 +13,13 @@
 
 buildDunePackage (finalAttrs: {
   pname = "liquid_ml";
-  version = "0.1.3";
+  version = "0.1.4";
 
   src = fetchFromGitHub {
     owner = "benfaerber";
     repo = "liquid-ml";
     tag = finalAttrs.version;
-    hash = "sha256-GvzSVu/84tqsXb0qS+xf7Jda95TOCHaCJv43Li2ZLyA=";
+    hash = "sha256-yppcmAU9ZxV8ZUI1afzGE29HPQ5V/aQQ7k++bY8hx7g=";
   };
 
   env.DUNE_CACHE = "disabled";
