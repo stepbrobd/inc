@@ -1,3 +1,5 @@
+{ lib, ... }:
+
 { pkgs, ... }:
 
 {
@@ -17,7 +19,12 @@
       brewfile = true;
     };
 
-    taps = [
+    taps = lib.map
+      (tap: {
+        name = tap;
+        trusted = true;
+        force_auto_update = true;
+      }) [
       # my own taps
       "stepbrobd/tap"
       # universal audio
