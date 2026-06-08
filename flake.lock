@@ -212,21 +212,6 @@
         "type": "github"
       }
     },
-    "flatpak": {
-      "locked": {
-        "lastModified": 1780908363,
-        "narHash": "sha256-llGS4y3Qh1eUkli3/Y2VY9FV3GOUKFZR1E2BDftt45Q=",
-        "owner": "gmodena",
-        "repo": "nix-flatpak",
-        "rev": "1df08625f0f8c7d6e300a0e5df7955bbb877d809",
-        "type": "github"
-      },
-      "original": {
-        "owner": "gmodena",
-        "repo": "nix-flatpak",
-        "type": "github"
-      }
-    },
     "generators": {
       "inputs": {
         "nixlib": [
@@ -673,7 +658,6 @@
         "crane": "crane",
         "darwin": "darwin",
         "disko": "disko",
-        "flatpak": "flatpak",
         "generators": "generators",
         "gitignore": "gitignore",
         "gomod2nix": "gomod2nix",
