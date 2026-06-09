@@ -81,7 +81,6 @@
       "slack"
       "stats"
       "tailscale-app"
-      "thaw"
       "the-unarchiver"
       "yubico-authenticator"
       "zoom"
