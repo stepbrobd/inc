@@ -123,7 +123,7 @@
     # n
     # after v5 release, switch to noctalia-greeter
     # https://github.com/noctalia-dev/noctalia-greeter
-    noctalia.url = "github:noctalia-dev/noctalia-shell";
+    noctalia.url = "github:noctalia-dev/noctalia-shell/legacy-v4";
     noctalia.inputs.nixpkgs.follows = "nixpkgs";
     noctalia.inputs.noctalia-qs.follows = "noctalia-qs";
     noctalia-qs.url = "github:noctalia-dev/noctalia-qs";
