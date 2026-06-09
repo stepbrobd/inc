@@ -74,7 +74,6 @@
       "imazing-profile-editor"
       "kindavim"
       "loop"
-      "macs-fan-control"
       "obs"
       "osu"
       "passepartout"
