@@ -61,6 +61,7 @@
 
       # "antinote" # i dont really keep note that much
       # "dockdoor" # dont seem to work that well with aerospace
+      # "hey-desktop" # fuck this shit
       # "lulu" # removed cause too annoying
       # "orion" # too unstable
 
@@ -70,7 +71,6 @@
       "container"
       "discord"
       "google-chrome"
-      "hey-desktop"
       "imazing-profile-editor"
       "kindavim"
       "loop"
