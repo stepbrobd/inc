@@ -7,7 +7,7 @@
 }:
 
 let
-  cfg = config.programs.noctalia-shell;
+  cfg = config.programs.noctalia;
 
   hasTag = lib.hasTag osConfig.networking.hostName;
 in
@@ -16,7 +16,10 @@ in
 
   config = lib.mkMerge [
     (lib.mkIf (hasTag "noctalia") {
-      programs.noctalia-shell.enable = lib.mkDefault true;
+      programs.noctalia = {
+        enable = lib.mkDefault true;
+        systemd.enable = lib.mkDefault true;
+      };
     })
 
     (lib.mkIf cfg.enable {
@@ -61,7 +64,7 @@ in
         x11.enable = true;
       };
 
-      programs.noctalia-shell.settings = {
+      programs.noctalia.settings = {
         appLauncher = {
           autoPasteClipboard = false;
           clipboardWatchImageCommand = "wl-paste --type image --watch cliphist store";

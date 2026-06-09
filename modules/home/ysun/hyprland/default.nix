@@ -41,7 +41,7 @@ in
         exec-once = ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1 &
         exec-once = gnome-keyring-daemon --start --components=pkcs11,secrets,ssh &
 
-        exec-once = noctalia-shell &
+        exec-once = noctalia &
         exec-once = fcitx5 -d
 
         ecosystem {
@@ -126,7 +126,7 @@ in
           preserve_split = true
         }
 
-        $ipc = noctalia-shell ipc call
+        $ipc = noctalia msg
 
         bind = CTRL SUPER, Q, exec, $ipc lockScreen lock
         bindl = , XF86AudioMute, exec, $ipc volume muteOutput
