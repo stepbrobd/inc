@@ -8,7 +8,7 @@
 let
   hasTag = lib.hasTag osConfig.networking.hostName;
 
-  ipc = args: ''spawn "noctalia" "msg" ${args}'';
+  ipc = args: ''spawn "noctalia-shell" "ipc" "call" ${args}'';
 in
 {
   config = lib.mkIf (hasTag "niri") {
@@ -97,7 +97,7 @@ in
       spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
       spawn-at-startup "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
       spawn-at-startup "gnome-keyring-daemon" "--start" "--components=pkcs11,secrets,ssh"
-      spawn-at-startup "noctalia"
+      spawn-at-startup "noctalia-shell"
       spawn-at-startup "fcitx5" "-d"
 
       binds {
