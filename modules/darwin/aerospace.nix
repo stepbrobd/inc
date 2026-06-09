@@ -76,10 +76,6 @@
         }
         # workspace 8
         {
-          "if".app-id = "com.hey.app.desktop";
-          run = "move-node-to-workspace 8";
-        }
-        {
           "if".app-id = "com.apple.mail";
           run = "move-node-to-workspace 8";
         }
