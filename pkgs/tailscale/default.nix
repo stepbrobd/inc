@@ -20,14 +20,14 @@
   };
 }).overrideAttrs {
   # go run ./cmd/mkversion
-  version = "1.101.19";
+  version = "1.101.46";
 
   src = fetchFromGitHub {
     owner = "tailscale";
     repo = "tailscale";
-    rev = "83c8440834313e4e779aec9acf3b18891502d0a8";
-    hash = "sha256-hByubDlOi9H8hA9XhSObCfYQyXfPtOeCyLkg4KQzTio=";
+    rev = "317201375f92933d43bba86ee8d3590f5e54ab8d";
+    hash = "sha256-zEHo2Fd4XIPuBGoxjTunvzCyYyXd8NoQL+ycfvz5VTM=";
   };
 
-  vendorHash = "sha256-DUWC+1lbebDwAnhsaGOde3mmD3wHEtMdIyYOMhwxpBU=";
+  vendorHash = "sha256-M8mPCmO8tp4Kdr1HiuuR+oBYhAeIEENH2tZGaWJa7IY=";
 }
