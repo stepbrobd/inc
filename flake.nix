@@ -66,7 +66,7 @@
     bun2nix.inputs.flake-parts.follows = "parts";
     bun2nix.inputs.treefmt-nix.follows = "treefmt";
     # c
-    colmena.url = "github:stepbrobd/colmena/detached";
+    colmena.url = "github:stepbrobd/colmena";
     colmena.inputs.nixpkgs.follows = "nixpkgs";
     colmena.inputs.stable.follows = "nixpkgs";
     colmena.inputs.flake-compat.follows = "compat";
