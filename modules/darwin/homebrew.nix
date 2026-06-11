@@ -106,7 +106,6 @@
       "Flighty" = 1358823008;
       "Folder Preview" = 6698876601;
       "Parcel" = 375589283;
-      "Pieoneer" = 6739781207;
       "Pixelmator Pro" = 1289583905;
       "Remote Desktop" = 409907375;
       "ServerCat" = 1501532023;
