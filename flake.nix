@@ -147,9 +147,7 @@
     rfm.inputs.utils.follows = "utils";
     rfm.inputs.systems.follows = "systems";
     rfm.inputs.gomod2nix.follows = "gomod2nix";
-    # TODO: remove after https://github.com/nvmd/nixos-raspberrypi/pull/198
-    # rpi.url = "github:nvmd/nixos-raspberrypi";
-    rpi.url = "github:stepbrobd/nixos-raspberrypi";
+    rpi.url = "github:nvmd/nixos-raspberrypi";
     rpi.inputs.nixpkgs.follows = "nixpkgs";
     rpi.inputs.flake-compat.follows = "compat";
     rust-overlay.url = "github:oxalica/rust-overlay";
