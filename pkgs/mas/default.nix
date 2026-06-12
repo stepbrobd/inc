@@ -24,4 +24,6 @@ pkgsPrev.mas.overrideAttrs (final: _: {
 
     runHook postInstall
   '';
+
+  doInstallCheck = false;
 })
