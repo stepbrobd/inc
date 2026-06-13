@@ -32,6 +32,7 @@ let
         self.nixosModules.passwordless
         self.nixosModules.plausible
         self.nixosModules.server
+        self.nixosModules.swetrix
         self.nixosModules.vaultwarden
         self.nixosModules.ysun
         rfm.nixosModules.default
