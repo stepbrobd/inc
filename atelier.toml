@@ -19,10 +19,10 @@ exclude = [
   "legacyPackages.aarch64-linux.mas",          # unsupported
   "legacyPackages.x86_64-linux.mas",           # unsupported
 
-  "legacyPackages.*.gravity",                       # registry
-  "legacyPackages.*.jitsi-meet",                    # insecure
-  "legacyPackages.*.spotify",                       # unused
-  "legacyPackages.*.verus",                         # unused
+  "legacyPackages.*.gravity",    # registry
+  "legacyPackages.*.jitsi-meet", # insecure
+  "legacyPackages.*.spotify",    # unused
+  "legacyPackages.*.verus",      # unused
 
   "packages.*.*", # not exported
 ]
