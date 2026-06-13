@@ -21,8 +21,6 @@ exclude = [
 
   "legacyPackages.*.gravity",                       # registry
   "legacyPackages.*.jitsi-meet",                    # insecure
-  "legacyPackages.*.ripe-atlas-probe-measurements", # weird
-  "legacyPackages.*.ripe-atlas-software-probe",     # weird
   "legacyPackages.*.spotify",                       # unused
   "legacyPackages.*.verus",                         # unused
 
