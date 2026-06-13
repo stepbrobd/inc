@@ -1,4 +1,6 @@
-{ lib
+{ inputs
+, lib
+, pkgsFinal
 , buildNpmPackage
 , fetchFromGitHub
 , nodejs_24
@@ -52,9 +54,7 @@ buildNpmPackage (finalAttrs: {
     runHook postInstall
   '';
 
-  passthru = {
-    inherit (finalAttrs) src version;
-  };
+  passthru.tests.swetrix = pkgsFinal.callPackage ./test.nix { inherit inputs; pkgs = pkgsFinal; };
 
   meta = {
     homepage = "https://swetrix.com";

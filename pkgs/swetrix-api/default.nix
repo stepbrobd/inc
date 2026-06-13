@@ -57,6 +57,8 @@ buildNpmPackage (finalAttrs: {
     runHook postInstall
   '';
 
+  passthru = { inherit (swetrix) tests; };
+
   meta = {
     homepage = "https://swetrix.com";
     license = lib.licenses.agpl3Only;
