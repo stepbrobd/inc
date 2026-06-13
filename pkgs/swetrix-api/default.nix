@@ -11,6 +11,8 @@ buildNpmPackage (finalAttrs: {
   pname = "swetrix-api";
   inherit (swetrix) version src;
 
+  patches = [ ./listen.patch ];
+
   sourceRoot = "${finalAttrs.src.name}/backend";
 
   npmDepsHash = "sha256-HamWyCgaNge3GJPAaoPiZJb+WlS44iIUkKbFU3QqWQE=";

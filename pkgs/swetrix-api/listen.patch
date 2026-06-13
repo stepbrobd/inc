@@ -1,0 +1,10 @@
+--- a/apps/community/src/main.ts
++++ b/apps/community/src/main.ts
+@@ -55,6 +55,6 @@
+ 
+   app.enableShutdownHooks()
+ 
+-  await app.listen(5005)
++  await app.listen(5005, process.env.LISTEN_HOST || '0.0.0.0')
+ }
+ bootstrap()
