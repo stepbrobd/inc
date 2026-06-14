@@ -9,13 +9,13 @@
 
 buildNpmPackage (finalAttrs: {
   pname = "swetrix";
-  version = "5.2.1";
+  version = "5.2.2";
 
   src = fetchFromGitHub {
     owner = "Swetrix";
     repo = "swetrix";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-hBChUAIXndfqMnablNJC1YXuqoyf+zH8RmTmQDD9xqI=";
+    hash = "sha256-JwsjX/JixrS75xwM/6FcBxzEl3Wd2xo6KbKEYTLGfJw=";
   };
 
   sourceRoot = "${finalAttrs.src.name}/web";
