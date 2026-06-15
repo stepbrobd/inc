@@ -12,6 +12,7 @@ keys:
     - &kongo age18np64w0h4adalpwxgdysppjy4hqd6adhrrmz7q2xekjyczzfes4qkj52uj
     - &lagern age17q42dw293nnu5pdkargd09f090zlss9ee5wp78vwh54mez729yzqp9kfk6
     - &lantau age1rlm9fps8u5yhpwg0xwa7cp5lengkuz0ws5n7j5szqcr4lhnzzflsazze4g
+    - &morasko age1e8lt7zwnd4gf56ew4awdreh8yftyy4c3vmz9nv6l8dsdvue5vshq08ncja
     - &odake age16urcveanputmn5vrt579xnk2pk87mlv0d2fmwzn2059qtzklmq9smj34a5
     - &oxide age1mry0f60kadfgkqwdyqydlrjypwhg38m4dfu8j8ytefzhj8lk0q5qysxrxu
     - &roraima age1a6ecdm7kqslt2xg52q6grdy8emqrlxz4mzgd707w5k238k9p8stsn5tttp
@@ -35,6 +36,7 @@ creation_rules:
           - *kongo
           - *lagern
           - *lantau
+          - *morasko
           - *odake
           - *oxide
           - *roraima
