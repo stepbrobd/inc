@@ -4,6 +4,8 @@
   i18n.defaultLocale = "en_US.UTF-8";
   time.timeZone = "Etc/UTC";
 
+  networking.tempAddresses = "disabled";
+
   environment.systemPackages = with pkgs; [
     cacert
     file
