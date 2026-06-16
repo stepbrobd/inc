@@ -19,27 +19,11 @@
       brewfile = true;
     };
 
-    taps = lib.map
-      (tap: {
-        name = tap;
-        trusted = true;
-        force_auto_update = true;
-      }) [
-      # my own taps
-      "stepbrobd/tap"
-      # universal audio
-      "resonative/proaudio"
-      # sonarworks soundid
-      "lyraphase/av-casks"
-      # third-party taps
-      "nextfire/tap"
-    ];
-
     brews = [
       # apple music discord rich presence
       # requires deno readline sqlite
       {
-        name = "apple-music-discord-rpc";
+        name = "nextfire/tap/apple-music-discord-rpc";
         start_service = true;
         restart_service = "changed";
       }
