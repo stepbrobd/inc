@@ -169,6 +169,11 @@ description = "learn a useful language"
 visibility = "public"
 archived = true
 
+[repo."rocquencourt"]
+description = "caching everything coq/rocq"
+visibility = "public"
+archived = false
+
 [repo."router"]
 description = "simple and declarative nixos router"
 visibility = "public"
