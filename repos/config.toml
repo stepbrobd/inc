@@ -310,6 +310,11 @@ description = "forked from yazi-rs/flavors"
 visibility = "public"
 archived = false
 
+[repo."nixos-g5k-image"]
+description = "forked from oar-team/nixos-g5k-image"
+visibility = "public"
+archived = false
+
 [repo."garnix-lib"]
 description = "forked from garnix-io/garnix-lib"
 visibility = "public"
