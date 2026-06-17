@@ -76,10 +76,7 @@
     compat.flake = false;
     cornflake.url = "github:jzbor/cornflakes";
     crane.url = "github:ipetkov/crane";
-    # TODO: remove after https://github.com/nix-darwin/nix-darwin/pull/1789
-    # darwin.url = "github:nix-darwin/nix-darwin";
-    # remove after 
-    darwin.url = "github:stepbrobd/nix-darwin/bundle";
+    darwin.url = "github:nix-darwin/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
