@@ -63,6 +63,7 @@ in
     monocle
     nix-output-monitor
     nixvim
+    python3
     yubikey-manager
   ])
     ++ (lib.optionals isGraphical [
