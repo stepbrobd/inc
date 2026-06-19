@@ -3,6 +3,7 @@
 {
   imports = with inputs.self.homeManagerModules.ysun; [
     graphical
+    trampoline
 
     # alacritty # imported in graphical
     # atuin # imported in graphical

@@ -72,18 +72,12 @@ let
         sshd
         system
         tailscale
-        trampoline
         inputs.srvos.darwinModules.desktop
       ];
 
       serverUsers = { ysun = with inputs.self; [ hmModules.ysun.minimal ]; };
       laptopUsers = { ysun = with inputs.self; [ hmModules.ysun.linux ]; };
-      darwinUsers = {
-        ysun = with inputs.self; [
-          hmModules.ysun.darwin
-          hmModules.ysun.trampoline
-        ];
-      };
+      darwinUsers = { ysun = with inputs.self; [ hmModules.ysun.darwin ]; };
     in
     mkColmena {
       inherit inputs specialArgs getSystem;
