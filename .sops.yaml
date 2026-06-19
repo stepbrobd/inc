@@ -1,8 +1,10 @@
 keys:
-  age:
+  ysun: &ysun
     - &framework age102w4y6gsntvw93n590agqdg9v3tt8rs0x2kpunvu39jh6lyvdpeq7ct844
     - &macbook age1cfd003wlk8w2hhtlwflyuc6lzwsswc48kpl9cafrg4kc5jp3u5rqckcf5l
     - &xps age13gw6zx7lnjwed6eml0u23xr3j239ftysdxv3afpq5gycnsvfwvaq28wnxp
+
+  hosts: &hosts
     - &baldy age1z9lj8dhfs84z9gngjgydn5zmyftnn58ns2llxckd2kpd6j7nd4nq0pgya5
     - &butte age1js9g9de2g2hqtzfhaepn9uff3n8f3m0xnkneyslsd28xs4pnmfxsuvthaj
     - &cradle age13ezermywyfeu7c04nka0jm4vj6gqnhg7cqh0lg75k9r0zuqfhajse7zndt
@@ -19,26 +21,94 @@ keys:
     - &timah age1e466tkanyx0fa5pykvyqggsefnkefg5vp8jw3nmcxjljl5y4j45sm7zh2m
     - &toompea age1ma866cuslrcgvtdjnnezy58smq66p2zsdduetm0deud2c4xxygts9vvm0k
     - &walberla age1s3syz6jhdj9qqz4lcu42uxckpn8na56qa3sehuy6cpwtypf3349qkjry6v
+
+  wildcard: &wildcard
+    - *framework # ysun
+    - *macbook # ysun
+    - *xps # ysun
+
+    # hosts
+    - *baldy
+    - *butte
+    - *cradle
+    - *highline
+    - *isere
+    - *kongo
+    - *lagern
+    - *lantau
+    - *morasko
+    - *odake
+    - *oxide
+    - *roraima
+    - *rysy
+    - *timah
+    - *toompea
+    - *walberla
+
 creation_rules:
+  # hosts/baldy (ysun + baldy)
+  - path_regex: hosts/baldy/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *baldy] }]
+  # hosts/butte (ysun + butte)
+  - path_regex: hosts/butte/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *butte] }]
+  # hosts/cradle (ysun + cradle)
+  - path_regex: hosts/cradle/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *cradle] }]
+  # hosts/highline (ysun + highline)
+  - path_regex: hosts/highline/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *highline] }]
+  # hosts/isere (ysun + isere)
+  - path_regex: hosts/isere/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *isere] }]
+  # hosts/kongo (ysun + kongo)
+  - path_regex: hosts/kongo/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *kongo] }]
+  # hosts/lagern (ysun + lagern)
+  - path_regex: hosts/lagern/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *lagern] }]
+  # hosts/lantau (ysun + lantau)
+  - path_regex: hosts/lantau/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *lantau] }]
+  # hosts/morasko (ysun + morasko)
+  - path_regex: hosts/morasko/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *morasko] }]
+  # hosts/odake (ysun + odake)
+  - path_regex: hosts/odake/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *odake] }]
+  # hosts/oxide (ysun + oxide)
+  - path_regex: hosts/oxide/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *oxide] }]
+  # hosts/roraima (ysun + roraima)
+  - path_regex: hosts/roraima/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *roraima] }]
+  # hosts/rysy (ysun + rysy)
+  - path_regex: hosts/rysy/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *rysy] }]
+  # hosts/timah (ysun + timah)
+  - path_regex: hosts/timah/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *timah] }]
+  # hosts/toompea (ysun + toompea)
+  - path_regex: hosts/toompea/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *toompea] }]
+  # hosts/walberla (ysun + walberla)
+  - path_regex: hosts/walberla/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *walberla] }]
+
+  # terranix (ysun + ci)
+  - path_regex: lib/terranix/secrets\.yaml$
+    key_groups: [{ age: *ysun }]
+
+  # home-manager (ysun)
+  - path_regex: modules/home/ysun/
+    key_groups: [{ age: *ysun }]
+
+  # shared (ysun + hosts)
+  - path_regex: pkgs/gravity/secrets\.yaml$
+    key_groups: [{ age: *wildcard }]
+  - path_regex: lib/secrets\.yaml$
+    key_groups: [{ age: *wildcard }]
+
+  # catchall (ysun)
   - path_regex: .*
-    key_groups:
-      - age:
-          - *framework
-          - *macbook
-          - *xps
-          - *baldy
-          - *butte
-          - *cradle
-          - *highline
-          - *isere
-          - *kongo
-          - *lagern
-          - *lantau
-          - *morasko
-          - *odake
-          - *oxide
-          - *roraima
-          - *rysy
-          - *timah
-          - *toompea
-          - *walberla
+    key_groups: [{ age: *ysun }]
