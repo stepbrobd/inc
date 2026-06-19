@@ -225,11 +225,12 @@
       };
   };
 
-  sops.secrets."mail/softbank/pass" = { };
-  sops.secrets."mail/stepbrobd/pass" = { };
-  sops.secrets."mail/inria/pass" = { };
-  sops.secrets."mail/ens/pass" = { };
-  sops.secrets."mail/uga/pass" = { };
+  sops.secrets."mail/ens/pass" = { sopsFile = ./secrets.yaml; };
+  sops.secrets."mail/icloud/pass" = { sopsFile = ./secrets.yaml; };
+  sops.secrets."mail/inria/pass" = { sopsFile = ./secrets.yaml; };
+  sops.secrets."mail/softbank/pass" = { sopsFile = ./secrets.yaml; };
+  sops.secrets."mail/stepbrobd/pass" = { sopsFile = ./secrets.yaml; };
+  sops.secrets."mail/uga/pass" = { sopsFile = ./secrets.yaml; };
 
   programs.mbsync.enable = true;
   programs.msmtp.enable = true;
