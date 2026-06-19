@@ -3,6 +3,11 @@
 { pkgs, ... }:
 
 {
+  home.sessionVariables = {
+    COLORTERM = "truecolor";
+    TERM = "alacritty";
+  };
+
   programs.alacritty = {
     enable = true;
 
