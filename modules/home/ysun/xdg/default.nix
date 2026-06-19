@@ -3,6 +3,16 @@
 {
   home.preferXdgDirectories = true;
 
+  xdg = {
+    enable = true;
+    userDirs = {
+      enable = true;
+      setSessionVariables = true;
+      createDirectories = true;
+      extraConfig.WORKSPACE = "${config.home.homeDirectory}/Workspace";
+    };
+  };
+
   # check with pkgs.xdg-ninja
   home.sessionVariables = {
     CARGO_HOME = "${config.xdg.dataHome}/cargo";

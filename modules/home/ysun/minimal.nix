@@ -8,7 +8,7 @@
     hushlogin
     nushell
     tmux
-    xdg-ninja
+    xdg
     # zellij
     zsh
   ];

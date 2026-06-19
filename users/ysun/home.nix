@@ -1,22 +1,6 @@
-{ config
-, lib
-, pkgs
-, ...
-}:
+{ lib, pkgs, ... }:
 
 {
-  home.stateVersion = "25.05";
-
-  xdg = {
-    enable = true;
-    userDirs = {
-      enable = true;
-      setSessionVariables = true;
-      createDirectories = true;
-      extraConfig.WORKSPACE = "${config.home.homeDirectory}/Workspace";
-    };
-  };
-
   home = {
     username = "ysun";
     homeDirectory =
@@ -28,4 +12,5 @@
         abort "Unsupported OS";
   };
 
+  home.stateVersion = "25.05";
 }
