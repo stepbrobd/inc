@@ -1,15 +1,9 @@
 { config
 , lib
-, osConfig
 , pkgs
 , ...
 }:
 
-let
-  hasTag = lib.hasTag osConfig.networking.hostName;
-  isGraphical = hasTag "graphical";
-  isDarwin = pkgs.stdenv.isDarwin;
-in
 {
   home.stateVersion = "25.05";
 
@@ -42,37 +36,6 @@ in
     GOPATH = "${config.xdg.dataHome}/go";
     GOMODCACHE = "${config.xdg.cacheHome}/go/pkg/mod";
   };
-
-  home.packages = with pkgs; [ ]
-    ++ (lib.optionals (isGraphical || isDarwin) [
-    cfspeedtest
-    colmena
-    comma
-    gitleaks
-    miroir
-    monocle
-    nix-output-monitor
-    nixvim
-    python3
-    yubikey-manager
-  ])
-    ++ (lib.optionals isGraphical [
-    beeper
-    cider-2
-    mpv
-    obs-studio
-    (osu-lazer-bin.override { nativeWayland = true; })
-    pinentry-all
-    remmina
-    zoom-us
-    zotero
-    # yt-dlp
-  ])
-    ++ (lib.optionals isDarwin [
-    cocoapods
-    pinentry_mac
-    # yt-dlp
-  ]);
 
   home.activation.hushlogin = lib.hm.dag.entryAnywhere ''
     $DRY_RUN_CMD touch ${config.home.homeDirectory}/.hushlogin
