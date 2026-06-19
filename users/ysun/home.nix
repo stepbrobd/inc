@@ -26,7 +26,6 @@ in
       enable = true;
       associations.added = defaultApplications;
       defaultApplications = {
-        "x-scheme-handler/discord" = [ "discord.desktop" ];
         "x-scheme-handler/slack" = [ "slack.desktop" ];
       };
     };
@@ -57,7 +56,6 @@ in
     cfspeedtest
     colmena
     comma
-    discordo
     gitleaks
     miroir
     monocle
@@ -69,7 +67,6 @@ in
     ++ (lib.optionals isGraphical [
     beeper
     cider-2
-    discord # (discord.override { withEquicord = true; }) nixpkgs#430391
     mpv
     obs-studio
     (osu-lazer-bin.override { nativeWayland = true; })
