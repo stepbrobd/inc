@@ -36,8 +36,4 @@
     GOPATH = "${config.xdg.dataHome}/go";
     GOMODCACHE = "${config.xdg.cacheHome}/go/pkg/mod";
   };
-
-  home.activation.hushlogin = lib.hm.dag.entryAnywhere ''
-    $DRY_RUN_CMD touch ${config.home.homeDirectory}/.hushlogin
-  '';
 }
