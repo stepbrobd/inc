@@ -73,7 +73,36 @@
             };
           }
           {
-            neomutt.mailboxName = "=== ENS de Lyon ===";
+            neomutt.mailboxName = "=== ENS ===";
+          }
+        ];
+
+        iCloud = lib.deepMergeAttrsList [
+          {
+            inherit
+              realName
+              mbsync
+              msmtp
+              notmuch
+              neomutt
+              himalaya
+              thunderbird
+              ;
+            address = "sun.yifei@icloud.com";
+            userName = "sun.yifei@icloud.com";
+            passwordCommand = mkpass "icloud";
+            imap = {
+              host = "imap.mail.me.com";
+              port = 993;
+            };
+            smtp = {
+              host = "smtp.mail.me.com";
+              port = 587;
+              tls.useStartTls = true;
+            };
+          }
+          {
+            neomutt.mailboxName = "=== iCloud ===";
           }
         ];
 
