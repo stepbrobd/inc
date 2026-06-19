@@ -5,10 +5,11 @@
     enable = true;
     pd.enable = true;
     settings = {
-      # max performance for dev on ac
-      CPU_SCALING_GOVERNOR_ON_AC = "performance";
-      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+      # powersave still turbo under load
+      CPU_SCALING_GOVERNOR_ON_AC = "powersave";
+      CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
       CPU_BOOST_ON_AC = 1;
+      CPU_HWP_DYN_BOOST_ON_AC = 1;
 
       # efficient on bat
       CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
