@@ -23,7 +23,6 @@ in
     miroir
     monocle
     nix-output-monitor
-    nixvim
     python3
     yubikey-manager
   ])

@@ -29,7 +29,6 @@
   };
 
   home.sessionVariables = {
-    EDITOR = "nvim";
     TERM = "alacritty";
     COLORTERM = "truecolor";
     # GOROOT = "${pkgs.go}/share/go"; # set only in direnv
