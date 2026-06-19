@@ -21,14 +21,6 @@ in
       createDirectories = true;
       extraConfig.WORKSPACE = "${config.home.homeDirectory}/Workspace";
     };
-  } // lib.optionalAttrs pkgs.stdenv.isLinux {
-    mimeApps = rec {
-      enable = true;
-      associations.added = defaultApplications;
-      defaultApplications = {
-        "x-scheme-handler/slack" = [ "slack.desktop" ];
-      };
-    };
   };
 
   home = {
@@ -72,7 +64,6 @@ in
     (osu-lazer-bin.override { nativeWayland = true; })
     pinentry-all
     remmina
-    slack
     zoom-us
     zotero
     # yt-dlp
