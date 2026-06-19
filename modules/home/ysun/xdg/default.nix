@@ -9,7 +9,6 @@
       enable = true;
       setSessionVariables = true;
       createDirectories = true;
-      extraConfig.WORKSPACE = "${config.home.homeDirectory}/Workspace";
     };
   };
 
