@@ -1,0 +1,48 @@
+name: Terranix
+
+on:
+  push:
+    branches: [master]
+    paths:
+      # gha
+      - ".github/actions/setup/**"
+      - ".github/actions/ssh/**"
+      - ".github/workflows/terranix.yaml"
+      # inputs
+      - "flake.nix"
+      - "flake.lock"
+      # blueprint
+      - "lib/blueprint/**"
+      - "lib/terranix/**"
+      # terranix
+      - "modules/flake/modules/terranix.nix"
+      - "modules/terranix/**"
+      - "pkgs/terranix/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: terranix
+  cancel-in-progress: false
+
+jobs:
+  Terranix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: SSH
+        uses: ./.github/actions/ssh
+        with:
+          ssh: ${{ secrets.SSH }}
+
+      - name: Apply
+        run: nix run .#terranix.apply
