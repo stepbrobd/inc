@@ -36,8 +36,8 @@ let
     '';
   };
 in
-config.overrideAttrs {
-  passthru = {
+config.overrideAttrs (prev: {
+  passthru = prev.passthru // {
     plan = terranixActionFor ''
       tofu plan
     '';
@@ -46,4 +46,4 @@ config.overrideAttrs {
       tofu apply -auto-approve
     '';
   };
-}
+})
