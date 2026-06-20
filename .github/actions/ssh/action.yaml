@@ -3,7 +3,7 @@ description: Provision ssh credential from a ed25519 key (with CA), must run aft
 
 inputs:
   ssh:
-    description: CI ed25519 private key (caller pass ${{ secrets.SSH }})
+    description: CI ed25519 private key (caller passes secrets.SSH)
     required: true
 
 runs:
