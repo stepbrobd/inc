@@ -1,0 +1,37 @@
+name: SSH
+description: Provision ssh credential from a ed25519 key (with CA), must run after Checkout + Setup
+
+inputs:
+  ssh:
+    description: CI ed25519 private key (caller pass ${{ secrets.SSH }})
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: SSH Identity
+      shell: bash
+      env:
+        SSH: ${{ inputs.ssh }}
+      run: |
+        set -euo pipefail
+        umask 077
+        install -d -m 700 ~/.ssh
+        printf '%s\n' "$SSH" > ~/.ssh/id_ed25519
+
+    - name: SSH CA
+      shell: bash
+      run: |
+        set -euo pipefail
+        ca=$(nix eval --raw .#lib.blueprint.ssh.ca)
+        printf '@cert-authority * %s\n' "$ca" >> ~/.ssh/known_hosts
+
+    - name: SSH Age
+      shell: bash
+      run: |
+        set -euo pipefail
+        umask 077 # keys.txt lands 0600 on creation
+        install -d -m 700 ~/.config/sops/age
+        nix run nixpkgs#ssh-to-age -- -private-key \
+          -i ~/.ssh/id_ed25519 \
+          -o ~/.config/sops/age/keys.txt
