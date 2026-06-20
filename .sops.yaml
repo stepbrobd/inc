@@ -4,6 +4,9 @@ keys:
     - &macbook age1cfd003wlk8w2hhtlwflyuc6lzwsswc48kpl9cafrg4kc5jp3u5rqckcf5l
     - &xps age13gw6zx7lnjwed6eml0u23xr3j239ftysdxv3afpq5gycnsvfwvaq28wnxp
 
+  ci:
+    - &ci age1g7ze9fy5kuhl6pr2t05la7hs0j5qp2wv7zdqwrj8x6y8d6j94fnsxxya95
+
   hosts: &hosts
     - &baldy age1z9lj8dhfs84z9gngjgydn5zmyftnn58ns2llxckd2kpd6j7nd4nq0pgya5
     - &butte age1js9g9de2g2hqtzfhaepn9uff3n8f3m0xnkneyslsd28xs4pnmfxsuvthaj
@@ -97,7 +100,7 @@ creation_rules:
 
   # terranix (ysun + ci)
   - path_regex: lib/terranix/secrets\.yaml$
-    key_groups: [{ age: *ysun }]
+    key_groups: [{ age: [*framework, *macbook, *xps, *ci] }]
 
   # home-manager (ysun)
   - path_regex: modules/home/ysun/
