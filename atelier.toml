@@ -6,11 +6,13 @@ trusted-public-keys = [
 systems = ["x86_64-linux", "aarch64-linux", "aarch64-darwin"]
 
 include = [
-  "legacyPackages.*.*",
-  "legacyPackages.*.ocamlPackages.*",
-  "devShells.*.default",
-  "nixosConfigurations.*",
+  "legacyPackages.*.**",
+
   "darwinConfigurations.*",
+  "nixosConfigurations.*",
+
+  "formatter.*",
+  "devShells.*.**",
 ]
 
 exclude = [
