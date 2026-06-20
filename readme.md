@@ -1,6 +1,8 @@
 # The second largest Nix monorepo
 
-[![atelier](https://github.com/stepbrobd/inc/actions/workflows/ci.yaml/badge.svg)](https://github.com/stepbrobd/atelier)
+[![Atelier](https://github.com/stepbrobd/inc/actions/workflows/ci.yaml/badge.svg)](https://github.com/stepbrobd/atelier)
+
+[![Terranix](https://github.com/stepbrobd/inc/actions/workflows/terranix.yaml/badge.svg)](https://github.com/stepbrobd/inc/actions/workflows/terranix.yaml)
 
 Binary Cache:
 
