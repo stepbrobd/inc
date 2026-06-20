@@ -315,6 +315,11 @@ description = "forked from yazi-rs/flavors"
 visibility = "public"
 archived = false
 
+[repo."forge"]
+description = "forked from ngi-nix/forge"
+visibility = "public"
+archived = false
+
 [repo."nixos-g5k-image"]
 description = "forked from oar-team/nixos-g5k-image"
 visibility = "public"
