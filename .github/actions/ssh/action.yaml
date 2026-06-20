@@ -30,7 +30,7 @@ runs:
       shell: bash
       run: |
         set -euo pipefail
-        umask 077 # keys.txt lands 0600 on creation
+        umask 077
         install -d -m 700 ~/.config/sops/age
         nix run nixpkgs#ssh-to-age -- -private-key \
           -i ~/.ssh/id_ed25519 \
