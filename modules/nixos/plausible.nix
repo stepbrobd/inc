@@ -88,7 +88,7 @@ in
           extraConfig = with config.services.plausible.server; ''
             import common
             reverse_proxy [${toString listenAddress}]:${toString port} {
-              header_up X-Real-IP {http.request.header.CF-Connecting-IP}
+              header_up X-Real-IP {client_ip}
             }
           '';
         };

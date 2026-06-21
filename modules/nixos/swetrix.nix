@@ -187,12 +187,12 @@ in
           import common
           handle_path /backend/* {
             reverse_proxy [::1]:5005 {
-              header_up X-Real-IP {http.request.header.CF-Connecting-IP}
+              header_up X-Real-IP {client_ip}
             }
           }
           handle {
             reverse_proxy [::1]:3000 {
-              header_up X-Real-IP {http.request.header.CF-Connecting-IP}
+              header_up X-Real-IP {client_ip}
             }
           }
         '';

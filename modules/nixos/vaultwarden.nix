@@ -37,17 +37,11 @@ in
       services.caddy = {
         enable = true;
 
-        # put headers here just in case
-        # most likely i'll only be using this behind tailscale
+        # direct-exposure / behind tailscale: trust the proxy-aware client IP
         virtualHosts.${domain}.extraConfig = ''
           import common
-          vars realip {remote_host}
-          @cf header CF-Connecting-IP *
-          vars @cf realip {header.CF-Connecting-IP}
-          @xf header X-Forwarded-For *
-          vars @xf realip {header.X-Forwarded-For}
           reverse_proxy [${lib.toString cfg.config.ROCKET_ADDRESS}]:${lib.toString cfg.config.ROCKET_PORT} {
-            header_up X-Real-IP {vars.realip}
+            header_up X-Real-IP {client_ip}
           }
         '';
       };
