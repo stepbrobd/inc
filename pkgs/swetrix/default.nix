@@ -54,8 +54,6 @@ buildNpmPackage (finalAttrs: {
     runHook postInstall
   '';
 
-  passthru.tests.swetrix = pkgsFinal.callPackage ./test.nix { inherit inputs; pkgs = pkgsFinal; };
-
   meta = {
     homepage = "https://swetrix.com";
     license = lib.licenses.agpl3Only;

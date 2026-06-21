@@ -9,6 +9,7 @@ let
 
   cfg = config.services.swetrix;
   hasTag = lib.hasTag config.networking.hostName;
+  inherit (lib.blueprint.services.swetrix) domain;
 
   managedEnv =
     optionalAttrs cfg.clickhouse.enable
@@ -22,12 +23,19 @@ let
     // optionalAttrs cfg.redis.enable {
       REDIS_HOST = "::1";
       REDIS_PORT = "6379";
+    }
+    // optionalAttrs cfg.caddy.enable {
+      BASE_URL = "https://${domain}";
+      API_ORIGIN = "http://[::1]:5005";
+      LISTEN_HOST = "::1";
+      HOST = "::1";
+      PORT = "3000";
     };
 
   mkUnit =
     { description
     , exec
-    , environment ? cfg.settings
+    , environment ? managedEnv // cfg.settings
     , after ? [ ]
     , wants ? [ ]
     , requires ? [ ]
@@ -62,6 +70,8 @@ in
     redis.enable = mkEnableOption "a bundled Redis server, wired to Swetrix on [::1]:6379";
 
     clickhouse.enable = mkEnableOption "a bundled ClickHouse server, wired to Swetrix on [::1]:8123";
+
+    caddy.enable = mkEnableOption "Caddy reverse proxy (routes /backend/* to API and / to the frontend then bind both services to [::1])";
 
     settings = mkOption {
       type = types.attrsOf types.str;
@@ -100,6 +110,7 @@ in
       services.swetrix.enable = mkDefault true;
       services.swetrix.clickhouse.enable = mkDefault true;
       services.swetrix.redis.enable = mkDefault true;
+      services.swetrix.caddy.enable = mkDefault true;
     })
 
     (mkIf cfg.enable {
@@ -114,10 +125,6 @@ in
       services.clickhouse = mkIf cfg.clickhouse.enable {
         enable = true;
 
-        # A dedicated, loopback-only account instead of the shipped global
-        # `default` user (which the stock config exposes to ::/0). No password is
-        # needed because the server binds loopback only; the user still has the
-        # DDL rights the schema-init needs to CREATE the `analytics` database.
         usersConfig.users.swetrix = {
           password = "";
           networks.ip = [ "127.0.0.1" "::1" ];
@@ -125,10 +132,6 @@ in
           quota = "default";
         };
 
-        # Analytics workloads make ClickHouse's own system logs eat the disk;
-        # drop the high-volume log tables (raw XML for the remove="remove" attr).
-        # Also pin the listeners to the loopbacks (IPv6 first); the API connects
-        # over [::1], and specifying listen_host replaces the stock localhost default.
         extraServerConfig = ''
           <clickhouse>
             <listen_host>::1</listen_host>
@@ -144,6 +147,7 @@ in
             <part_log remove="remove"/>
           </clickhouse>
         '';
+
         extraUsersConfig = ''
           <clickhouse>
             <profiles><default>
@@ -163,7 +167,6 @@ in
       systemd.services.swetrix-api = mkUnit {
         description = "Swetrix analytics API";
         exec = "${pkgs.swetrix-api}/bin/swetrix-api";
-        environment = managedEnv // cfg.settings;
         after = optional cfg.clickhouse.enable "clickhouse.service" ++ optional cfg.redis.enable "redis-swetrix.service";
         requires = optional cfg.clickhouse.enable "clickhouse.service" ++ optional cfg.redis.enable "redis-swetrix.service";
         extraServiceConfig.ExecStartPre = "${pkgs.swetrix-api}/bin/swetrix-api-clickhouse-init";
@@ -174,6 +177,25 @@ in
         exec = "${cfg.package}/bin/swetrix";
         after = [ "swetrix-api.service" ];
         wants = [ "swetrix-api.service" ];
+      };
+
+      # backend -> ${domain}/backend 
+      # o.w.    -> frontend
+      services.caddy = mkIf cfg.caddy.enable {
+        enable = true;
+        virtualHosts.${domain}.extraConfig = ''
+          import common
+          handle_path /backend/* {
+            reverse_proxy [::1]:5005 {
+              header_up X-Real-IP {http.request.header.CF-Connecting-IP}
+            }
+          }
+          handle {
+            reverse_proxy [::1]:3000 {
+              header_up X-Real-IP {http.request.header.CF-Connecting-IP}
+            }
+          }
+        '';
       };
     })
   ];

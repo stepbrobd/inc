@@ -88,6 +88,7 @@ in
     niks3.domain = "api.cache.ysun.co";
     ntpd-rs.domain = "time.ysun.co";
     plausible.domain = "stats.ysun.co";
+    swetrix.domain = "echo.ysun.co";
     vaultwarden.domain = "vault.ysun.co";
   };
 
