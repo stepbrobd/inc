@@ -30,6 +30,15 @@ let
       LISTEN_HOST = "::1";
       HOST = "::1";
       PORT = "3000";
+
+      # see caddy config below
+      CLIENT_IP_HEADER = "x-real-ip";
+
+      # kanidm sso only
+      OIDC_ENABLED = "true";
+      OIDC_ONLY_AUTH = "true";
+      OIDC_CLIENT_ID = "swetrix";
+      OIDC_DISCOVERY_URL = "https://${lib.blueprint.services.kanidm.domain}/oauth2/openid/swetrix/.well-known/openid-configuration";
     };
 
   mkUnit =
@@ -111,6 +120,9 @@ in
       services.swetrix.clickhouse.enable = mkDefault true;
       services.swetrix.redis.enable = mkDefault true;
       services.swetrix.caddy.enable = mkDefault true;
+
+      sops.secrets."swetrix/environment" = { };
+      systemd.services.swetrix-api.serviceConfig.EnvironmentFile = [ config.sops.secrets."swetrix/environment".path ];
     })
 
     (mkIf cfg.enable {
