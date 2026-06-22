@@ -1,11 +1,10 @@
 { lib, ... }:
 
-{ config, pkgs, ... }:
+{ config, ... }:
 
 let
   inherit (lib) mkIf toString;
 
-  cfg = config.services.plausible;
   hasTag = lib.hasTag config.networking.hostName;
   inherit (lib.blueprint.services.plausible) domain;
 in
@@ -28,39 +27,36 @@ in
       # https://github.com/plausible/analytics/blob/master/config/.env.load
       systemd.services.plausible.environment.SSO_ENABLED = "true";
 
-      # clickhouse eats massive amount of disk space
-      # disable logging to save space
+      # clickhouse eats massive amount of disk space; disable its log tables to
+      # save space (the plausible module enables services.clickhouse for us).
       # https://github.com/plausible/hosting/tree/master/clickhouse
       # https://github.com/NixOS/nixpkgs/issues/196935
       # https://github.com/NixOS/nixpkgs/issues/245024
-      environment.etc = {
-        "clickhouse-server/config.d/nologs.xml".text = ''
-          <clickhouse>
-              <logger>
-                  <level>warning</level>
-                  <console>true</console>
-              </logger>
-              <query_thread_log remove="remove"/>
-              <query_log remove="remove"/>
-              <text_log remove="remove"/>
-              <trace_log remove="remove"/>
-              <metric_log remove="remove"/>
-              <asynchronous_metric_log remove="remove"/>
-              <session_log remove="remove"/>
-              <part_log remove="remove"/>
-          </clickhouse>
-        '';
-        "clickhouse-server/users.d/nologs.xml".text = ''
-          <clickhouse>
-              <profiles>
-                  <default>
-                      <log_queries>0</log_queries>
-                      <log_query_threads>0</log_query_threads>
-                  </default>
-              </profiles>
-          </clickhouse>
-        '';
-      };
+      services.clickhouse.extraServerConfig = ''
+        <clickhouse>
+          <logger>
+            <level>warning</level>
+            <console>true</console>
+          </logger>
+          <query_thread_log remove="remove"/>
+          <query_log remove="remove"/>
+          <text_log remove="remove"/>
+          <trace_log remove="remove"/>
+          <metric_log remove="remove"/>
+          <asynchronous_metric_log remove="remove"/>
+          <session_log remove="remove"/>
+          <part_log remove="remove"/>
+        </clickhouse>
+      '';
+
+      services.clickhouse.extraUsersConfig = ''
+        <clickhouse>
+          <profiles><default>
+            <log_queries>0</log_queries>
+            <log_query_threads>0</log_query_threads>
+          </default></profiles>
+        </clickhouse>
+      '';
 
       services.plausible = {
         mail = {
