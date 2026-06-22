@@ -123,6 +123,11 @@ in
 
       sops.secrets."swetrix/environment" = { };
       systemd.services.swetrix-api.serviceConfig.EnvironmentFile = [ config.sops.secrets."swetrix/environment".path ];
+
+      systemd.services.swetrix-api.environment.IP_GEOLOCATION_DB_PATH =
+        mkIf
+          config.services.geoipupdate.enable
+          "${config.services.geoipupdate.settings.DatabaseDirectory}/GeoLite2-City.mmdb";
     })
 
     (mkIf cfg.enable {
