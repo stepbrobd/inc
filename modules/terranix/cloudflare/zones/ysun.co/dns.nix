@@ -98,6 +98,14 @@ in
     //
     {
       # service CNAME records
+      co_ysun_echo = {
+        type = "CNAME";
+        proxied = false;
+        name = "echo";
+        content = "rysy.sd.ysun.co";
+        comment = "NetActuate - Warsaw - Swetrix";
+      };
+
       co_ysun_cache_api = {
         type = "CNAME";
         proxied = false;
