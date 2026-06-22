@@ -136,6 +136,9 @@
     parts.url = "github:hercules-ci/flake-parts";
     parts.inputs.nixpkgs-lib.follows = "nixpkgs";
     # r
+    ranet.url = "github:nickcao/ranet";
+    ranet.inputs.nixpkgs.follows = "nixpkgs";
+    ranet.inputs.flake-utils.follows = "utils";
     rfm.url = "github:stepbrobd/rfm";
     rfm.inputs.nixpkgs.follows = "nixpkgs";
     rfm.inputs.parts.follows = "parts";
@@ -159,10 +162,6 @@
     sweep.inputs.cf.follows = "cornflake";
     sweep.inputs.crane.follows = "crane";
     systems.url = "github:nix-systems/triplet";
-    # r
-    ranet.url = "github:nickcao/ranet";
-    ranet.inputs.nixpkgs.follows = "nixpkgs";
-    ranet.inputs.flake-utils.follows = "utils";
     # t
     terraform-providers.url = "github:nix-community/nixpkgs-terraform-providers-bin";
     terraform-providers.inputs.nixpkgs.follows = "nixpkgs";
