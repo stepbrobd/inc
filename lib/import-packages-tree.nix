@@ -29,7 +29,7 @@ mkDynamicAttrs (
     fun =
       name:
       (
-        # was importPackagesWith:
+        # was importPackagesWith (dropped in a916dc95e3d342a00a4b9353f9be5de2d987fb22):
         # <resulting package set> :: <the file we are calling> :: <callPackage args>
         pkgs: pkg: args:
         let
