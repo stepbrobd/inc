@@ -21,7 +21,7 @@ let
         CLICKHOUSE_DATABASE = "analytics";
       }
     // optionalAttrs cfg.redis.enable {
-      REDIS_HOST = "::1";
+      REDIS_HOST = "127.0.0.1";
       REDIS_PORT = "6379";
     }
     // optionalAttrs cfg.caddy.enable {
@@ -76,7 +76,7 @@ in
 
     package = mkPackageOption pkgs "swetrix" { };
 
-    redis.enable = mkEnableOption "a bundled Redis server, wired to Swetrix on [::1]:6379";
+    redis.enable = mkEnableOption "a bundled Redis server, wired to Swetrix on 127.0.0.1:6379 (ioredis can't parse a bare IPv6 host)";
 
     clickhouse.enable = mkEnableOption "a bundled ClickHouse server, wired to Swetrix on [::1]:8123";
 
@@ -92,7 +92,7 @@ in
           # only needed when not using services.swetrix.clickhouse.enable / redis.enable:
           CLICKHOUSE_HOST = "http://[::1]";
           CLICKHOUSE_PORT = "8123";
-          REDIS_HOST = "::1";
+          REDIS_HOST = "127.0.0.1";
           REDIS_PORT = "6379";
         }
       '';
@@ -172,7 +172,7 @@ in
 
       services.redis.servers.swetrix = mkIf cfg.redis.enable {
         enable = true;
-        bind = "::1";
+        bind = "127.0.0.1";
         port = 6379;
       };
 
