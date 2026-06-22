@@ -84,7 +84,7 @@ in
       cfg.package
     ]
     ++ (lib.mapAttrsToList
-      (name: attrs: with attrs;
+      (_: attrs: with attrs;
       mkOpenConnect
         execName
         userFile

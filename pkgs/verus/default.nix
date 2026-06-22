@@ -37,7 +37,7 @@ let
   vargo = callPackage ./vargo.nix { };
   z3 = callPackage ./z3.nix { };
 in
-rustPlatform.buildRustPackage (finalAttrs: {
+rustPlatform.buildRustPackage {
   inherit pname version src;
 
   sourceRoot = "source/source";
@@ -108,4 +108,4 @@ rustPlatform.buildRustPackage (finalAttrs: {
     # broken = true;
     mainProgram = "verus";
   };
-})
+}

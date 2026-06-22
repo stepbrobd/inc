@@ -58,7 +58,7 @@ in
     home.packages = [
       cfg.package
     ]
-    ++ (lib.mapAttrsToList (name: attrs: with attrs; mkOpenVPN execName confFile) cfg.accounts);
+    ++ (lib.mapAttrsToList (_: attrs: with attrs; mkOpenVPN execName confFile) cfg.accounts);
 
     sops.secrets."openvpn/g5k" = { sopsFile = ./secrets.yaml; };
     programs.openvpn.accounts.g5k.confFile = config.sops.secrets."openvpn/g5k".path;

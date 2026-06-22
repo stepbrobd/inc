@@ -1,7 +1,7 @@
 { lib, ... }:
 
 let
-  inherit (lib.terranix) forZone mkPersonalSiteRebind mkPurelyMailRecord tfRef;
+  inherit (lib.terranix) forZone mkPurelyMailRecord tfRef;
 
   bp = lib.blueprint.hosts;
 
