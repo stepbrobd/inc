@@ -192,6 +192,7 @@ in
             originLanding = "https://${lib.blueprint.services.swetrix.domain}/";
             basicSecretFile = config.sops.secrets."kanidm/oauth/swetrix".path;
             preferShortUsername = true;
+            allowInsecureClientDisablePkce = true;
             scopeMaps."swetrix.users" = [
               "openid"
               "email"
