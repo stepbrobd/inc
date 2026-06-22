@@ -34,7 +34,6 @@ jobs:
         neovide
         niks3
         niks3-server
-        nirimon
         nixvim
         notmuch
         ocamlPackages.dune
