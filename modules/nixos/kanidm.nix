@@ -43,8 +43,6 @@ in
     sops.secrets."kanidm/oauth/grafana".mode = "440";
     sops.secrets."kanidm/oauth/vaultwarden".group = "kanidm";
     sops.secrets."kanidm/oauth/vaultwarden".mode = "440";
-    sops.secrets."kanidm/oauth/swetrix".group = "kanidm";
-    sops.secrets."kanidm/oauth/swetrix".mode = "440";
 
     services.kanidm = {
       client.enable = true;
@@ -89,8 +87,6 @@ in
 
           "vaultwarden.users" = { };
 
-          "swetrix.users" = { };
-
           "caddy.users" = { };
         };
 
@@ -115,8 +111,6 @@ in
               "grafana.users"
 
               "vaultwarden.users"
-
-              "swetrix.users"
 
               "caddy.users"
             ];
@@ -180,20 +174,6 @@ in
             originLanding = "https://${lib.blueprint.services.vaultwarden.domain}/";
             basicSecretFile = config.sops.secrets."kanidm/oauth/vaultwarden".path;
             scopeMaps."vaultwarden.users" = [
-              "openid"
-              "email"
-              "profile"
-            ];
-          };
-
-          swetrix = {
-            displayName = "Swetrix";
-            originUrl = "https://${lib.blueprint.services.swetrix.domain}/socialised";
-            originLanding = "https://${lib.blueprint.services.swetrix.domain}/";
-            basicSecretFile = config.sops.secrets."kanidm/oauth/swetrix".path;
-            preferShortUsername = true;
-            allowInsecureClientDisablePkce = true;
-            scopeMaps."swetrix.users" = [
               "openid"
               "email"
               "profile"
