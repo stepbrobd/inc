@@ -9,6 +9,8 @@ buildDunePackage (finalAttrs: {
   pname = "hilite";
   version = "0.5.0";
 
+  passthru.autobump = true;
+
   src = fetchFromGitHub {
     owner = "patricoferris";
     repo = "hilite";

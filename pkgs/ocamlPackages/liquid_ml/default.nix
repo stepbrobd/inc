@@ -15,6 +15,8 @@ buildDunePackage (finalAttrs: {
   pname = "liquid_ml";
   version = "0.1.4";
 
+  passthru.autobump = true;
+
   src = fetchFromGitHub {
     owner = "benfaerber";
     repo = "liquid-ml";

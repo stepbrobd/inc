@@ -11,6 +11,8 @@ buildDunePackage (finalAttrs: {
   pname = "textmate-language";
   version = "0.6.0";
 
+  passthru.autobump = true;
+
   src = fetchzip {
     url = "https://github.com/alan-j-hu/ocaml-textmate-language/releases/download/${finalAttrs.version}/textmate-language-${finalAttrs.version}.tbz";
     hash = "sha256-Xw/oPKxkqpvbGkJDK+Q8I1tvNNrJ7GLJAEXElqY3EHk=";
