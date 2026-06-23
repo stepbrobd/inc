@@ -9,6 +9,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "cf";
   version = "0.1.0";
 
+  passthru.autobump = true;
+
   src = fetchzip {
     url = "https://registry.npmjs.org/cf/-/cf-${finalAttrs.version}.tgz";
     hash = "sha256-+jB5EFQ9ZK7xcaTe3WGyP5VnKNkDYnz8ZyPc/cNsJvY=";

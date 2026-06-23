@@ -7,6 +7,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
   pname = "check-if-email-exists";
   version = "0.11.7";
 
+  passthru.autobump = true;
+
   src = fetchFromGitHub {
     owner = "reacherhq";
     repo = "check-if-email-exists";

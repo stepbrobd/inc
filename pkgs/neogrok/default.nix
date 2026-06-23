@@ -9,6 +9,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "neogrok";
   version = "1.2.1";
 
+  passthru.autobump = true;
+
   src = fetchFromGitHub {
     owner = "isker";
     repo = "neogrok";

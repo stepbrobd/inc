@@ -96,6 +96,8 @@ rustPlatform.buildRustPackage {
   doCheck = false;
 
   passthru = {
+    autobump = true;
+
     inherit
       rustToolchain
       rustPlatform

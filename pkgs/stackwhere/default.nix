@@ -7,6 +7,8 @@ buildGoModule (finalAttrs: {
   pname = "stackwhere";
   version = "0.2.0";
 
+  passthru.autobump = true;
+
   src = fetchFromGitHub {
     owner = "cilium";
     repo = "stackwhere";

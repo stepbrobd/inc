@@ -7,6 +7,8 @@ buildGoModule (finalAttrs: {
   pname = "bpfvet";
   version = "0.2.1";
 
+  passthru.autobump = true;
+
   src = fetchFromGitHub {
     owner = "boratanrikulu";
     repo = "bpfvet";
