@@ -39,22 +39,10 @@
     jack.enable = true;
     pulse.enable = true;
 
-    wireplumber = {
-      enable = true;
 
-      # UAD shit
-      extraScripts."audio/routing.lua" = lib.readFile ./routing.lua;
-      extraConfig."95-routing" = {
-        "wireplumber.components" = [{
-          name = "audio/routing.lua";
-          type = "script/lua";
-          provides = "custom.routing";
-        }];
-        "wireplumber.profiles".main."custom.routing" = "required";
-      };
-    };
+    wireplumber.enable = true;
 
-    # same UAD shit
+    # UAD shit
     # use https://github.com/stepbrobd/swproj to generate new correction profile
     configPackages = [
       (pkgs.writeTextDir
