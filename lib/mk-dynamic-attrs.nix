@@ -4,7 +4,12 @@
 { dir, fun }:
 
 let
-  inherit (lib) genAttrs;
+  inherit (lib) filter genAttrs;
   inherit (builtins) attrNames readDir;
+
+  entries = readDir dir;
+
+  # filter stray files (readme.md, .DS_Store, etc.)
+  dirs = filter (name: entries.${name} == "directory") (attrNames entries);
 in
-genAttrs (attrNames (readDir dir)) (fun)
+genAttrs dirs fun
