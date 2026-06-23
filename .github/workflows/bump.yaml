@@ -16,36 +16,6 @@ concurrency:
 jobs:
   Bump:
     runs-on: ubuntu-latest
-    env:
-      BLACKLIST: |-
-        alacritty
-        apple-color-emoji
-        bird3
-        caddy
-        calibre-web
-        claude-code
-        codex
-        dix
-        gravity
-        jitsi-meet
-        kanidm
-        mac-app-util
-        miroir
-        neovide
-        niks3
-        niks3-server
-        nixvim
-        notmuch
-        ocamlPackages.dune
-        ocamlPackages.omd
-        opencode
-        opentofu
-        pixelmplus
-        plausible
-        san-francisco
-        spotify
-        tailscale
-
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -70,32 +40,47 @@ jobs:
           BRANCH="bump/${TODAY}"
           git switch --force-create "$BRANCH"
 
-          # parse blacklist
-          mapfile -t blacklist <<< "$BLACKLIST"
+          # discover package attrs under pkgs/: a directory with a default.nix is a
+          # package (terminal); directories without one are scopes (e.g. ocamlPackages)
+          # and are recursed into. helper subdirs inside a package are skipped
+          discover_attrs() {
+            local nix dir rel parent
+            while IFS= read -r -d '' nix; do
+              dir=$(dirname "$nix")
+              rel=${dir#pkgs/}
+              parent=$(dirname "$rel")
+              local skip=false
+              while [[ "$parent" != "." && "$parent" != "/" ]]; do
+                if [[ -f "pkgs/${parent}/default.nix" ]]; then skip=true; break; fi
+                parent=$(dirname "$parent")
+              done
+              $skip && continue
+              printf '%s\n' "${rel//\//.}"
+            done < <(find pkgs -mindepth 2 -name default.nix -print0) | sort -u
+          }
 
-          is_blacklisted() {
-            local pkg="$1"
-            local pkg_dot="${pkg//\//.}"
-            for b in "${blacklist[@]}"; do
-              [[ -n "$b" && ("$pkg" == "$b" || "$pkg_dot" == "$b") ]] && return 0
-            done
-            return 1
+          # opt-in gate: only packages with `passthru.autobump = true` are bumped
+          # the attribute is absent by default, so anything not explicitly opted in
+          # (overlay overrides, fork/asset pins, lockstep sets) is left untouched
+          wants_bump() {
+            local attr="$1" val
+            val=$(nix eval --json ".#legacyPackages.${SYSTEM}.${attr}.autobump" 2>/dev/null) || return 1
+            [[ "$val" == "true" ]]
           }
 
           update_package() {
-            local pkg="$1"
-            local nix_attr="${pkg//\//.}"
-            local legacy_path="legacyPackages.${SYSTEM}.${nix_attr}"
+            local attr="$1"
+            local legacy_path="legacyPackages.${SYSTEM}.${attr}"
 
             local old_version
             old_version=$(nix eval --raw ".#${legacy_path}.version" 2>/dev/null) || {
-              echo "::warning::Could not evaluate version for ${pkg}, skipping."
+              echo "::warning::Could not evaluate version for ${attr}, skipping."
               return 0
             }
 
-            echo "::group::Updating ${pkg} (current: ${old_version})"
-            if ! nix-update --flake --use-update-script "$legacy_path"; then
-              echo "::warning::nix-update failed for ${pkg}"
+            echo "::group::Updating ${attr} (current: ${old_version})"
+            if ! nix-update --flake "$legacy_path"; then
+              echo "::warning::nix-update failed for ${attr}"
               git checkout -- .
               git clean -fd
               echo "::endgroup::"
@@ -104,7 +89,7 @@ jobs:
             echo "::endgroup::"
 
             if git diff --quiet; then
-              echo "${pkg} is up to date."
+              echo "${attr} is up to date."
               return 0
             fi
 
@@ -112,22 +97,15 @@ jobs:
             new_version=$(nix eval --raw ".#${legacy_path}.version" 2>/dev/null) || new_version="unknown"
 
             git add -A
-            git commit -m "pkgs/${pkg}: ${old_version} -> ${new_version}"
+            git commit -m "pkgs/${attr//.//}: ${old_version} -> ${new_version}"
           }
 
-          # discover and update packages from pkgs/ directory
-          for dir in pkgs/*/; do
-            name=$(basename "$dir")
-            if [[ -f "${dir}default.nix" ]]; then
-              is_blacklisted "$name" || update_package "$name"
-            else
-              for subdir in "${dir}"*/; do
-                [[ -d "$subdir" && -f "${subdir}default.nix" ]] || continue
-                subname=$(basename "$subdir")
-                is_blacklisted "${name}/${subname}" || update_package "${name}/${subname}"
-              done
-            fi
-          done
+          # update every opted-in package
+          while IFS= read -r attr; do
+            [[ -n "$attr" ]] || continue
+            wants_bump "$attr" || continue
+            update_package "$attr"
+          done < <(discover_attrs)
 
           # create PR if there are updates
           if [[ $(git log origin/master..HEAD --oneline | wc -l) -eq 0 ]]; then
