@@ -144,6 +144,11 @@ description = "all about nix"
 visibility = "public"
 archived = true
 
+[repo."nix-cache-hash-mismatch-mre"]
+description = "see https://github.com/nixos/nix/pull/16061"
+visibility = "public"
+archived = false
+
 [repo."nord.yazi"]
 description = "nordic yazi"
 visibility = "public"
