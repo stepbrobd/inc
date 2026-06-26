@@ -116,9 +116,10 @@ in
         // window management
         Mod+Q { close-window; }
         Mod+F { fullscreen-window; }
-        Mod+Z { toggle-window-floating; }
+        Mod+Backslash { toggle-window-floating; }
         Mod+A { center-column; }
-        Mod+X { consume-or-expel-window-left; }
+        Mod+BracketLeft  { consume-or-expel-window-left; }
+        Mod+BracketRight { consume-or-expel-window-right; }
 
         // focus
         Mod+H { focus-column-left; }
