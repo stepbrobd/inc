@@ -19,6 +19,7 @@
     git
     gpg
     # hyprland # linux only
+    jq
     jujutsu
     lazygit
     llm
