@@ -79,7 +79,7 @@ jobs:
             }
 
             echo "::group::Updating ${attr} (current: ${old_version})"
-            if ! nix-update --flake "$legacy_path"; then
+            if ! nix-update --flake --use-update-script "$legacy_path"; then
               echo "::warning::nix-update failed for ${attr}"
               git checkout -- .
               git clean -fd
