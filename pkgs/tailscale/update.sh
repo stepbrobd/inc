@@ -29,16 +29,22 @@ if [ -z "${hash}" ] || [ "${hash}" = "null" ]; then
 fi
 
 work="$(mktemp -d)"
-trap 'rm -rf "${work}"' EXIT
-git clone --quiet --filter=blob:none "https://github.com/${owner}/${repo}.git" "${work}/src"
-git -C "${work}/src" checkout --quiet "${latest}"
-export GOTOOLCHAIN=auto CGO_ENABLED=0 GOFLAGS=-mod=mod
-export GOCACHE="${work}/go/cache" GOPATH="${work}/go/path"
-version="$(cd "${work}/src" && go run ./cmd/mkversion | sed -n 's/^VERSION_SHORT="\(.*\)"$/\1/p')"
-if [ -z "${version}" ]; then
-  echo "tailscale: mkversion produced an empty VERSION_SHORT" >&2
+trap 'chmod -R +w "${work}" 2>/dev/null || true; rm -rf "${work}" 2>/dev/null || true' EXIT
+git clone --quiet --filter=blob:none --no-checkout "https://github.com/${owner}/${repo}.git" "${work}/src"
+base="$(git -C "${work}/src" rev-list --max-count=1 "${latest}" -- VERSION.txt)"
+if [ -z "${base}" ]; then
+  echo "tailscale: could not find a commit touching VERSION.txt under ${latest}" >&2
   exit 1
 fi
+IFS=. read -r major minor patch _ <<< "$(git -C "${work}/src" show "${base}:VERSION.txt")"
+if [ -z "${major}" ] || [ -z "${minor}" ]; then
+  echo "tailscale: could not parse VERSION.txt at ${base}" >&2
+  exit 1
+fi
+if (( minor % 2 == 1 )); then
+  patch="$(git -C "${work}/src" rev-list --count "${latest}" "^${base}")"
+fi
+version="${major}.${minor}.${patch:-0}"
 
 sed -i \
   -e "s|^\([[:space:]]*\)version = \"[^\"]*\";|\1version = \"${version}\";|" \

@@ -6,12 +6,10 @@
 , coreutils
 , git
 , gnused
-, go
 , jq
 }:
 
 pkgsPrev.tailscale.overrideAttrs (prev: {
-  # go run ./cmd/mkversion
   version = "1.101.93";
 
   src = fetchFromGitHub {
@@ -33,7 +31,6 @@ pkgsPrev.tailscale.overrideAttrs (prev: {
           coreutils
           git
           gnused
-          go
           jq
           nix-prefetch-github
         ];
