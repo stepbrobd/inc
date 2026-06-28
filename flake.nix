@@ -26,6 +26,8 @@
 
           nixpkgs = {
             config.allowUnfree = true;
+            # TODO: identify which package is causing throw
+            config.permittedInsecurePackages = [ "pnpm-10.29.2" ];
             overlays = with inputs; [
               self.overlays.default
               colmena.overlays.default
