@@ -17,10 +17,6 @@ in
       services.jitsi.enable = lib.mkDefault true;
     })
     (lib.mkIf cfg.enable {
-      nixpkgs.config.permittedInsecurePackages = [
-        "jitsi-meet-1.0.8792"
-      ];
-
       services.caddy.virtualHosts.${domain} = {
         extraConfig = lib.mkBefore ''
           import common

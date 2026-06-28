@@ -5,4 +5,5 @@
 
 pkgsPrev.jitsi-meet.overrideAttrs {
   patches = pkgs.lib.singleton ./plausible.patch;
+  meta.insecure = false;
 }
