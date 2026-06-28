@@ -16,13 +16,18 @@ include = [
 ]
 
 exclude = [
-  "legacyPackages.aarch64-darwin.bird3",       # unsupported
-  "legacyPackages.aarch64-darwin.nirimon",     # unsupported
-  "legacyPackages.aarch64-darwin.plausible",   # unsupported
+  "legacyPackages.aarch64-darwin.bird3", # unsupported
+
+  "legacyPackages.aarch64-darwin.cider-2", # unsupported
+  "legacyPackages.aarch64-linux.cider-2",  # unsupported
+
+  "legacyPackages.aarch64-darwin.plausible", # unsupported
+
   "legacyPackages.aarch64-linux.mac-app-util", # unsupported
   "legacyPackages.x86_64-linux.mac-app-util",  # unsupported
-  "legacyPackages.aarch64-linux.mas",          # unsupported
-  "legacyPackages.x86_64-linux.mas",           # unsupported
+
+  "legacyPackages.aarch64-linux.mas", # unsupported
+  "legacyPackages.x86_64-linux.mas",  # unsupported
 
   "legacyPackages.*.gravity",    # registry
   "legacyPackages.*.jitsi-meet", # insecure
