@@ -2,5 +2,5 @@
 
 inputs.niks3.packages.${stdenv.hostPlatform.system}.niks3.overrideAttrs (prev: {
   src = inputs.niks3.outPath;
-  vendorHash = "sha256-xfpOL8JFfqYz2AncprLAL+9UGglwU1OL1mwMSf6aFBQ=";
+  vendorHash = "sha256-dth35zNmMFPKOopJ7giAmp91lXLtjP80XNBcV+spUxY=";
 })
