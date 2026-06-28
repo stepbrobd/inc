@@ -1,9 +1,6 @@
-{ pkgs
-, pkgsPrev ? pkgs
-, # `pkgsPrev` only provided in overlays
-}:
+{ lib, pkgsPrev }:
 
 pkgsPrev.jitsi-meet.overrideAttrs {
-  patches = pkgs.lib.singleton ./plausible.patch;
+  patches = lib.singleton ./plausible.patch;
   meta.insecure = false;
 }

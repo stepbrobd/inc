@@ -1,21 +1,20 @@
-{ pkgs
-, pkgsPrev ? pkgs
+{ pkgsPrev
 , fetchFromGitLab
 , fetchpatch2
 }:
 
-pkgsPrev.bird3.overrideAttrs (finalAttrs: oldAttrs: {
+pkgsPrev.bird3.overrideAttrs (final: prev: {
   version = "3.3.1";
 
   src = fetchFromGitLab {
     domain = "gitlab.nic.cz";
     owner = "labs";
     repo = "bird";
-    tag = "v${finalAttrs.version}";
+    tag = "v${final.version}";
     hash = "sha256-aJo6Ut/ULBDGoekSXgN1WvmFmonTzNA3TES1FHqCiOM=";
   };
 
-  patches = (oldAttrs.patches or [ ]) ++ [
+  patches = (prev.patches or [ ]) ++ [
     # link quality algo selection
     (fetchpatch2 {
       url = "https://github.com/nickcao/bird/commit/0b21028f41c00097b3232a83258a0c574300f1fc.patch";

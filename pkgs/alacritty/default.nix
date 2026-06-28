@@ -1,7 +1,4 @@
-{ stdenv
-, pkgs
-, pkgsPrev ? pkgs # `pkgsPrev` only provided in overlays
-}:
+{ stdenv, pkgsPrev }:
 
 if stdenv.isDarwin
 then
