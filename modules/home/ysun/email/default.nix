@@ -245,6 +245,7 @@
   programs.thunderbird = {
     enable = pkgs.stdenv.hostPlatform.isLinux;
     profiles.Default.isDefault = true;
+    package = pkgs.thunderbird-bin;
   };
 
   programs.neomutt = {
