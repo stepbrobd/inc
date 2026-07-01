@@ -194,6 +194,11 @@ description = "hackmit 2022: sentik - live tweet sentiment analysis for traders"
 visibility = "public"
 archived = true
 
+[repo."slices"]
+description = "slices-fr summer school tutorial"
+visibility = "public"
+archived = false
+
 [repo."srd"]
 description = "srd: (go) static race detector"
 visibility = "public"
