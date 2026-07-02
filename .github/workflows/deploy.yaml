@@ -78,4 +78,4 @@ jobs:
           printf 'Host *.%s\n  User ci\n' "$tailnet" >> ~/.ssh/config
 
       - name: Apply
-        run: nix develop --command colmena apply --evaluator streaming --show-trace --verbose --on @ci
+        run: nix develop --command colmena apply --show-trace --verbose --on @ci
