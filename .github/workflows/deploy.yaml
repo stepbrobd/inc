@@ -1,0 +1,54 @@
+name: Deploy
+
+on:
+  workflow_run: # zizmor: ignore[dangerous-triggers]
+    workflows: [CI]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  Deploy:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_branch == 'master')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: SSH
+        uses: ./.github/actions/ssh
+        with:
+          ssh: ${{ secrets.SSH }}
+
+      - name: Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          tags: tag:ci
+          version: unstable
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+
+      - name: Identity
+        run: |
+          set -euo pipefail
+          tailnet=$(nix eval --raw .#lib.blueprint.tailscale.tailnet)
+          printf 'Host *.%s\n  User ci\n' "$tailnet" >> ~/.ssh/config
+
+      - name: Apply
+        run: nix develop --command colmena apply --on @ci
