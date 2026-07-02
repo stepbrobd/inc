@@ -430,6 +430,11 @@ description = "forked from lnl7/nix-darwin"
 visibility = "public"
 archived = false
 
+[repo."nix-eval-jobs"]
+description = "forked from nixos/nix-eval-jobs"
+visibility = "public"
+archived = false
+
 [repo."nixos-raspberrypi"]
 description = "forked from nvmd/nixos-raspberrypi"
 visibility = "public"
