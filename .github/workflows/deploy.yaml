@@ -14,12 +14,39 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  Deploy:
+  Guard: # make sure we are only applying the latest change
     if: >-
       github.event_name == 'workflow_dispatch' ||
       (github.event.workflow_run.conclusion == 'success' &&
        github.event.workflow_run.event == 'push' &&
        github.event.workflow_run.head_branch == 'master')
+    runs-on: ubuntu-latest
+    outputs:
+      latest: ${{ steps.check.outputs.latest }}
+    steps:
+      - name: Check
+        id: check
+        env:
+          EVENT: ${{ github.event_name }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT" != "workflow_run" ]; then
+            echo "latest=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          tip=$(git ls-remote "https://github.com/${REPO}.git" refs/heads/master | cut -f1)
+          if [ "$tip" = "$HEAD_SHA" ]; then
+            echo "latest=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "master tip is ${tip}, this run built ${HEAD_SHA}, skipping"
+            echo "latest=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  Deploy:
+    needs: Guard
+    if: needs.Guard.outputs.latest == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -51,4 +78,4 @@ jobs:
           printf 'Host *.%s\n  User ci\n' "$tailnet" >> ~/.ssh/config
 
       - name: Apply
-        run: nix develop --command colmena apply --on @ci
+        run: nix develop --command colmena apply --evaluator streaming --show-trace --verbose --on @ci
