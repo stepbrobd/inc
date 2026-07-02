@@ -10,16 +10,16 @@
 }:
 
 pkgsPrev.tailscale.overrideAttrs (prev: {
-  version = "1.101.140";
+  version = "1.101.145";
 
   src = fetchFromGitHub {
     owner = "tailscale";
     repo = "tailscale";
-    rev = "85d8644215637b371c3965e9f38b5d5969b2846c";
-    hash = "sha256-TEiuExVoVhoraWXsKFe6HIRVUamgPrAkihx1UjLhDtw=";
+    rev = "f96db5e3832b21de1f03e0dc2b5e422b40f73585";
+    hash = "sha256-wXPf//z+Jt8/qjPayisZ38Plj8fCrhp9DLoW7C5A/EA=";
   };
 
-  vendorHash = "sha256-jHFZE8TvqiLd2U4CloE3HzVO9Jq6sDNNTsqDNx7bhHM=";
+  vendorHash = "sha256-UrvJ5fM+Oqgu2pZwhg5AnUcgi8wPwZ8qDwWpXNmKaPk=";
 
   passthru = (prev.passthru or { }) // {
     autobump = true;
