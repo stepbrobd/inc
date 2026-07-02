@@ -6,12 +6,6 @@ let
   inherit (lib) elem filterAttrs mapAttrs mapAttrsToList mkForce optional optionals;
 in
 {
-  system.configurationRevision =
-    with inputs.self;
-    if sourceInfo ? dirtyShortRev
-    then sourceInfo.dirtyShortRev
-    else sourceInfo.shortRev;
-
   # enable nextdns and tailscale on all hosts
   services = {
     nextdns = {
