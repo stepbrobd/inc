@@ -8,7 +8,7 @@ newHost (lib.fix (self: {
   provider = "pozman";
   providerName = "POZMAN";
   type = "server";
-  tags = [ "routee" "ranet" "prometheus" "loki" ];
+  tags = [ "routee" "ranet" "prometheus" "loki" "ci" ];
   meta = { city = "Poznan"; region = "PL-30"; country = "PL"; continent = "Europe"; postal = "61-101"; };
   interface = "ens4";
   ipv4 = "62.3.175.30";

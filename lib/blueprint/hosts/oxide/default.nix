@@ -8,7 +8,7 @@ newHost (lib.fix (self: {
   provider = "oxide";
   providerName = "Oxide Computer";
   type = "server";
-  tags = [ "routee" "ranet" "prometheus" "loki" ];
+  tags = [ "routee" "ranet" "prometheus" "loki" "ci" ];
   meta = { city = "Fremont"; region = "US-CA"; country = "US"; continent = "North America"; postal = "94536"; };
   interface = "enp0s8";
   ipv4 = "134.195.24.131";
