@@ -10,6 +10,10 @@
     acl = lib.toJSON {
       grants = [{ src = [ "*" ]; dst = [ "*" ]; ip = [ "*" ]; }];
 
+      # cannot create oauth clients without tags
+      # access is already covered by *:*
+      tagOwners."tag:ci" = [ "autogroup:admin" ];
+
       autoApprovers.exitNode = [ "autogroup:member" ];
 
       # disable-linux-cgnat-drop-rule:
