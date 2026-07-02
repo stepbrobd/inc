@@ -13,6 +13,7 @@ let
         self.nixosModules.as10779
         self.nixosModules.caddy
         self.nixosModules.calibre
+        self.nixosModules.ci
         self.nixosModules.common
         self.nixosModules.desktop
         self.nixosModules.glance
