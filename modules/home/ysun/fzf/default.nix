@@ -5,8 +5,8 @@
     enable = true;
     tmux.enableShellIntegration = true;
 
-    defaultCommand = "${pkgs.fd}/bin/fd --type f --hidden --follow --exclude .git";
-    changeDirWidgetCommand = "${pkgs.fd}/bin/fd --type d --hidden --follow --exclude .git";
+    defaultCommand = "${pkgs.lib.getExe pkgs.fd} --type f --hidden --follow --exclude .git";
+    changeDirWidget.command = "${pkgs.lib.getExe pkgs.fd} --type d --hidden --follow --exclude .git";
 
     colors = {
       fg = "#e5e9f0";
