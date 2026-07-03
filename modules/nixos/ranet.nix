@@ -211,6 +211,7 @@ in
       networking.firewall.interfaces.gravity.allowedUDPPorts = [ 6696 ];
     })
 
+    # TODO: remove after rpi kernel update?
     # on pre 6.19 kernels (isere with rpi vendor kernel)
     # xfrm interfaces still race with systemd-udev over addr_gen_mode
     # when many SAs are created at once (boot/switch restarting strongswan)
