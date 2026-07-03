@@ -374,12 +374,12 @@ in
             export = {
               ipv4 = lib.mkOption {
                 type = lib.types.str;
-                default = "export all;";
+                default = "export none;";
                 description = "IPv4 export option";
               };
               ipv6 = lib.mkOption {
                 type = lib.types.str;
-                default = "export all;";
+                default = "export none;";
                 description = "IPv6 export option";
               };
             };
