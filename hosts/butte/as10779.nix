@@ -67,8 +67,8 @@ in
             ipv6 = "2a0d:e680:0::b:1";
           };
           import = {
-            ipv4 = "import filter ${cfg.router.rpki.ipv4.filter};";
-            ipv6 = "import filter ${cfg.router.rpki.ipv6.filter};";
+            ipv4 = "import none;";
+            ipv6 = "import none;";
           };
           export = {
             ipv4 = ''export where proto = "${cfg.router.static.ipv4.name}";'';
@@ -85,31 +85,12 @@ in
             ipv6 = "2a0d:e680:0::b:2";
           };
           import = {
-            ipv4 = "import filter ${cfg.router.rpki.ipv4.filter};";
-            ipv6 = "import filter ${cfg.router.rpki.ipv6.filter};";
-          };
-          export = {
-            ipv4 = ''export where proto = "${cfg.router.static.ipv4.name}";'';
-            ipv6 = ''export where proto = "${cfg.router.static.ipv6.name}";'';
-          };
-        }
-        {
-          name = "bgptools";
-          password = null;
-          type = { ipv4 = "disabled"; ipv6 = "multihop"; };
-          mp = "v4 over v6";
-          neighbor = {
-            asn = 212232;
-            ipv4 = null;
-            ipv6 = "2a0c:2f07:9459::b6";
-          };
-          import = {
             ipv4 = "import none;";
             ipv6 = "import none;";
           };
           export = {
-            ipv4 = "export all;";
-            ipv6 = "export all;";
+            ipv4 = ''export where proto = "${cfg.router.static.ipv4.name}";'';
+            ipv6 = ''export where proto = "${cfg.router.static.ipv6.name}";'';
           };
         }
       ];

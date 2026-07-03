@@ -58,8 +58,8 @@ in
             ipv6 = "2607:f740:c::6cf";
           };
           import = {
-            ipv4 = "import filter ${cfg.router.rpki.ipv4.filter};";
-            ipv6 = "import filter ${cfg.router.rpki.ipv6.filter};";
+            ipv4 = "import none;";
+            ipv6 = "import none;";
           };
           export = {
             ipv4 = ''export where proto = "${cfg.router.static.ipv4.name}";'';
