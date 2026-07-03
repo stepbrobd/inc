@@ -37,14 +37,17 @@ in
       source = { inherit (lib.blueprint.hosts.butte) ipv4 ipv6; };
       static =
         let
-          option = "reject";
-          # option = lib.trim ''
-          #   reject {
-          #       # dont announce
-          #       bgp_community.add((35661, 6074)); # Hurricane Electric
-          #       bgp_community.add((35661, 7004)); # Cogent
-          #     }
-          # '';
+          # option = "reject";
+          # https://github.com/virtuasys/as35661: 35661:<action><loc>:<target>
+          # action 1-3 = prepend Nx, 9 = dont export, loc 999 = all PoPs
+          # target: ASN, 1 = all transit, 2 = all IX peers
+          # prepend 1x toward all transit (Cogent/Arelion/GTT/aurologic/Eranium/HOPUS)
+          # if needed: (35661, 9999, 6939) + (35661, 9999, 174) dont export HE/Cogent
+          option = lib.trim ''
+            reject {
+                bgp_large_community.add((35661, 1999, 1));
+              }
+          '';
         in
         {
           ipv4.routes = [
