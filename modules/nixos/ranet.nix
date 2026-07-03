@@ -67,6 +67,12 @@ in
     })
 
     (lib.mkIf cfg.enable {
+      assertions = [{
+        assertion = lib.length (lib.unique (lib.map (ep: ep.port) cfg.settings.endpoints)) == 1;
+        message = "networking.ranet: endpoints must be non-empty and share one port (charon port_nat_t takes a single value)";
+      }];
+
+      # load at boot: net.vrf.strict_mode below doesnt exist until the module is in
       boot.kernelModules = [ "vrf" ];
       boot.kernel.sysctl = {
         "net.vrf.strict_mode" = 1;
@@ -102,31 +108,28 @@ in
         pkgs.ranet
       ];
 
-      environment.etc."ranet/config.json".source = (pkgs.formats.json { }).generate "ranet.json" (
-        cfg.settings // {
-          endpoints = lib.map
-            (ep: ep // {
-              updown = pkgs.writeShellScript "updown" ''
-                  LINK=ranet$(printf '%05x' "$PLUTO_IF_ID_OUT")
+      environment.etc."ranet/config.json".source =
+        let
+          # ll addr comes from the addr_gen_mode sysctl above so no addrgenmode fixup is needed here
+          updown = pkgs.writeShellScript "updown" ''
+            LINK=ranet$(printf '%05x' "$PLUTO_IF_ID_OUT")
 
-                  case "$PLUTO_VERB" in
-                    up-client)
-                      ip link add "$LINK" type xfrm if_id "$PLUTO_IF_ID_OUT"
-                      ip link set "$LINK" mtu 1400
-                      ip link set "$LINK" multicast on
-                      ip link set "$LINK" master gravity
-                      ip link set dev "$LINK" addrgenmode random
-                      ip link set "$LINK" up
-                      ;;
-                    down-client)
-                      ip link del "$LINK"
-                      ;;
-                esac
-              '';
-            })
-            cfg.settings.endpoints;
-        }
-      );
+            case "$PLUTO_VERB" in
+              up-client)
+                ip link add "$LINK" type xfrm if_id "$PLUTO_IF_ID_OUT"
+                ip link set "$LINK" mtu 1400 multicast on master gravity up
+                ;;
+              down-client)
+                ip link del "$LINK"
+                ;;
+            esac
+          '';
+        in
+        (pkgs.formats.json { }).generate "ranet.json" (
+          cfg.settings // {
+            endpoints = lib.map (ep: ep // { inherit updown; }) cfg.settings.endpoints;
+          }
+        );
 
       # use the following to only use my nodes
       # environment.etc."ranet/registry.json".source =
@@ -159,7 +162,7 @@ in
             ExecStop = ranetExec "down";
           };
           bindsTo = [ "strongswan-swanctl.service" ];
-          wants = [ "network-online.target" "strongswan-swanctl.service" ];
+          wants = [ "network-online.target" ];
           after = [ "network-online.target" "strongswan-swanctl.service" "systemd-networkd.service" ];
           wantedBy = [ "multi-user.target" ];
           reloadTriggers = [
@@ -167,8 +170,7 @@ in
             config.environment.etc."ranet/config.json".source
             # if using our own nodes
             # config.environment.etc."ranet/registry.json".source
-            # if using full gravity mesh
-            config.sops.secrets.gravity.path
+            # full gravity registry updates already reload via sops.secrets.gravity.reloadUnits
           ];
         };
 
@@ -200,37 +202,6 @@ in
             }
           }
         '';
-      };
-
-      # on some kernels (notably 6.12 aarch64) xfrm interfaces created by strongswan
-      # race with systemd-udev over addr_gen_mode leaving about half of ranet iface
-      # w/o v6 ll addr (babel requires ll so those mesh tunnels are basically useless)
-      # this timer here periodically scans for broken iface and bounce them
-      # on kernels where the race dont happen (6.19+) its basically a no op
-      systemd.services.ranet-ll-heal = {
-        description = "Heal ranet interfaces missing IPv6 link-local";
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = pkgs.writeShellScript "ranet-ll-heal" ''
-            export PATH=${lib.makeBinPath (with pkgs; [ iproute2 gnugrep gawk ])}
-            for ifname in $(ip -br link show | awk '/ranet/ {sub(/@.*/, "", $1); print $1}'); do
-              if ! ip -6 addr show dev "$ifname" 2>/dev/null | grep -q 'fe80::'; then
-                ip link set "$ifname" down
-                ip link set dev "$ifname" addrgenmode random
-                ip link set "$ifname" up
-              fi
-            done
-          '';
-        };
-      };
-      systemd.timers.ranet-ll-heal = {
-        description = "Periodically heal ranet interfaces missing IPv6 link-local";
-        wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnBootSec = "30s";
-          OnUnitActiveSec = "30s";
-          AccuracySec = "5s";
-        };
       };
 
       # ranet ipsec
