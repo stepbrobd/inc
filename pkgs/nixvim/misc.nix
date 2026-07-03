@@ -19,6 +19,7 @@
 
   plugins = {
     diffview.enable = true;
+    direnv.enable = true;
     gitblame.enable = true;
     gitsigns.enable = true;
     luasnip.enable = true;
