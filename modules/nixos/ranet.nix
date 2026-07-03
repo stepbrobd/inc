@@ -222,6 +222,8 @@ in
 
       # babel multicast
       networking.firewall.interfaces.gravity.allowedUDPPorts = [ 6696 ];
+
+      networking.firewall.checkReversePath = lib.mkDefault "loose";
     })
 
     # srv6: publish segment routing SIDs from the node prefix's "6" nibble subspace
@@ -277,7 +279,9 @@ in
             Type = "oneshot";
             RemainAfterExit = true;
             ExecStart = lib.map (r: "${pkgs.iproute2}/bin/ip -6 route replace ${r}") routes;
+            ExecStartPost = "${pkgs.iproute2}/bin/ip sr tunsrc set ${gravityBase}0::1";
             ExecStop = lib.map (r: "-${pkgs.iproute2}/bin/ip -6 route del ${r}") routes;
+            ExecStopPost = "-${pkgs.iproute2}/bin/ip sr tunsrc set ::";
           };
           after = [ "network-online.target" "systemd-networkd.service" ];
           wants = [ "network-online.target" ];
