@@ -8,6 +8,9 @@ in
 {
   # i dont read those anyways bruh
   documentation.enable = false;
+  # grab per user man pages
+  environment.pathsToLink = [ "/share/man" ];
+  environment.extraOutputsToInstall = [ "man" ];
 
   # enable nextdns and tailscale on all hosts
   services = {
