@@ -9,6 +9,19 @@ let
   hasTag = lib.hasTag config.networking.hostName;
 
   port = (lib.head cfg.settings.endpoints).port;
+
+  # 2a0c:b641:69c:xxx0::/60 -> "2a0c:b641:69c:xxx" for the per-node nibble
+  # subspaces: <base>6::/64 = srv6 SIDs
+  gravityBase =
+    let p = if host != null && host ? ranet && host.ranet ? gravity then host.ranet.gravity.prefix else null;
+    in if p != null && lib.hasSuffix "0::/60" p then lib.removeSuffix "0::/60" p else null;
+
+  # ::3 exists on bgp exit routers only
+  srv6Exit = config.services.as10779.enable && config.services.as10779.router.exit;
+
+  # all of our own /60s, for scoping ::3 invocation to our nodes
+  ownGravityPrefixes = lib.map (h: h.ranet.gravity.prefix)
+    (lib.collect (h: h ? ranet && h.ranet ? gravity) bp.hosts);
 in
 {
   options.networking.ranet = {
@@ -209,6 +222,108 @@ in
 
       # babel multicast
       networking.firewall.interfaces.gravity.allowedUDPPorts = [ 6696 ];
+    })
+
+    # srv6: publish segment routing SIDs from the node prefix's "6" nibble subspace
+    # so mesh members can steer traffic through explicit waypoints
+    #   <base>6::1 = End.DT46 decap into table 200 (exit here, v4 or v6 inner)
+    #   <base>6::2 = End      forward to the next SID (transit waypoint)
+    #   <base>6::3 = End.DT46 decap into the egress vrf (exit with announced ipam ip)
+    #   <base>6::16+ reserved for End.B6.Encaps named paths
+    # ::1/::2 are mesh wide and in the registry, ::3 is own nodes only
+    # networkd/bird cant install seg6local lwtunnel routes so a oneshot does
+    (lib.mkIf (cfg.enable && gravityBase != null) {
+      networking.iproute2.enable = true;
+      networking.iproute2.rttablesExtraConfig = ''
+        100 localsid
+        101 exitsid
+      '';
+
+      systemd.network.networks."20-gravity".routingPolicyRules = [
+        {
+          Family = "ipv6";
+          From = "2a0c:b641:69c::/48";
+          To = "${gravityBase}6::/64";
+          Table = 100;
+          Priority = 50;
+        }
+      ]
+      # ::3 is matched at 45 for our own sources only
+      # everyone else falls through to the mesh wide rule and the localsid blackhole eats it
+      ++ lib.optionals srv6Exit (lib.map
+        (p: {
+          Family = "ipv6";
+          From = p;
+          To = "${gravityBase}6::3/128";
+          Table = 101;
+          Priority = 45;
+        })
+        ownGravityPrefixes);
+
+      systemd.services.ranet-srv6 =
+        let
+          routes = [
+            "blackhole default table localsid"
+            "${gravityBase}6::1 encap seg6local action End.DT46 vrftable 200 dev gravity table localsid"
+            "${gravityBase}6::2 encap seg6local action End dev gravity table localsid"
+          ] ++ lib.optionals srv6Exit [
+            "blackhole default table exitsid"
+            "${gravityBase}6::3 encap seg6local action End.DT46 vrftable 201 dev gravity table exitsid"
+          ];
+        in
+        {
+          description = "SRv6 local SIDs for the gravity mesh";
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = true;
+            ExecStart = lib.map (r: "${pkgs.iproute2}/bin/ip -6 route replace ${r}") routes;
+            ExecStop = lib.map (r: "-${pkgs.iproute2}/bin/ip -6 route del ${r}") routes;
+          };
+          after = [ "network-online.target" "systemd-networkd.service" ];
+          wants = [ "network-online.target" ];
+          wantedBy = [ "multi-user.target" ];
+        };
+    })
+
+    # ::3 lands in the egress vrf then leaks to main for provider egress
+    # SNAT to the node unique ipam /32+/128 instead of masquerade
+    # returns enter the nearest exit via anycast and babel carries them back here
+    # for conntrack reversal
+    # announced space is anycast
+    # ipam is the only return deterministic address we announce
+    (lib.mkIf (cfg.enable && gravityBase != null && srv6Exit) {
+      systemd.network.netdevs."30-egress" = {
+        netdevConfig = {
+          Kind = "vrf";
+          Name = "egress";
+        };
+        vrfConfig.Table = 201;
+      };
+
+      systemd.network.networks."30-egress" = {
+        name = "egress";
+        linkConfig.RequiredForOnline = false;
+        # table 201 stays empty
+        # decapped traffic uses mains default routes
+        routingPolicyRules = [{
+          Family = "both";
+          IncomingInterface = "egress";
+          Table = "main";
+          Priority = 900;
+        }];
+      };
+
+      networking.nftables.tables.srv6 = {
+        family = "inet";
+        content = ''
+          chain postrouting {
+            # priority 90: bind nat before the masquerade chains at srcnat
+            type nat hook postrouting priority 90; policy accept;
+            iifname "egress" snat ip to ${host.ipam.ipv4}
+            iifname "egress" snat ip6 to ${host.ipam.ipv6}
+          }
+        '';
+      };
     })
 
     # TODO: remove after rpi kernel update?
