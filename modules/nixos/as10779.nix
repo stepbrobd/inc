@@ -470,8 +470,8 @@ in
             interface "ranet*" {
               type tunnel;
               link quality etx;
-              rxcost 32;
-              hello interval 20 s;
+              rxcost 96;
+              hello interval 4 s;
               rtt cost 1024;
               rtt max 1024 ms;
               rx buffer 1500;
