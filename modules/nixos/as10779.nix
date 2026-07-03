@@ -590,7 +590,9 @@ in
           "\n\n"
           (session: (lib.optionalString (session.type.ipv4 != "disabled") ''
             protocol bgp ${session.name}4 {
-              graceful restart on;
+              graceful restart aware;
+              hold time 30;
+              keepalive time 10;
 
               ${session.type.ipv4};
               ${if (lib.isNull session.source.ipv4) then "" else ''source address ${session.source.ipv4};'' }
@@ -617,7 +619,9 @@ in
             }
             '') + "\n" + (lib.optionalString (session.type.ipv6 != "disabled") ''
             protocol bgp ${session.name}6 {
-              graceful restart on;
+              graceful restart aware;
+              hold time 30;
+              keepalive time 10;
 
               ${session.type.ipv6};
               ${if (lib.isNull session.source.ipv6) then "" else ''source address ${session.source.ipv6};'' }
