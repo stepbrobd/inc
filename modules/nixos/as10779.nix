@@ -153,6 +153,7 @@ in
       };
 
       rpki = {
+        enable = lib.mkEnableOption "RPKI route origin validation RTR session(s)";
         ipv4 = {
           table = lib.mkOption {
             type = lib.types.str;
@@ -501,39 +502,41 @@ in
 
           include "${cfg.router.secret}";
 
-          roa4 table ${cfg.router.rpki.ipv4.table};
-          roa6 table ${cfg.router.rpki.ipv6.table};
+          ${lib.optionalString cfg.router.rpki.enable ''
 
-          ${lib.concatMapStringsSep
-          "\n\n"
-          (validator: ''
-            protocol rpki rpki${lib.toString validator.id} {
-              roa4 { table ${cfg.router.rpki.ipv4.table}; };
-              roa6 { table ${cfg.router.rpki.ipv6.table}; };
+            roa4 table ${cfg.router.rpki.ipv4.table};
+            roa6 table ${cfg.router.rpki.ipv6.table};
 
-              remote "${validator.remote}" port ${lib.toString validator.port};
+            ${lib.concatMapStringsSep
+            "\n\n"
+            (validator: ''
+              protocol rpki rpki${lib.toString validator.id} {
+                roa4 { table ${cfg.router.rpki.ipv4.table}; };
+                roa6 { table ${cfg.router.rpki.ipv6.table}; };
 
-              retry keep ${lib.toString cfg.router.rpki.retry};
-              refresh keep ${lib.toString cfg.router.rpki.refresh};
-              expire ${lib.toString cfg.router.rpki.expire};
-            }'')
-          cfg.router.rpki.validators}
+                remote "${validator.remote}" port ${lib.toString validator.port};
 
-          filter ${cfg.router.rpki.ipv4.filter} {
-            if (roa_check(${cfg.router.rpki.ipv4.table}, net, bgp_path.last) = ROA_INVALID) then {
-              print "Ignore RPKI invalid ", net, " for ASN ", bgp_path.last;
-              reject;
+                retry keep ${lib.toString cfg.router.rpki.retry};
+                refresh keep ${lib.toString cfg.router.rpki.refresh};
+                expire ${lib.toString cfg.router.rpki.expire};
+              }'')
+            cfg.router.rpki.validators}
+
+            filter ${cfg.router.rpki.ipv4.filter} {
+              if (roa_check(${cfg.router.rpki.ipv4.table}, net, bgp_path.last) = ROA_INVALID) then {
+                print "Ignore RPKI invalid ", net, " for ASN ", bgp_path.last;
+                reject;
+              }
+              accept;
             }
-            accept;
-          }
 
-          filter ${cfg.router.rpki.ipv6.filter} {
-            if (roa_check(${cfg.router.rpki.ipv6.table}, net, bgp_path.last) = ROA_INVALID) then {
-              print "Ignore RPKI invalid ", net, " for ASN ", bgp_path.last;
-              reject;
-            }
-            accept;
-          }
+            filter ${cfg.router.rpki.ipv6.filter} {
+              if (roa_check(${cfg.router.rpki.ipv6.table}, net, bgp_path.last) = ROA_INVALID) then {
+                print "Ignore RPKI invalid ", net, " for ASN ", bgp_path.last;
+                reject;
+              }
+              accept;
+            }''}
 
           protocol direct ${cfg.router.direct.name} {
             interface "${cfg.local.interface.local}";
