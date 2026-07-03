@@ -210,5 +210,37 @@ in
       # babel multicast
       networking.firewall.interfaces.gravity.allowedUDPPorts = [ 6696 ];
     })
+
+    # on pre 6.19 kernels (isere with rpi vendor kernel)
+    # xfrm interfaces still race with systemd-udev over addr_gen_mode
+    # when many SAs are created at once (boot/switch restarting strongswan)
+    # the timer scans for broken ifaces and bounces them
+    (lib.mkIf (cfg.enable && lib.versionOlder config.boot.kernelPackages.kernel.version "6.19") {
+      systemd.services.ranet-ll-heal = {
+        description = "Heal ranet interfaces missing IPv6 link-local";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = pkgs.writeShellScript "ranet-ll-heal" ''
+            export PATH=${lib.makeBinPath (with pkgs; [ iproute2 gnugrep gawk ])}
+            for ifname in $(ip -br link show | awk '/ranet/ {sub(/@.*/, "", $1); print $1}'); do
+              if ! ip -6 addr show dev "$ifname" 2>/dev/null | grep -q 'fe80::'; then
+                ip link set "$ifname" down
+                ip link set dev "$ifname" addrgenmode random
+                ip link set "$ifname" up
+              fi
+            done
+          '';
+        };
+      };
+      systemd.timers.ranet-ll-heal = {
+        description = "Periodically heal ranet interfaces missing IPv6 link-local";
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnBootSec = "30s";
+          OnUnitActiveSec = "30s";
+          AccuracySec = "5s";
+        };
+      };
+    })
   ];
 }
