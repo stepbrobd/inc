@@ -6,6 +6,9 @@ let
   inherit (lib) elem filterAttrs mapAttrs mapAttrsToList mkForce optional optionals;
 in
 {
+  # i dont read those anyways bruh
+  documentation.enable = false;
+
   # enable nextdns and tailscale on all hosts
   services = {
     nextdns = {
