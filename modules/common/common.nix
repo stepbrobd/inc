@@ -6,12 +6,6 @@ let
   inherit (lib) elem filterAttrs mapAttrs mapAttrsToList mkForce optional optionals;
 in
 {
-  # i dont read those anyways bruh
-  documentation.enable = false;
-  # grab per user man pages
-  environment.pathsToLink = [ "/share/man" ];
-  environment.extraOutputsToInstall = [ "man" ];
-
   # enable nextdns and tailscale on all hosts
   services = {
     nextdns = {
