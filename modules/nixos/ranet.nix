@@ -278,6 +278,15 @@ in
           serviceConfig = {
             Type = "oneshot";
             RemainAfterExit = true;
+            ExecStartPre = pkgs.writeShellScript "gravity-wait-up" ''
+              export PATH=${lib.makeBinPath (with pkgs; [ iproute2 gnugrep coreutils ])}
+              for _ in $(seq 60); do
+                ip link show dev gravity up 2>/dev/null | grep -q gravity && exit 0
+                sleep 1
+              done
+              echo "gravity not up after 60s" >&2
+              exit 1
+            '';
             ExecStart = lib.map (r: "${pkgs.iproute2}/bin/ip -6 route replace ${r}") routes;
             ExecStartPost = "${pkgs.iproute2}/bin/ip sr tunsrc set ${gravityBase}0::1";
             ExecStop = lib.map (r: "-${pkgs.iproute2}/bin/ip -6 route del ${r}") routes;
