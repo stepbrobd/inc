@@ -72,6 +72,8 @@ in
 
     # basic stuff
     {
+      hardware.i2c.enable = true;
+
       networking.networkmanager.wifi.powersave = lib.mkForce false;
       boot.extraModprobeConfig = ''
         options iwlwifi power_save=0

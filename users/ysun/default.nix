@@ -21,6 +21,7 @@
     extraGroups = [
       "audio"
       "docker"
+      "i2c"
       "input"
       "librepods"
       "networkmanager"
