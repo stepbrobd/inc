@@ -31,6 +31,8 @@
               self.overlays.default
               colmena.overlays.default
               llm.overlays.default
+              noctalia.overlays.default
+              noctalia-greeter.overlays.default
               ranet.overlays.default
               rust-overlay.overlays.default
               terraform-providers.overlays.default
@@ -117,15 +119,10 @@
     miroir.inputs.utils.follows = "utils";
     miroir.inputs.gomod2nix.follows = "gomod2nix";
     # n
-    # after v5 release, switch to noctalia-greeter
-    # https://github.com/noctalia-dev/noctalia-greeter
-    noctalia.url = "github:noctalia-dev/noctalia-shell/legacy-v4";
+    noctalia.url = "github:noctalia-dev/noctalia";
     noctalia.inputs.nixpkgs.follows = "nixpkgs";
-    noctalia.inputs.noctalia-qs.follows = "noctalia-qs";
-    noctalia-qs.url = "github:noctalia-dev/noctalia-qs";
-    noctalia-qs.inputs.nixpkgs.follows = "nixpkgs";
-    noctalia-qs.inputs.systems.follows = "systems";
-    noctalia-qs.inputs.treefmt-nix.follows = "treefmt";
+    noctalia-greeter.url = "github:noctalia-dev/noctalia-greeter";
+    noctalia-greeter.inputs.nixpkgs.follows = "nixpkgs";
     niks3.url = "github:mic92/niks3";
     niks3.inputs.nixpkgs.follows = "nixpkgs";
     niks3.inputs.treefmt-nix.follows = "treefmt";
