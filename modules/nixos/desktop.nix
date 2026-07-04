@@ -11,7 +11,7 @@ let
   style = pkgs.writeText "gtk.css" ''
     @import url("${pkgs.nordic}/share/themes/Nordic/gtk-3.0/gtk.css");
     window {
-      background-image: url("${lib.blueprint.users.ysun.meta.wallpapersDir}/wha.jpg");
+      background-image: url("${lib.blueprint.users.ysun.meta.wallpapersDir}/nord.jpg");
       background-size: cover;
       background-position: center;
     }
