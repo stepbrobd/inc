@@ -25,9 +25,8 @@
           };
 
           nixpkgs = {
+            instances.pkgs = inputs.nixpkgs;
             config.allowUnfree = true;
-            # TODO: identify which package is causing throw
-            config.permittedInsecurePackages = [ "pnpm-10.29.2" ];
             overlays = with inputs; [
               self.overlays.default
               colmena.overlays.default
@@ -36,9 +35,6 @@
               rust-overlay.overlays.default
               terraform-providers.overlays.default
             ];
-            instances = {
-              pkgs = inputs.nixpkgs;
-            };
           };
 
           parts.path = ./modules/flake;
