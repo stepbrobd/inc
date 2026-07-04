@@ -632,12 +632,12 @@ in
           translucentWidgets = false;
         };
         wallpaper = {
-          automationEnabled = false;
+          automationEnabled = true;
           directory = lib.blueprint.users.ysun.meta.wallpapersDir;
           enableMultiMonitorDirectories = false;
           enabled = true;
           favorites = [ ];
-          fillColor = "#000000";
+          fillColor = "#2e3440";
           fillMode = "crop";
           hideWallpaperFilenames = false;
           linkLightAndDarkWallpapers = true;
@@ -646,7 +646,7 @@ in
           overviewEnabled = true;
           overviewTint = 0.6;
           panelPosition = "follow_bar";
-          randomIntervalSec = 300;
+          randomIntervalSec = 3600;
           setWallpaperOnAllMonitors = true;
           showHiddenFiles = false;
           skipStartupTransition = true;
@@ -654,7 +654,7 @@ in
           sortOrder = "name";
           transitionDuration = 1500;
           transitionEdgeSmoothness = 0.05;
-          transitionType = [ ];
+          transitionType = [ "fade" ];
           useOriginalImages = true;
           useSolidColor = false;
           useWallhaven = false;
