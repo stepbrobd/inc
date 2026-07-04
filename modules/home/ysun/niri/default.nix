@@ -8,7 +8,7 @@
 let
   hasTag = lib.hasTag osConfig.networking.hostName;
 
-  ipc = args: ''spawn "noctalia-shell" "ipc" "call" ${args}'';
+  ipc = args: ''spawn "noctalia" "msg" ${args}'';
 in
 {
   config = lib.mkIf (hasTag "niri") {
@@ -97,7 +97,7 @@ in
       spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
       spawn-at-startup "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
       spawn-at-startup "gnome-keyring-daemon" "--start" "--components=pkcs11,secrets,ssh"
-      spawn-at-startup "noctalia-shell"
+      spawn-at-startup "noctalia"
       spawn-at-startup "fcitx5" "-d"
 
       binds {
@@ -108,10 +108,10 @@ in
         Mod+O { toggle-overview; }
 
         // noctalia shell IPC
-        Mod+S        { ${ipc ''"volume" "togglePanel"''}; }
-        Mod+Space    { ${ipc ''"launcher" "toggle"''}; }
-        Mod+M        { ${ipc ''"sessionMenu" "toggle"''}; }
-        Ctrl+Super+Q { ${ipc ''"lockScreen" "lock"''}; }
+        Mod+S        { ${ipc ''"panel-toggle" "control-center" "audio"''}; }
+        Mod+Space    { ${ipc ''"panel-toggle" "launcher"''}; }
+        Mod+M        { ${ipc ''"panel-toggle" "session"''}; }
+        Ctrl+Super+Q { ${ipc ''"session" "lock"''}; }
 
         // window management
         Mod+Q { close-window; }
@@ -181,14 +181,14 @@ in
         Mod+Ctrl+0 { move-window-to-workspace 10; }
 
         // media keys via noctalia IPC
-        XF86AudioMute         { ${ipc ''"volume" "muteOutput"''}; }
-        XF86AudioRaiseVolume  { ${ipc ''"volume" "increase"''}; }
-        XF86AudioLowerVolume  { ${ipc ''"volume" "decrease"''}; }
+        XF86AudioMute         { ${ipc ''"volume-mute"''}; }
+        XF86AudioRaiseVolume  { ${ipc ''"volume-up"''}; }
+        XF86AudioLowerVolume  { ${ipc ''"volume-down"''}; }
         XF86AudioPrev         { ${ipc ''"media" "previous"''}; }
-        XF86AudioPlay         { ${ipc ''"media" "playPause"''}; }
+        XF86AudioPlay         { ${ipc ''"media" "toggle"''}; }
         XF86AudioNext         { ${ipc ''"media" "next"''}; }
-        XF86MonBrightnessUp   { ${ipc ''"brightness" "increase"''}; }
-        XF86MonBrightnessDown { ${ipc ''"brightness" "decrease"''}; }
+        XF86MonBrightnessUp   { ${ipc ''"brightness-up"''}; }
+        XF86MonBrightnessDown { ${ipc ''"brightness-down"''}; }
 
         // screenshots
         Mod+Shift+3 { screenshot-screen; }
