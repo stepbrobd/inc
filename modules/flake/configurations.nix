@@ -120,6 +120,7 @@ let
           os = "nixos";
           platform = "x86_64-linux";
           modules = laptopModules ++ (with inputs; [
+            self.nixosModules.as10779
             hardware.nixosModules.framework-13th-gen-intel
           ]);
           users = laptopUsers;
