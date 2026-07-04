@@ -20,10 +20,11 @@ let
               base = lib.removeSuffix "0::/60" (h.ranet.gravity.prefix or "");
               hasPrefix = h ? ranet && h.ranet ? gravity && lib.hasSuffix "0::/60" h.ranet.gravity.prefix;
             in
-            # segment routing SIDs at the "6" nibble subspace
+            # server only
+              # segment routing SIDs at the "6" nibble subspace
               # ::1 = End.DT46 (exit here)
               # ::2 = End (transit waypoint)
-            lib.optional hasPrefix {
+            lib.optional (hasPrefix && h.type == "server") {
               type = "srv6";
               enabled = true;
               addresses = [ "${base}6::1" "${base}6::2" ];
