@@ -16,8 +16,7 @@ in
 
   config = lib.mkIf (hasTag "graphical") {
     services.desktopManager.enabled = lib.mkDefault (
-      if hasTag "hyprland" then "hyprland"
-      else if hasTag "niri" then "niri"
+      if hasTag "niri" then "niri"
       else null
     );
   };

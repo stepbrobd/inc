@@ -15,7 +15,6 @@
     # fzf # imported in graphical
     # git # imported in graphical
     # gpg # imported in graphical
-    hyprland # linux only
     nemo
     niri # linux only
     noctalia # linux only

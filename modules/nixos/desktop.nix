@@ -20,13 +20,12 @@ in
 {
   options.services.desktopManager = {
     enabled = mkOption {
-      type = with types; nullOr (enum [ "hyprland" "niri" ]);
+      type = with types; nullOr (enum [ "niri" ]);
       default = null;
       example = "niri";
       description = ''
         Choose:
         - null (or nothing) -> no desktop manager
-        - hyprland
         - niri
       '';
     };
@@ -105,36 +104,6 @@ in
         gnome.gnome-keyring.enable = true;
       };
     }
-
-    (mkIf (cfg.enabled == "hyprland") {
-      programs.hyprland = {
-        enable = true;
-        xwayland.enable = true;
-      };
-
-      environment.systemPackages = [ pkgs.hyprland-qtutils ];
-
-      # login manager gtkgreet
-      services.greetd = {
-        enable = true;
-        settings.default_session = {
-          user = "greeter";
-          command = lib.concatStringsSep " " [
-            "${pkgs.cage}/bin/cage"
-            "-s"
-            "-d"
-            "-m"
-            "last"
-            "--"
-            "${pkgs.gtkgreet}/bin/gtkgreet"
-            "-s"
-            "${style}"
-            "-c"
-            "start-hyprland"
-          ];
-        };
-      };
-    })
 
     (mkIf (cfg.enabled == "niri") {
       programs.niri.enable = true;
