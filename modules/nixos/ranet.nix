@@ -16,6 +16,9 @@ let
     let p = if host != null && host ? ranet && host.ranet ? gravity then host.ranet.gravity.prefix else null;
     in if p != null && lib.hasSuffix "0::/60" p then lib.removeSuffix "0::/60" p else null;
 
+  # srv6 extension SIDs belong to stable forwarding nodes (e.g. not on laptops)
+  isMeshRouter = host != null && (host.type or "server") == "server";
+
   # ::3 exists on bgp exit routers only
   srv6Exit = config.services.as10779.enable && config.services.as10779.router.exit;
 
@@ -226,6 +229,31 @@ in
       networking.firewall.checkReversePath = lib.mkDefault "loose";
     })
 
+    # for machines on NetworkManager networkd still owns the mesh virtual interfaces
+    # ask NM to leave them alone
+    # run
+    # `sudo ranet --config /etc/ranet/config.json --registry /etc/ranet/registry.json --key /run/secrets/ranet up`
+    # whenever the underlay changes (wifi<->dock, resume, new dhcp lease, etc)
+    # to make sure dead SAs re-initiate promptly from the new source instead of waiting on DPD
+    (lib.mkIf (cfg.enable && config.networking.networkmanager.enable) {
+      networking.networkmanager.unmanaged = [
+        "interface-name:dummy0"
+        "interface-name:gravity"
+        "interface-name:egress"
+        "interface-name:ranet*"
+      ];
+      networking.networkmanager.dispatcherScripts = [{
+        type = "basic";
+        source = pkgs.writeShellScript "ranet-reconnect" ''
+          case "$2" in
+            up | vpn-up | connectivity-change)
+              ${config.systemd.package}/bin/systemctl try-reload-or-restart ranet.service || true
+              ;;
+          esac
+        '';
+      }];
+    })
+
     # srv6: publish segment routing SIDs from the node prefix's "6" nibble subspace
     # so mesh members can steer traffic through explicit waypoints
     #   <base>6::1 = End.DT46 decap into table 200 (exit here, v4 or v6 inner)
@@ -234,7 +262,7 @@ in
     #   <base>6::16+ reserved for End.B6.Encaps named paths
     # ::1/::2 are mesh wide and in the registry, ::3 is own nodes only
     # networkd/bird cant install seg6local lwtunnel routes so a oneshot does
-    (lib.mkIf (cfg.enable && gravityBase != null) {
+    (lib.mkIf (cfg.enable && gravityBase != null && isMeshRouter) {
       networking.iproute2.enable = true;
       networking.iproute2.rttablesExtraConfig = ''
         100 localsid
