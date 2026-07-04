@@ -93,10 +93,10 @@ in
       };
 
       # locker
-      security.pam.services.gtklock = { };
       security.pam.services.login.enableGnomeKeyring = true;
       security.pam.services.greetd.enableGnomeKeyring = true;
       security.pam.services.greetd.fprintAuth = false;
+      security.pam.services.login.fprintAuth = false;
 
       # gnome polkit and keyring
       security.polkit.enable = true;
@@ -114,7 +114,7 @@ in
 
       environment.systemPackages = [ pkgs.hyprland-qtutils ];
 
-      # login manager: use gtkgreet, and use gtklock for locker
+      # login manager gtkgreet
       services.greetd = {
         enable = true;
         settings.default_session = {
@@ -139,7 +139,7 @@ in
     (mkIf (cfg.enabled == "niri") {
       programs.niri.enable = true;
 
-      # login manager: use gtkgreet, and use gtklock for locker
+      # login manager gtkgreet
       services.greetd = {
         enable = true;
         settings.default_session = {
