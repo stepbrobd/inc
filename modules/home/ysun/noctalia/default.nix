@@ -114,10 +114,12 @@ in
           pre_action_fade_seconds = 5.0;
           behavior = {
             lock = {
+              action = "lock";
               enabled = true;
               timeout = 300;
             };
             screen-off = {
+              action = "screen_off";
               enabled = true;
               timeout = 3600;
             };
@@ -129,6 +131,26 @@ in
         lockscreen = {
           enabled = true;
           fingerprint = true;
+          blur_intensity = 0.0;
+          tint_intensity = 0.0;
+        };
+
+        lockscreen_widgets = {
+          enabled = true;
+          widget.clock = {
+            type = "clock";
+            cx = 960.0;
+            cy = 256.0;
+            box_width = 512.0;
+            box_height = 256.0;
+            settings = {
+              clock_style = "digital";
+              format = "{:%H:%M}";
+              color = "error";
+              shadow = false;
+              background = false;
+            };
+          };
         };
 
         notification.position = "top_right";
@@ -138,6 +160,7 @@ in
         shell = {
           avatar_path = lib.blueprint.users.ysun.meta.profilePicture;
           clipboard_auto_paste = "off";
+          password_style = "random";
           launcher = {
             categories = true;
             session_search = true;
