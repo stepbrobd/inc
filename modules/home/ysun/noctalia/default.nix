@@ -81,8 +81,8 @@ in
             end = [
               "cpu"
               "ram"
-              "network_rx"
               "network_tx"
+              "network_rx"
               "battery"
               "control-center"
               "clock"
