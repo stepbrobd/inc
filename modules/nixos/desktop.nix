@@ -73,11 +73,7 @@ in
     {
       hardware.i2c.enable = true;
 
-      networking.networkmanager.wifi.powersave = lib.mkForce false;
-      boot.extraModprobeConfig = ''
-        options iwlwifi power_save=0
-        options iwlmvm power_scheme=1
-      '';
+      environment.systemPackages = [ pkgs.iw ];
 
       environment.variables = {
         GDK_BACKEND = "wayland";
