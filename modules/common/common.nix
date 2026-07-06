@@ -111,13 +111,34 @@ in
 
   environment.systemPackages = with pkgs; [
     alacritty.terminfo
-    file
+
     inputs.sweep.packages.${pkgs.stdenv.hostPlatform.system}.default
-    nix-eval-jobs
+
+    nix-eval-jobs # just in case
+
+    file
+
+    moor # pager
   ];
 
   # pager
-  environment.variables.PAGER = "less -FRX";
+  environment.variables = {
+    PAGER = "moor";
+    MOOR = lib.concatStringsSep " " [
+      "--style=nord"
+      "--terminal-fg"
+      "--no-linenumbers"
+      "--no-statusbar"
+      "--no-clear-on-exit"
+      "--quit-if-one-screen"
+    ];
+
+    SYSTEMD_PAGER = "moor";
+    SYSTEMD_PAGERSECURE = "1";
+
+    MANPAGER = "moor";
+    BAT_PAGER = "moor";
+  };
 
   # shells
   environment.shells = with pkgs; [ bashInteractive nushell zsh ];
