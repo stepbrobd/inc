@@ -1,6 +1,12 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 {
+  environment.systemPackages = [ pkgs.gravity.vpn ];
+
+  # add this to allow strongswan bind to wireless and wired interfaces
+  # to ensure tunnes dont break if switch from wired to wireless
+  # networking.ranet.interfaces = [ "wlp170s0" "eth0" ];
+
   services.as10779 = {
     enable = true;
     router.exit = false;
