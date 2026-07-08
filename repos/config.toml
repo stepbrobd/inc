@@ -94,6 +94,11 @@ description = "fosdem '26 stuff"
 visibility = "public"
 archived = false
 
+[repo."howfastly"]
+description = "how fast is your connection to the Fastly network?"
+visibility = "public"
+archived = false
+
 [repo."homebrew-tap"]
 description = "custom homebrew tap"
 visibility = "public"
