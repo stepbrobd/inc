@@ -18,7 +18,7 @@ lib.makeOverridable nixvim.makeNixvimWithModule {
     lib = lib.extend inputs.nixvim.lib.overlay;
   };
 
-  module.imports = [{ version.enableNixpkgsReleaseCheck = false; }]
+  module.imports = [{ version.enableNixpkgsReleaseCheck = false; enableMan = false; }]
     ++
     map
       (f: ./${f})
