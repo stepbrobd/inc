@@ -1,3 +1,7 @@
+# TODO: drop after
+# https://github.com/NixOS/nixpkgs/pull/540463
+# https://github.com/NixOS/nixpkgs/pull/536365
+
 { lib
 , pkgsPrev
 , stdenv
