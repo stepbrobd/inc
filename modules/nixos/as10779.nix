@@ -852,7 +852,15 @@ in
             ++ lib.map (r: { From = r.prefix; Table = ipv6Table; Priority = 150; })
               cfg.router.static.ipv6.routes
             ++ [{ From = "2a0c:b641:69c::/48"; Table = ipv6Table; Priority = 150; }]
-          );
+          )
+          # when a node sets tailscale exit node trying to reach my announced IP addrs
+          # set priority rule so that tailscale destined replies (exit node flows de NATed to ts CGNAT/ULA)
+          # must reach tailscale table 52 before from <prefix> rules at 150 steal them into main/mesh
+          # empty table 52 falls through
+          ++ lib.optionals config.services.tailscale.enable [
+            { To = "100.64.0.0/10"; Table = 52; Priority = 140; }
+            { To = "fd7a:115c:a1e0::/48"; Table = 52; Priority = 140; }
+          ];
       };
     })
     {
