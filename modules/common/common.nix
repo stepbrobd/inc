@@ -114,6 +114,7 @@ in
     file
     inputs.sweep.packages.${pkgs.stdenv.hostPlatform.system}.default
     nix-eval-jobs
+    mtr
   ];
 
   # pager
