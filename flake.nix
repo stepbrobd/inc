@@ -30,7 +30,6 @@
             overlays = with inputs; [
               self.overlays.default
               colmena.overlays.default
-              llm.overlays.default
               noctalia.overlays.default
               noctalia-greeter.overlays.default
               ranet.overlays.default
@@ -108,7 +107,6 @@
     llm.inputs.nixpkgs.follows = "nixpkgs";
     llm.inputs.systems.follows = "systems";
     llm.inputs.flake-parts.follows = "parts";
-    llm.inputs.blueprint.follows = "blueprint";
     llm.inputs.bun2nix.follows = "bun2nix";
     llm.inputs.treefmt-nix.follows = "treefmt";
     # m
