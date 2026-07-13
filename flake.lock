@@ -530,11 +530,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783889444,
-        "narHash": "sha256-DN0bNFqZph7r7bCu2WXiVdgD1a8J0CzlwqSosFTUYbQ=",
+        "lastModified": 1783907407,
+        "narHash": "sha256-plCHOcmqaPmF6MD+AIDI+XekxPFZRqqHpF47w5l8pbg=",
         "owner": "noctalia-dev",
         "repo": "noctalia",
-        "rev": "eb9fc348b67120e4513a7bb7689253c4cd0a9554",
+        "rev": "3df9dcd1e9aec49ea3cc92a13930352b7e1a4374",
         "type": "github"
       },
       "original": {
@@ -846,11 +846,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783821123,
-        "narHash": "sha256-OikKgn1kntq2xRpCfTS0C2Y2tIYF+RIRkiuSVRI3JZ4=",
+        "lastModified": 1783907791,
+        "narHash": "sha256-mpVIi3U1mCUru9RAbQg5eXNAI652K6L/s4ry6HZhqbY=",
         "owner": "nix-community",
         "repo": "nixpkgs-terraform-providers-bin",
-        "rev": "2cdfede0361c7fc3f17f96dffd062668b38d3e9d",
+        "rev": "73f97d8e8502cf9ce8c72d83207d3112156c9b31",
         "type": "github"
       },
       "original": {
