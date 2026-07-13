@@ -1,4 +1,1 @@
-{ stdenv, llm-agents }: llm-agents.claude-code.overrideAttrs {
-  __noChroot = false;
-  doInstallCheck = stdenv.hostPlatform.isLinux;
-}
+{ inputs, stdenv }: inputs.llm.packages.${stdenv.hostPlatform.system}.claude-code
