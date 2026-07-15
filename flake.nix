@@ -153,6 +153,11 @@
     srvos.url = "github:nix-community/srvos";
     srvos.inputs.nixpkgs.follows = "nixpkgs";
     std.url = "github:chessai/nix-std";
+    stylix.url = "github:nix-community/stylix";
+    stylix.inputs.nixpkgs.follows = "nixpkgs";
+    stylix.inputs.systems.follows = "systems";
+    stylix.inputs.flake-parts.follows = "parts";
+    stylix.inputs.nur.follows = "";
     sweep.url = "github:jzbor/nix-sweep";
     sweep.inputs.nixpkgs.follows = "nixpkgs";
     sweep.inputs.cf.follows = "cornflake";
