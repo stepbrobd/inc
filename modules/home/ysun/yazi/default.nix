@@ -9,13 +9,6 @@
       inherit full-border git nord yatline;
     };
 
-    flavors = { inherit (pkgs.yaziPlugins) nord; };
-
-    theme.flavor = {
-      light = "nord";
-      dark = "nord";
-    };
-
     # pkgs.yaziPlugins.git
     settings.plugin.prepend_fetchers = [
       { id = "git"; name = "*"; run = "git"; }

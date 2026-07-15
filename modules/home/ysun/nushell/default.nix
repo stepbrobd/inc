@@ -133,12 +133,5 @@ in
       $env.PROMPT_INDICATOR_VI_NORMAL = ""
       $env.PROMPT_MULTILINE_INDICATOR = ""
     '';
-
-    extraConfig = lib.mkAfter (
-      lib.concatStringsSep "\n" [
-        "const NU_LIB_DIRS = $NU_LIB_DIRS ++ ['${pkgs.nu_scripts}/share/nu_scripts']"
-        "use themes/nu-themes/nord.nu"
-      ]
-    );
   };
 }
