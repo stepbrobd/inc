@@ -127,6 +127,9 @@
     package = null;
   };
 
+  # TOML
+  plugins.lsp.servers.taplo.enable = true;
+
   # Typst
   plugins.lsp.servers.tinymist.enable = true;
 
