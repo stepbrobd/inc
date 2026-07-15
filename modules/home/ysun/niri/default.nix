@@ -1,6 +1,7 @@
 { lib, ... }:
 
-{ pkgs
+{ config
+, pkgs
 , osConfig ? { networking.hostName = ""; }
 , ...
 }:
@@ -49,8 +50,8 @@ in
         border {
           on
           width 2
-          active-color "#4c566a"
-          inactive-color "#2e3440"
+          active-color "${config.lib.stylix.colors.withHashtag.base03}"
+          inactive-color "${config.lib.stylix.colors.withHashtag.base00}"
         }
 
         focus-ring {
@@ -83,15 +84,15 @@ in
       screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
       cursor {
-        xcursor-theme "Nordzy-cursors"
-        xcursor-size 24
+        xcursor-theme "${config.stylix.cursor.name}"
+        xcursor-size ${toString config.stylix.cursor.size}
       }
 
       environment {
         GDK_SCALE "1"
         ELM_SCALE "1"
         QT_SCALE_FACTOR "1"
-        XCURSOR_SIZE "24"
+        XCURSOR_SIZE "${toString config.stylix.cursor.size}"
       }
 
       spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
