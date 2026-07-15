@@ -19,7 +19,6 @@
     # mpd # linux only
     # nushell # imported in graphical
     # tmux # imported in minimal
-    # vscode # imported in graphical
     # zoxide # imported in graphical
     # zsh # imported in minimal
   ];

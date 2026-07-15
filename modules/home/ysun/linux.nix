@@ -22,7 +22,6 @@
     mpd # linux only
     # nushell # imported in graphical
     # tmux # imported in minimal
-    # vscode # imported in graphical
     slack
     zathura
     zen

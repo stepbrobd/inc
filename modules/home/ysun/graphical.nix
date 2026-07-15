@@ -34,7 +34,6 @@
     ripgrep
     ssh
     # tmux # imported in minimal
-    vscode
     yazi
     zoxide
     # zsh # imported in minimal
