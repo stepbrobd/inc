@@ -75,7 +75,7 @@ let
         inputs.srvos.darwinModules.desktop
       ];
 
-      serverUsers = { ysun = with inputs.self; [ hmModules.ysun.minimal ]; };
+      serverUsers = { ysun = with inputs.self; [ hmModules.ysun.server ]; };
       laptopUsers = { ysun = with inputs.self; [ hmModules.ysun.linux ]; };
       darwinUsers = { ysun = with inputs.self; [ hmModules.ysun.darwin ]; };
     in

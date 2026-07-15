@@ -52,6 +52,7 @@
     blender.enable = false;
     eog.enable = false;
     gnome-text-editor.enable = false;
+    sxiv.enable = false;
     vencord.enable = false;
 
     # wtf are these bruh
