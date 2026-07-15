@@ -6,6 +6,8 @@
   imports = [ inputs.stylix.homeModules.stylix ];
 
   stylix.enable = true;
+  stylix.overlays.enable = lib.mkForce false;
+
   stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
   stylix.polarity = "dark";
 
@@ -46,10 +48,18 @@
     gtk.enable = pkgs.stdenv.isLinux;
     qt.enable = pkgs.stdenv.isLinux;
 
+    # these weird ass shit theme files gets written even if the app is not enabled
+    blender.enable = false;
+    eog.enable = false;
+    gnome-text-editor.enable = false;
+    vencord.enable = false;
+
+    # wtf are these bruh
     gnome.enable = false;
     kde.enable = false;
     xfce.enable = false;
 
+    # inlined or inherited
     neovide.enable = false;
     nixvim.enable = false;
     noctalia-shell.enable = false;
