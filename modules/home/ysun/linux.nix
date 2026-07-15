@@ -15,6 +15,7 @@
     # fzf # imported in graphical
     # git # imported in graphical
     # gpg # imported in graphical
+    libreoffice
     nemo
     niri # linux only
     noctalia # linux only
