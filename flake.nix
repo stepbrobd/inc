@@ -27,6 +27,7 @@
           nixpkgs = {
             instances.pkgs = inputs.nixpkgs;
             config.allowUnfree = true;
+            config.permittedInsecurePackages = [ "electron-40.10.5" ];
             overlays = with inputs; [
               self.overlays.default
               colmena.overlays.default
