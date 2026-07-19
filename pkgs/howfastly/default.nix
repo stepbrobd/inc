@@ -2,7 +2,6 @@
 , rustPlatform
 , fetchFromGitHub
 , pkg-config
-, nix-update-script
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
@@ -24,8 +23,6 @@ rustPlatform.buildRustPackage (finalAttrs: {
   cargoBuildFlags = [ "--package" "cli" ];
 
   doCheck = false;
-
-  passthru.updateScript = nix-update-script { };
 
   passthru.autobump = true;
 

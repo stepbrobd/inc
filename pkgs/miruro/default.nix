@@ -1,7 +1,6 @@
 { lib
 , buildGoModule
 , fetchFromGitHub
-, nix-update-script
 }:
 
 buildGoModule (finalAttrs: {
@@ -22,8 +21,6 @@ buildGoModule (finalAttrs: {
   vendorHash = "sha256-Jk0BcgXbTBYBIM5F9my5gLIGweQ8c5uSxSmdu5QAKRE=";
 
   ldflags = [ "-s" ];
-
-  passthru.updateScript = nix-update-script { };
 
   passthru.autobump = true;
 
