@@ -129,6 +129,11 @@ description = "repo manager wannabe?"
 visibility = "public"
 archived = false
 
+[repo."miruro"]
+description = "why u here weeb"
+visibility = "public"
+archived = false
+
 [repo."mono"]
 description = "the only source of truth"
 visibility = "private"
