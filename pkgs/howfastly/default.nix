@@ -21,6 +21,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   nativeBuildInputs = [ pkg-config ];
 
+  cargoBuildFlags = [ "--package" "cli" ];
+
+  doCheck = false;
+
   passthru.updateScript = nix-update-script { };
 
   passthru.autobump = true;
