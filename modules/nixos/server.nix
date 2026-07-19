@@ -14,6 +14,7 @@
     cfspeedtest
     coreutils
     dnsutils
+    howfastly
     inetutils
     mtr
     tcpdump
