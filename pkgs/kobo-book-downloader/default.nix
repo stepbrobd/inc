@@ -1,7 +1,6 @@
 { lib
 , python3Packages
 , fetchFromGitHub
-, nix-update-script
 }:
 
 python3Packages.buildPythonApplication (finalAttrs: {
@@ -47,8 +46,6 @@ python3Packages.buildPythonApplication (finalAttrs: {
     "setuptools"
     "tabulate"
   ];
-
-  passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "A tool to download and remove DRM from your purchased Kobo.com ebooks and audiobooks";
