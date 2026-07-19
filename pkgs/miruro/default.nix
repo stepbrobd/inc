@@ -7,7 +7,10 @@
 buildGoModule (finalAttrs: {
   pname = "miruro";
   version = "2026.719.0";
+
   __structuredAttrs = true;
+
+  __darwinAllowLocalNetworking = true;
 
   src = fetchFromGitHub {
     owner = "stepbrobd";
