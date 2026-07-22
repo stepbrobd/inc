@@ -39,7 +39,6 @@ in
           "isal"
           "kegtron"
           "met"
-          "nextdns"
           "shopping_list"
           "ssdp"
           "switchbot"
