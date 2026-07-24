@@ -10,10 +10,8 @@
     atuin
     bat
     btop
-    # chromium # linux only
     email
     direnv
-    # firefox # linux only
     fzf
     gh
     git
