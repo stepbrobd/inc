@@ -20,7 +20,7 @@ buildGoModule (finalAttrs: {
 
   vendorHash = "sha256-Jk0BcgXbTBYBIM5F9my5gLIGweQ8c5uSxSmdu5QAKRE=";
 
-  ldflags = [ "-s" ];
+  ldflags = [ "-s" "-X main.version=${finalAttrs.version}" ];
 
   passthru.autobump = true;
 
