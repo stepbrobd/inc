@@ -5,7 +5,7 @@
 
 buildGoModule (finalAttrs: {
   pname = "miruro";
-  version = "2026.719.1";
+  version = "2026.724.2";
 
   __structuredAttrs = true;
 
@@ -15,7 +15,7 @@ buildGoModule (finalAttrs: {
     owner = "stepbrobd";
     repo = "miruro";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-ZlW1UXmfGYnq18Vl5znwN5R9gDRt7dmgMElm/3qTWgw=";
+    hash = "sha256-XIGK+uCrfuHxO1dWs8KLEXyMnw5whAmEjAM1bnJwDKE=";
   };
 
   vendorHash = "sha256-Jk0BcgXbTBYBIM5F9my5gLIGweQ8c5uSxSmdu5QAKRE=";
