@@ -3,7 +3,7 @@
 { pkgs, ... }:
 
 {
-  home.packages = [ inputs.zen.packages.${pkgs.stdenv.hostPlatform.system}.default ];
+  home.packages = [ inputs.zen.packages.${pkgs.stdenv.hostPlatform.system}.twilight ];
 
   xdg.mimeApps.defaultApplications = lib.optionalAttrs pkgs.stdenv.isLinux (
     lib.genAttrs [

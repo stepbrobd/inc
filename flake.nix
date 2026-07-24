@@ -186,8 +186,9 @@
     ysun.inputs.parts.follows = "parts";
     ysun.inputs.systems.follows = "systems";
     # z
-    zen.url = "github:youwen5/zen-browser-flake";
+    zen.url = "github:0xc000022070/zen-browser-flake";
     zen.inputs.nixpkgs.follows = "nixpkgs";
+    zen.inputs.home-manager.follows = "";
   };
 
   nixConfig.extra-substituters = [ "https://cache.ysun.co" ];
