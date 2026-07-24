@@ -12,58 +12,60 @@ let
 in
 {
   home.packages = [
-    (inputs.zen.packages.${pkgs.stdenv.hostPlatform.system}.twilight.override {
-      extraPolicies = {
-        DisableAppUpdate = true;
-        DisableFeedbackCommands = true;
-        DisableFirefoxStudies = true;
-        DisablePocket = true;
-        DisableTelemetry = true;
-        DontCheckDefaultBrowser = true;
+    (pkgs.wrapFirefox # policies must be in the unwrapped zen
+      (inputs.zen.packages.${pkgs.stdenv.hostPlatform.system}.twilight-unwrapped.override {
+        policies = {
+          DisableAppUpdate = true;
+          DisableFeedbackCommands = true;
+          DisableFirefoxStudies = true;
+          DisablePocket = true;
+          DisableTelemetry = true;
+          DontCheckDefaultBrowser = true;
 
-        NoDefaultBookmarks = true;
-        EnableTrackingProtection = {
-          Value = true;
-          Locked = true;
-          Cryptomining = true;
-          Fingerprinting = true;
-          EmailTracking = true;
+          NoDefaultBookmarks = true;
+          EnableTrackingProtection = {
+            Value = true;
+            Locked = true;
+            Cryptomining = true;
+            Fingerprinting = true;
+            EmailTracking = true;
+          };
+
+          DNSOverHTTPS.Enabled = false;
+
+          PasswordManagerEnabled = false;
+          OfferToSaveLogins = false;
+          DisableMasterPasswordCreation = true;
+          AutofillCreditCardEnabled = false;
+          AutofillAddressEnabled = false;
+
+          ExtensionSettings = {
+            ${bitwarden} = amo "bitwarden-password-manager" // { default_area = "navbar"; };
+            "{d7742d87-e61d-4b78-b8a1-b469842139fa}" = amo "vimium-ff"; # Vimium
+            "adguardadblocker@adguard.com" = amo "adguard-adblocker";
+            "addon@darkreader.org" = amo "darkreader";
+          };
+          "3rdparty".Extensions.${bitwarden}.environment.base = "https://${domain}";
+
+          OverrideFirstRunPage = "";
+          OverridePostUpdatePage = "";
+
+          UserMessaging = {
+            ExtensionRecommendations = false;
+            FeatureRecommendations = false;
+            UrlbarInterventions = false;
+            SkipOnboarding = true;
+            MoreFromMozilla = false;
+          };
+
+          FirefoxSuggest = {
+            WebSuggestions = false;
+            SponsoredSuggestions = false;
+            ImproveSuggest = false;
+          };
         };
-
-        DNSOverHTTPS.Enabled = false;
-
-        PasswordManagerEnabled = false;
-        OfferToSaveLogins = false;
-        DisableMasterPasswordCreation = true;
-        AutofillCreditCardEnabled = false;
-        AutofillAddressEnabled = false;
-
-        ExtensionSettings = {
-          ${bitwarden} = amo "bitwarden-password-manager" // { default_area = "navbar"; };
-          "{d7742d87-e61d-4b78-b8a1-b469842139fa}" = amo "vimium-ff"; # Vimium
-          "adguardadblocker@adguard.com" = amo "adguard-adblocker";
-          "addon@darkreader.org" = amo "darkreader";
-        };
-        "3rdparty".Extensions.${bitwarden}.environment.base = "https://${domain}";
-
-        OverrideFirstRunPage = "";
-        OverridePostUpdatePage = "";
-
-        UserMessaging = {
-          ExtensionRecommendations = false;
-          FeatureRecommendations = false;
-          UrlbarInterventions = false;
-          SkipOnboarding = true;
-          MoreFromMozilla = false;
-        };
-
-        FirefoxSuggest = {
-          WebSuggestions = false;
-          SponsoredSuggestions = false;
-          ImproveSuggest = false;
-        };
-      };
-    })
+      })
+      { })
   ];
 
   home.sessionVariables = lib.optionalAttrs pkgs.stdenv.isLinux { BROWSER = "zen-twilight"; };
