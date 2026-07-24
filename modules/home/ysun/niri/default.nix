@@ -40,7 +40,6 @@ in
 
       output "eDP-1" {
         scale 1.5
-        variable-refresh-rate
       }
 
       layout {
