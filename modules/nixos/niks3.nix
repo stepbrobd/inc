@@ -35,11 +35,13 @@ in
         signKeyFiles = [ config.sops.secrets."niks3/nix-signing-key".path ];
         apiTokenFile = config.sops.secrets."niks3/niks3-api-token".path;
 
-        s3 = let region = "us-east-005"; in {
-          bucket = "stepbrobd";
+        # fastly object storage see modules/terranix/fastly/cache.nix
+        s3 = let region = "us-east-1"; in {
+          bucket = "cache";
 
           inherit region;
-          endpoint = "s3.${region}.backblazeb2.com";
+          endpoint = "${region}.object.fastlystorage.app";
+          bucketLookup = "path";
           useSSL = true;
 
           accessKeyFile = config.sops.secrets."niks3/s3-access-key".path;

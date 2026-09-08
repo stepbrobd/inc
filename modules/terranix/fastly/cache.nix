@@ -6,13 +6,13 @@ let
   # cache.ysun.co (niks3 read endpoint)
   domain = lib.blueprint.services.cache.domain;
 
-  s3Bucket = "stepbrobd";
-  s3Region = "us-east-005";
-  s3Host = "${s3Bucket}.s3.${s3Region}.backblazeb2.com";
-
-  # ro b2 key from modules/terranix/b2/default.nix
-  accessKeyId = tfRef "b2_application_key.fastly.application_key_id";
-  secretKey = tfRef "b2_application_key.fastly.application_key";
+  # fastly object storage (path style) bucket declared below
+  s3Bucket = "cache";
+  s3Region = "us-east-1";
+  s3Host = "${s3Region}.object.fastlystorage.app";
+  # ro key scoped to the storage backend declared below
+  accessKeyId = tfRef "fastly_object_storage_access_keys.cache.access_key_id";
+  secretKey = tfRef "fastly_object_storage_access_keys.cache.secret_key";
 in
 {
   resource.fastly_service_vcl.cache = {
@@ -118,9 +118,6 @@ in
         type = "fetch";
         # run after the #FASTLY fetch boilerplate
         priority = 105;
-        # niks3 stores narinfo/.ls/realisations/log zstd-compressed
-        # but b2 does not surface Content-Encoding on download
-        # re-add here so the nix client decompresses
         content = ''
           if (beresp.status == 200 && (req.url.path ~ "\.(narinfo|ls)$" || req.url.path ~ "^/realisations/" || req.url.path ~ "^/log/")) {
             set beresp.http.Content-Encoding = "zstd";
@@ -175,10 +172,9 @@ in
         name = "negative";
         type = "fetch";
         # run after stream to override ttl/cacheable decisions
-        # force cache 403 for a short period on narinfo and realizations
         priority = 115;
         content = ''
-          if (beresp.status == 403 && (req.url.path ~ "\.narinfo$" || req.url.path ~ "^/realisations/")) {
+          if (beresp.status == 404 && (req.url.path ~ "\.narinfo$" || req.url.path ~ "^/realisations/")) {
             set beresp.cacheable = true;
             set beresp.ttl = 60s;
             set beresp.http.Cache-Control = "public, max-age=60";
@@ -186,15 +182,15 @@ in
         '';
       }
       {
-        name = "b2";
+        name = "s3";
         type = "miss";
         priority = 100;
-        # https://www.fastly.com/documentation/guides/integrations/non-fastly-services/backblaze-b2-cloud-storage/
+        # sigv4 https://www.fastly.com/documentation/guides/integrations/non-fastly-services/amazon-s3/
         content = ''
-          declare local var.b2AccessKey STRING;
-          declare local var.b2SecretKey STRING;
-          declare local var.b2Bucket STRING;
-          declare local var.b2Region STRING;
+          declare local var.s3AccessKey STRING;
+          declare local var.s3SecretKey STRING;
+          declare local var.s3Bucket STRING;
+          declare local var.s3Region STRING;
           declare local var.canonicalHeaders STRING;
           declare local var.signedHeaders STRING;
           declare local var.canonicalRequest STRING;
@@ -204,17 +200,17 @@ in
           declare local var.signature STRING;
           declare local var.scope STRING;
 
-          set var.b2AccessKey = "${accessKeyId}";
-          set var.b2SecretKey = "${secretKey}";
-          set var.b2Bucket = "${s3Bucket}";
-          set var.b2Region = "${s3Region}";
+          set var.s3AccessKey = "${accessKeyId}";
+          set var.s3SecretKey = "${secretKey}";
+          set var.s3Bucket = "${s3Bucket}";
+          set var.s3Region = "${s3Region}";
 
           if ((req.method == "GET" || req.method == "HEAD") && !req.backend.is_shield) {
             set bereq.http.x-amz-content-sha256 = digest.hash_sha256("");
             set bereq.http.x-amz-date = strftime({"%Y%m%dT%H%M%SZ"}, now);
-            set bereq.http.host = var.b2Bucket ".s3." var.b2Region ".backblazeb2.com";
+            set bereq.http.host = "${s3Host}";
             set bereq.url = querystring.remove(bereq.url);
-            set bereq.url = regsuball(urlencode(urldecode(bereq.url.path)), {"%2F"}, "/");
+            set bereq.url = "/" var.s3Bucket regsuball(urlencode(urldecode(bereq.url.path)), {"%2F"}, "/");
             set var.dateStamp = strftime({"%Y%m%d"}, now);
             set var.canonicalHeaders = ""
               "host:" bereq.http.host LF
@@ -232,7 +228,7 @@ in
               digest.hash_sha256("")
             ;
 
-            set var.scope = var.dateStamp "/" var.b2Region "/s3/aws4_request";
+            set var.scope = var.dateStamp "/" var.s3Region "/s3/aws4_request";
 
             set var.stringToSign = ""
               "AWS4-HMAC-SHA256" LF
@@ -242,15 +238,15 @@ in
             ;
 
             set var.signature = digest.awsv4_hmac(
-              var.b2SecretKey,
+              var.s3SecretKey,
               var.dateStamp,
-              var.b2Region,
+              var.s3Region,
               "s3",
               var.stringToSign
             );
 
             set bereq.http.Authorization = "AWS4-HMAC-SHA256 "
-              "Credential=" var.b2AccessKey "/" var.scope ", "
+              "Credential=" var.s3AccessKey "/" var.scope ", "
               "SignedHeaders=" var.signedHeaders ", "
               "Signature=" + regsub(var.signature, "^0x", "")
             ;
@@ -267,6 +263,12 @@ in
 
   # fastly object storage bucket
   resource.aws_s3_bucket.cache.bucket = "cache";
+  # RW key for Niks3
+  resource.fastly_object_storage_access_keys.niks3 = {
+    description = "RW key for Nix Binary Cache storage backend used by Niks3.";
+    permission = "read-write-objects";
+    buckets = [ (tfRef "aws_s3_bucket.cache.bucket") ];
+  };
   # RO key for vcl read path (bucket scoping only applies to *-objects)
   resource.fastly_object_storage_access_keys.cache = {
     description = "RO key for Nix Binary Cache storage backend used by Cache VCL service.";
