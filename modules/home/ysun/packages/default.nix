@@ -31,11 +31,10 @@ in
     # imported to graphical linux machines
     beeper
     cider-2
-    obs-studio
+    (obs-studio.override { browserSupport = false; })
     (osu-lazer-bin.override { nativeWayland = true; })
     pinentry-all
     remmina
-    zoom-us
     zotero
   ])
   ++ (lib.optionals isDarwin [
