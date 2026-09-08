@@ -84,13 +84,6 @@ rec {
       };
     };
 
-    b2 = {
-      terraform.required_providers.b2.source = "Backblaze/b2";
-      provider.b2 = {
-        application_key = ''''${data.sops_file.secrets.data["b2.application_key"]}'';
-        application_key_id = ''''${data.sops_file.secrets.data["b2.application_key_id"]}'';
-      };
-    };
 
     cloudflare = {
       terraform.required_providers.cloudflare.source = "cloudflare/cloudflare";
