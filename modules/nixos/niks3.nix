@@ -32,6 +32,8 @@ in
 
         httpAddr = "[::1]:5751";
 
+        gc.olderThan = "8760h";
+
         signKeyFiles = [ config.sops.secrets."niks3/nix-signing-key".path ];
         apiTokenFile = config.sops.secrets."niks3/niks3-api-token".path;
 
