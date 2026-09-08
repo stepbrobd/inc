@@ -4,7 +4,6 @@
 
 let
   inherit (lib) map filter attrNames readDir;
-  inherit (lib.terranix) tfRef;
 in
 {
   imports = map
@@ -32,9 +31,4 @@ in
     }];
   };
 
-  resource.b2_application_key.fastly = {
-    key_name = "fastly-cache-read";
-    capabilities = [ "readFiles" ];
-    bucket_ids = [ (tfRef "b2_bucket.stepbrobd.bucket_id") ];
-  };
 }
