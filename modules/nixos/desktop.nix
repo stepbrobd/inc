@@ -76,6 +76,8 @@ in
 
     # basic stuff
     {
+      services.speechd.enable = false;
+
       hardware.i2c.enable = true;
 
       environment.systemPackages = [ pkgs.iw ];
