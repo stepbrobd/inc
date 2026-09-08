@@ -39,8 +39,11 @@ in
     backend = [{
       name = "s3";
       address = s3Host;
+      prefer_ipv6 = true;
 
       shield = "iad-va-us";
+
+      healthcheck = "s3";
 
       ssl_cert_hostname = s3Host;
       ssl_sni_hostname = s3Host;
@@ -54,6 +57,19 @@ in
       first_byte_timeout = 15000;
       max_conn = 250;
       error_threshold = 0;
+    }];
+
+    healthcheck = [{
+      name = "s3";
+      host = s3Host;
+      path = "/";
+      method = "HEAD";
+      expected_response = 403;
+      check_interval = 15000;
+      timeout = 5000;
+      window = 5;
+      threshold = 3;
+      initial = 3;
     }];
 
     request_setting = [{

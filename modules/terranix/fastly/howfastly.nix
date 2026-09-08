@@ -47,6 +47,8 @@ in
         ssl_cert_hostname = "api.fastly.com";
         ssl_sni_hostname = "api.fastly.com";
         override_host = "api.fastly.com";
+        prefer_ipv6 = true;
+        healthcheck = "fastly";
         connect_timeout = 1000;
         first_byte_timeout = 3000;
         between_bytes_timeout = 3000;
@@ -59,11 +61,38 @@ in
         ssl_cert_hostname = plausible;
         ssl_sni_hostname = plausible;
         override_host = plausible;
-        # tracking is awaited after response
-        # slow plausible must not hold finished instances
+        prefer_ipv6 = true;
+        healthcheck = "plausible";
         connect_timeout = 1000;
         first_byte_timeout = 2000;
         between_bytes_timeout = 2000;
+      }
+    ];
+
+    healthcheck = [
+      {
+        name = "fastly";
+        host = "api.fastly.com";
+        path = "/public-ip-list";
+        method = "HEAD";
+        expected_response = 200;
+        check_interval = 30000;
+        timeout = 5000;
+        window = 5;
+        threshold = 3;
+        initial = 3;
+      }
+      {
+        name = "plausible";
+        host = plausible;
+        path = "/api/health";
+        method = "HEAD";
+        expected_response = 200;
+        check_interval = 60000;
+        timeout = 5000;
+        window = 5;
+        threshold = 3;
+        initial = 3;
       }
     ];
 
