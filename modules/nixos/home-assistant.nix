@@ -49,7 +49,8 @@ in
       # recorder through the sqlite api and everything else as is
       services.restic.backups.s3 = with config.services.home-assistant; lib.mkIf (hasTag "backup") {
         paths = [ configDir ];
-        exclude = lib.map (p: "${configDir}/${p}") [ "home-assistant_v2.db*" "deps" "tts" ".cache" ];
+        # drop home assistant's own daily tarballs of the same state and gtfs_realtime feed archives
+        exclude = lib.map (p: "${configDir}/${p}") [ "home-assistant_v2.db*" "home-assistant.log*" "backups" "deps" "tts" ".cache" ".storage/gtfs_realtime" ];
         sqlite.home-assistant = {
           path = "${configDir}/home-assistant_v2.db";
           user = "hass";
