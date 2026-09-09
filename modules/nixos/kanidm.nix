@@ -47,6 +47,16 @@ in
     sops.secrets."kanidm/oauth/vaultwarden".group = "kanidm";
     sops.secrets."kanidm/oauth/vaultwarden".mode = "440";
 
+    # kanidm dumps its own database and restic just takes the dumps
+    services.kanidm.server.settings.online_backup = lib.mkIf (hasTag "backup") {
+      path = "/var/backup/kanidm";
+      schedule = "0 2 * * *";
+      versions = 2;
+    };
+    services.restic.backups.s3 = lib.mkIf (hasTag "backup") {
+      paths = [ config.services.kanidm.server.settings.online_backup.path ];
+    };
+
     services.kanidm = {
       client.enable = true;
       client.settings.uri = config.services.kanidm.server.settings.origin;
