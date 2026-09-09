@@ -71,17 +71,24 @@ rec {
         description = "Admin key for Terranix AWS provider.";
         permission = "read-write-admin";
       };
-      provider.aws = {
-        region = "us-east-1";
-        access_key = tfRef "fastly_object_storage_access_keys.admin.access_key_id";
-        secret_key = tfRef "fastly_object_storage_access_keys.admin.secret_key";
-        s3_use_path_style = true;
-        skip_credentials_validation = true;
-        skip_metadata_api_check = true;
-        skip_region_validation = true;
-        skip_requesting_account_id = true;
-        endpoints = [{ s3 = "https://us-east-1.object.fastlystorage.app"; }];
-      };
+      provider.aws =
+        let
+          mkRegion = alias: region: {
+            inherit alias region;
+            access_key = tfRef "fastly_object_storage_access_keys.admin.access_key_id";
+            secret_key = tfRef "fastly_object_storage_access_keys.admin.secret_key";
+            s3_use_path_style = true;
+            skip_credentials_validation = true;
+            skip_metadata_api_check = true;
+            skip_region_validation = true;
+            skip_requesting_account_id = true;
+            endpoints = [{ s3 = "https://${region}.object.fastlystorage.app"; }];
+          };
+        in
+        [
+          (mkRegion "iad" "us-east-1") # cache
+          (mkRegion "fra" "eu-central-1") # backup
+        ];
     };
 
 

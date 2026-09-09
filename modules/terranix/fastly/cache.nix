@@ -278,7 +278,10 @@ in
   };
 
   # fastly object storage bucket
-  resource.aws_s3_bucket.cache.bucket = "cache";
+  resource.aws_s3_bucket.cache = {
+    provider = "aws.iad";
+    bucket = "cache";
+  };
   # RW key for Niks3
   resource.fastly_object_storage_access_keys.niks3 = {
     description = "RW key for Nix Binary Cache storage backend used by Niks3.";
