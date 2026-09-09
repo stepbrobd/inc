@@ -60,6 +60,9 @@ in
         };
       };
 
+      # closures are in cache bucket keep metadata backed up
+      services.restic.backups.s3 = lib.mkIf (hasTag "backup") { postgresql = [ "niks3" ]; };
+
       services.caddy = {
         enable = true;
         virtualHosts.${domain}.extraConfig = ''
