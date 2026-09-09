@@ -48,7 +48,8 @@ in
       services.restic.backups.s3 = lib.mkIf (hasTag "backup") {
         paths = [ "${cfg.dataDir}/books" "${cfg.dataDir}/config" ];
         # appsettings.json is rebuilt from sops at every start
-        exclude = lib.map (p: "${cfg.dataDir}/config/${p}") [ "kavita.db*" "appsettings.json" "cache" "temp" "logs" ];
+        # backups are kavita's own zips of the database, cache.db and cache-long are caches
+        exclude = lib.map (p: "${cfg.dataDir}/config/${p}") [ "kavita.db*" "appsettings.json" "backups" "cache" "cache-long" "cache.db*" "temp" "logs" ];
         sqlite.kavita = {
           path = "${cfg.dataDir}/config/kavita.db";
           inherit (cfg) user;
