@@ -38,6 +38,14 @@ in
       sops.secrets."grafana/smtp".group = "grafana";
       sops.secrets."grafana/smtp".mode = "440";
 
+      # portable across hosts because secret_key is pinned below
+      services.restic.backups.s3 = lib.mkIf (hasTag "backup") {
+        sqlite.grafana = {
+          path = cfg.settings.database.path;
+          user = "grafana";
+        };
+      };
+
       # settings.users.default_theme limits to [ dark light system ]
       # env override to injected nord theme
       systemd.services.grafana.environment.GF_USERS_DEFAULT_THEME = "nord";
@@ -50,6 +58,9 @@ in
             domain = domain;
             root_url = "https://${domain}/";
           };
+
+          # readers never wait on a writer (mostly for backup)
+          database.wal = true;
 
           # oncall
           # https://github.com/grafana/oncall/issues/5100#issuecomment-2490645666
