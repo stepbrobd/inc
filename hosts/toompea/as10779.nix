@@ -33,11 +33,6 @@ in
     };
 
     router = {
-      # TODO: check upstream ticket
-      # FIXME: drop after resolution
-      advertiseDefault = false;
-      localEgress = "mesh";
-
       secret = config.sops.secrets.bgp.path;
       source = { inherit (lib.blueprint.hosts.toompea) ipv4 ipv6; };
       static =
