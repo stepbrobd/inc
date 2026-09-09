@@ -27,6 +27,12 @@ in
       # https://github.com/plausible/analytics/blob/master/config/.env.load
       systemd.services.plausible.environment.SSO_ENABLED = "true";
 
+      services.restic.backups.s3 = with config.services.plausible.database; lib.mkIf (hasTag "backup") {
+        postgresql = [ postgres.dbname ];
+        # events are in the database url names
+        clickhouse = [ (lib.last (lib.splitString "/" clickhouse.url)) ];
+      };
+
       # clickhouse eats massive amount of disk space; disable its log tables to
       # save space (the plausible module enables services.clickhouse for us).
       # https://github.com/plausible/hosting/tree/master/clickhouse
