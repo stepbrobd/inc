@@ -69,5 +69,12 @@ in
         '';
       };
     })
+
+    # exporter writes documents and metadata on its own timer
+    # snapshot takes that rather than the live database and waits for an export in progress
+    (lib.mkIf (cfg.enable && hasTag "backup") {
+      services.restic.backups.s3.paths = [ cfg.exporter.directory ];
+      systemd.services.restic-backups-s3.after = [ "paperless-exporter.service" ];
+    })
   ];
 }
