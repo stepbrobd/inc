@@ -46,6 +46,16 @@ in
         ];
       };
 
+      # recorder through the sqlite api and everything else as is
+      services.restic.backups.s3 = with config.services.home-assistant; lib.mkIf (hasTag "backup") {
+        paths = [ configDir ];
+        exclude = lib.map (p: "${configDir}/${p}") [ "home-assistant_v2.db*" "deps" "tts" ".cache" ];
+        sqlite.home-assistant = {
+          path = "${configDir}/home-assistant_v2.db";
+          user = "hass";
+        };
+      };
+
       # homekit bridge (21064) and mdns (5353) are lan only
       # but hass binds 0.0.0.0/[::]
       # have to restrict to local interface
