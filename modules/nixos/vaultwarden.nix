@@ -15,8 +15,6 @@ in
     (lib.mkIf cfg.enable {
       sops.secrets.vaultwarden = { };
       services.vaultwarden = {
-        backupDir = "/var/backup/vaultwarden/";
-
         environmentFile = config.sops.secrets.vaultwarden.path;
 
         config = {
@@ -93,6 +91,24 @@ in
           };
         };
       };
+    })
+
+    # database through sqlite api
+    # keep attachments, sends, keys, config as they are
+    (lib.mkIf (cfg.enable && hasTag "backup") {
+      services.restic.backups.s3 =
+        let
+          # reading it from the unit would loop through systemd.services causing infinite recursion
+          dataDir = "/var/lib/vaultwarden";
+        in
+        {
+          paths = [ dataDir ];
+          exclude = [ "${dataDir}/db.sqlite3*" "${dataDir}/icon_cache" "${dataDir}/tmp" ];
+          sqlite.vaultwarden = {
+            path = "${dataDir}/db.sqlite3";
+            user = "vaultwarden";
+          };
+        };
     })
   ];
 }
