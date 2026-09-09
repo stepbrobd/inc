@@ -20,6 +20,7 @@ let
   # postgres and clickhouse dump as the identity their server runs as and sqlite as the declared owner
   # root prepares the directory and clears the previous dump
   # then setpriv drops to the owner without setuid or pam and no-new-privs keeps the child there
+  # reset-env keeps the credentials out of the child but tzdir goes back in because clickhouse looks for zoneinfo in /usr/share without it
   dumpScript = name: job:
     let
       base = "${dir}/${name}";
@@ -43,7 +44,8 @@ let
           User = sqlite.user;
           Group = config.users.users.${sqlite.user}.group;
           path = "${base}/sqlite/${db}/${db}.db";
-          command = ''${lib.getExe' pkgs.sqlite "sqlite3"} ${sqlite.path} ".backup ${base}/sqlite/${db}/${db}.db"'';
+          # a busy writer aborts the copy without a timeout
+          command = ''${lib.getExe' pkgs.sqlite "sqlite3"} -cmd ".timeout 30000" ${sqlite.path} ".backup ${base}/sqlite/${db}/${db}.db"'';
         })
         job.sqlite;
     in
@@ -51,7 +53,7 @@ let
       (dump: ''
         install -d -m 0700 -o ${dump.User} -g ${dump.Group} ${lib.dirOf dump.path}
         rm -rf ${dump.path}
-        ${lib.getExe' pkgs.util-linux "setpriv"} --reuid=${dump.User} --regid=${dump.Group} --init-groups --no-new-privs --reset-env -- ${dump.command}
+        ${lib.getExe' pkgs.util-linux "setpriv"} --reuid=${dump.User} --regid=${dump.Group} --init-groups --no-new-privs --reset-env -- ${lib.getExe' pkgs.coreutils "env"} TZDIR=${config.systemd.globalEnvironment.TZDIR} ${dump.command}
       '')
       dumps;
 in
@@ -105,7 +107,8 @@ in
         # FIXME: a bucket scoped key cannot HeadBucket
         # repository is created once from my laptop with admin key
         initialize = false;
-        extraOptions = [ "s3.bucket-lookup=path" "s3.region=${region}" ];
+        # two uploads at once keep a 16 MiB pack under fastly's 120 second per upload cap on isere's 5 Mbit/s uplink
+        extraOptions = [ "s3.bucket-lookup=path" "s3.region=${region}" "s3.connections=2" ];
         # storage is not the constraint
         # snapshot every hour and spread hosts over it
         timerConfig = {

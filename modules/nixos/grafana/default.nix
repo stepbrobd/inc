@@ -59,9 +59,6 @@ in
             root_url = "https://${domain}/";
           };
 
-          # readers never wait on a writer (mostly for backup)
-          database.wal = true;
-
           # oncall
           # https://github.com/grafana/oncall/issues/5100#issuecomment-2490645666
           auth.managed_service_accounts_enabled = true;
