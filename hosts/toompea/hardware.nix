@@ -30,15 +30,15 @@
   networking = {
     defaultGateway = {
       address = "185.194.53.1";
-      interface = "enp6s18";
+      interface = "ens18";
     };
     defaultGateway6 = {
       address = "2a04:6f00:4::1";
-      interface = "enp6s18";
+      interface = "ens18";
     };
     dhcpcd.enable = false;
     usePredictableInterfaceNames = lib.mkForce true;
-    interfaces.enp6s18 = {
+    interfaces.ens18 = {
       ipv4.addresses = [{ address = "185.194.53.29"; prefixLength = 24; }];
       ipv6.addresses = [
         { address = "2a04:6f00:4::a5"; prefixLength = 48; }
@@ -50,7 +50,7 @@
   };
 
   services.udev.extraRules = ''
-    ATTR{address}=="70:2e:d3:7b:b1:ba", NAME="enp6s18"
+    ATTR{address}=="70:2e:d3:7b:b1:ba", NAME="ens18"
   '';
 
   system.stateVersion = "25.05";

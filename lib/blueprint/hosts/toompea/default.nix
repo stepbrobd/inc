@@ -10,7 +10,7 @@ newHost (lib.fix (self: {
   type = "server";
   tags = [ "ysun" "router" "kavita" "plausible" "backup" "ranet" "prometheus" "loki" "ci" ];
   meta = { city = "Tallinn"; region = "EE-37"; country = "EE"; continent = "Europe"; postal = "10111"; };
-  interface = "enp6s18";
+  interface = "ens18";
   ipv4 = "185.194.53.29";
   ipv6 = "2a04:6f00:4::a5";
   ipam = {
