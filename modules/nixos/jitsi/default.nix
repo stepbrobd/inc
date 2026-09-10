@@ -47,6 +47,20 @@ in
         app_secret = FileLine("${config.sops.secrets."jitsi/jwt".path}")
         enable_domain_verification = false
       '';
+      # nixpkgs still lists a few global modules that jitsi-meet dropped in jitsi/jitsi-meet#17453
+      services.prosody.extraModules = lib.mkForce [
+        "conference_duration"
+        "external_services"
+        "limits_exception"
+        "muc_breakout_rooms"
+        "muc_domain_mapper"
+        "muc_hide_all"
+        "muc_lobby_rooms"
+        "muc_meeting_id"
+        "muc_rate_limit"
+        "persistent_lobby"
+        "smacks"
+      ];
 
       # secureDomain sets type = "XMPP"
       # JWT keeps login-url = ${domain} as authenticated domain marker
