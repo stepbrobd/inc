@@ -4,6 +4,8 @@
   imports = [ "${modulesPath}/profiles/qemu-guest.nix" ];
   services.qemuGuest.enable = true;
 
+  srvos.boot.consoles = [ "tty0" ];
+
   boot.loader.grub = {
     efiSupport = true;
     efiInstallAsRemovable = true;

@@ -4,6 +4,8 @@
   imports = [ "${modulesPath}/profiles/qemu-guest.nix" ];
   services.qemuGuest.enable = true;
 
+  srvos.boot.consoles = [ "tty0" ];
+
   boot.growPartition = true;
   boot.loader.grub.device = "/dev/vda";
   boot.initrd.kernelModules = [ "nvme" ];
