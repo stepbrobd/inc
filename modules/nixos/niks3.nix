@@ -34,6 +34,9 @@ in
 
         gc.olderThan = "8760h";
 
+        # FIXME: fastly object storage batch delete returns 500
+        gc.enable = lib.mkForce false;
+
         signKeyFiles = [ config.sops.secrets."niks3/nix-signing-key".path ];
         apiTokenFile = config.sops.secrets."niks3/niks3-api-token".path;
 
