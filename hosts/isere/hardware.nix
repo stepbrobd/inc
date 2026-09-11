@@ -62,7 +62,7 @@
 
         fan_temp0 = {
           enable = true;
-          value = 30000; # 30c
+          value = 65000; # 65c
         };
         fan_temp0_hyst = {
           enable = true;
@@ -75,7 +75,7 @@
 
         fan_temp1 = {
           enable = true;
-          value = 60000; # 60c
+          value = 70000; # 70c
         };
         fan_temp1_hyst = {
           enable = true;
@@ -88,7 +88,7 @@
 
         fan_temp2 = {
           enable = true;
-          value = 67000; # 67c
+          value = 75000; # 75c
         };
         fan_temp2_hyst = {
           enable = true;
@@ -101,7 +101,7 @@
 
         fan_temp3 = {
           enable = true;
-          value = 72000; # 72c
+          value = 79000; # 79c
         };
         fan_temp3_hyst = {
           enable = true;
