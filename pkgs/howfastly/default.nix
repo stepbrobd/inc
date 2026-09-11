@@ -6,7 +6,7 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "howfastly";
-  version = "2026.905.4";
+  version = "2026.910.1";
 
   __structuredAttrs = true;
 
@@ -14,10 +14,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "stepbrobd";
     repo = "howfastly";
     tag = finalAttrs.version;
-    hash = "sha256-hShJ/rhmytHjZxevxb2MS59hRMys+LEEuOCtb/3XF/M=";
+    hash = "sha256-9wxf9pxQHxCitD2o5XiQJY9vhuzDS9dWcEd+fira0Q4=";
   };
 
-  cargoHash = "sha256-TkoMnMqJJvmsnsHy1dZjQtAzHTB0SW/UmdnNHbxAKDE=";
+  cargoHash = "sha256-TzZXS/zy8VPwpnfTic8abkZW1mFCcp4h4fH/0OsRiRU=";
 
   cargoBuildFlags = [ "--package" "howfastly" ];
 
