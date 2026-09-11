@@ -13,7 +13,7 @@ in
 
   srvos.boot.consoles = lib.mkForce [ ];
   boot.kernelParams = [ "nohz=off" ];
-  boot.kernelModules = [ "pps-gpio" "pps-ldisc" ];
+  boot.kernelModules = [ "pps-gpio" "pps-ldisc" "i2c-dev" ];
   hardware.raspberry-pi.config.all = {
     options.force_turbo = {
       enable = true;
@@ -47,6 +47,10 @@ in
           addr = {
             enable = true;
             value = "0x52";
+          };
+          backup-switchover-mode = {
+            enable = true;
+            value = 3;
           };
         };
       };
