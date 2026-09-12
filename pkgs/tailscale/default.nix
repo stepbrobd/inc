@@ -11,14 +11,14 @@
 
 let
   goVersion = "1.27.1";
-  goRev = "c6e341296703fe980900dd0a216cbee4f9b90c54";
-  goHash = "sha256-pxYROLwewT3KDqGw/9dY51XYTL31W1YlOYYe6MJHcnw=";
+  goRev = "7b6f1558e73b1b5be03374b65687836ff9322e90";
+  goHash = "sha256-yyYfWG5c1bxKLfkmP0sWYRYhscwMm1d/pSWhw7hUsi4=";
 
-  tsVersion = "1.103.222";
-  tsRev = "023255e8a27ec9f6a21d24e3eda21c052ff72af3";
-  tsHash = "sha256-W/Ov+oneEKz1ZjCmj5nHk+WzDTLgfPtwYkwOyKvFlYg=";
+  tsVersion = "1.103.229";
+  tsRev = "e2ed432399c9b0fda7aa14e9eb27784d2d893c55";
+  tsHash = "sha256-C9yB3eXQ5Q+/mDUV6fsM99y8hPizXSjzYvMla/6mVqg=";
 
-  vendorHash = "sha256-xEfkGcKS2G5JzNFHRumnVaoY98d3qU/IELvR6kk8l7s=";
+  vendorHash = "sha256-lN0JafHPgjNSrYYXdlnLtQoHVrfR3a6EqwE7AsFq1+A=";
 in
 
 (pkgsPrev.tailscale.override {
