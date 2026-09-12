@@ -7,7 +7,7 @@
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "neogrok";
-  version = "1.2.1";
+  version = "1.2.3";
 
   passthru.autobump = true;
 
@@ -15,17 +15,14 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     owner = "isker";
     repo = "neogrok";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-xAfXT2QioNKHL25lEAlryeaO3JUfOAIMW2+jaobvukY=";
+    hash = "sha256-4/HLTyYTsrboEjqmmgFnY9OWCrOJtgfCH5hhMnc3UPI=";
   };
 
-  # https://github.com/NixOS/nixpkgs/pull/513745
-  # https://github.com/NixOS/nixpkgs/issues/513716
-  patches = [ ./yarn-4.14.patch ];
   missingHashes = ./missing-hashes.json;
   offlineCache = yarn-berry.fetchYarnBerryDeps {
     inherit nodejs;
-    inherit (finalAttrs) src missingHashes patches;
-    hash = "sha256-LziXk8kWdeqF4fWjxIR5TDkoYpTj6GQiheGqToCxYnE=";
+    inherit (finalAttrs) src missingHashes;
+    hash = "sha256-7P5bAigQIj1RVwcNWc/bjLfyO85nLPi60d/PCEVAvpI=";
   };
 
   nativeBuildInputs = [
