@@ -4,7 +4,7 @@
 , tree-sitter-grammars
 }:
 
-buildGoModule (finalAttrs: {
+buildGoModule {
   pname = "typenix";
   version = "0-unstable-2026-03-12";
 
@@ -43,4 +43,4 @@ buildGoModule (finalAttrs: {
     license = lib.licenses.asl20;
     mainProgram = "typenix";
   };
-})
+}
