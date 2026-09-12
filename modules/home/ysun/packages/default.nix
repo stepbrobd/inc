@@ -32,7 +32,7 @@ in
     beeper
     cider-2
     (obs-studio.override { browserSupport = false; })
-    (osu-lazer-bin.override { nativeWayland = true; })
+    osu-lazer-bin
     pinentry-all
     remmina
     zotero

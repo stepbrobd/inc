@@ -33,6 +33,9 @@ exclude = [
   "legacyPackages.aarch64-linux.mas", # unsupported
   "legacyPackages.x86_64-linux.mas",  # unsupported
 
+  "legacyPackages.aarch64-darwin.osu-lazer-bin", # unsupported
+  "legacyPackages.aarch64-linux.osu-lazer-bin",  # unsupported
+
   "legacyPackages.aarch64-darwin.sigsci-agent", # unsupported
 
   "legacyPackages.*.gravity", # registry
