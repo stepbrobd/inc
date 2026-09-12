@@ -36,6 +36,7 @@ buildGoModule {
   '';
 
   passthru.autobump = true;
+  passthru.autobumpArgs = [ "--version=branch" ];
 
   meta = {
     description = "Full typing for Nix based on TypeScript";
