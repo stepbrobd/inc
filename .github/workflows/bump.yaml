@@ -78,8 +78,15 @@ jobs:
               return 0
             }
 
+            # optional per-package nix-update flags
+            local -a extra=()
+            local extra_json
+            if extra_json=$(nix eval --json ".#${legacy_path}.autobumpArgs" 2>/dev/null); then
+              mapfile -t extra < <(jq -r '.[]' <<<"$extra_json")
+            fi
+
             echo "::group::Updating ${attr} (current: ${old_version})"
-            if ! nix-update --flake --use-update-script "$legacy_path"; then
+            if ! nix-update --flake --use-update-script "${extra[@]}" "$legacy_path"; then
               echo "::warning::nix-update failed for ${attr}"
               git checkout -- .
               git clean -fd
