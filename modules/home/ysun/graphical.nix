@@ -13,7 +13,6 @@
     fd
     fzf
     gh
-    ghostty
     git
     gpg
     jq
