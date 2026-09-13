@@ -497,11 +497,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789273433,
-        "narHash": "sha256-0081Ls2K8u3BrQtGe9qXDIE1L8Iu/ti66athTMrA1z4=",
+        "lastModified": 1789294923,
+        "narHash": "sha256-rbq0HCAM7FMtx/gwvqs8wDZPu1+XxOLiGR7cJB432m4=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "3058fbe106199fd207e0e14f969783d88da4a8e9",
+        "rev": "ccb5be9d333c2351de9053ceafca599015c943f1",
         "type": "github"
       },
       "original": {
@@ -521,11 +521,11 @@
         "scenefx": "scenefx"
       },
       "locked": {
-        "lastModified": 1789287517,
-        "narHash": "sha256-os4gMD4ohrovtI4bsSEaVM+TkvNZW1qF9asbxthnhhI=",
+        "lastModified": 1789295346,
+        "narHash": "sha256-os4z41orqB3DxAlOD/ReTepTz+jl2F4i15rTEgSFwas=",
         "owner": "mangowm",
         "repo": "mango",
-        "rev": "017f71470499f1fdff34729d3920be9603f4622d",
+        "rev": "e7da9db19966542175784e905f337b3ed8abe055",
         "type": "github"
       },
       "original": {
