@@ -112,7 +112,7 @@ in
       # /run/current-system/sw/share/wayland-sessions
       environment.pathsToLink = [ "/share/wayland-sessions" ];
 
-      programs.noctalia-greeter = {
+      services.displayManager.noctalia-greeter = {
         enable = true;
         package = pkgs.noctalia-greeter;
         passwordless-sync-users = [ "ysun" ];
