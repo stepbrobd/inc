@@ -16,6 +16,19 @@ in
       (f: f != "default.nix")
       (attrNames (readDir ./.)));
 
+  # NOTE:
+  # account singleton
+  # a destroy here would delete the account
+  resource.cloudflare_account.stepbrobd = {
+    lifecycle.prevent_destroy = true;
+    name = "StepBroBD, Inc.";
+    type = "standard";
+    settings = {
+      abuse_contact_email = "noc@stepbrobd.com";
+      enforce_twofactor = true;
+    };
+  };
+
   resource.cloudflare_account_dns_settings.settings = acnsSettings;
 
   resource.cloudflare_magic_network_monitoring_configuration.mnm = {
