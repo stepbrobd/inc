@@ -14,14 +14,6 @@ in
         comment = "GitHub Pages";
       };
 
-      fr_grenug_wildcard = {
-        type = "CNAME";
-        proxied = true;
-        name = "*";
-        content = "grenug.fr";
-        comment = "Cloudflare Workers - Grenuble Nix User Group";
-      };
-
       fr_grenug_atproto = {
         type = "TXT";
         proxied = false;
