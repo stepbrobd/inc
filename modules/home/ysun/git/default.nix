@@ -54,7 +54,6 @@
       help.autocorrect = "prompt";
       init.defaultBranch = "master";
       lfs.sshTransfer = "never";
-      merge.conflictstyle = "zdiff3";
       pull.rebase = true;
       push.autoSetupRemote = true;
       push.default = "upstream";
