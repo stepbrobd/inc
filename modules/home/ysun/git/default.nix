@@ -12,6 +12,11 @@
     };
   };
 
+  programs.mergiraf = {
+    enable = true;
+    enableGitIntegration = true;
+  };
+
   programs.git = {
     enable = true;
 

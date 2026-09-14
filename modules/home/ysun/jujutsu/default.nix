@@ -12,6 +12,11 @@
     };
   };
 
+  programs.mergiraf = {
+    enable = true;
+    enableJujutsuIntegration = true;
+  };
+
   programs.jujutsu = {
     enable = true;
 
