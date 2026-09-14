@@ -138,7 +138,6 @@ in
         comment = "Hetzner - Kanidm";
       };
 
-      # dependency: cloudflare_dns_record.fr_grenug_meet
       co_ysun_meet = {
         type = "CNAME";
         proxied = false;
