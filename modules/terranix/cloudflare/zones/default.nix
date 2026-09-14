@@ -62,6 +62,27 @@ in
     })
     zones);
 
+  # turn universal ssl off
+  # might need to turn this back on if a record need to set proxied
+  resource.cloudflare_universal_ssl_setting = deepMergeAttrsList (map
+    (zone: {
+      "${lib.zoneSlug zone}_universal_ssl" = {
+        zone_id = ''''${data.sops_file.secrets.data["cloudflare.zone_id.${zone}"]}'';
+        enabled = false;
+      };
+    })
+    zones);
+
+  # turn total tls off
+  resource.cloudflare_total_tls = deepMergeAttrsList (map
+    (zone: {
+      "${lib.zoneSlug zone}_total_tls" = {
+        zone_id = ''''${data.sops_file.secrets.data["cloudflare.zone_id.${zone}"]}'';
+        enabled = false;
+      };
+    })
+    zones);
+
   # smart tiered cache
   resource.cloudflare_tiered_cache = deepMergeAttrsList (map
     (zone: {
