@@ -11,7 +11,6 @@ in
     desktop
     fonts
     i18n
-    wayvnc
   ];
 
   config = lib.mkIf (hasTag "graphical") {
