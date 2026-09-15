@@ -6,7 +6,6 @@
   # massive hack, use hm user age key to decrypt system keys
   sops.age.keyFile = config.home-manager.users.ysun.sops.age.keyFile;
 
-  i18n.defaultLocale = "en_US.UTF-8";
   time.timeZone = "Europe/Paris";
 
   services.openssh.enable = true;
