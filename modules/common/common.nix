@@ -3,9 +3,15 @@
 { config, pkgs, ... }:
 
 let
-  inherit (lib) elem filterAttrs mapAttrs mapAttrsToList mkForce optional optionals;
+  inherit (lib) elem filterAttrs mapAttrs mapAttrsToList mkForce optional optionalAttrs optionals;
 in
 {
+  # global locale
+  environment.variables.LANG = "en_US.UTF-8";
+  imports = [
+    ({ options, ... }: { config = optionalAttrs (options ? i18n) { i18n.defaultLocale = "en_US.UTF-8"; }; })
+  ];
+
   # enable nextdns and tailscale on all hosts
   services = {
     nextdns = {
