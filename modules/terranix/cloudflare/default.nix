@@ -22,7 +22,6 @@ in
   resource.cloudflare_account.stepbrobd = {
     lifecycle.prevent_destroy = true;
     name = "StepBroBD, Inc.";
-    type = "standard";
     settings = {
       abuse_contact_email = "noc@stepbrobd.com";
       enforce_twofactor = true;

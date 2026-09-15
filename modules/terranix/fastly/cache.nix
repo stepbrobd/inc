@@ -18,6 +18,8 @@ in
   resource.fastly_service_vcl.cache = {
     name = "Cache";
     default_ttl = 3600;
+    stale_if_error = true;
+    stale_if_error_ttl = 604800;
 
     http3 = true;
 
@@ -180,17 +182,15 @@ in
             set beresp.ttl = 365d;
             set beresp.http.Cache-Control = "public, max-age=31536000, immutable";
           }
-
-          set beresp.stale_if_error = 168h;
         '';
       }
       {
         name = "negative";
         type = "fetch";
-        # run after stream to override ttl/cacheable decisions
+        # cache all misses for 1min
         priority = 115;
         content = ''
-          if (beresp.status == 404 && (req.url.path ~ "\.narinfo$" || req.url.path ~ "^/realisations/")) {
+          if (beresp.status == 404) {
             set beresp.cacheable = true;
             set beresp.ttl = 60s;
             set beresp.http.Cache-Control = "public, max-age=60";
