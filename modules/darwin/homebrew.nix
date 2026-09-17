@@ -70,6 +70,7 @@
       "Pixelmator Pro" = 1289583905;
       "Remote Desktop" = 409907375;
       "ServerCat" = 1501532023;
+      "Things" = 904280696;
       "Xcode" = 497799835;
       # safari
       "AdGuard" = 1440147259;
