@@ -53,6 +53,7 @@
     blender.enable = false;
     eog.enable = false;
     gnome-text-editor.enable = false;
+    rofi.enable = false;
     sxiv.enable = false;
     vencord.enable = false;
 
