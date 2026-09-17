@@ -67,7 +67,7 @@
         "/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app"
         "/System/Applications/Mail.app"
         "/System/Applications/Calendar.app"
-        "/System/Applications/Reminders.app"
+        "/Applications/Things3.app"
       ];
     };
 
