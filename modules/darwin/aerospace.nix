@@ -113,7 +113,7 @@
           run = "move-node-to-workspace 9";
         }
         {
-          "if".app-id = "com.apple.reminders";
+          "if".app-id = "com.culturedcode.ThingsMac";
           run = "move-node-to-workspace 9";
         }
         # workspace 10
