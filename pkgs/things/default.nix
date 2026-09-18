@@ -8,7 +8,7 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "things";
-  version = "2026.918.0";
+  version = "2026.918.1";
 
   __structuredAttrs = true;
 
@@ -16,10 +16,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "stepbrobd";
     repo = "things";
     tag = finalAttrs.version;
-    hash = "sha256-zJ0WiNmbRJTqW/TsL8hNepKjh23o8Ectrd4Evp2jBO8=";
+    hash = "sha256-TCba30wzeS2Z3UEX8cQmCeewspJurLLxfSTdka3GZzU=";
   };
 
-  cargoHash = "sha256-db0BI972jfXR+PGdNznyuN7fqFQwN0UR40IPPhiuIao=";
+  cargoHash = "sha256-6wVv24+y2ea7l5o/yxBK3VjzjAWKNhKa7IAM4TahxbY=";
 
   useNextest = true;
   nativeCheckInputs = [ jq writableTmpDirAsHomeHook ];
