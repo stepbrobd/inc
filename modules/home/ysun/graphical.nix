@@ -31,6 +31,7 @@
     openvpn
     ripgrep
     ssh
+    things
     # tmux # imported in minimal
     yazi
     zoxide
