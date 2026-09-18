@@ -1,6 +1,8 @@
 { lib
+, stdenv
 , rustPlatform
 , fetchFromGitHub
+, installShellFiles
 , versionCheckHook
 , writableTmpDirAsHomeHook
 , jq
@@ -20,6 +22,16 @@ rustPlatform.buildRustPackage (finalAttrs: {
   };
 
   cargoHash = "sha256-6wVv24+y2ea7l5o/yxBK3VjzjAWKNhKa7IAM4TahxbY=";
+
+  nativeBuildInputs = [ installShellFiles ];
+
+  postInstall = lib.optionalString (stdenv.buildPlatform.canExecute stdenv.hostPlatform) ''
+    installShellCompletion --cmd things \
+      --bash <($out/bin/things completions bash) \
+      --fish <($out/bin/things completions fish) \
+      --nushell <($out/bin/things completions nushell) \
+      --zsh <($out/bin/things completions zsh)
+  '';
 
   useNextest = true;
   nativeCheckInputs = [ jq writableTmpDirAsHomeHook ];
