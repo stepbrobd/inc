@@ -3,7 +3,7 @@
 { config, pkgs, ... }:
 
 {
-  home.packages = [ pkgs.things ];
+  home.packages = with pkgs; [ aniremind things ];
 
   sops.secrets."things/email" = { sopsFile = ./secrets.yaml; };
   sops.secrets."things/password" = { sopsFile = ./secrets.yaml; };
