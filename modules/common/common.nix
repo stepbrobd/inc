@@ -129,4 +129,6 @@ in
 
   # shells
   environment.shells = with pkgs; [ bashInteractive nushell zsh ];
+  # enable nushell completions for all applicable binaries
+  environment.pathsToLink = [ "/share/nushell" ];
 }
