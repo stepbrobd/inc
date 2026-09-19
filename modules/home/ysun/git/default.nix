@@ -28,7 +28,7 @@
 
       # signing
       gpg.format = "ssh";
-      commit.gpgsign = "true";
+      commit.gpgsign = true;
       user.signingkey = "${config.home.homeDirectory}/.ssh/id_ed25519";
 
       # misc
@@ -45,9 +45,9 @@
       diff.mnemonicPrefix = true;
       diff.renames = true;
       diff.sops.textconv = "sops decrypt";
-      fetch.all = true;
+      fetch.all = false;
       fetch.prune = true;
-      fetch.pruneTags = true;
+      fetch.pruneTags = false;
       fetch.writeCommitGraph = true;
       filter.lfs.clean = "git-lfs clean -- %f";
       filter.lfs.smudge = "git-lfs smudge -- %f";
@@ -56,11 +56,14 @@
       lfs.sshTransfer = "never";
       pull.rebase = true;
       push.autoSetupRemote = true;
-      push.default = "upstream";
-      push.followTags = true;
+      push.default = "current";
+      push.followTags = false;
+      push.recurseSubmodules = "check";
       rebase.autoSquash = true;
       rebase.autoStash = true;
+      rebase.missingCommitsCheck = "error";
       rebase.updateRefs = true;
+      remote.pushDefault = "origin";
       rerere.autoupdate = true;
       rerere.enabled = true;
       submodule.recurse = true;
