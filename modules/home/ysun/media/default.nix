@@ -18,7 +18,7 @@
     lang = "en";
     dub = false;
     quality = "best";
-    provider = "pewe:hard";
+    provider = "hop:soft";
     download = "${config.home.homeDirectory}/Videos";
   };
 }
