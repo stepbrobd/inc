@@ -12,6 +12,7 @@ in
 {
   home.packages = [ pkgs.miroir ];
 
+  xdg.configFile."carapace/choices/miroir".text = "miroir/cobra@bridge\n";
   xdg.configFile."miroir/config.toml".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Projects/inc/repos/config.toml";
 
   sops.secrets = lib.genAttrs (map (p: "miroir/${p}") platforms) (_: {
