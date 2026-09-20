@@ -534,38 +534,6 @@
         "type": "github"
       }
     },
-    "miroir": {
-      "inputs": {
-        "gomod2nix": [
-          "gomod2nix"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "parts": [
-          "parts"
-        ],
-        "systems": [
-          "systems"
-        ],
-        "utils": [
-          "utils"
-        ]
-      },
-      "locked": {
-        "lastModified": 1789909057,
-        "narHash": "sha256-BNmmN6l6l+NApxZfWb13BEdYBcDk8X0XACdhuUXktLU=",
-        "owner": "stepbrobd",
-        "repo": "miroir",
-        "rev": "0c46c9d83c9928378432cd6d3f5f9e0d4288a594",
-        "type": "github"
-      },
-      "original": {
-        "owner": "stepbrobd",
-        "repo": "miroir",
-        "type": "github"
-      }
-    },
     "niks3": {
       "inputs": {
         "nixpkgs": [
@@ -791,7 +759,6 @@
         "lanzaboote": "lanzaboote",
         "llm": "llm",
         "mango": "mango",
-        "miroir": "miroir",
         "niks3": "niks3",
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim",

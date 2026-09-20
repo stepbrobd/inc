@@ -111,12 +111,6 @@
     mango.inputs.scenefx.inputs.nixpkgs.follows = "nixpkgs";
     mango.inputs.scenefx.inputs.systems.follows = "systems";
     mango.inputs.scenefx.inputs.flake-utils.follows = "utils";
-    miroir.url = "github:stepbrobd/miroir";
-    miroir.inputs.nixpkgs.follows = "nixpkgs";
-    miroir.inputs.systems.follows = "systems";
-    miroir.inputs.parts.follows = "parts";
-    miroir.inputs.utils.follows = "utils";
-    miroir.inputs.gomod2nix.follows = "gomod2nix";
     # n
     noctalia.url = "github:noctalia-dev/noctalia";
     noctalia.inputs.nixpkgs.follows = "nixpkgs";
