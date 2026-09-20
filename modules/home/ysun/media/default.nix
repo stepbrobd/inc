@@ -14,6 +14,7 @@
     yt-dlp
   ];
 
+  xdg.configFile."carapace/choices/miruro".text = "miruro/cobra@bridge\n";
   xdg.configFile."miruro/config.toml".source = (pkgs.formats.toml { }).generate "miruro.toml" {
     lang = "en";
     dub = false;
