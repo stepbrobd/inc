@@ -37,12 +37,12 @@ user = "yisun"
 [repo."aniremind"]
 description = "sync anilist to apple reminders"
 visibility = "public"
-archived = false
+archived = true
 
 [repo."aoc"]
 description = "advent of code"
 visibility = "public"
-archived = false
+archived = true
 
 [repo."atelier"]
 description = "nix (hat) atelier?!"
@@ -107,7 +107,7 @@ archived = true
 [repo."fosdem"]
 description = "fosdem '26 stuff"
 visibility = "public"
-archived = false
+archived = true
 
 [repo."howfastly"]
 description = "how fast is your connection to the Fastly network?"
@@ -287,7 +287,7 @@ archived = true
 [repo."yeh"]
 description = "imap/smtp proxy for hey.com"
 visibility = "public"
-archived = false
+archived = true
 
 [repo."ysun"]
 description = "nix // yocaml"
