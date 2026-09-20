@@ -8,7 +8,7 @@
 
 buildGoModule (finalAttrs: {
   pname = "miroir";
-  version = "2026.920.0";
+  version = "2026.920.1";
 
   __structuredAttrs = true;
 
@@ -16,7 +16,7 @@ buildGoModule (finalAttrs: {
     owner = "stepbrobd";
     repo = "miroir";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-BNmmN6l6l+NApxZfWb13BEdYBcDk8X0XACdhuUXktLU=";
+    hash = "sha256-RF3ohHOdj1WeZ641az7lcCJC/r/n6z4ITUZEVcFwIzo=";
   };
 
   vendorHash = "sha256-MnLkrU8EjgYfj3Pz4a9KZObn60iR56ASWyhCskbWGiE=";
