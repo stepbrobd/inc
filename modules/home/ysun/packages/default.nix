@@ -21,7 +21,6 @@ in
     comma
     gitleaks
     howfastly
-    miroir
     monocle
     nix-output-monitor
     python3

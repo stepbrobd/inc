@@ -22,6 +22,7 @@
     lsd
     man
     media
+    miroir
     # mpd # linux only
     neovide
     neovim
