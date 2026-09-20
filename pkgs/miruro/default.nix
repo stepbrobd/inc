@@ -5,22 +5,24 @@
 
 buildGoModule (finalAttrs: {
   pname = "miruro";
-  version = "2026.902.0";
+  version = "2026.920.1";
 
   __structuredAttrs = true;
-
   __darwinAllowLocalNetworking = true;
 
   src = fetchFromGitHub {
     owner = "stepbrobd";
     repo = "miruro";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-/grNOHIOSeEWnVG1ugLY845jKSAFUXeNZSwVVH7/TIU=";
+    hash = "sha256-Pfy0FKVrfQlHXz1UTY4ltkIHEM57ACFOw4ko7mPQXw0=";
   };
 
-  vendorHash = "sha256-f2+fk+2WNSgw3rydqYX31iy7WvgNECCKvQjLVF03x6Y=";
+  vendorHash = "sha256-wJAloyAqvz4mQ9OzIXfuHsDaXtQRH9STaBqwqKFQh9M=";
 
-  ldflags = [ "-s" "-X main.version=${finalAttrs.version}" ];
+  ldflags = [
+    "-s"
+    "-X main.version=${finalAttrs.version}"
+  ];
 
   passthru.autobump = true;
 
