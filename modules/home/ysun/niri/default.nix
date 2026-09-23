@@ -100,6 +100,12 @@ in
       spawn-at-startup "noctalia"
       spawn-at-startup "fcitx5" "-d"
 
+      // lid event toggle internal monitor
+      switch-events {
+        lid-close { spawn "niri" "msg" "output" "eDP-1" "off"; }
+        lid-open { spawn "niri" "msg" "output" "eDP-1" "on"; }
+      }
+
       binds {
         // terminal
         Mod+T { spawn "alacritty"; }

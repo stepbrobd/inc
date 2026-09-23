@@ -219,6 +219,12 @@ in
           # 4 finger up
           "none,up,4,toggleoverview"
         ];
+
+        # lid event toggle internal monitor
+        switchbind = [
+          "fold,sleep_monitor,eDP-1"
+          "unfold,wakeup_monitor,eDP-1"
+        ];
       };
 
       autostart_sh = ''
