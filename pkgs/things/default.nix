@@ -10,7 +10,7 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "things";
-  version = "2026.918.1";
+  version = "2026.924.1";
 
   __structuredAttrs = true;
 
@@ -18,10 +18,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "stepbrobd";
     repo = "things";
     tag = finalAttrs.version;
-    hash = "sha256-TCba30wzeS2Z3UEX8cQmCeewspJurLLxfSTdka3GZzU=";
+    hash = "sha256-6pY0hACm9WnM8FEl3uwqy6DD8GJu3eQ4UBTcLUPNtDQ=";
   };
 
-  cargoHash = "sha256-6wVv24+y2ea7l5o/yxBK3VjzjAWKNhKa7IAM4TahxbY=";
+  cargoHash = "sha256-5LRXxCh0wxFfeAT3PQmvYLjTODNs2xGR8avA7rqQ/rQ=";
 
   nativeBuildInputs = [ installShellFiles ];
 
