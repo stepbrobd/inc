@@ -5,12 +5,13 @@
 , installShellFiles
 , versionCheckHook
 , writableTmpDirAsHomeHook
+, cacert
 , jq
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "things";
-  version = "2026.918.1";
+  version = "2026.925.1";
 
   __structuredAttrs = true;
 
@@ -18,10 +19,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "stepbrobd";
     repo = "things";
     tag = finalAttrs.version;
-    hash = "sha256-TCba30wzeS2Z3UEX8cQmCeewspJurLLxfSTdka3GZzU=";
+    hash = "sha256-GNuTFrUHL+vTAdhOgQ4IO5iVkcR7Df3bOrtcAI3uEDM=";
   };
 
-  cargoHash = "sha256-6wVv24+y2ea7l5o/yxBK3VjzjAWKNhKa7IAM4TahxbY=";
+  cargoHash = "sha256-JaNDnEKdSQAmZ621HDurRyuhB9MCuH8PO9nZacqy+0U=";
 
   nativeBuildInputs = [ installShellFiles ];
 
@@ -34,7 +35,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   '';
 
   useNextest = true;
-  nativeCheckInputs = [ jq writableTmpDirAsHomeHook ];
+  nativeCheckInputs = [ cacert jq writableTmpDirAsHomeHook ];
   preCheck = "patchShebangs tests/cli/run.sh";
 
   doInstallCheck = true;
