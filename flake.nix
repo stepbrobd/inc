@@ -66,8 +66,7 @@
     colmena.url = "github:stepbrobd/colmena";
     colmena.inputs.nixpkgs.follows = "nixpkgs";
     colmena.inputs.stable.follows = "nixpkgs";
-    colmena.inputs.flake-compat.follows = "compat";
-    colmena.inputs.flake-utils.follows = "utils";
+    colmena.inputs.systems.follows = "systems";
     colmena.inputs.nix-github-actions.follows = "";
     compat.url = "github:nixos/flake-compat";
     compat.flake = false;
