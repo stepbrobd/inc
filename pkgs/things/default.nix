@@ -5,6 +5,7 @@
 , installShellFiles
 , versionCheckHook
 , writableTmpDirAsHomeHook
+, cacert
 , jq
 }:
 
@@ -34,7 +35,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   '';
 
   useNextest = true;
-  nativeCheckInputs = [ jq writableTmpDirAsHomeHook ];
+  nativeCheckInputs = [ cacert jq writableTmpDirAsHomeHook ];
   preCheck = "patchShebangs tests/cli/run.sh";
 
   doInstallCheck = true;
