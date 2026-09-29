@@ -45,9 +45,9 @@ in
           (filterAttrs (name: _: elem name allowed) inputs)
       );
 
-    nixPath = mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
-
     settings = {
+      nix-path = mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
+
       accept-flake-config = true;
       allow-import-from-derivation = true;
       builders-use-substitutes = true;
