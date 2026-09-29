@@ -830,8 +830,61 @@ in
         address = with cfg.local; ipv4.addresses ++ ipv6.addresses;
         # TODO: FIXME: make 192.104.136.0/24 temporarily pingable on BGP exit nodes
         routes = lib.optionals cfg.router.exit [{ Destination = "192.104.136.0/24"; Type = "local"; }];
-        # can be removed directly once not needed anymore
+        # can be removed but also drop the below firewall rules for bgo.tools art drawn in hilbert curve
       };
+      #   ................
+      #   ....#...#..#....
+      #   ....##..####....
+      #   ....##...##.....
+      #   ..#########..#..
+      #   .....#....##.#..
+      #   ....##....####..
+      #   #####......#####
+      #   #####......#####
+      #   ..####....##....
+      #   ..#.##....#.....
+      #   ..#..#########..
+      #   .....##...##....
+      #   ....####..##....
+      #   ....#..#...#....
+      #   ................
+      networking.nftables.tables.snowflake = lib.mkIf cfg.router.exit (
+        let
+          # one list per row left to right
+          lit = lib.concatLists [
+            [ ]
+            [ 17 233 238 ]
+            [ 30 29 230 231 226 225 ]
+            [ 31 28 228 227 ]
+            [ 54 53 32 35 36 37 218 219 220 201 ]
+            [ 34 221 222 200 ]
+            [ 46 45 210 209 204 205 ]
+            [ 63 62 49 48 47 208 207 206 193 192 ]
+            [ 64 67 68 69 122 133 186 187 188 191 ]
+            [ 71 70 121 120 135 134 ]
+            [ 72 118 119 136 ]
+            [ 75 116 115 112 143 140 139 138 181 180 ]
+            [ 97 110 158 159 ]
+            [ 99 98 109 108 157 156 ]
+            [ 100 107 155 ]
+            [ ]
+          ];
+        in
+        {
+          family = "ip";
+          content = ''
+            set lit {
+              type ipv4_addr
+              elements = { ${lib.concatMapStringsSep ", " (o: "192.104.136.${toString o}") lit} }
+            }
+
+            chain input {
+              type filter hook input priority filter; policy accept;
+              icmp type echo-request ip daddr 192.104.136.0/24 ip daddr != @lit drop
+            }
+          '';
+        }
+      );
 
       systemd.network.networks."20-gravity" = {
         name = "gravity";
