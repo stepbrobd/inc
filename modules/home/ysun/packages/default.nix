@@ -34,7 +34,7 @@ in
     osu-lazer-bin
     pinentry-all
     remmina
-    zotero
+    # zotero # FIXME: TODO: currently broken
   ])
   ++ (lib.optionals isDarwin [
     # imported only to macos machines
