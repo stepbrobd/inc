@@ -425,6 +425,11 @@ description = "forked from nix-community/infra"
 visibility = "public"
 archived = false
 
+[repo."infra-official"]
+description = "forked from nixos/infra"
+visibility = "public"
+archived = false
+
 [repo."kanidm"]
 description = "forked from kanidm/kanidm"
 visibility = "public"
