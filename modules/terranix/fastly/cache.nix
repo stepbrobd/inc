@@ -312,7 +312,7 @@ in
   };
 
   data.fastly_tls_configuration.cache = {
-    default = true;
+    id = tfRef "fastly_tls_subscription.cache.configuration_id";
     depends_on = [ "fastly_tls_subscription_validation.cache" ];
   };
 
