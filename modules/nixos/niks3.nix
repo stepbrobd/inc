@@ -32,10 +32,7 @@ in
 
         httpAddr = "[::1]:5751";
 
-        gc.olderThan = "8760h";
-
-        # FIXME: fastly object storage batch delete returns 500
-        gc.enable = lib.mkForce false;
+        gc.olderThan = "2160h"; # 90 days
 
         signKeyFiles = [ config.sops.secrets."niks3/nix-signing-key".path ];
         apiTokenFile = config.sops.secrets."niks3/niks3-api-token".path;
