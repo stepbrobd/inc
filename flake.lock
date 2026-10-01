@@ -153,11 +153,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790839504,
-        "narHash": "sha256-uiKCqFdenWxLGu1WHaPNMNSuqO9+1pb8nvIFsq1jlWE=",
+        "lastModified": 1790840190,
+        "narHash": "sha256-UjCILT/DJkuE5wsXQi2jUfbS6Fy4uego+I9MoAfRhOw=",
         "owner": "stepbrobd",
         "repo": "colmena",
-        "rev": "7536e817f1f1b01500fce53ae6070a1d8c9a8ffe",
+        "rev": "eee6f1800c4b9b680c925be75da82f467ab6c1b6",
         "type": "github"
       },
       "original": {
