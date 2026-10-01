@@ -5,7 +5,6 @@
 , wl-mirror
 , wlr-randr
 , versionCheckHook
-, nix-update-script
 }:
 
 buildGoModule (finalAttrs: {
@@ -25,7 +24,6 @@ buildGoModule (finalAttrs: {
 
   ldflags = [
     "-s"
-    "-w"
     "-X main.Version=${finalAttrs.version}"
   ];
 
