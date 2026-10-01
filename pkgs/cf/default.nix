@@ -10,6 +10,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   version = "0.12.0";
 
   passthru.autobump = true;
+  passthru.autobumpArgs = [ "--version=unstable" ];
 
   src = fetchzip {
     url = "https://registry.npmjs.org/cf/-/cf-${finalAttrs.version}.tgz";
