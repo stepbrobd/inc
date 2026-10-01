@@ -13,7 +13,7 @@ let
 in
 {
   # home-manager added programs.noctalia since 2026-08
-  disabledModules = [ "programs/noctalia.nix" ];
+  disabledModules = [ "programs/noctalia" ];
   imports = [ inputs.noctalia.homeModules.default ];
 
   config = lib.mkMerge [
