@@ -81,8 +81,8 @@ archived = true
 
 [repo."consistency-z3"]
 description = "consistency semantics with z3"
-visibility = "private"
-archived = false
+visibility = "public"
+archived = true
 
 [repo."crouton"]
 description = "extra crunchy ;)"
