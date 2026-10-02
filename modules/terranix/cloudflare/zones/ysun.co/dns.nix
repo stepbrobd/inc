@@ -1,7 +1,7 @@
 { lib, ... }:
 
 let
-  inherit (lib.terranix) forZone mkPurelyMailRecord tfRef;
+  inherit (lib.terranix) forZone mkAcnsRecord mkPurelyMailRecord tfRef;
 
   bp = lib.blueprint.hosts;
 
@@ -93,6 +93,8 @@ in
     sdRecords
     //
     ifRecords
+    //
+    mkAcnsRecord "ysun.co" "co_ysun"
     //
     mkPurelyMailRecord "ysun.co" "co_ysun"
     //

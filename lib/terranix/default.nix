@@ -26,6 +26,15 @@ let
     flatten_all_cnames = false;
     internal_dns = { };
   };
+
+  # cloudflare addrs assigned to ACNS set 1
+  # see GET /accounts/:id/custom_ns
+  acnsHosts = {
+    "ysun.co" = { ipv4 = "162.159.8.203"; ipv6 = "2400:cb00:2049:1::a29f:8cb"; };
+    "ysun.fr" = { ipv4 = "198.41.223.166"; ipv6 = "2400:cb00:2049:1::c629:dfa6"; };
+    "ysun.jp" = { ipv4 = "173.245.58.44"; ipv6 = "2400:cb00:2049:1::adf5:3a2c"; };
+    "ysun.us" = { ipv4 = "162.159.9.176"; ipv6 = "2400:cb00:2049:1::a29f:9b0"; };
+  };
 in
 rec {
   # default settings for terraform block
@@ -225,6 +234,23 @@ rec {
       zone_id = ''''${data.sops_file.secrets.data["cloudflare.zone_id.${zone}"]}'';
       ttl = 1;
     } // record;
+  # address records of the ACNS host ns.<zone> all zones in the account delegates to these
+  mkAcnsRecord =
+    zone: prefix:
+    let
+      host = acnsHosts.${zone};
+      record = type: content: {
+        inherit type content;
+        proxied = false;
+        name = "ns";
+        # destroy will break resolution of all zones
+        lifecycle.prevent_destroy = true;
+      };
+    in
+    forZone zone {
+      "${prefix}_ns_v4" = record "A" host.ipv4;
+      "${prefix}_ns_v6" = record "AAAA" host.ipv6;
+    };
   mkPersonalSiteRebind =
     overrides: {
       type = "CNAME";
