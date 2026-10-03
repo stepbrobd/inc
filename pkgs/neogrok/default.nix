@@ -7,7 +7,7 @@
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "neogrok";
-  version = "1.2.4";
+  version = "1.2.5";
 
   passthru.autobump = true;
 
@@ -15,7 +15,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     owner = "isker";
     repo = "neogrok";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-Q4qeBeWggIwKu3JyexpKScvCKQ0acm6txG6FTVYBFSU=";
+    hash = "sha256-xHxE8S+KjVMpyk8pE+fJKgEmFVl+9WkUzHDfKjWOaw8=";
   };
 
   missingHashes = ./missing-hashes.json;
