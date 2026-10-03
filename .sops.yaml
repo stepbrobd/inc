@@ -18,7 +18,6 @@ keys:
     - &lantau age1rlm9fps8u5yhpwg0xwa7cp5lengkuz0ws5n7j5szqcr4lhnzzflsazze4g
     - &morasko age1e8lt7zwnd4gf56ew4awdreh8yftyy4c3vmz9nv6l8dsdvue5vshq08ncja
     - &odake age16urcveanputmn5vrt579xnk2pk87mlv0d2fmwzn2059qtzklmq9smj34a5
-    - &oxide age1mry0f60kadfgkqwdyqydlrjypwhg38m4dfu8j8ytefzhj8lk0q5qysxrxu
     - &roraima age1a6ecdm7kqslt2xg52q6grdy8emqrlxz4mzgd707w5k238k9p8stsn5tttp
     - &rysy age1224uy4x89k8qg5ml3wvfx9w707necz44g7kk83aytjgvenzwmphqd9ynsj
     - &timah age1e466tkanyx0fa5pykvyqggsefnkefg5vp8jw3nmcxjljl5y4j45sm7zh2m
@@ -41,7 +40,6 @@ keys:
     - *lantau
     - *morasko
     - *odake
-    - *oxide
     - *roraima
     - *rysy
     - *timah
@@ -79,9 +77,6 @@ creation_rules:
   # hosts/odake (ysun + odake)
   - path_regex: hosts/odake/secrets\.yaml$
     key_groups: [{ age: [*framework, *macbook, *xps, *odake] }]
-  # hosts/oxide (ysun + oxide)
-  - path_regex: hosts/oxide/secrets\.yaml$
-    key_groups: [{ age: [*framework, *macbook, *xps, *oxide] }]
   # hosts/roraima (ysun + roraima)
   - path_regex: hosts/roraima/secrets\.yaml$
     key_groups: [{ age: [*framework, *macbook, *xps, *roraima] }]

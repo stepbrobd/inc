@@ -99,7 +99,6 @@ let
             "lantau" # NetActuate Hong Kong, 2 vCPU, 8GB RAM, 100GB Storage
             "morasko" # POZMAN Poznań, 2 vCPU, 8GB RAM, 50GB Storage
             "odake" # SSDNodes NRT Performance, 8 vCPU, 32GB RAM, 640GB Storage
-            "oxide" # Oxide Computer, 16 vCPU, 128GB RAM, 256GB Storage
             "roraima" # NetActuate Sao Paulo, 2 vCPU, 8GB RAM, 100GB Storage
             "rysy" # NetActuate Warsaw, 2 vCPU, 8GB RAM, 100GB Storage
             "timah" # Misaka Networks, 1 vCPU, 2GB RAM, 32 GB Storage
