@@ -194,6 +194,11 @@ description = "nixos image for oxide silo"
 visibility = "public"
 archived = true
 
+[repo."ranet3"]
+description = "forked from ranet3/ranet3"
+visibility = "public"
+archived = false
+
 [repo."rfm"]
 description = "router flow monitor"
 visibility = "public"
@@ -563,7 +568,7 @@ archived = false
 [repo."ranet-lite"]
 description = "forked from nickcao/ranet-lite"
 visibility = "public"
-archived = false
+archived = true
 
 [repo."raven"]
 description = "forked from raven-ml/raven"
