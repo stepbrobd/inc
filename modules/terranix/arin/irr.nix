@@ -82,6 +82,6 @@ in
   resource.arin_irr_route_set.rs_stepbrobd = {
     name = "RS-STEPBROBD";
     inherit descriptions mbrs_by_ref;
-    mp_members = [ "23.161.104.0/24" "44.32.189.0/24" "192.104.136.0/24" "2602:F590::/36" ];
+    mp_members = [ "23.161.104.0/24" "44.32.189.0/24" "192.104.136.0/24" "204.115.20.0/23" "2602:F590::/36" ];
   };
 }

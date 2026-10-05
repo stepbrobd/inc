@@ -5,6 +5,7 @@ let
     { start_address = "2602:f590::"; cidr_length = 36; max_length = 48; }
     { start_address = "23.161.104.0"; cidr_length = 24; max_length = 24; }
     { start_address = "192.104.136.0"; cidr_length = 24; max_length = 24; }
+    { start_address = "204.115.20.0"; cidr_length = 23; max_length = 23; }
   ];
 in
 {
