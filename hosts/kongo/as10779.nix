@@ -68,6 +68,7 @@ in
             { inherit option; prefix = "23.161.104.0/24"; }
             # { inherit option; prefix = "44.32.189.0/24"; } # stop announcing 44net for now
             { inherit option; prefix = "192.104.136.0/24"; }
+            { inherit option; prefix = "204.115.20.0/23"; }
             # https://skym.fi/blog/2020/07/vultr-trouble/
             # { prefix = "169.254.169.254/32"; option = "via ${lib.blueprint.hosts.kongo.ipv4}"; }
           ];

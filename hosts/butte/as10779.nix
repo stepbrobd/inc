@@ -44,6 +44,7 @@ in
             { inherit option; prefix = "23.161.104.0/24"; }
             # { inherit option; prefix = "44.32.189.0/24"; } # stop announcing 44net for now
             { inherit option; prefix = "192.104.136.0/24"; }
+            { inherit option; prefix = "204.115.20.0/23"; }
           ];
           ipv6.routes = [
             { inherit option; prefix = "2602:f590::/36"; }
