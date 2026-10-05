@@ -53,7 +53,7 @@ in
   # address space we own or occupy (everything under here is trusted)
   net = {
     ipam = {
-      ipv4 = [ "23.161.104.0/24" "192.104.136.0/24" ];
+      ipv4 = [ "23.161.104.0/24" "192.104.136.0/24" "204.115.20.0/23" ];
       ipv6 = [ "2602:f590::/36" ];
     };
 
