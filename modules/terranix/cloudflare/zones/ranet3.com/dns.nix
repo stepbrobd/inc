@@ -6,6 +6,22 @@ in
 {
   resource.cloudflare_dns_record = forZone "ranet3.com"
     {
+      com_ranet3_apex = {
+        type = "CNAME";
+        proxied = false;
+        name = "@";
+        content = "ranet3.github.io";
+        comment = "GitHub Pages";
+      };
+
+      com_ranet3_www = {
+        type = "CNAME";
+        proxied = false;
+        name = "www";
+        content = "ranet3.github.io";
+        comment = "GitHub Pages";
+      };
+
       com_ranet3_gh_verification = {
         type = "TXT";
         proxied = false;
