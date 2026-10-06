@@ -30,6 +30,7 @@
     # nushell # imported in minimal
     openconnect
     openvpn
+    ranet3
     ripgrep
     ssh
     things
