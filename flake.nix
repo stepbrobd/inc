@@ -129,6 +129,13 @@
     ranet.url = "github:nickcao/ranet";
     ranet.inputs.nixpkgs.follows = "nixpkgs";
     ranet.inputs.flake-utils.follows = "utils";
+    ranet3.url = "github:ranet3/ranet3";
+    ranet3.inputs.autopilot.follows = "autopilot";
+    ranet3.inputs.nixpkgs.follows = "nixpkgs";
+    ranet3.inputs.systems.follows = "systems";
+    ranet3.inputs.parts.follows = "parts";
+    ranet3.inputs.utils.follows = "utils";
+    ranet3.inputs.gomod2nix.follows = "gomod2nix";
     rfm.url = "github:stepbrobd/rfm";
     rfm.inputs.nixpkgs.follows = "nixpkgs";
     rfm.inputs.parts.follows = "parts";
