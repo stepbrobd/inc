@@ -9,6 +9,8 @@
 let
   hasTag = lib.hasTag osConfig.networking.hostName;
 
+  cfg = config.wayland.windowManager.mango;
+
   ipc = args: "spawn,noctalia msg ${args}";
 
   screenshot = "$HOME/Pictures/Screenshots/Screenshot from $(date '+%Y-%m-%d %H-%M-%S').png";
@@ -39,35 +41,35 @@ in
         trackpad_click_method = 2; # clickfinger
         trackpad_disable_while_typing = 1;
         mouse_natural_scrolling = 1;
-        sloppyfocus = 1;
-        warpcursor = 1;
+        sloppy_focus = 1;
+        warp_cursor = 1;
 
         # look
-        borderpx = 2;
+        border_px = 2;
         border_radius = 8;
-        gappih = 4;
-        gappiv = 4;
-        gappoh = 4;
-        gappov = 4;
-        focuscolor = "0x${config.lib.stylix.colors.base03}ff";
-        bordercolor = "0x${config.lib.stylix.colors.base00}ff";
-        rootcolor = "0x${config.lib.stylix.colors.base00}ff";
-        dropcolor = "0x${config.lib.stylix.colors.base0D}80";
-        urgentcolor = "0x${config.lib.stylix.colors.base08}ff";
-        splitcolor = "0x${config.lib.stylix.colors.base09}ff";
-        maximizescreencolor = "0x${config.lib.stylix.colors.base0B}ff";
-        scratchpadcolor = "0x${config.lib.stylix.colors.base0F}ff";
-        globalcolor = "0x${config.lib.stylix.colors.base0E}ff";
-        overlaycolor = "0x${config.lib.stylix.colors.base0C}ff";
+        gap_inner_horizontal = 4;
+        gap_inner_vertical = 4;
+        gap_outer_horizontal = 4;
+        gap_outer_vertical = 4;
+        focus_color = "0x${config.lib.stylix.colors.base03}ff";
+        border_color = "0x${config.lib.stylix.colors.base00}ff";
+        root_color = "0x${config.lib.stylix.colors.base00}ff";
+        drop_color = "0x${config.lib.stylix.colors.base0D}80";
+        urgent_color = "0x${config.lib.stylix.colors.base08}ff";
+        split_color = "0x${config.lib.stylix.colors.base09}ff";
+        maximized_screen_color = "0x${config.lib.stylix.colors.base0B}ff";
+        scratchpad_color = "0x${config.lib.stylix.colors.base0F}ff";
+        global_color = "0x${config.lib.stylix.colors.base0E}ff";
+        overlay_color = "0x${config.lib.stylix.colors.base0C}ff";
         cursor_theme = config.stylix.cursor.name;
         cursor_size = config.stylix.cursor.size;
 
-        monitorrule = [ "name:eDP-1,scale:1.5" ];
+        monitor_rule = [ "name:eDP-1,scale:1.5" ];
         # don't scale xwayland in global to avoid blurry
         xwayland_ignore_scale = 1;
 
         # layout
-        tagrule = [ "id:*,layout_name:scroller" ];
+        tag_rule = [ "id:*,layout_name:scroller" ];
         circle_layout = lib.concatStringsSep "," [
           "scroller"
           "vertical_scroller"
@@ -95,12 +97,22 @@ in
         edge_scroller_pointer_focus = 0;
         tag_animation_direction = 0; # 0 = vertical (matches 3-finger up/down)
 
+        auto_reload_config = 1;
+
         env = [
           "GDK_SCALE,1"
           "ELM_SCALE,1"
           "QT_SCALE_FACTOR,1"
           "XCURSOR_SIZE,${toString config.stylix.cursor.size}"
         ];
+
+        exec_once = toString (pkgs.writeShellScript "autostart.sh" ''
+          ${lib.optionalString cfg.systemd.enable "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd ${lib.concatStringsSep " " cfg.systemd.variables}; ${lib.concatStringsSep " && " cfg.systemd.extraCommands}"}
+          ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1 &
+          gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
+          noctalia &
+          fcitx5 -d
+        '');
 
         bind = [
           # terminal
@@ -216,8 +228,9 @@ in
           # 3 finger vertical
           "none,up,3,viewtoright"
           "none,down,3,viewtoleft"
-          # 4 finger up
-          "none,up,4,toggleoverview"
+          # 4 finger vertical
+          "none,up,4,enteroverview"
+          "none,down,4,leaveoverview"
         ];
 
         # lid event toggle internal monitor
@@ -226,13 +239,6 @@ in
           "unfold,wakeup_monitor,eDP-1"
         ];
       };
-
-      autostart_sh = ''
-        ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1 &
-        gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
-        noctalia &
-        fcitx5 -d
-      '';
     };
   };
 }
