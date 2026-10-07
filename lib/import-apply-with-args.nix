@@ -7,7 +7,7 @@ modulePath: staticArgs:
 
 # check the implementation of `importApply` in flake-parts and nixpkgs #230588 for details
 let
-  inherit (lib) all attrNames elem filterAttrs functionArgs intersectLists isFunction setDefaultModuleLocation;
+  inherit (lib) all attrNames elem filterAttrs functionArgs intersectLists isFunction;
 
   f = import modulePath;
 
@@ -34,10 +34,11 @@ let
       intersectLists staticArgNames moduleArgNames != [ ] # pattern names a static arg (intent)
       && all (n: elem n staticArgNames) requiredArgNames; # and staticArgs alone can satisfy it
 in
-setDefaultModuleLocation modulePath (
-  if argUsed
-  then
-    f staticArgs
-  else
-    f
-)
+{
+  # was using https://noogle.dev/f/lib/setDefaultModuleLocation
+  # but the helper function does not set `key` which breaks deduplication
+  key = toString modulePath;
+
+  _file = modulePath;
+  imports = [ (if argUsed then f staticArgs else f) ];
+}
