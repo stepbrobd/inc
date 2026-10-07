@@ -8,7 +8,6 @@
     # bat # imported in graphical
     # btop # imported in graphical
     # direnv # imported in graphical
-    discord
     # fzf # imported in graphical
     # git # imported in graphical
     # gpg # imported in graphical
