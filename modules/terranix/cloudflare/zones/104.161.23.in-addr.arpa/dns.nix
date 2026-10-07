@@ -1,7 +1,7 @@
 { lib, ... }:
 
 let
-  inherit (lib.terranix) forZone mkPurelyMailRecord;
+  inherit (lib.terranix) forZone mkPurelyMailRecord mkRdnsWildcard;
 
   bp = lib.blueprint.hosts;
 
@@ -48,5 +48,7 @@ in
     ptrRecords
     //
     mkPurelyMailRecord zone zonePrefix
+    //
+    mkRdnsWildcard zone zonePrefix
     );
 }

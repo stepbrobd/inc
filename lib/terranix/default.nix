@@ -259,6 +259,18 @@ rec {
       comment = "CNAME Rebind - Personal Site";
     } // overrides;
 
+  # this *should* work with v6 rDNS zones but only 1 level
+  mkRdnsWildcard =
+    zone: prefix: forZone zone {
+      "${prefix}_wildcard" = {
+        type = "PTR";
+        proxied = false;
+        name = "*";
+        content = "ysun.co";
+        comment = "AS10779/AS18932 - Wildcard PTR";
+      };
+    };
+
   # cf helpers for adding purelymail records
   mkPurelyMailRecord =
     let
