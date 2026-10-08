@@ -69,6 +69,7 @@ let
         nixbuild
         ntpd-rs
         passwordless
+        ranet3
         sshd
         system
         tailscale
