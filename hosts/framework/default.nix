@@ -3,7 +3,6 @@
 {
   imports = [
     ./hardware.nix
-    ./as10779.nix
   ];
 
   # massive hack, use hm user age key to decrypt system keys
