@@ -15,8 +15,8 @@ newHost {
     ipv6 = "2602:f590::23:161:104:119";
   };
   ranet.endpoints = [
-    { serial_number = "0"; address_family = "ip6"; port = 13000; }
-    { serial_number = "1"; address_family = "ip4"; port = 13000; }
+    { serial_number = "0"; address_family = "ip6"; port = 13003; }
+    { serial_number = "1"; address_family = "ip4"; port = 13003; }
   ];
   ranet.gravity.prefix = "2a0c:b641:69c:bde0::/60";
 }
