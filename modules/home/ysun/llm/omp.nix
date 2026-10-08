@@ -11,20 +11,6 @@
       source = (pkgs.formats.yaml { }).generate "omp.yaml" {
         dev.autoqa = false;
 
-        modelRoles.default = "openai-codex/gpt-5.6-sol";
-        defaultThinkingLevel = "max";
-        enabledModels = [
-          "openai-codex/gpt-6-astra:max"
-          "openai-codex/gpt-5.6-sol:max"
-          "openai-codex/gpt-5.6-terra:max"
-          "openai-codex/gpt-5.6-luna:max"
-          "openrouter/z-ai/glm-5.2:free:xhigh"
-          "openrouter/minimax/minimax-m3:free"
-          "openrouter/thinkingmachines/inkling:free:max"
-          "openrouter/nvidia/nemotron-3-ultra-550b-a55b:free:high"
-          "openrouter/poolside/laguna-s-2.1:free"
-        ];
-
         marketplace.autoUpdate = "notify";
         startup = {
           quiet = false;
