@@ -73,6 +73,7 @@ let
         sshd
         system
         tailscale
+        inputs.ranet3.darwinModules.ranet3
         inputs.srvos.darwinModules.desktop
       ];
 

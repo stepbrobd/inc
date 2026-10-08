@@ -20,6 +20,7 @@
     tailscale
     time
     vxlan
+    inputs.ranet3.nixosModules.ranet3
   ];
 
   # turn off for now
