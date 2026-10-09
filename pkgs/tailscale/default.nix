@@ -19,10 +19,16 @@ let
   tsHash = "sha256-YKOXRLYMbMa8kGNnPX5Mp05A0cX6YEgleHQSDnR97iw=";
 
   vendorHash = "sha256-VmRpM3dgdfYrBRDHlOzcPgCvvoPkuPug08FFWEDrjh4=";
+
+  builderArg = lib.findSingle
+    (n: lib.hasPrefix "buildGo" n && lib.hasSuffix "Module" n)
+    (throw "tailscale: no buildGo*Module argument in nixpkgs package")
+    (throw "tailscale: multiple buildGo*Module arguments in nixpkgs package")
+    (lib.attrNames (lib.functionArgs pkgsPrev.tailscale.override));
 in
 
 (pkgsPrev.tailscale.override {
-  buildGoModule = pkgsPrev.buildGoModule.override {
+  ${builderArg} = pkgsPrev.buildGoModule.override {
     go = pkgsPrev."go_1_${lib.versions.minor goVersion}".overrideAttrs (prev: {
       version = goVersion;
 
