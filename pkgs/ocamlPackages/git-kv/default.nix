@@ -27,7 +27,8 @@ buildDunePackage (finalAttrs: {
   pname = "git-kv";
   version = "0.2.3";
 
-  passthru.autobump = true;
+  # FIXME: TODO: disable for now due to dependency type changes
+  passthru.autobump = false;
 
   src = fetchzip {
     url = "https://github.com/robur-coop/git-kv/releases/download/v${finalAttrs.version}/git-kv-${finalAttrs.version}.tbz";
