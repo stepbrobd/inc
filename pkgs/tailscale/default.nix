@@ -10,15 +10,15 @@
 }:
 
 let
-  goVersion = "1.27.1";
-  goRev = "24ee2fd0610e6c505ee4ec061a81215afe119d1f";
-  goHash = "sha256-qxNiwlI/KJpwx7VZQU9C5puJGMUtN5vBXm3ApNYIolI=";
+  goVersion = "1.27.2";
+  goRev = "509d1573c1cafe9b210180e4ce87f44a409edbba";
+  goHash = "sha256-nOaK6f86dZ8zdGktbLNgD7WKH1hm/+QOBpjPdmBQQ5s=";
 
-  tsVersion = "1.105.28";
-  tsRev = "a5ae05dd9d517cd0766378d97e9c6a1fd622b581";
-  tsHash = "sha256-YKOXRLYMbMa8kGNnPX5Mp05A0cX6YEgleHQSDnR97iw=";
+  tsVersion = "1.105.36";
+  tsRev = "b9262195b1fb91c4c8c19624dd34839aa62cf16e";
+  tsHash = "sha256-1YWBWaEjK88QBklrxnrd1QXhK1k/rQSYhWPG/WbXoSE=";
 
-  vendorHash = "sha256-VmRpM3dgdfYrBRDHlOzcPgCvvoPkuPug08FFWEDrjh4=";
+  vendorHash = "sha256-PBb0Yl9h7q21nNUl77VjkpVXs+P+9Aq9PcKeO/2757k=";
 in
 
 (pkgsPrev.tailscale.override {
