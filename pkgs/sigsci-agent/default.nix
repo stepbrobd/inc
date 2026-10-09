@@ -14,10 +14,10 @@ let
   base = "https://dl.signalsciences.net/sigsci-agent";
   suffix = lib.optionalString stdenvNoCC.hostPlatform.isAarch64 "_arm64";
 
-  version = "4.82.0";
+  version = "4.83.0";
   hashes = {
-    x86_64-linux = "sha256-3aHm/zkd2JsdLoYVH6EKHCadvAVmKUbaBLhfxNiozxI=";
-    aarch64-linux = "sha256-a0e2mww40tWqSkBbsCPGSiZffe7TIbYWqXlK8MwtDg8=";
+    x86_64-linux = "sha256-s1dVyTkBSmYRlg0ukODMixnPVdNsVxy7Tiazzhd78RE=";
+    aarch64-linux = "sha256-8cM2Ma4GV2VE65Q0H6ykOB4f1xdEyY982flP6gWlG3A=";
   };
 in
 stdenvNoCC.mkDerivation (finalAttrs: {
