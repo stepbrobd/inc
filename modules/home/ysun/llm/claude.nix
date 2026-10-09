@@ -15,6 +15,8 @@
       verbose = true;
       effortLevel = "xhigh";
       alwaysThinkingEnabled = true;
+      autoCompactWindow = 500000;
+      autoMemoryEnabled = false;
       agentPushNotifEnabled = true;
       remoteControlAtStartup = false;
       skipDangerousModePermissionPrompt = true;
