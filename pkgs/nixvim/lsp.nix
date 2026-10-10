@@ -141,7 +141,6 @@
   };
 
   # Shell
-  plugins.lsp.servers.bashls.enable = true;
   plugins.lsp.servers.nushell.enable = true;
 
   # SMT2
