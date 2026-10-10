@@ -80,7 +80,7 @@ in
         skip-at-startup
       }
 
-      screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+      screenshot-path "${config.xdg.userDirs.pictures}/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
       cursor {
         xcursor-theme "${config.stylix.cursor.name}"

@@ -13,7 +13,7 @@ let
 
   ipc = args: "spawn,noctalia msg ${args}";
 
-  screenshot = "$HOME/Pictures/Screenshots/Screenshot from $(date '+%Y-%m-%d %H-%M-%S').png";
+  screenshot = "${config.xdg.userDirs.pictures}/Screenshots/Screenshot from $(date '+%Y-%m-%d %H-%M-%S').png";
 in
 {
   imports = [ inputs.mango.hmModules.mango ];

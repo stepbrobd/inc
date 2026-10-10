@@ -20,6 +20,6 @@
     dub = false;
     quality = "best";
     provider = "hop:soft";
-    download = "${config.home.homeDirectory}/Videos";
+    download = config.xdg.userDirs.videos;
   };
 }

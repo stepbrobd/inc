@@ -144,7 +144,7 @@ in
             sort_by_usage = true;
             providers.session.global = true;
           };
-          screenshot.directory = "${config.home.homeDirectory}/Pictures/Screenshots";
+          screenshot.directory = "${config.xdg.userDirs.pictures}/Screenshots";
         };
 
         theme = {
