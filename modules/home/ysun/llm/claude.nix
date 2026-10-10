@@ -16,6 +16,7 @@
       effortLevel = "xhigh";
       alwaysThinkingEnabled = true;
       autoCompactWindow = 500000;
+      subagentPromptCacheTtl = "1h";
       autoMemoryEnabled = false;
       agentPushNotifEnabled = true;
       remoteControlAtStartup = false;
