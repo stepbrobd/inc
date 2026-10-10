@@ -45,7 +45,7 @@
           enable = true;
         };
 
-        mkpass = key: "${lib.getExe' pkgs.coreutils "cat"} ${config.sops.defaultSymlinkPath}/mail/${key}/pass";
+        mkpass = key: "${lib.getExe' pkgs.coreutils "cat"} ${config.sops.secrets."mail/${key}/pass".path}";
       in
       {
         ENS = lib.deepMergeAttrsList [
@@ -225,12 +225,16 @@
       };
   };
 
-  sops.secrets."mail/ens/pass" = { sopsFile = ./secrets.yaml; };
-  sops.secrets."mail/icloud/pass" = { sopsFile = ./secrets.yaml; };
-  sops.secrets."mail/inria/pass" = { sopsFile = ./secrets.yaml; };
-  sops.secrets."mail/softbank/pass" = { sopsFile = ./secrets.yaml; };
-  sops.secrets."mail/stepbrobd/pass" = { sopsFile = ./secrets.yaml; };
-  sops.secrets."mail/uga/pass" = { sopsFile = ./secrets.yaml; };
+  sops.secrets = lib.genAttrs
+    (map (key: "mail/${key}/pass") [
+      "ens"
+      "icloud"
+      "inria"
+      "softbank"
+      "stepbrobd"
+      "uga"
+    ])
+    (_: { sopsFile = ./secrets.yaml; });
 
   programs.mbsync.enable = true;
   programs.msmtp.enable = true;
