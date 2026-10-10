@@ -45,7 +45,7 @@
           enable = true;
         };
 
-        mkpass = key: "${lib.getExe' pkgs.toybox "cat"} ${config.sops.defaultSymlinkPath}/mail/${key}/pass";
+        mkpass = key: "${lib.getExe' pkgs.coreutils "cat"} ${config.sops.defaultSymlinkPath}/mail/${key}/pass";
       in
       {
         ENS = lib.deepMergeAttrsList [
