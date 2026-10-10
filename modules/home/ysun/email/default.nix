@@ -82,6 +82,14 @@ let
     };
   };
 
+  layout = {
+    drafts = "Drafts";
+    sent = "Sent";
+    trash = "Trash";
+    junk = "Junk";
+    archive = "Archive";
+  };
+
   mkAccount =
     _:
     { key
@@ -95,28 +103,17 @@ let
     ,
     }:
     let
-      path =
-        name:
-        prefix
-        + (
-          {
-            drafts = "Drafts";
-            sent = "Sent";
-            trash = "Trash";
-            junk = "Junk";
-            archive = "Archive";
-          }
-          // folders
-        ).${name};
+      realName = "Yifei Sun";
+      path = name: prefix + (layout // folders).${name};
     in
     {
       inherit
         address
         userName
         primary
+        realName
         ;
       folders = lib.genAttrs [ "drafts" "sent" "trash" ] path;
-      realName = "Yifei Sun";
       passwordCommand = "${lib.getExe' pkgs.coreutils "cat"} ${config.sops.secrets."mail/${key}/pass".path}";
       imap = {
         inherit (imap) host;
@@ -131,6 +128,8 @@ let
       himalaya = {
         enable = true;
         settings = {
+          email = address;
+          display-name = realName;
           mailbox.alias = lib.genAttrs [ "junk" "archive" ] path;
         }
         // lib.optionalAttrs (imap ? tlsProvider) { imap.tls.provider = imap.tlsProvider; };
@@ -152,6 +151,23 @@ in
   programs.himalaya = {
     enable = true;
     package = pkgs.himalaya.override { buildFeatures = [ "native-tls" ]; };
+    settings = {
+      downloads-dir = "${config.home.homeDirectory}/Downloads";
+      message.send.save-copy = "sent";
+    };
+  };
+
+  xdg.configFile."carapace/choices/himalaya".text = "himalaya/zsh@bridge\n";
+  xdg.configFile."carapace/overlays/himalaya.yaml".source = (pkgs.formats.yaml { }).generate "himalaya.yaml" {
+    name = "himalaya";
+    persistentflags = {
+      "-a, --account=" = "Override the default account";
+      "-m, --mailbox=" = "Mailbox name, alias, role or backend-native id";
+    };
+    completion.flag = {
+      account = lib.attrNames accounts;
+      mailbox = [ "inbox" ] ++ lib.attrNames layout;
+    };
   };
 
   programs.thunderbird = {
