@@ -2,301 +2,165 @@
 
 { config, pkgs, ... }:
 
-{
-  accounts.email = {
-    maildirBasePath = "${config.xdg.dataHome}/mail";
-
-    accounts =
-      let
-        realName = "Yifei Sun";
-
-        mbsync = {
-          enable = true;
-          flatten = ".";
-          create = "maildir";
-          expunge = "both";
-          remove = "both";
-        };
-
-        msmtp.enable = true;
-
-        notmuch = {
-          enable = true;
-          neomutt.enable = true;
-        };
-
-        himalaya = {
-          enable = false;
-        };
-
-        neomutt = {
-          enable = true;
-          mailboxType = "maildir";
-          extraMailboxes = [
-            "Drafts"
-            "Sent"
-            "Trash"
-            "Junk"
-            "Archive"
-          ];
-        };
-
-        thunderbird = {
-          enable = true;
-        };
-
-        mkpass = key: "${lib.getExe' pkgs.coreutils "cat"} ${config.sops.secrets."mail/${key}/pass".path}";
-      in
-      {
-        ENS = lib.deepMergeAttrsList [
-          {
-            inherit
-              realName
-              mbsync
-              msmtp
-              notmuch
-              neomutt
-              himalaya
-              thunderbird
-              ;
-            address = "yifei.sun@ens-lyon.fr";
-            userName = "ysun05";
-            passwordCommand = mkpass "ens";
-            imap = {
-              host = "imap.ens-lyon.fr";
-              port = 993;
-            };
-            smtp = {
-              host = "smtp.ens-lyon.fr";
-              port = 587;
-              tls.useStartTls = true;
-            };
-          }
-          {
-            neomutt.mailboxName = "=== ENS ===";
-          }
-        ];
-
-        iCloud = lib.deepMergeAttrsList [
-          {
-            inherit
-              realName
-              mbsync
-              msmtp
-              notmuch
-              neomutt
-              himalaya
-              thunderbird
-              ;
-            address = "sun.yifei@icloud.com";
-            userName = "sun.yifei@icloud.com";
-            passwordCommand = mkpass "icloud";
-            imap = {
-              host = "imap.mail.me.com";
-              port = 993;
-            };
-            smtp = {
-              host = "smtp.mail.me.com";
-              port = 587;
-              tls.useStartTls = true;
-            };
-          }
-          {
-            neomutt.mailboxName = "=== iCloud ===";
-          }
-        ];
-
-        Inria = lib.deepMergeAttrsList [
-          {
-            inherit
-              realName
-              mbsync
-              msmtp
-              notmuch
-              neomutt
-              himalaya
-              thunderbird
-              ;
-            address = "yifei.sun@inria.fr";
-            userName = "yisun";
-            passwordCommand = mkpass "inria";
-            imap = {
-              host = "zimbra.inria.fr";
-              port = 993;
-            };
-            smtp = {
-              host = "smtp.inria.fr";
-              port = 587;
-              tls.useStartTls = true;
-            };
-          }
-          {
-            neomutt.mailboxName = "=== Inria ===";
-          }
-        ];
-
-        SoftBank = lib.deepMergeAttrsList [
-          rec {
-            inherit
-              realName
-              mbsync
-              msmtp
-              notmuch
-              neomutt
-              himalaya
-              thunderbird
-              ;
-            address = "ysun@i.softbank.jp";
-            userName = address;
-            passwordCommand = mkpass "softbank";
-            imap = {
-              host = "imap.softbank.jp";
-              port = 993;
-            };
-            smtp = {
-              host = "smtp.softbank.jp";
-              port = 465;
-              tls.useStartTls = false;
-            };
-          }
-          {
-            neomutt.mailboxName = "=== SoftBank ===";
-          }
-        ];
-
-        StepBroBD = lib.deepMergeAttrsList [
-          rec {
-            primary = true;
-            inherit
-              realName
-              mbsync
-              msmtp
-              notmuch
-              neomutt
-              himalaya
-              thunderbird
-              ;
-            address = "ysun@stepbrobd.com";
-            userName = address;
-            passwordCommand = mkpass "stepbrobd";
-            imap = {
-              host = "imap.purelymail.com";
-              port = 993;
-            };
-            smtp = {
-              host = "smtp.purelymail.com";
-              port = 465;
-              tls.useStartTls = false;
-            };
-          }
-          {
-            neomutt.mailboxName = "=== StepBroBD ===";
-          }
-        ];
-
-        UGA = lib.deepMergeAttrsList [
-          {
-            inherit
-              realName
-              mbsync
-              msmtp
-              notmuch
-              neomutt
-              himalaya
-              thunderbird
-              ;
-            address = "yifei.sun@univ-grenoble-alpes.fr";
-            userName = "sunyif";
-            passwordCommand = mkpass "uga";
-            imap = {
-              host = "zimbra.univ-grenoble-alpes.fr";
-              port = 993;
-            };
-            smtp = {
-              host = "smtps.univ-grenoble-alpes.fr";
-              port = 465;
-              tls.useStartTls = false;
-            };
-          }
-          {
-            neomutt.mailboxName = "=== UGA ===";
-          }
-        ];
+let
+  accounts = {
+    ENS = {
+      key = "ens";
+      address = "yifei.sun@ens-lyon.fr";
+      userName = "ysun05";
+      imap.host = "imap.ens-lyon.fr";
+      smtp = {
+        host = "smtp.ens-lyon.fr";
+        port = 587;
       };
+      # namespace INBOX/
+      prefix = "INBOX/";
+    };
+
+    iCloud = {
+      key = "icloud";
+      address = "sun.yifei@icloud.com";
+      imap.host = "imap.mail.me.com";
+      smtp = {
+        host = "smtp.mail.me.com";
+        port = 587;
+      };
+      # system folders and icloud refuses to rename them
+      folders = {
+        sent = "Sent Messages";
+        trash = "Deleted Messages";
+      };
+    };
+
+    Inria = {
+      key = "inria";
+      address = "yifei.sun@inria.fr";
+      userName = "yisun";
+      imap.host = "zimbra.inria.fr";
+      smtp = {
+        host = "smtp.inria.fr";
+        port = 587;
+      };
+    };
+
+    SoftBank = {
+      key = "softbank";
+      address = "ysun@i.softbank.jp";
+      imap = {
+        host = "imap.softbank.jp";
+        # does not have AUTH only IMAP LOGIN command
+        authentication = "login";
+        # half the backends only offer static RSA key exchange
+        tlsProvider = "native-tls";
+      };
+      smtp = {
+        host = "smtp.softbank.jp";
+        port = 465;
+      };
+    };
+
+    StepBroBD = {
+      key = "stepbrobd";
+      primary = true;
+      address = "ysun@stepbrobd.com";
+      imap.host = "imap.purelymail.com";
+      smtp = {
+        host = "smtp.purelymail.com";
+        port = 465;
+      };
+    };
+
+    UGA = {
+      key = "uga";
+      address = "yifei.sun@univ-grenoble-alpes.fr";
+      userName = "sunyif";
+      imap.host = "zimbra.univ-grenoble-alpes.fr";
+      smtp = {
+        host = "smtps.univ-grenoble-alpes.fr";
+        port = 465;
+      };
+    };
   };
 
-  sops.secrets = lib.genAttrs
-    (map (key: "mail/${key}/pass") [
-      "ens"
-      "icloud"
-      "inria"
-      "softbank"
-      "stepbrobd"
-      "uga"
-    ])
-    (_: { sopsFile = ./secrets.yaml; });
-
-  programs.mbsync.enable = true;
-  programs.msmtp.enable = true;
-  programs.notmuch.enable = true;
-  programs.himalaya = {
-    enable = false;
-    package = pkgs.himalaya.override {
-      buildFeatures = lib.optionals config.programs.notmuch.enable [ "notmuch" ];
+  mkAccount =
+    _:
+    { key
+    , address
+    , userName ? address
+    , primary ? false
+    , prefix ? ""
+    , imap
+    , smtp
+    , folders ? { }
+    ,
+    }:
+    let
+      path =
+        name:
+        prefix
+        + (
+          {
+            drafts = "Drafts";
+            sent = "Sent";
+            trash = "Trash";
+            junk = "Junk";
+            archive = "Archive";
+          }
+          // folders
+        ).${name};
+    in
+    {
+      inherit
+        address
+        userName
+        primary
+        ;
+      folders = lib.genAttrs [ "drafts" "sent" "trash" ] path;
+      realName = "Yifei Sun";
+      passwordCommand = "${lib.getExe' pkgs.coreutils "cat"} ${config.sops.secrets."mail/${key}/pass".path}";
+      imap = {
+        inherit (imap) host;
+        port = 993;
+        authentication = imap.authentication or "plain";
+      };
+      smtp = {
+        inherit (smtp) host port;
+        tls.useStartTls = smtp.port == 587;
+        authentication = "plain";
+      };
+      himalaya = {
+        enable = true;
+        settings = {
+          mailbox.alias = lib.genAttrs [ "junk" "archive" ] path;
+        }
+        // lib.optionalAttrs (imap ? tlsProvider) { imap.tls.provider = imap.tlsProvider; };
+      };
+      thunderbird.enable = true;
     };
+in
+{
+  accounts.email.accounts = lib.mapAttrs mkAccount accounts;
+
+  sops.secrets = lib.listToAttrs (
+    lib.mapAttrsToList
+      (
+        _: account: lib.nameValuePair "mail/${account.key}/pass" { sopsFile = ./secrets.yaml; }
+      )
+      accounts
+  );
+
+  programs.himalaya = {
+    enable = true;
+    package = pkgs.himalaya.override { buildFeatures = [ "native-tls" ]; };
   };
 
   programs.thunderbird = {
     enable = pkgs.stdenv.hostPlatform.isLinux;
-    profiles.Default.isDefault = true;
-    package = pkgs.thunderbird-bin;
-  };
-
-  programs.neomutt = {
-    enable = true;
-    vimKeys = true;
-
-    sidebar = {
-      enable = true;
-      shortPath = true;
-      width = 25;
+    profiles.Default = {
+      isDefault = true;
+      # use one archive folder per account
+      settings."mail.identity.default.archive_granularity" = 0;
     };
-
-    extraConfig = ''
-      set mail_check_stats = yes
-
-      set sidebar_sort_method = 'unsorted'
-      set sidebar_format = "%D%?F? [%F]?%* %?N?%N/?%S"
-      set sidebar_indent_string = "  "
-      set sidebar_short_path = no
-
-      color normal		default default
-      color index		brightblue default ~N
-      color index		red default ~F
-      color index		blue default ~T
-      color index		brightred default ~D
-      color body		brightgreen default         (https?|ftp)://[\-\.+,/%~_:?&=\#a-zA-Z0-9]+
-      color body		brightgreen default         [\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+
-      color attachment	        magenta default
-      color signature		brightwhite default
-      color search		brightred black
-
-      color indicator		black cyan
-      color error		red default
-      color status		white brightblack
-      color tree		white default
-      color tilde		cyan default
-
-      color hdrdefault	        brightblue default
-      color header		cyan default "^From:"
-      color header	 	cyan default "^Subject:"
-
-      color quoted		cyan default
-      color quoted1		brightcyan default
-      color quoted2		blue default
-      color quoted3		green default
-      color quoted4		yellow default
-      color quoted5		red default
-    '';
+    package = pkgs.thunderbird-bin;
   };
 }
