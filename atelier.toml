@@ -38,6 +38,8 @@ exclude = [
 
   "legacyPackages.aarch64-darwin.sigsci-agent", # unsupported
 
+  "legacyPackages.*.ssacli", # not redistributable
+
   "legacyPackages.*.gravity", # registry
   "legacyPackages.*.verus",   # unused
 
