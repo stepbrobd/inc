@@ -100,6 +100,7 @@ let
             "lagern" # AWS, T3.Large, 25GB Storage
             "lantau" # NetActuate Hong Kong, 2 vCPU, 8GB RAM, 100GB Storage
             "morasko" # POZMAN Poznań, 2 vCPU, 8GB RAM, 50GB Storage
+            "noches" # HPE DL380 Gen 10, 2 x Xeon Gold 5218, 128GB RAM, 2 x 512GB SSD RAID1
             "odake" # SSDNodes NRT Performance, 8 vCPU, 32GB RAM, 640GB Storage
             "roraima" # NetActuate Sao Paulo, 2 vCPU, 8GB RAM, 100GB Storage
             "rysy" # NetActuate Warsaw, 2 vCPU, 8GB RAM, 100GB Storage
