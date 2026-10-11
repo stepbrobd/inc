@@ -86,7 +86,11 @@ in
 
     services.caddy.extraConfig = ''
       (sigsci) {
-        ${lib.optionalString config.services.sigsci-agent.enable "sigsci unix ${config.services.sigsci-agent.socket}"}
+        ${lib.optionalString config.services.sigsci-agent.enable ''
+          sigsci unix ${config.services.sigsci-agent.socket} {
+            timeout 250ms
+          }
+        ''}
       }
 
       (base) {
