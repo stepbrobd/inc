@@ -182,6 +182,7 @@ in
     systemd.services.caddy.serviceConfig = {
       EnvironmentFile = [ config.sops.secrets.caddy.path ];
       AmbientCapabilities = "CAP_NET_BIND_SERVICE";
+      RestartPreventExitStatus = lib.mkForce [ ];
       # note that do NOT allow https://github.com/nixos/nixpkgs/pull/471670 hardening
     };
   };
