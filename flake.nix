@@ -47,6 +47,8 @@
       };
 
   inputs = {
+    nix.url = "github:nixos/nix";
+    nix.flake = false;
     # nixpkgs.url = "github:nixos/nixpkgs/master";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
     # nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";

@@ -554,6 +554,22 @@
         "type": "github"
       }
     },
+    "nix": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791675183,
+        "narHash": "sha256-B9oFHwWHisWIvsjo7jeoke0OzxRYZYFhpBm/ancphUk=",
+        "owner": "nixos",
+        "repo": "nix",
+        "rev": "979a87c97bef7b96cd4ec4b142188089851e47ad",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nix",
+        "type": "github"
+      }
+    },
     "nixos-images": {
       "inputs": {
         "nixos-stable": [
@@ -792,6 +808,7 @@
         "llm": "llm",
         "mango": "mango",
         "niks3": "niks3",
+        "nix": "nix",
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim",
         "noctalia": "noctalia",
