@@ -41,7 +41,6 @@ exclude = [
   "legacyPackages.*.ssacli", # not redistributable
 
   "legacyPackages.*.gravity", # registry
-  "legacyPackages.*.verus",   # unused
 
   "packages.*.*", # not exported
 ]
