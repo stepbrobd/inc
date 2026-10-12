@@ -21,9 +21,6 @@ let
   # one port per leaf
   # two leaves behind one nat on a shared port lose flows to the collision
   port = (lib.head host.ranet.endpoints).port;
-
-  # my own nodes only
-  trust = (pkgs.formats.json { }).generate "trust.json" [ pkgs.gravity.registry ];
 in
 {
   # the platform module comes from inputs.ranet3 in modules/nixos/minimal.nix
@@ -33,6 +30,7 @@ in
     ({ options, ... }: {
       config = lib.optionalAttrs (options ? systemd) (lib.mkIf (hasTag "ranet3") {
         sops.secrets.ranet.restartUnits = [ config.systemd.services.ranet3.name ];
+        sops.secrets.gravity.reloadUnits = [ config.systemd.services.ranet3.name ];
 
         users.users.ysun.extraGroups = [ cfg.group ];
 
@@ -60,6 +58,7 @@ in
     ];
 
     sops.secrets.ranet.mode = "600";
+    sops.secrets.gravity.sopsFile = pkgs.gravity.full;
 
     networking.ranet3 = {
       enable = true;
@@ -69,7 +68,7 @@ in
           name = config.networking.hostName;
         };
         auth = {
-          inherit trust;
+          trust = config.sops.secrets.gravity.path;
           key = config.sops.secrets.ranet.path;
         };
         link = {
