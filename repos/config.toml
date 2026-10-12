@@ -540,6 +540,11 @@ description = "forked from isker/neogrok"
 visibility = "public"
 archived = false
 
+[repo."oss-scanner"]
+description = "forked from anthropics/oss-scanner"
+visibility = "public"
+archived = false
+
 [repo."osu"]
 description = "forked from ppy/osu"
 visibility = "public"
