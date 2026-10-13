@@ -1,4 +1,4 @@
-# gv depends on the SID and policy-routing contract in modules/nixos/ranet.nix
+# gv depends on the SID and policy-routing contract in modules/nixos/ranet.nix and modules/common/ranet3.nix
 # keep SID suffixes, tables, priorities, and firewall hooks synchronized
 
 { lib
@@ -15,7 +15,7 @@
 let
   bp = lib.blueprint;
 
-  # nodes with a gravity /60 publish srv6 sids in the "6" nibble subspace (modules/nixos/ranet.nix)
+  # nodes with a gravity /60 publish srv6 sids in the "6" nibble subspace (modules/nixos/ranet.nix and modules/common/ranet3.nix)
   #   <base>6::2 End, transit waypoint, every server
   #   <base>6::3 End.DT46 into the egress vrf with snat to the node ipam address, bgp exits only
   srv6Nodes = lib.filter (h: lib.hasSuffix "0::/60" h.ranet.gravity.prefix)
