@@ -39,21 +39,18 @@
     AuthorizedKeysFile .ssh/authorized_keys
   '' + (
     let
-      # mostly pq but have fallback for legacy clients
       kex = lib.concatStringsSep "," [
         "mlkem768x25519-sha256"
         "sntrup761x25519-sha512"
         "sntrup761x25519-sha512@openssh.com"
-        "curve25519-sha256" # fallback
       ];
       cipher = lib.concatStringsSep "," [
         "chacha20-poly1305@openssh.com"
-        "aes256-gcm@openssh.com" # fallback
+        "aes256-gcm@openssh.com" # servercat has no chacha20
       ];
       mac = lib.concatStringsSep "," [
         "hmac-sha2-512-etm@openssh.com"
         "hmac-sha2-256-etm@openssh.com"
-        "hmac-sha2-512" # fallback
       ];
     in
     ''

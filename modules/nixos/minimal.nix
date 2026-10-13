@@ -43,7 +43,6 @@
       HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
       TrustedUserCAKeys /etc/ssh/ca.pub
     '';
-    # mostly pq but have fallback for legacy clients
     settings = {
       PermitRootLogin = lib.mkForce "no";
       PasswordAuthentication = lib.mkForce false;
@@ -58,16 +57,14 @@
         "mlkem768x25519-sha256"
         "sntrup761x25519-sha512"
         "sntrup761x25519-sha512@openssh.com"
-        "curve25519-sha256" # fallback
       ];
       Ciphers = lib.mkForce [
         "chacha20-poly1305@openssh.com"
-        "aes256-gcm@openssh.com" # fallback
+        "aes256-gcm@openssh.com" # servercat has no chacha20
       ];
       Macs = lib.mkForce [
         "hmac-sha2-512-etm@openssh.com"
         "hmac-sha2-256-etm@openssh.com"
-        "hmac-sha2-512" # fallback
       ];
     };
   };
