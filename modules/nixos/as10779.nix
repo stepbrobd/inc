@@ -894,9 +894,9 @@ in
         address = [ gravityAddr ];
         linkConfig.RequiredForOnline = false;
         # an unassigned address in the announced prefixes would leave by a default and loop back in
-        routes = lib.optionals config.networking.ranet3.enable (lib.map
+        routes = lib.map
           (r: { Destination = r.prefix; Type = "unreachable"; Table = babelKernelTable; })
-          (cfg.router.static.ipv4.routes ++ cfg.router.static.ipv6.routes));
+          (cfg.router.static.ipv4.routes ++ cfg.router.static.ipv6.routes);
         # all nodes: direct IPAM/gravity traffic into VRF table
         routingPolicyRules =
           lib.map (r: { To = r.prefix; Table = babelKernelTable; Priority = 100; })
