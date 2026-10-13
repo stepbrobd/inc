@@ -13,6 +13,9 @@ let
     then host.ranet.gravity.prefix
     else null;
 
+  # the gravity vrf holds the mesh, ranet's xfrm links on a router or the ranet3 tun on a routee
+  meshEnabled = gravityPrefix != null && (config.networking.ranet.enable || config.networking.ranet3.enable);
+  # ranet3 speaks babel itself
   babelEnabled = config.networking.ranet.enable && gravityPrefix != null;
   babelKernelTable = 200;
 
@@ -675,7 +678,7 @@ in
       systemd.network.networks."40-${cfg.local.interface.local}" = {
         name = cfg.local.interface.local;
         address = with cfg.local; ipv4.addresses ++ ipv6.addresses;
-        networkConfig = lib.optionalAttrs babelEnabled { VRF = "gravity"; };
+        networkConfig = lib.optionalAttrs meshEnabled { VRF = "gravity"; };
         routingPolicyRules = lib.remove { } (lib.flatten [
           (lib.optionalAttrs (lib.isString cfg.router.outboundGateway.ipv4) (lib.map
             (r: {
@@ -777,8 +780,8 @@ in
           dev = cfg.local.interface.primary;
           hasStaticGw4 = lib.isString cfg.router.outboundGateway.ipv4;
           hasStaticGw6 = lib.isString cfg.router.outboundGateway.ipv6;
-          isUpstreamExit = babelEnabled && cfg.router.exit && cfg.router.localEgress == "upstream";
-          isMeshExit = babelEnabled && cfg.router.exit && cfg.router.localEgress == "mesh";
+          isUpstreamExit = meshEnabled && cfg.router.exit && cfg.router.localEgress == "upstream";
+          isMeshExit = meshEnabled && cfg.router.exit && cfg.router.localEgress == "mesh";
           needsRule = hasStaticGw4 || hasStaticGw6 || isUpstreamExit || isMeshExit;
 
           script = ''
@@ -819,7 +822,7 @@ in
           };
         };
     }
-    (lib.mkIf babelEnabled {
+    (lib.mkIf meshEnabled {
       networking.iproute2.enable = true;
       networking.iproute2.rttablesExtraConfig = "${lib.toString babelKernelTable} ranet";
 
@@ -890,6 +893,10 @@ in
         name = "gravity";
         address = [ gravityAddr ];
         linkConfig.RequiredForOnline = false;
+        # an unassigned address in the announced prefixes would leave by a default and loop back in
+        routes = lib.optionals config.networking.ranet3.enable (lib.map
+          (r: { Destination = r.prefix; Type = "unreachable"; Table = babelKernelTable; })
+          (cfg.router.static.ipv4.routes ++ cfg.router.static.ipv6.routes));
         # all nodes: direct IPAM/gravity traffic into VRF table
         routingPolicyRules =
           lib.map (r: { To = r.prefix; Table = babelKernelTable; Priority = 100; })
