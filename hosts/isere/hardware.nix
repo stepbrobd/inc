@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ inputs, ... }:
 
 {
   imports = with inputs.rpi.nixosModules; [
@@ -116,20 +116,6 @@
   };
 
   # HE tunnel broker (6in4) for public IPv6
-  # end0 needed for IPv4 IKE
-  networking.ranet.interfaces = [ "he0" "end0" ];
-
-  # ISP DMZ NAT
-  # public IPv4 (88.140.186.193) is not on end0
-  # so null the local address so strongswan resolves source via routing table
-  # the registry still advertises public IP for peers to connect to
-  networking.ranet.settings.endpoints = lib.map
-    (ep: if ep.address_family == "ip4" then ep // { address = null; } else ep)
-    lib.blueprint.hosts.isere.ranet.endpoints;
-
-  systemd.services.strongswan-swanctl.after = [ "systemd-networkd.service" ];
-  systemd.services.strongswan-swanctl.wants = [ "systemd-networkd.service" ];
-
   systemd.network.netdevs."30-he0" = {
     netdevConfig = {
       Kind = "sit";

@@ -37,10 +37,5 @@
     ATTR{address}=="fa:16:3e:3a:8f:d6", NAME="ens4"
   '';
 
-  networking.ranet.interfaces = [ "ens3" "ens4" ];
-  networking.ranet.settings.endpoints = lib.map
-    (ep: if ep.address_family == "ip4" then ep // { address = null; } else ep)
-    lib.blueprint.hosts.morasko.ranet.endpoints;
-
   system.stateVersion = "26.11";
 }
