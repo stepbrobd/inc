@@ -13,7 +13,7 @@
       tui = "fullscreen";
       editorMode = "vim";
       verbose = true;
-      effortLevel = "xhigh";
+      modelSettings.opus.effortLevel = "xhigh";
       alwaysThinkingEnabled = true;
       autoCompactWindow = 500000;
       subagentPromptCacheTtl = "1h";
