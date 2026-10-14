@@ -11,11 +11,11 @@
 }:
 
 (pkgsPrev.osu-lazer-bin.override { inherit nativeWayland; }).overrideAttrs (final: prev: {
-  version = "2026.1005.1";
+  version = "2026.1013.0";
 
   src = fetchurl {
     url = "https://github.com/ppy/osu/releases/download/${final.version}-tachyon/osu.AppImage";
-    hash = "sha256-dC/R7h0OkWGrRhiK5G5lgFfghJouCNKQuW+Lac9UR24=";
+    hash = "sha256-MrbuzWj0cEkchGvzp8Rmjiidf61ibpi2qZyFFQJIULo=";
   };
 
   meta = prev.meta // { platforms = [ "x86_64-linux" ]; };
