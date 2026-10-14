@@ -738,6 +738,9 @@ in
               #   ip6 saddr { ${lib.concatMapStringsSep ", " (r: r.prefix) cfg.router.static.ipv6.routes} } oifname "${cfg.local.interface.primary}" masquerade
               # ''}
               ""}
+              # a packet for the node's own uplink address leaves by the uplink only while that address is tentative
+              # masquerading it binds the flow to lo's first global address for as long as the peer keeps sending
+              ${lib.optionalString (host != null && host ? ipv6) "ip6 daddr ${host.ipv6} return"}
               ip6 saddr != { ${lib.concatMapStringsSep ", " (r: r.prefix) cfg.router.static.ipv6.routes} } oifname "${cfg.local.interface.primary}" masquerade
             }
           '';
