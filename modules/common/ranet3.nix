@@ -152,10 +152,7 @@ in
       enable = true;
       openFirewall = isServer;
       settings = {
-        node = {
-          org = bp.ranet.organization;
-          name = config.networking.hostName;
-        };
+        node = "${bp.ranet.organization}/${config.networking.hostName}";
         auth = {
           trust = config.sops.secrets.gravity.path;
           key = config.sops.secrets.ranet.path;
