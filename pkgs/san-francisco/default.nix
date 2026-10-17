@@ -1,7 +1,7 @@
 { lib
 , stdenvNoCC
 , fetchurl
-, p7zip
+, _7zz
 }:
 
 stdenvNoCC.mkDerivation {
@@ -27,20 +27,18 @@ stdenvNoCC.mkDerivation {
     })
   ];
 
+  nativeBuildInputs = [ _7zz ];
+
   sourceRoot = ".";
   preUnpack = "mkdir fonts";
   unpackCmd = ''
-    7z x $curSrc >/dev/null
-    dir="$(find . -not \( -path ./fonts -prune \) -type d | sed -n 2p)"
-    cd $dir 2>/dev/null
-    7z x *.pkg >/dev/null
-    7z x Payload~ >/dev/null
-    mv Library/Fonts/*.otf ../fonts/
-    cd ../
-    rm -R $dir
+    7zz x $curSrc -odmg >/dev/null
+    7zz x "$(find dmg -name '*.pkg' -type f)" -opkg >/dev/null
+    7zz x "$(find pkg -name Payload -type f)" -ogz >/dev/null
+    7zz x gz/Payload~ -opayload >/dev/null
+    mv payload/Library/Fonts/*.otf fonts/
+    rm -R dmg pkg gz payload
   '';
-
-  nativeBuildInputs = [ p7zip ];
 
   installPhase = ''
     mkdir -p $out/share/fonts/opentype/{SF\ Compact,SF\ Mono,SF\ Pro,New\ York}
