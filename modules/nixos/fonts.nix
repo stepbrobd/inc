@@ -9,10 +9,12 @@
     packages = with pkgs; [
       apple-color-emoji
       font-awesome
+      furifont
       nerd-fonts.intone-mono
       nerd-fonts.jetbrains-mono
       noto-fonts
       noto-fonts-cjk-sans
+      san-francisco
     ];
 
     fontconfig = {
