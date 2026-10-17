@@ -171,8 +171,9 @@ in
         cap.route = {
           # a server's srv6 sids and gravity address sit in its /60
           announce = [ ipam4 ipam6 ] ++ lib.optional isServer host.ranet.gravity.prefix;
-          transit = isServer;
         };
+        cap.transit.enable = isServer;
+        cap.babel.cost.extra.foreign = 32;
         # on a server networkd owns the vrf
         # dummy0 carries the ipam pair and as10779 the rules
         cap.table =
