@@ -6,14 +6,14 @@
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "furifont";
-  version = "0.5.1";
+  version = "0.6.0";
 
   passthru.autobump = true;
 
   src = fetchzip {
     stripRoot = false;
     url = "https://github.com/antfu/furifont/releases/download/v${finalAttrs.version}/Furifont.zip";
-    hash = "sha256-WJdtDWLR6v0eS+WVVho5NMHFXDONnbdzkRKY8weWqVY=";
+    hash = "sha256-LuIb151owxbOiLBvh+qgKeoyD0iy2R9LvEYBTHZXRZ4=";
   };
 
   nativeBuildInputs = [ installFonts ];
