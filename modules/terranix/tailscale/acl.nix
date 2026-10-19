@@ -21,7 +21,7 @@
       # https://github.com/tailscale/tailscale/pull/18781
       # https://github.com/tailscale/tailscale/pull/19315
       nodeAttrs = [
-        { target = [ "*" ]; ipPool = [ "100.100.101.0/24" ]; }
+        { target = [ "*" ]; ipPool = lib.blueprint.net.tailscale.ipv4; }
         { target = [ "*" ]; attr = [ "disable-linux-cgnat-drop-rule" "funnel" "nextdns:d8664a" ]; }
         { target = [ "ysun@hey.com" ]; attr = [ "mullvad" ]; }
       ];
