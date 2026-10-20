@@ -51,6 +51,7 @@ in
           file_server
 
           handle_errors {
+            root * ${ysun}/var/www/html
             header Cache-Control "public, no-cache"
             rewrite * /error
             file_server
