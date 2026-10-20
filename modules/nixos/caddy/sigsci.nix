@@ -34,6 +34,7 @@ in
 
     services.sigsci-agent.settings = lib.mapAttrs (_: lib.mkDefault) {
       local-networks = "none";
+      max-procs = "100%";
       rpc-address = "unix:${cfg.socket}";
       server-hostname = config.networking.fqdn;
       shared-cache-dir = "/var/cache/sigsci-agent";
