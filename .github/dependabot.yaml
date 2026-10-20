@@ -30,3 +30,5 @@ updates:
       inputs:
         patterns:
           - "*"
+    ignore:
+      - dependency-name: "ranet3" # bump by hand for now
