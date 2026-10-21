@@ -10,13 +10,13 @@
 }:
 
 let
-  goVersion = "1.27.2";
-  goRev = "186053ab2af2ef8fc43f3c1d1150216e89d4aff0";
-  goHash = "sha256-JcOxcYFhNRg6fiQhe5GkPHQxLI0ypKClCShZcBY1920=";
+  goVersion = "1.27.3";
+  goRev = "7ef7b403648ac3a9481a6e88e8b894eff50b0167";
+  goHash = "sha256-sdlgTLTkdhTvGCeQTwAsR+Do8rNwBzBUp5QPc09BPgI=";
 
-  tsVersion = "1.105.76";
-  tsRev = "db03d4e19da508fe29c96043e5fd49156e577f60";
-  tsHash = "sha256-7rnq8GFgvqeKcsqEolBNP2tw2v3O7//KpqImXqzlhV0=";
+  tsVersion = "1.105.79";
+  tsRev = "47743a8b9ad16cf3a49504dc443208c37748072e";
+  tsHash = "sha256-ptuZzEmJHCG6P9VHBQqtPfkrUVUC1JoS1a0r3huQu24=";
 
   vendorHash = "sha256-jrznfL26qyAGix9DVkmh0sLU2VvqeTNMdi6mPu9RlxM=";
 
