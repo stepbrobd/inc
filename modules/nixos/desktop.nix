@@ -32,8 +32,6 @@ in
 
   config = mkIf (cfg.enabled != [ ]) (mkMerge [
     {
-      boot.initrd.systemd.enable = true;
-
       # disable boot logs when using a desktop manager
       boot.consoleLogLevel = 0;
       boot.kernelParams = [
