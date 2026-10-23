@@ -24,15 +24,15 @@
         subvolumes = {
           "@/nix" = {
             mountpoint = "/nix";
-            mountOptions = [ "nofail" "noatime" "rescue=usebackuproot" "compress=zstd:1" ];
+            mountOptions = [ "nofail" "noatime" "compress=zstd:1" ];
           };
           "@/root" = {
             mountpoint = "/";
-            mountOptions = [ "nofail" "noatime" "rescue=usebackuproot" "compress=zstd:1" ];
+            mountOptions = [ "nofail" "noatime" "compress=zstd:1" ];
           };
           "@/home" = {
             mountpoint = "/home";
-            mountOptions = [ "nofail" "rescue=usebackuproot" "compress=zstd:1" ];
+            mountOptions = [ "nofail" "compress=zstd:1" ];
           };
         };
       };
