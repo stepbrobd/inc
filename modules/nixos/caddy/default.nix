@@ -36,7 +36,7 @@ in
     networking.firewall.allowedUDPPorts = [ 443 ];
 
     services.caddy = {
-      email = "ysun@hey.com";
+      email = "ysun@duck.com";
       logFormat = "level WARN";
       enableReload = config.services.caddy.enable;
     };

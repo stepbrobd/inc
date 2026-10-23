@@ -24,7 +24,7 @@
 
     settings = {
       user.name = "Yifei Sun";
-      user.email = "ysun@hey.com";
+      user.email = "ysun@duck.com";
 
       # signing
       gpg.format = "ssh";

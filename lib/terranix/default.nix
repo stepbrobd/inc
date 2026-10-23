@@ -14,7 +14,7 @@ let
     secondary_overrides = false;
     soa = {
       mname = "ns.ysun.co";
-      rname = "ysun.hey.com";
+      rname = "ysun.duck.com";
       refresh = 10000;
       retry = 2400;
       expire = 604800;

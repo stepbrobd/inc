@@ -46,7 +46,7 @@ in
 
         settings = {
           PAPERLESS_ADMIN_USER = "ysun";
-          PAPERLESS_ADMIN_MAIL = "ysun@hey.com";
+          PAPERLESS_ADMIN_MAIL = "ysun@duck.com";
           PAPERLESS_OCR_LANGUAGE = "eng+fra+jpn+chi_tra+chi_sim";
           PAPERLESS_APPS = "allauth.socialaccount.providers.openid_connect";
           PAPERLESS_ACCOUNT_ALLOW_SIGNUPS = false;

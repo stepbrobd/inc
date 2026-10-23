@@ -6,7 +6,7 @@
   security.acme = {
     acceptTerms = true;
     defaults = {
-      email = "ysun@hey.com";
+      email = "ysun@duck.com";
       dnsProvider = "cloudflare";
       profile = "shortlived";
       extraLegoFlags = [
