@@ -1,12 +1,14 @@
 { lib, ... }:
 
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   # required by nix-darwin system activation
   # remove after nix-darwin migrated modules either to `users.users` namespace
   # or moved to home-manager
   system.primaryUser = "ysun";
+  users.knownUsers = [ config.system.primaryUser ];
+  users.users.${config.system.primaryUser}.uid = 501;
 
   nix.enable = true;
 
