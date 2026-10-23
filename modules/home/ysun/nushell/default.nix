@@ -54,12 +54,39 @@
 
     configFile.text = /* nu */ ''
       $env.config = {
-        edit_mode: vi
         show_banner: false
+        highlight_resolved_externals: true
+
+        edit_mode: vi
         cursor_shape: {
           vi_insert: line
           vi_normal: block
         }
+
+        completions: {
+          algorithm: fuzzy
+        }
+
+        history: {
+          file_format: sqlite
+        }
+
+
+        filesize: {
+          unit: binary
+        }
+
+        datetime_format: {
+          normal: "%Y-%m-%d %H:%M:%S"
+          table: "%Y-%m-%d %H:%M:%S"
+        }
+
+        table: {
+          mode: markdown
+          index_mode: auto
+          missing_value_symbol: ""
+        }
+
         menus: [
           {
             name: help_menu
