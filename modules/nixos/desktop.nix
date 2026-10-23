@@ -46,7 +46,6 @@ in
     {
       xdg.portal = {
         enable = true;
-        lxqt.enable = true;
         wlr = {
           enable = true;
           settings.screencast = {
@@ -54,7 +53,6 @@ in
             chooser_cmd = ''${lib.getExe pkgs.noctalia} dmenu -p "Select screen/window"'';
           };
         };
-        config.common.default = "*";
       };
     }
 
