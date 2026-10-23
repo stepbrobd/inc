@@ -2,33 +2,17 @@
 
 { config, pkgs, ... }:
 
-let
-  # this is for hijacking zsh and bash to launch nushell
-  # without implementing envvar logic in home-manager
-  initExtra = ''
-    if [[ $- == *i* && -z "$__NU_LAUNCHED" ]] && command -v nu > /dev/null; then
-        export __NU_LAUNCHED=1
-        LOGIN_OPT=""
-        if [ -n "$BASH_VERSION" ] && shopt -q login_shell; then
-            LOGIN_OPT="--login"
-        elif [ -n "$ZSH_VERSION" ] && [[ -o login ]]; then
-            LOGIN_OPT="--login"
-        fi
-        exec nu $LOGIN_OPT
-    fi
-  '';
-in
 {
-  programs.zsh.initContent = lib.mkOrder 9999 initExtra;
-  programs.bash = { inherit initExtra; };
-
   imports = with inputs.self.homeManagerModules.ysun; [ starship ];
 
   programs.carapace.enable = true;
   home.packages = [ pkgs.carapace-bridge ];
 
+  programs.dircolors.enable = true;
+
   programs.nushell = {
     enable = true;
+    loadSessionVariables = true;
 
     shellAliases = lib.mkMerge [
       # bat

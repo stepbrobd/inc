@@ -6,7 +6,7 @@
   programs.zsh.enable = true;
 
   users.users.ysun = {
-    shell = pkgs.zsh;
+    shell = pkgs.nushell;
 
     description = "Yifei Sun";
     home =
