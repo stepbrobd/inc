@@ -14,7 +14,6 @@
     libreoffice
     mango # linux only
     nemo
-    niri # linux only
     noctalia # linux only
     # lsd # imported in graphical
     mpd # linux only

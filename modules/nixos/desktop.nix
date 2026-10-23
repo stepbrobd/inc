@@ -18,13 +18,11 @@ in
       default = [ ];
       type = with types; listOf (enum [
         "mango"
-        "niri"
       ]);
       description = ''
         Desktop sessions to enable:
         - [ ] (or nothing) -> no desktop manager
         - mango
-        - niri
         All listed sessions show up in the greeter menu, the first one is the default session.
       '';
     };
@@ -74,6 +72,8 @@ in
 
     # basic stuff
     {
+      programs.dconf.enable = true;
+
       services.speechd.enable = false;
 
       hardware.i2c.enable = true;
@@ -129,7 +129,6 @@ in
 
     # wm
     {
-      programs.niri.enable = elem "niri" cfg.enabled;
       programs.mango.enable = elem "mango" cfg.enabled;
     }
 
