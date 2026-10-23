@@ -10,6 +10,11 @@
 
   programs.dircolors.enable = true;
 
+  # weird ass nushell uses `~/Library/Application Support/nushell` on darwin unless XDG_CONFIG_HOME is set
+  home.file."Library/Application Support/nushell" = lib.mkIf (pkgs.stdenv.hostPlatform.isDarwin && config.xdg.enable) {
+    source = config.lib.file.mkOutOfStoreSymlink config.programs.nushell.configDir;
+  };
+
   programs.nushell = {
     enable = true;
     loadSessionVariables = true;
