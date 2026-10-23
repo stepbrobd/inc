@@ -1,7 +1,18 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
+let
+  inherit (config.homebrew) prefix;
+in
 {
   environment.systemPackages = [ pkgs.mas ];
+
+  environment.systemPath = [ "${prefix}/bin" "${prefix}/sbin" ];
+  environment.variables = {
+    INFOPATH = "${prefix}/share/info:";
+    HOMEBREW_PREFIX = prefix;
+    HOMEBREW_REPOSITORY = prefix;
+    HOMEBREW_CELLAR = "${prefix}/Cellar";
+  };
 
   homebrew = {
     enable = true;

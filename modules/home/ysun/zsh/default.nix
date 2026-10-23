@@ -54,17 +54,6 @@
       export SHELL=$(which zsh)
     '';
 
-    profileExtra = lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
-      eval $(${
-        if pkgs.stdenv.hostPlatform.isx86_64 then
-          "/usr/local/bin"
-        else if pkgs.stdenv.hostPlatform.isAarch64 then
-          "/opt/homebrew/bin"
-        else
-          abort "Unsupported OS"
-      }/brew shellenv)
-    '';
-
     initContent = lib.mkAfter ''
       export KEYTIMEOUT=1
       export VI_MODE_SET_CURSOR=true
