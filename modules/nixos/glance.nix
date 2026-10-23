@@ -92,7 +92,7 @@ in
                     hour-format = "24h";
                     hide-location = false;
                     show-area-name = true;
-                    location = "Grenoble, Rhône-Alpes, France";
+                    location = "Grenoble, France";
                   }
                   {
                     type = "bookmarks";
