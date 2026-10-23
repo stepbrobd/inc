@@ -6,6 +6,10 @@ let
   cfg = config.services.jitsi;
   hasTag = lib.hasTag config.networking.hostName;
   inherit (lib.blueprint.services.jitsi) domain;
+
+  # live streaming needs jibri (which needs headless chromium)
+  # turn this on only when live streaming is needed
+  streaming = false;
 in
 {
   options.services.jitsi = {
@@ -103,7 +107,7 @@ in
         caddy.enable = true;
         nginx.enable = false;
         prosody.lockdown = true;
-        jibri.enable = true;
+        jibri.enable = streaming;
 
         secureDomain = {
           enable = true;
@@ -121,9 +125,10 @@ in
             disableSelfRecording = false;
           };
           liveStreaming = {
-            enabled = true;
+            enabled = streaming;
             validatorRegExpString = "^rtmps?://.*|^(?:[a-zA-Z0-9]{4}(?:-(?!$)|$)){4}";
           };
+          liveStreamingEnabled = streaming;
           prejoinConfig.enabled = true;
           requireDisplayName = true;
           maxFullResolutionParticipants = 1;
