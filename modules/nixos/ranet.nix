@@ -129,17 +129,10 @@ in
         let
           # ll addr comes from the addr_gen_mode sysctl above so no addrgenmode fixup is needed here
           updown = pkgs.writeShellScript "updown" ''
+            [ "$PLUTO_VERB" = up-client ] || exit 0
             LINK=ranet$(printf '%05x' "$PLUTO_IF_ID_OUT")
-
-            case "$PLUTO_VERB" in
-              up-client)
-                ip link add "$LINK" type xfrm if_id "$PLUTO_IF_ID_OUT"
-                ip link set "$LINK" mtu 1400 multicast on master gravity up
-                ;;
-              down-client)
-                ip link del "$LINK"
-                ;;
-            esac
+            ip link show "$LINK" >/dev/null 2>&1 || ip link add "$LINK" type xfrm if_id "$PLUTO_IF_ID_OUT"
+            ip link set "$LINK" mtu 1400 multicast on master gravity up
           '';
         in
         (pkgs.formats.json { }).generate "ranet.json" (
