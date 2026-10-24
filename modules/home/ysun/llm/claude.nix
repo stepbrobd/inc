@@ -1,6 +1,7 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
+  home.packages = [ pkgs.claude-desktop ];
   programs.claude-code = {
     enable = true;
 
