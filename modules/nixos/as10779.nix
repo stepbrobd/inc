@@ -13,8 +13,9 @@ let
     then host.ranet.gravity.prefix
     else null;
 
-  # the gravity vrf holds the mesh, ranet's xfrm links on a router or the ranet3 tun on a routee
-  meshEnabled = gravityPrefix != null && (config.networking.ranet.enable || config.networking.ranet3.enable);
+  # the gravity vrf holds ranet's xfrm links on a router
+  # ranet3 on a routee owns table 200 and its rules itself
+  meshEnabled = gravityPrefix != null && config.networking.ranet.enable;
   # ranet3 speaks babel itself
   babelEnabled = config.networking.ranet.enable && gravityPrefix != null;
   babelKernelTable = 200;
@@ -677,7 +678,8 @@ in
 
       systemd.network.networks."40-${cfg.local.interface.local}" = {
         name = cfg.local.interface.local;
-        address = with cfg.local; ipv4.addresses ++ ipv6.addresses;
+        # ranet3 puts the pair on its tun through cap.table.addresses
+        address = lib.optionals (!config.networking.ranet3.enable) (with cfg.local; ipv4.addresses ++ ipv6.addresses);
         networkConfig = lib.optionalAttrs meshEnabled { VRF = "gravity"; };
         routingPolicyRules = lib.remove { } (lib.flatten [
           (lib.optionalAttrs (lib.isString cfg.router.outboundGateway.ipv4) (lib.map
