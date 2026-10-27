@@ -54,9 +54,13 @@ in
           issuer = "https://token.actions.githubusercontent.com";
           audience = "https://${domain}";
           boundClaims.repository = [
-            "ranet3/ranet3"
+            # my shit
             "stepbrobd/*"
+            # ranet3.com
+            "ranet3/ranet3"
+            # shared with friends
             "Filippo-Galli/Dotfiles"
+            "firilisinof/dotfiles"
           ];
         };
       };
