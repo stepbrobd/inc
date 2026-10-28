@@ -23,6 +23,7 @@
       remoteControlAtStartup = false;
       skipDangerousModePermissionPrompt = true;
       permissions.defaultMode = "bypassPermissions";
+      worktree.bgIsolation = "none";
       enabledPlugins."superpowers@claude-plugins-official" = true;
 
       attribution = {
