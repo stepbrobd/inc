@@ -39,6 +39,8 @@ use audit::Audit;
 // kanidm stamps this typ on access tokens, per RFC 9068
 const ACCESS_TOKEN_TYP: &str = "at+jwt";
 const PIPE_CHUNK: usize = 8192;
+// shell used when the caller passes none; a full path is expected
+const DEFAULT_SHELL: &str = "/bin/sh";
 // stamped by the auth layer after validation for the tool handler to log
 const HDR_SUBJECT: &str = "x-mcp-subject";
 const HDR_SESSION: &str = "x-mcp-session";
@@ -55,7 +57,6 @@ struct Settings {
     authorization_servers: Vec<String>,
     leeway_secs: u64,
     jwks_refresh_secs: u64,
-    shell: String,
     default_timeout: Duration,
     max_timeout: Duration,
     max_output_bytes: usize,
@@ -81,7 +82,6 @@ impl Settings {
             resource_metadata_url,
             leeway_secs: env_u64("MCP_LEEWAY_SECS", 60),
             jwks_refresh_secs: env_u64("MCP_JWKS_REFRESH_SECS", 3600),
-            shell: std::env::var("MCP_SHELL").unwrap_or_else(|_| "/bin/sh".to_string()),
             default_timeout: Duration::from_secs(env_u64("MCP_DEFAULT_TIMEOUT_SECS", 60)),
             max_timeout: Duration::from_secs(env_u64("MCP_MAX_TIMEOUT_SECS", 200)),
             max_output_bytes: env_u64("MCP_MAX_OUTPUT_BYTES", 100_000) as usize,
@@ -277,8 +277,17 @@ async fn protected_resource_metadata(State(state): State<AppState>) -> Response 
 
 #[derive(Debug, Deserialize, schemars::JsonSchema)]
 struct RunArgs {
-    /// command line passed to the configured shell with -c
+    /// command line passed to the shell with -c
     command: String,
+    /// absolute path to the shell, default /bin/sh. to use bash, fish, nushell,
+    /// etc, resolve its full path first (request it in `packages` and run
+    /// `command -v <shell>`), then pass that path here.
+    #[serde(default)]
+    shell: Option<String>,
+    /// nixpkgs attribute names to put on PATH for this call via `nix shell`,
+    /// e.g. ["tmux", "ripgrep"] runs under `nix shell nixpkgs#tmux nixpkgs#ripgrep`.
+    #[serde(default)]
+    packages: Vec<String>,
     /// working directory, defaults to the service user's home
     #[serde(default)]
     cwd: Option<String>,
@@ -314,18 +323,28 @@ impl Shell {
             .min(s.max_timeout);
         let home = std::env::var("HOME").unwrap_or_else(|_| "/".to_string());
         let cwd = args.cwd.clone().unwrap_or(home);
+        let shell = args.shell.as_deref().unwrap_or(DEFAULT_SHELL);
 
         let call = self.audit.next_call();
         self.audit.record(
             "run_start",
             json!({
                 "call": call, "subject": subject, "session": session,
-                "command": args.command, "cwd": cwd, "timeout_s": timeout.as_secs(),
+                "command": args.command, "shell": shell, "packages": args.packages,
+                "cwd": cwd, "timeout_s": timeout.as_secs(),
             }),
         );
 
         let started = Instant::now();
-        let outcome = execute(&s.shell, &args.command, &cwd, timeout, s.max_output_bytes).await;
+        let outcome = execute(
+            shell,
+            &args.packages,
+            &args.command,
+            &cwd,
+            timeout,
+            s.max_output_bytes,
+        )
+        .await;
         let elapsed = started.elapsed();
 
         match outcome {
@@ -405,15 +424,29 @@ struct RunResult {
 
 async fn execute(
     shell: &str,
+    packages: &[String],
     command: &str,
     cwd: &str,
     timeout: Duration,
     cap: usize,
 ) -> Result<RunResult> {
-    let mut cmd = tokio::process::Command::new(shell);
-    cmd.arg("-c")
-        .arg(command)
-        .current_dir(cwd)
+    // with no extra packages run the shell directly; otherwise wrap it in
+    // `nix shell nixpkgs#<pkg> ... --command <shell> -c <command>` so the call
+    // sees those packages on PATH. argv is passed literally, never through a shell.
+    let mut cmd = if packages.is_empty() {
+        let mut c = tokio::process::Command::new(shell);
+        c.arg("-c").arg(command);
+        c
+    } else {
+        let mut c = tokio::process::Command::new("nix");
+        c.arg("shell");
+        for p in packages {
+            c.arg(format!("nixpkgs#{p}"));
+        }
+        c.arg("--command").arg(shell).arg("-c").arg(command);
+        c
+    };
+    cmd.current_dir(cwd)
         .stdin(Stdio::null())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())

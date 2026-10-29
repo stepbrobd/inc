@@ -2,6 +2,6 @@
 // the tool description and server instructions can be reviewed and edited on
 // their own.
 
-pub const RUN_TOOL: &str = "Run a shell command as the server's user and return its combined output, exit status, and timing. Runs with the user's PATH, tools, and SSH keys. Treat as destructive: it can modify the system and act with the user's credentials.";
+pub const RUN_TOOL: &str = "Run a command line and return its combined output, exit status, and timing. It runs with the service user's permissions and access, under /bin/sh by default. To use another shell (bash, fish, nushell, ...) resolve its absolute path first (request it in `packages`, run `command -v <shell>`) and pass that as `shell`. List nixpkgs attribute names in `packages` to put them on PATH for the call via `nix shell`, e.g. `tmux` or `ripgrep`. Treat as destructive: it can modify the system.";
 
-pub const SERVER_INSTRUCTIONS: &str = "Shell access as the server's user. The `run` tool executes a command line under the configured shell. Commands can change the system and use the user's credentials, so confirm before each call.";
+pub const SERVER_INSTRUCTIONS: &str = "Shell access with the server user's permissions and access. The `run` tool executes a command line, under /bin/sh by default or a shell whose full path you pass, with optional nixpkgs packages pulled onto PATH for the call. Commands can change the system, confirm before each call.";
