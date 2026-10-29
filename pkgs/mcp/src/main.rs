@@ -241,8 +241,8 @@ async fn auth_layer(State(state): State<AppState>, mut req: Request<Body>, next:
                     "insufficient_scope",
                 ),
             };
-            // a presented-but-invalid token is the fail2ban signal; a missing one
-            // is the normal handshake and an authenticated scope miss is a real user
+            // a presented-but-invalid token is worth a warning, a missing one is the
+            // normal handshake and an authenticated scope miss is a real user
             if matches!(deny, Deny::Invalid) {
                 tracing::warn!(
                     target: "audit",
