@@ -53,6 +53,7 @@ struct Settings {
     audience: String,
     required_scope: String,
     resource: String,
+    host: String,
     resource_metadata_url: String,
     authorization_servers: Vec<String>,
     leeway_secs: u64,
@@ -69,6 +70,11 @@ impl Settings {
         let jwks_uri =
             std::env::var("MCP_JWKS_URI").unwrap_or_else(|_| format!("{issuer}/public_key.jwk"));
         let resource = req_env("MCP_RESOURCE")?;
+        let host = resource
+            .parse::<axum::http::Uri>()
+            .ok()
+            .and_then(|u| u.authority().map(|a| a.to_string()))
+            .with_context(|| format!("MCP_RESOURCE {resource} has no host"))?;
         let resource_metadata_url = std::env::var("MCP_RESOURCE_METADATA_URL")
             .unwrap_or_else(|_| format!("{resource}/.well-known/oauth-protected-resource"));
         Ok(Self {
@@ -79,6 +85,7 @@ impl Settings {
             required_scope: std::env::var("MCP_REQUIRED_SCOPE")
                 .unwrap_or_else(|_| "mcp:shell".to_string()),
             resource,
+            host,
             resource_metadata_url,
             leeway_secs: env_u64("MCP_LEEWAY_SECS", 60),
             jwks_refresh_secs: env_u64("MCP_JWKS_REFRESH_SECS", 3600),
@@ -601,7 +608,7 @@ async fn main() -> Result<()> {
             move || Ok(Shell::new(settings.clone(), audit.clone()))
         },
         LocalSessionManager::default().into(),
-        StreamableHttpServerConfig::default(),
+        StreamableHttpServerConfig::default().with_allowed_hosts([settings.host.clone()]),
     );
     let guarded = ServiceBuilder::new()
         .layer(axum::middleware::from_fn_with_state(
