@@ -1,0 +1,26 @@
+[package]
+name    = "mcp"
+version = "2026.1029.0"
+edition = "2024"
+
+[[bin]]
+name = "mcp"
+path = "src/main.rs"
+
+[dependencies]
+anyhow             = "1"
+axum               = "0.8"
+jsonwebtoken       = "11"
+nix                = { version = "0.31", features = ["signal"] }
+rmcp               = { version = "3.8", features = ["server", "macros", "transport-streamable-http-server"] }
+schemars           = "1"
+serde              = { version = "1", features = ["derive"] }
+serde_json         = "1"
+tokio              = { version = "1", features = ["macros", "rt-multi-thread", "process", "io-util", "net", "signal", "time", "sync"] }
+tower              = "0.5"
+tracing            = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+ureq               = "3"
+
+[profile.release]
+strip = true
