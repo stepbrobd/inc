@@ -3,8 +3,8 @@
 (terraform-providers.mkProvider {
   owner = "stepbrobd";
   repo = "terraform-provider-arin";
-  rev = "v2026.1005.1";
-  hash = "sha256-yduHq+uDBwABIrXjv8Fzdhx8FLr3vx43YnDYK3E7ELA=";
+  rev = "v2026.1026.0";
+  hash = "sha256-KtBHdHEpAp8EcoErNWvKR67TxeII7zTUunfVVnWErpY=";
   vendorHash = "sha256-WiN88BAT9ABtmPPoeSXjIud/MwJEmSCTQQeo7Vf5BQE=";
   spdx = "MIT";
   provider-source-address = "registry.terraform.io/stepbrobd/arin";
