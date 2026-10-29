@@ -101,7 +101,7 @@ in
             profile shortlived
 
             dns cloudflare {env.CF_API_TOKEN}
-            resolvers 2606:4700:4700::1111 1.1.1.1
+            resolvers ::1 127.0.0.1
           }
         }
 
