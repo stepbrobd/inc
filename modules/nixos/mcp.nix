@@ -71,13 +71,9 @@ in
       journalmatch = _SYSTEMD_USER_UNIT=mcp.service
     '';
 
-    # the user manager owns the socket and caddy connects through the caddy group
-    systemd.tmpfiles.rules = [ "d ${socketDir} 0750 ${cfg.user} caddy -" ];
+    systemd.tmpfiles.rules = [ "d ${socketDir} 2750 ${cfg.user} caddy -" ];
 
-    users.users.${cfg.user} = {
-      linger = true;
-      extraGroups = [ "caddy" ];
-    };
+    users.users.${cfg.user}.linger = true;
 
     home-manager.users.${cfg.user} = {
       systemd.user.sockets.mcp = {
@@ -85,7 +81,6 @@ in
         Socket = {
           ListenStream = socket;
           SocketMode = "0660";
-          SocketGroup = "caddy";
         };
         Install.WantedBy = [ "sockets.target" ];
       };
