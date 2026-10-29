@@ -1,31 +1,29 @@
 include = ["**/*.toml"]
 exclude = ["**/target/**", "**/.direnv/**"]
 
-[formatting]
-align_entries = true
-
 [[rule]]
 include = ["**/Cargo.toml"]
 [rule.formatting]
-array_auto_expand   = false
+align_entries = true
+array_auto_expand = false
 inline_table_expand = false
 
 [[rule]]
 include = ["**/Cargo.toml"]
-keys    = ["dependencies", "*-dependencies", "workspace.dependencies"]
+keys = ["dependencies", "*-dependencies", "workspace.dependencies"]
 [rule.formatting]
-reorder_keys   = true
+reorder_keys = true
 align_comments = true
 
 [[rule]]
 include = ["**/Cargo.toml"]
-keys    = ["package", "workspace.package"]
+keys = ["package", "workspace.package"]
 [rule.formatting]
-reorder_keys   = false
+reorder_keys = false
 align_comments = true
 
 [[rule]]
 include = ["**/Cargo.toml"]
-keys    = ["features"]
+keys = ["features"]
 [rule.formatting]
 reorder_arrays = true
