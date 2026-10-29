@@ -10,7 +10,7 @@ path = "src/main.rs"
 [dependencies]
 anyhow             = "1"
 axum               = "0.8"
-jsonwebtoken       = "11"
+jsonwebtoken       = { version = "11", features = ["rust_crypto"] }
 nix                = { version = "0.31", features = ["signal"] }
 rmcp               = { version = "3.8", features = ["server", "macros", "transport-streamable-http-server"] }
 schemars           = "1"
