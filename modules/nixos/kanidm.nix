@@ -46,6 +46,8 @@ in
     sops.secrets."kanidm/oauth/paperless".mode = "440";
     sops.secrets."kanidm/oauth/vaultwarden".group = "kanidm";
     sops.secrets."kanidm/oauth/vaultwarden".mode = "440";
+    sops.secrets."kanidm/oauth/mcp".group = "kanidm";
+    sops.secrets."kanidm/oauth/mcp".mode = "440";
 
     # kanidm dumps its own database and restic just takes the dumps
     services.kanidm.server.settings.online_backup = lib.mkIf (hasTag "backup") {
@@ -102,6 +104,8 @@ in
           "vaultwarden.users" = { };
 
           "caddy.users" = { };
+
+          "mcp.users" = { };
         };
 
         persons = {
@@ -133,6 +137,8 @@ in
               "vaultwarden.users"
 
               "caddy.users"
+
+              "mcp.users"
             ];
           };
         };
@@ -234,6 +240,18 @@ in
               "openid"
               "email"
               "profile"
+            ];
+          };
+
+          # claude custom mcp connector
+          mcp = {
+            displayName = "MCP";
+            originUrl = [ "https://claude.ai/api/mcp/auth_callback" ];
+            originLanding = "https://${lib.blueprint.services.mcp.domain}/";
+            basicSecretFile = config.sops.secrets."kanidm/oauth/mcp".path;
+            scopeMaps."mcp.users" = [
+              "openid"
+              "mcp:shell"
             ];
           };
         };
