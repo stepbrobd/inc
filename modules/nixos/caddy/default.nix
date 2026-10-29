@@ -158,6 +158,14 @@ in
       (tailscale) {
         @tailnet remote_ip 100.64.0.0/10 fd7a:115c:a1e0::/48
       }
+
+      # restrict a site to anthropic outbound range:
+      # https://platform.claude.com/docs/en/api/ip-addresses
+      # `import anthropic` in its virtualHost.extraConfig
+      # wrap routes in `handle @anthropic` and add `respond 404`
+      (anthropic) {
+        @anthropic remote_ip 160.79.104.0/21
+      }
     '';
 
     services.caddy.virtualHosts."http://${metricsTarget}" = {
