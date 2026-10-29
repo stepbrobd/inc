@@ -7,7 +7,7 @@
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "neogrok";
-  version = "1.2.5";
+  version = "1.2.6";
 
   passthru.autobump = true;
 
@@ -15,14 +15,14 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     owner = "isker";
     repo = "neogrok";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-xHxE8S+KjVMpyk8pE+fJKgEmFVl+9WkUzHDfKjWOaw8=";
+    hash = "sha256-iqwLOErUMV5aHz2Hgbd23cHXlQd4Uddh55ZE3x1UHlE=";
   };
 
   missingHashes = ./missing-hashes.json;
   offlineCache = yarn-berry.fetchYarnBerryDeps {
     inherit nodejs;
     inherit (finalAttrs) src missingHashes;
-    hash = "sha256-7P5bAigQIj1RVwcNWc/bjLfyO85nLPi60d/PCEVAvpI=";
+    hash = "sha256-jjgNFToq8ZIKEpjNf2fukkxSJafwYd3+SnbwUVxnC2Q=";
   };
 
   nativeBuildInputs = [
