@@ -140,6 +140,14 @@ in
         comment = "Hetzner - Kanidm";
       };
 
+      co_ysun_mcp = {
+        type = "CNAME";
+        proxied = false;
+        name = "mcp";
+        content = "xps.sd.ysun.co";
+        comment = "Dell - XPS - MCP shell";
+      };
+
       co_ysun_meet = {
         type = "CNAME";
         proxied = false;
