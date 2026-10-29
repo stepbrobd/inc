@@ -132,6 +132,8 @@ let
           os = "nixos";
           platform = "x86_64-linux";
           modules = laptopModules ++ (with inputs; [
+            self.nixosModules.caddy
+            self.nixosModules.mcp
             hardware.nixosModules.dell-xps-13-9300
           ]);
           users = laptopUsers;
