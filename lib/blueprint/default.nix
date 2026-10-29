@@ -104,6 +104,7 @@ in
     jitsi.domain = "meet.ysun.co";
     kanidm.domain = "sso.ysun.co";
     kavita.domain = "read.ysun.co";
+    mcp.domain = "mcp.ysun.co";
     neogrok.domain = "grep.ysun.co";
     niks3.domain = "api.cache.ysun.co";
     ntpd-rs.domain = "time.ysun.co";
