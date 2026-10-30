@@ -1,31 +1,18 @@
 { lib, modulesPath, ... }:
 
 {
-  imports = [ "${modulesPath}/profiles/qemu-guest.nix" ];
+  imports = [
+    ./disko.nix
+    "${modulesPath}/profiles/qemu-guest.nix"
+  ];
   services.qemuGuest.enable = true;
 
-  boot.loader.grub.device = "/dev/sda";
-  boot.initrd.kernelModules = [ "nvme" ];
-  boot.initrd.availableKernelModules = [
-    "ahci"
-    "ata_piix"
-    "ehci_pci"
-    "sd_mod"
-    "sr_mod"
-    "uhci_hcd"
-    "virtio_pci"
-    "virtio_scsi"
-    "vmw_pvscsi"
-    "xen_blkfront"
-  ];
+  hardware.facter.reportPath = ./facter.json;
+  hardware.facter.detected.graphics.enable = false;
 
-  fileSystems."/" = {
-    device = "/dev/sda1";
-    fsType = "ext4";
-  };
+  boot.loader.grub.device = "/dev/sda";
 
   zramSwap.enable = lib.mkForce false;
-  swapDevices = [{ device = "/dev/sda5"; }];
 
   networking = {
     defaultGateway = {
