@@ -13,8 +13,8 @@ let
     then host.ranet.gravity.prefix
     else null;
 
-  # the gravity vrf holds ranet's xfrm links on a router
-  # ranet3 on a routee owns table 200 and its rules itself
+  # the gravity vrf holds ranet's xfrm links
+  # ranet3 owns table 200 and its rules itself
   meshEnabled = gravityPrefix != null && config.networking.ranet.enable;
   # ranet3 speaks babel itself
   babelEnabled = config.networking.ranet.enable && gravityPrefix != null;
@@ -678,10 +678,19 @@ in
 
       systemd.network.networks."40-${cfg.local.interface.local}" = {
         name = cfg.local.interface.local;
-        # ranet3 puts the pair on its tun through cap.table.addresses
-        address = lib.optionals (!config.networking.ranet3.enable) (with cfg.local; ipv4.addresses ++ ipv6.addresses);
+        # ranet3 puts the ipam pair on its tun through cap.table.addresses
+        address =
+          let all = with cfg.local; ipv4.addresses ++ ipv6.addresses;
+          in if config.networking.ranet3.enable then lib.subtractLists [ "${host.ipam.ipv4}/32" "${host.ipam.ipv6}/128" ] all else all;
         networkConfig = lib.optionalAttrs meshEnabled { VRF = "gravity"; };
         routingPolicyRules = lib.remove { } (lib.flatten [
+          # bird's bgp sessions leave by main whatever the mesh's table holds for a neighbor
+          # ranet3 reads its table for every lookup that main has no route longer than /0 for
+          (lib.optionals (cfg.router.exit && config.networking.ranet3.enable) (lib.map
+            (a: { From = a; Table = "main"; Priority = 5300; })
+            (lib.unique (lib.filter (a: a != null) (lib.concatMap
+              (s: [ s.source.ipv4 s.source.ipv6 ])
+              ([{ inherit (cfg.router) source; }] ++ cfg.router.sessions))))))
           (lib.optionalAttrs (lib.isString cfg.router.outboundGateway.ipv4) (lib.map
             (r: {
               From = r.prefix;
@@ -827,17 +836,11 @@ in
           };
         };
     }
-    (lib.mkIf meshEnabled {
-      networking.iproute2.enable = true;
-      networking.iproute2.rttablesExtraConfig = "${lib.toString babelKernelTable} ranet";
-
-      # IPAM addresses on lo so default-namespace services can bind to them
-      # (dummy0 is in the gravity VRF bind() from default namespace fails without this)
+    (lib.mkIf cfg.router.exit {
       systemd.network.networks."10-loopback" = {
         name = "lo";
-        address = with cfg.local; ipv4.addresses ++ ipv6.addresses;
         # TODO: FIXME: make 192.104.136.0/24 temporarily pingable on BGP exit nodes
-        routes = lib.optionals cfg.router.exit [{ Destination = "192.104.136.0/24"; Type = "local"; }];
+        routes = [{ Destination = "192.104.136.0/24"; Type = "local"; }];
         # can be removed but also drop the below firewall rules for bgo.tools art drawn in hilbert curve
       };
       #   ................
@@ -856,7 +859,7 @@ in
       #   ....####..##....
       #   ....#..#...#....
       #   ................
-      networking.nftables.tables.snowflake = lib.mkIf cfg.router.exit (
+      networking.nftables.tables.snowflake = (
         let
           # one list per row left to right
           lit = lib.concatLists [
@@ -893,6 +896,17 @@ in
           '';
         }
       );
+    })
+    (lib.mkIf meshEnabled {
+      networking.iproute2.enable = true;
+      networking.iproute2.rttablesExtraConfig = "${lib.toString babelKernelTable} ranet";
+
+      # IPAM addresses on lo so default-namespace services can bind to them
+      # (dummy0 is in the gravity VRF bind() from default namespace fails without this)
+      systemd.network.networks."10-loopback" = {
+        name = "lo";
+        address = with cfg.local; ipv4.addresses ++ ipv6.addresses;
+      };
 
       systemd.network.networks."20-gravity" = {
         name = "gravity";

@@ -65,9 +65,51 @@ in
         ];
       });
     })
+
+    # a router is the mesh's exit for the space bgp announces and its ingress from the internet
+    ({ options, ... }: {
+      config = lib.optionalAttrs (options ? systemd) (lib.mkIf (hasTag "ranet3" && hasTag "router") (
+        let
+          as = config.services.as10779;
+          exits = as.router.exit && as.router.advertiseDefault;
+        in
+        {
+          # the exit tracks replies to traffic that came in by another router
+          boot.kernel.sysctl."net.netfilter.nf_conntrack_max" = 262144;
+
+          networking.ranet3.settings = {
+            cap.route.announce =
+              # the anycast pair stays on dummy0
+              # since the kernel takes a source for a route through the tun from the tun's own addresses
+              lib.subtractLists [ ipam4 ipam6 ] (as.local.ipv4.addresses ++ as.local.ipv6.addresses)
+              # ipv6 exits only for the sources bgp announces
+              ++ lib.optionals exits (lib.map (r: { prefix = "::/0"; from = r.prefix; }) as.router.static.ipv6.routes);
+            cap.egress = {
+              advertise = lib.optional exits "0.0.0.0/0";
+              # the exit tracks replies to traffic that came in by another router
+              flows_per_source = 1048576;
+              translate =
+                # bgp announces these
+                lib.map (r: { from = r.prefix; to = "none"; }) (as.router.static.ipv4.routes ++ as.router.static.ipv6.routes)
+                # any other source leaves as this node's ipam pair
+                ++ [
+                  { from = "0.0.0.0/0"; to = host.ipam.ipv4; }
+                  { from = "::/0"; to = host.ipam.ipv6; }
+                ];
+            };
+            cap.segment.local = [{
+              sid = "${gravityBase}6::3";
+              behavior = "End.DT46";
+              deliver = "egress";
+              # our own nodes alone including all outer and inner sources
+              allow = lib.map (h: h.ranet.gravity.prefix) (lib.filter (h: h.ranet ? gravity) (lib.attrValues bp.hosts));
+            }];
+          };
+        }
+      ));
+    })
   ];
 
-  # every host but a router, whose exit stays on ranet
   # darwin installs the exit defaults scoped to the utun and the mesh's more specifics unscoped
   config = lib.mkIf (hasTag "ranet3") {
     assertions = [
@@ -76,8 +118,8 @@ in
         message = "ranet3 and ranet both own routing table 200, tag a host with one of them";
       }
       {
-        assertion = host != null && !(hasTag "router") && host.ipam ? ipv4 && host.ipam ? ipv6 && host.ranet ? endpoints && (isServer -> host.ranet ? gravity);
-        message = "ranet3 needs a blueprint host that is not a router, with ipam.ipv4, ipam.ipv6, ranet.endpoints and on a server ranet.gravity";
+        assertion = host != null && host.ipam ? ipv4 && host.ipam ? ipv6 && host.ranet ? endpoints && (isServer -> host.ranet ? gravity) && (hasTag "router" -> isServer);
+        message = "ranet3 needs a blueprint host with ipam.ipv4, ipam.ipv6, ranet.endpoints, on a server ranet.gravity, and a router that is a server";
       }
     ];
 
