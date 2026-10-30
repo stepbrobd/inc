@@ -19,6 +19,8 @@
   # or remember to change it here as well...
   _module.args.nixos-raspberrypi = inputs.rpi;
 
+  hardware.facter.reportPath = ./facter.json;
+
   boot.loader.raspberry-pi.bootloader = "kernel";
 
   boot.blacklistedKernelModules = [ "vc4" "v3d" ];
