@@ -7,6 +7,9 @@
   ];
   services.qemuGuest.enable = true;
 
+  hardware.facter.reportPath = ./facter.json;
+  hardware.facter.detected.graphics.enable = false;
+
   srvos.boot.consoles = [ "tty0" ];
 
   boot.loader.grub = {
@@ -14,14 +17,6 @@
     efiInstallAsRemovable = true;
     device = "nodev";
   };
-
-  boot.initrd.kernelModules = [ "nvme" ];
-  boot.initrd.availableKernelModules = [
-    "ata_piix"
-    "uhci_hcd"
-    "xen_blkfront"
-    "vmw_pvscsi"
-  ];
 
   zramSwap.enable = lib.mkForce false;
 
