@@ -1,8 +1,12 @@
 { inputs, lib, ... }:
 
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
+  # nixos facter turns on dhcp for every detected nic
+  # for hosts with networkmanager enabled networkd will start another dhcp client on the links nm already manages
+  hardware.facter.detected.dhcp.enable = lib.mkIf config.networking.networkmanager.enable (lib.mkDefault false);
+
   # lower  than option default (1500)
   # higher than        default (1000)
   # need to do this since nixos for raspberry pi module set mkDefault
