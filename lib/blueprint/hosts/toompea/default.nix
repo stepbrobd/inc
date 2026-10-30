@@ -8,7 +8,7 @@ newHost (lib.fix (self: {
   provider = "xtom";
   providerName = "xTom";
   type = "server";
-  tags = [ "ysun" "router" "kavita" "plausible" "backup" "ranet" "prometheus" "loki" "ci" ];
+  tags = [ "ysun" "router" "kavita" "plausible" "backup" "ranet3" "prometheus" "loki" "ci" ];
   meta = { city = "Tallinn"; region = "EE-37"; country = "EE"; continent = "Europe"; postal = "10111"; };
   interface = "ens18";
   ipv4 = "185.194.53.29";
