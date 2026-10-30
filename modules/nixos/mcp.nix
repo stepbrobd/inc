@@ -111,11 +111,6 @@ in
           Restart = "on-failure";
           RestartSec = 5;
           StateDirectory = "mcp";
-          NoNewPrivileges = true;
-          RestrictSUIDSGID = true;
-          LockPersonality = true;
-          RestrictRealtime = true;
-          ProtectClock = true;
         };
         Install.WantedBy = [ "default.target" ];
       };
