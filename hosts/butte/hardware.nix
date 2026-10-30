@@ -1,22 +1,21 @@
 { lib, modulesPath, ... }:
 
 {
-  imports = [ "${modulesPath}/profiles/qemu-guest.nix" ];
+  imports = [
+    ./disko.nix
+    "${modulesPath}/profiles/qemu-guest.nix"
+  ];
   services.qemuGuest.enable = true;
+
+  hardware.facter.reportPath = ./facter.json;
+  hardware.facter.detected.graphics.enable = false;
 
   srvos.boot.consoles = [ "tty0" ];
 
   boot.growPartition = true;
   boot.loader.grub.device = "/dev/vda";
-  boot.initrd.kernelModules = [ "nvme" ];
-  boot.initrd.availableKernelModules = [
-    "ata_piix"
-    "uhci_hcd"
-    "vmw_pvscsi"
-    "xen_blkfront"
-  ];
 
-  fileSystems."/" = { device = "/dev/vda1"; fsType = "ext4"; autoResize = true; };
+  fileSystems."/".autoResize = true;
 
   networking = {
     defaultGateway = {
