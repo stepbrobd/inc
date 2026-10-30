@@ -16,8 +16,6 @@ include = [
 ]
 
 exclude = [
-  "legacyPackages.aarch64-darwin.bird3", # unsupported
-
   "legacyPackages.aarch64-darwin.jitsi-openid", # unused
   "legacyPackages.aarch64-linux.jitsi-openid",  # unused
 

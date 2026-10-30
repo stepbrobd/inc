@@ -8,25 +8,6 @@ let
 
   host = lib.blueprint.hosts.${config.networking.hostName} or null;
 
-  gravityPrefix =
-    if host != null && host ? ranet && host.ranet ? gravity
-    then host.ranet.gravity.prefix
-    else null;
-
-  # the gravity vrf holds ranet's xfrm links
-  # ranet3 owns table 200 and its rules itself
-  meshEnabled = gravityPrefix != null && config.networking.ranet.enable;
-  # ranet3 speaks babel itself
-  babelEnabled = config.networking.ranet.enable && gravityPrefix != null;
-  babelKernelTable = 200;
-
-  gravityParts = if gravityPrefix != null then lib.splitString "/" gravityPrefix else [ ];
-
-  gravityAddr =
-    if gravityParts != [ ]
-    then "${lib.head gravityParts}1/${lib.last gravityParts}"
-    else null;
-
   routeType = lib.types.submodule {
     options = {
       prefix = lib.mkOption {
@@ -102,15 +83,6 @@ in
         type = lib.types.bool;
         default = true;
         description = "whether this node injects its default route into Babel for other mesh nodes";
-      };
-
-      localEgress = lib.mkOption {
-        type = lib.types.enum [ "upstream" "mesh" ];
-        default = if cfg.router.exit then "upstream" else "mesh";
-        description = ''
-          how locally generated IPAM-sourced traffic leaves this node
-          "upstream" prefers the node's provider route, "mesh" prefers the Babel/VRF table
-        '';
       };
 
       outboundGateway = {
@@ -424,8 +396,8 @@ in
         rule "ip" "ipv4" + rule "ip6" "ipv6"
       );
 
-      # router and ranet nodes all need to have bird
-      services.bird.enable = cfg.router.exit || babelEnabled;
+      # bird speaks bgp alone, ranet3 speaks babel
+      services.bird.enable = cfg.router.exit;
       services.bird.package = pkgs.bird3;
       services.bird.checkConfig = false;
 
@@ -438,82 +410,6 @@ in
             scan time ${lib.toString cfg.router.scantime};
           }
         ''
-
-        # babel over ranet mesh (gravity VRF)
-        (lib.optionalString babelEnabled ''
-
-          ipv4 table babel4;
-          ipv6 sadr table babel6;
-
-          protocol direct dbabel0 {
-            vrf "gravity";
-            interface "${cfg.local.interface.local}", "gravity";
-            ipv4 { table babel4; };
-            ipv6 sadr;
-          }
-
-          protocol kernel kbabel4 {
-            kernel table ${lib.toString babelKernelTable};
-            ipv4 {
-              table babel4;
-              export filter {
-                krt_prefsrc = ${host.ipam.ipv4};
-                accept;
-              };
-              import none;
-            };
-          }
-
-          protocol kernel kbabel6 {
-            kernel table ${lib.toString babelKernelTable};
-            metric 2048;
-            ipv6 sadr {
-              export all;
-              import none;
-            };
-          }
-
-          protocol babel babel0 {
-            vrf "gravity";
-            randomize router id;
-            ipv4 {
-              table babel4;
-              export where proto = "dbabel0" ${lib.optionalString (cfg.router.exit && cfg.router.advertiseDefault) ''|| proto = "exitdefault4" ''};
-              import all;
-            };
-            ipv6 sadr {
-              export where (proto = "dbabel0" ${lib.optionalString (cfg.router.exit && cfg.router.advertiseDefault) ''|| proto = "exitdefault6" ''}) && net !~ [ fe80::/10+ ];
-              import all;
-            };
-            interface "ranet*" {
-              type tunnel;
-              link quality etx;
-              rxcost 96;
-              hello interval 4 s;
-              rtt cost 1024;
-              rtt max 1024 ms;
-              rx buffer 1500;
-            };
-          }
-        '')
-
-        # nodes that advertise a default route inject it into Babel so other
-        # mesh nodes can send internet-bound IPAM traffic to them
-        (lib.optionalString (babelEnabled && cfg.router.exit && cfg.router.advertiseDefault) ''
-
-          protocol static exitdefault4 {
-            ipv4 { table babel4; };
-            route 0.0.0.0/0 via "gravity";
-          }
-
-          protocol static exitdefault6 {
-            ipv6 sadr;
-            ${lib.concatMapStringsSep
-              "\n  "
-              (r: ''route ::/0 from ${r.prefix} via "gravity";'')
-              cfg.router.static.ipv6.routes}
-          }
-        '')
 
         # only on bgp exit nodes with sessions
         (lib.optionalString cfg.router.exit ''
@@ -682,7 +578,6 @@ in
         address =
           let all = with cfg.local; ipv4.addresses ++ ipv6.addresses;
           in if config.networking.ranet3.enable then lib.subtractLists [ "${host.ipam.ipv4}/32" "${host.ipam.ipv6}/128" ] all else all;
-        networkConfig = lib.optionalAttrs meshEnabled { VRF = "gravity"; };
         routingPolicyRules = lib.remove { } (lib.flatten [
           # bird's bgp sessions leave by main whatever the mesh's table holds for a neighbor
           # ranet3 reads its table for every lookup that main has no route longer than /0 for
@@ -758,7 +653,7 @@ in
         };
 
         # fix PMTU blackhole on the anycast overlay
-        # client packets ingress over the 1400 MTU ranet tunnels (gravity VRF)
+        # client packets ingress over the 1400 MTU mesh
         # but an exit node SYN ACK egresses its native primary iface at 1500
         # so the kernel advertises a 1500 derived mss (1460 on the wire)
         # big segments (e.g. a post quantum TLS ClientHello) then overshoot the 1400 ingress and get undropped
@@ -778,11 +673,6 @@ in
                 ${lib.optionalString (v4 != [ ]) ''tcp flags & syn == syn ip saddr { ${addrs v4} } tcp option maxseg size gt ${toString mss} tcp option maxseg size set ${toString mss}''}
                 ${lib.optionalString (v6 != [ ]) ''tcp flags & syn == syn ip6 saddr { ${addrs v6} } tcp option maxseg size gt ${toString mss} tcp option maxseg size set ${toString mss}''}
               }
-              ${lib.optionalString config.networking.ranet.enable ''
-                chain forward {
-                  type filter hook forward priority mangle; policy accept;
-                  tcp flags & syn == syn tcp option maxseg size gt ${toString mss} tcp option maxseg size set ${toString mss}
-                }''}
             '';
           };
       };
@@ -790,13 +680,9 @@ in
       services.networkd-dispatcher.rules =
         let
           asnTable = lib.toString cfg.asn;
-          vrfTable = lib.toString babelKernelTable;
-          dev = cfg.local.interface.primary;
           hasStaticGw4 = lib.isString cfg.router.outboundGateway.ipv4;
           hasStaticGw6 = lib.isString cfg.router.outboundGateway.ipv6;
-          isUpstreamExit = meshEnabled && cfg.router.exit && cfg.router.localEgress == "upstream";
-          isMeshExit = meshEnabled && cfg.router.exit && cfg.router.localEgress == "mesh";
-          needsRule = hasStaticGw4 || hasStaticGw6 || isUpstreamExit || isMeshExit;
+          needsRule = hasStaticGw4 || hasStaticGw6;
 
           script = ''
             #!${pkgs.runtimeShell}
@@ -808,24 +694,6 @@ in
             ''}
             ${lib.optionalString hasStaticGw6 ''
               ip -6 route replace default via ${cfg.router.outboundGateway.ipv6} table ${asnTable}
-            ''}
-            ${lib.optionalString (isUpstreamExit && hasStaticGw4) ''
-              ip -4 route replace default via ${cfg.router.outboundGateway.ipv4} dev ${dev} table ${vrfTable} metric 1
-            ''}
-            ${lib.optionalString (isUpstreamExit && hasStaticGw6) ''
-              ip -6 route replace default via ${cfg.router.outboundGateway.ipv6} dev ${dev} table ${vrfTable} metric 1
-            ''}
-            ${lib.optionalString (isUpstreamExit && !hasStaticGw4) ''
-              read -r _ _ gw4 _ dev4 _ < <(ip -4 route show default table main)
-              [ -n "$gw4" ] && ip -4 route replace default via "$gw4" dev "$dev4" table ${vrfTable} metric 1 onlink
-            ''}
-            ${lib.optionalString (isUpstreamExit && !hasStaticGw6) ''
-              read -r _ _ gw6 _ dev6 _ < <(ip -6 route show default table main)
-              [ -n "$gw6" ] && ip -6 route replace default via "$gw6" dev "$dev6" table ${vrfTable} metric 1 onlink
-            ''}
-            ${lib.optionalString isMeshExit ''
-              ip -4 route del default table ${vrfTable} metric 1 2>/dev/null || true
-              ip -6 route del default table ${vrfTable} metric 1 2>/dev/null || true
             ''}
           '';
         in
@@ -896,65 +764,6 @@ in
           '';
         }
       );
-    })
-    (lib.mkIf meshEnabled {
-      networking.iproute2.enable = true;
-      networking.iproute2.rttablesExtraConfig = "${lib.toString babelKernelTable} ranet";
-
-      # IPAM addresses on lo so default-namespace services can bind to them
-      # (dummy0 is in the gravity VRF bind() from default namespace fails without this)
-      systemd.network.networks."10-loopback" = {
-        name = "lo";
-        address = with cfg.local; ipv4.addresses ++ ipv6.addresses;
-      };
-
-      systemd.network.networks."20-gravity" = {
-        name = "gravity";
-        address = [ gravityAddr ];
-        linkConfig.RequiredForOnline = false;
-        # an unassigned address in the announced prefixes would leave by a default and loop back in
-        routes = lib.map
-          (r: { Destination = r.prefix; Type = "unreachable"; Table = babelKernelTable; })
-          (cfg.router.static.ipv4.routes ++ cfg.router.static.ipv6.routes);
-        # all nodes: direct IPAM/gravity traffic into VRF table
-        routingPolicyRules =
-          lib.map (r: { To = r.prefix; Table = babelKernelTable; Priority = 100; })
-            cfg.router.static.ipv4.routes
-          ++ lib.map (r: { To = r.prefix; Table = babelKernelTable; Priority = 100; })
-            cfg.router.static.ipv6.routes
-          ++ [{ To = "2a0c:b641:69c::/48"; Table = babelKernelTable; Priority = 100; }]
-          # no iif constraint: must match both locally-generated traffic
-          # (service replies) and forwarded packets (anycast return traffic)
-          ++ (
-            let
-              ipv4Table =
-                if cfg.router.localEgress == "mesh"
-                then toString babelKernelTable
-                else if lib.isString cfg.router.outboundGateway.ipv4
-                then toString cfg.asn
-                else "main";
-              ipv6Table =
-                if cfg.router.localEgress == "mesh"
-                then toString babelKernelTable
-                else if lib.isString cfg.router.outboundGateway.ipv6
-                then toString cfg.asn
-                else "main";
-            in
-            lib.map (r: { From = r.prefix; Table = ipv4Table; Priority = 150; })
-              cfg.router.static.ipv4.routes
-            ++ lib.map (r: { From = r.prefix; Table = ipv6Table; Priority = 150; })
-              cfg.router.static.ipv6.routes
-            ++ [{ From = "2a0c:b641:69c::/48"; Table = ipv6Table; Priority = 150; }]
-          )
-          # when a node sets tailscale exit node trying to reach my announced IP addrs
-          # set priority rule so that tailscale destined replies (exit node flows de NATed to ts CGNAT/ULA)
-          # must reach tailscale table 52 before from <prefix> rules at 150 steal them into main/mesh
-          # empty table 52 falls through
-          ++ lib.optionals config.services.tailscale.enable [
-            { To = "100.64.0.0/10"; Table = 52; Priority = 140; }
-            { To = "fd7a:115c:a1e0::/48"; Table = 52; Priority = 140; }
-          ];
-      };
     })
     {
       services.prometheus.exporters.bird = {

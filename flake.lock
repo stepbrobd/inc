@@ -698,29 +698,6 @@
         "type": "github"
       }
     },
-    "ranet": {
-      "inputs": {
-        "flake-utils": [
-          "utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1792871485,
-        "narHash": "sha256-ZB9SmDZUf1QI2VHWnzkCfr1HbK1wJqm0cAGXuov4MyA=",
-        "owner": "nickcao",
-        "repo": "ranet",
-        "rev": "43a4e3b5a7089ee7efbbbb5d475a7885cecaaf14",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nickcao",
-        "repo": "ranet",
-        "type": "github"
-      }
-    },
     "ranet3": {
       "inputs": {
         "autopilot": [
@@ -814,7 +791,6 @@
         "noctalia": "noctalia",
         "noctalia-greeter": "noctalia-greeter",
         "parts": "parts",
-        "ranet": "ranet",
         "ranet3": "ranet3",
         "rfm": "rfm",
         "rpi": "rpi",

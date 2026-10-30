@@ -19,7 +19,6 @@
     blocklist
     fail2ban
     nftables
-    ranet
     ranet3
     tailscale
     time

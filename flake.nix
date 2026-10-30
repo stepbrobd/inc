@@ -32,7 +32,6 @@
               colmena.overlays.default
               noctalia.overlays.default
               noctalia-greeter.overlays.default
-              ranet.overlays.default
               rust-overlay.overlays.default
               terraform-providers.overlays.default
             ];
@@ -128,9 +127,6 @@
     parts.url = "github:hercules-ci/flake-parts";
     parts.inputs.nixpkgs-lib.follows = "nixpkgs";
     # r
-    ranet.url = "github:nickcao/ranet";
-    ranet.inputs.nixpkgs.follows = "nixpkgs";
-    ranet.inputs.flake-utils.follows = "utils";
     ranet3.url = "github:ranet3/ranet3";
     ranet3.inputs.autopilot.follows = "autopilot";
     ranet3.inputs.nixpkgs.follows = "nixpkgs";

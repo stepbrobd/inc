@@ -114,10 +114,6 @@ in
   config = lib.mkIf (hasTag "ranet3") {
     assertions = [
       {
-        assertion = !(config.networking.ranet.enable or false);
-        message = "ranet3 and ranet both own routing table 200, tag a host with one of them";
-      }
-      {
         assertion = host != null && host.ipam ? ipv4 && host.ipam ? ipv6 && host.ranet ? endpoints && (isServer -> host.ranet ? gravity) && (hasTag "router" -> isServer);
         message = "ranet3 needs a blueprint host with ipam.ipv4, ipam.ipv6, ranet.endpoints, on a server ranet.gravity, and a router that is a server";
       }
