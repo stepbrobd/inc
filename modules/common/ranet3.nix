@@ -74,7 +74,7 @@ in
           exits = as.router.exit && as.router.advertiseDefault;
         in
         {
-          # the exit tracks replies to traffic that came in by another router
+          boot.kernelModules = [ "nf_conntrack" ];
           boot.kernel.sysctl."net.netfilter.nf_conntrack_max" = 262144;
 
           networking.ranet3.settings = {
