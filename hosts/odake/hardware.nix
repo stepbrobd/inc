@@ -1,22 +1,15 @@
 { lib, modulesPath, ... }:
 
 {
-  imports = [ "${modulesPath}/profiles/qemu-guest.nix" ];
+  imports = [
+    ./disko.nix
+    "${modulesPath}/profiles/qemu-guest.nix"
+  ];
   services.qemuGuest.enable = true;
 
-  boot.loader.grub.device = "/dev/sda";
-  boot.initrd.kernelModules = [ "nvme" ];
-  boot.initrd.availableKernelModules = [
-    "ata_piix"
-    "uhci_hcd"
-    "xen_blkfront"
-    "vmw_pvscsi"
-  ];
+  hardware.facter.reportPath = ./facter.json;
 
-  fileSystems."/" = {
-    device = "/dev/sda2";
-    fsType = "ext4";
-  };
+  boot.loader.grub.device = "/dev/sda";
 
   networking = {
     defaultGateway = {
