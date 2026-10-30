@@ -4,19 +4,7 @@
   hardware.enableAllFirmware = lib.mkDefault true;
   services.fwupd.enable = true;
 
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
-
-  boot.initrd.kernelModules = [ ];
-  boot.initrd.availableKernelModules = [
-    "xhci_pci"
-    "thunderbolt"
-    "nvme"
-    "vmd"
-    "usb_storage"
-    "sd_mod"
-    "rtsx_pci_sdmmc"
-  ];
+  hardware.facter.reportPath = ./facter.json;
 
   imports = [ ./disko.nix ];
 
