@@ -121,7 +121,6 @@ in
 
       environment.systemPackages = [
         config.services.strongswan-swanctl.package
-        pkgs.gravity.vpn
         pkgs.ranet
       ];
 
