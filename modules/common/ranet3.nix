@@ -140,16 +140,13 @@ in
           listen = lib.mkIf isServer true;
         };
         dial.all = true;
+        overlay = bp.net.ipam.ipv4 ++ bp.net.ipam.ipv6 ++ bp.net.gravity.ipv6;
         cap.route = {
           # a server's srv6 sids and gravity address sit in its /60
           announce = [ ipam4 ipam6 ] ++ lib.optional isServer host.ranet.gravity.prefix;
         };
         cap.transit.enable = isServer;
         cap.babel.cost.extra.foreign = 32;
-        # darwin refuses cap.border at startup
-        cap.border = lib.mkIf isLinux {
-          overlay = bp.net.ipam.ipv4 ++ bp.net.ipam.ipv6 ++ bp.net.gravity.ipv6;
-        };
         cap.segment = lib.mkIf isServer {
           local = [
             { sid = "${gravityBase}6::1"; behavior = "End.DT46"; }
