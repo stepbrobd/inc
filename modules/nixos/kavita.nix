@@ -1,6 +1,6 @@
 { lib, ... }:
 
-{ config, pkgs, ... }:
+{ config, ... }:
 
 let
   hasTag = lib.hasTag config.networking.hostName;
@@ -19,7 +19,10 @@ in
       sops.secrets."kavita/oidc" = { };
 
       services.kavita = {
-        tokenKeyFile = config.sops.secrets."kavita/token".path;
+        credentials = {
+          token_key = config.sops.secrets."kavita/token".path;
+          oidc_client_secret = config.sops.secrets."kavita/oidc".path;
+        };
         settings = {
           IpAddresses = "::1";
           BaseUrl = "/";
@@ -27,16 +30,9 @@ in
           OpenIdConnectSettings = {
             Authority = "https://${lib.blueprint.services.kanidm.domain}/oauth2/openid/kavita";
             ClientId = "kavita";
-            Secret = "@OIDC_SECRET@";
+            Secret = "@oidc_client_secret@";
           };
         };
-      };
-
-      systemd.services.kavita = {
-        serviceConfig.LoadCredential = [ "oidc:${config.sops.secrets."kavita/oidc".path}" ];
-        preStart = lib.mkAfter ''
-          ${pkgs.replace-secret}/bin/replace-secret '@OIDC_SECRET@' "$CREDENTIALS_DIRECTORY/oidc" '${cfg.dataDir}/config/appsettings.json'
-        '';
       };
 
       # manual addition folder for library
