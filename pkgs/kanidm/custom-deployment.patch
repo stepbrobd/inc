@@ -24,12 +24,12 @@ index c171870..bd2e46e 100644
      response
          .headers_mut()
 diff --git a/server/core/src/https/mod.rs b/server/core/src/https/mod.rs
-index daa2c5d..7514687 100644
+index 6ce32af..768beee 100644
 --- a/server/core/src/https/mod.rs
 +++ b/server/core/src/https/mod.rs
-@@ -218,12 +218,12 @@ pub async fn create_https_server(
+@@ -222,12 +222,12 @@ pub async fn create_https_server(
              "default-src 'self'; ",
-             "base-uri 'self' https:; ",
+             "base-uri 'none'; ",
              "form-action 'self'; ",
 -            "frame-ancestors 'none'; ",
 +            "frame-ancestors 'self' https://ysun.co https://*.ysun.co; ",
@@ -44,10 +44,10 @@ index daa2c5d..7514687 100644
          ),
          js_checksums
      );
-@@ -243,12 +243,12 @@ pub async fn create_https_server(
+@@ -247,12 +247,12 @@ pub async fn create_https_server(
          concat!(
              "default-src 'self'; ",
-             "base-uri 'self' https:; ",
+             "base-uri 'none'; ",
 -            "frame-ancestors 'none'; ",
 +            "frame-ancestors 'self' https://ysun.co https://*.ysun.co; ",
              "img-src 'self' data:; ",
@@ -62,7 +62,7 @@ index daa2c5d..7514687 100644
          js_checksums
      );
 diff --git a/server/core/templates/base.html b/server/core/templates/base.html
-index 3f2e5b7..ad4cf75 100644
+index 2337d1a..e2e7ed5 100644
 --- a/server/core/templates/base.html
 +++ b/server/core/templates/base.html
 @@ -2,7 +2,7 @@
@@ -83,7 +83,7 @@ index 3f2e5b7..ad4cf75 100644
  	<body class="flex-column d-flex h-100">
  		(% block body %)(% endblock %)
 diff --git a/server/core/templates/base_htmx.html b/server/core/templates/base_htmx.html
-index 20d00a7..aba2206 100644
+index 60bb2f4..016ae3a 100644
 --- a/server/core/templates/base_htmx.html
 +++ b/server/core/templates/base_htmx.html
 @@ -2,7 +2,7 @@

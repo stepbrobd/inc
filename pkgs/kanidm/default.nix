@@ -1,6 +1,6 @@
-{ kanidmWithSecretProvisioning_1_11 }:
+{ kanidmWithSecretProvisioning_1_12 }:
 
-kanidmWithSecretProvisioning_1_11.overrideAttrs (prev: {
+kanidmWithSecretProvisioning_1_12.overrideAttrs (prev: {
   patches = prev.patches ++ [
     ./custom-deployment.patch
   ];
