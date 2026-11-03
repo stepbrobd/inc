@@ -720,11 +720,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793613653,
-        "narHash": "sha256-wscoeynGi6YNcc8vElK8ZhJbtUa3t1YlK7RIi+kOE/o=",
+        "lastModified": 1793705854,
+        "narHash": "sha256-9GEoEQVJnJE7mINFA/yLrybzWI+GMA937dtKWYahFro=",
         "owner": "ranet3",
         "repo": "ranet3",
-        "rev": "13b814921f57c4c88bd66ff0adac8694a3bd1a6c",
+        "rev": "136dc2b9df9efa530beb4c3ed77f1f3773142ea6",
         "type": "github"
       },
       "original": {

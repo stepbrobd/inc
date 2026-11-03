@@ -145,7 +145,7 @@ in
           # a server's srv6 sids and gravity address sit in its /60
           announce = [ ipam4 ipam6 ] ++ lib.optional isServer host.ranet.gravity.prefix;
         };
-        cap.transit.enable = isServer;
+        cap.transit = lib.mkIf isServer { };
         cap.babel.cost.extra.foreign = 32;
         cap.segment = lib.mkIf isServer {
           local = [
