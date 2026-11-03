@@ -19,6 +19,7 @@
       autoCompactWindow = 500000;
       subagentPromptCacheTtl = "1h";
       autoMemoryEnabled = false;
+      awaySummaryEnabled = false;
       agentPushNotifEnabled = true;
       remoteControlAtStartup = false;
       skipDangerousModePermissionPrompt = true;
