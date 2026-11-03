@@ -753,11 +753,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793417656,
-        "narHash": "sha256-mHolmun08ronwPPY4lKghPEUYokxOkRew72KRZ4iWYk=",
+        "lastModified": 1793737223,
+        "narHash": "sha256-fkLzEaMv7dZe2aGqAnQcpEREHCMsneMUd/UxcQlX1S0=",
         "owner": "stepbrobd",
         "repo": "rfm",
-        "rev": "123f49f65a9a264633fcc3670cb37d15cfdcaeb3",
+        "rev": "ccc92e634bea7f4c491b1c34206ce4054dfe1c4d",
         "type": "github"
       },
       "original": {
