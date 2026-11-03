@@ -67,7 +67,7 @@ in
       services.victoriametrics = {
         enable = true;
         listenAddress = "[::1]:8428";
-        retentionPeriod = "14d";
+        retentionPeriod = "30d";
         extraOptions = [
           "-enableTCP6"
           "-memory.allowedPercent=40"
