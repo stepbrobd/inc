@@ -1,5 +1,5 @@
 { lib
-, buildGoModule
+, buildGoLatestModule
 , fetchFromGitHub
 , makeWrapper
 , wl-mirror
@@ -7,7 +7,7 @@
 , versionCheckHook
 }:
 
-buildGoModule (finalAttrs: {
+buildGoLatestModule (finalAttrs: {
   pname = "mangomon";
   version = "2026.823.0";
 
