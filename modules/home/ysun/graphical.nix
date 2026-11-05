@@ -24,7 +24,6 @@
     media
     miroir
     # mpd # linux only
-    neovide
     neovim
     niks3
     # nushell # imported in minimal

@@ -40,9 +40,6 @@
         # attach to a nvim "daemon"
         vimc = nvimc;
         nvimc = "nvim --remote-ui --server '/tmp/nvim.'$(pwd | sha256sum | cut -c1-8)";
-        # attach to a nvim "daemon" but with neovide
-        vimcv = nvimc;
-        nvimcv = "neovide --server '/tmp/nvim.'$(pwd | sha256sum | cut -c1-8)";
       }
       # tailscale
       (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {

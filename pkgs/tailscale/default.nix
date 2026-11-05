@@ -47,6 +47,7 @@ in
   };
 }).overrideAttrs (prev: {
   version = tsVersion;
+  patches = [ ];
 
   src = fetchFromGitHub {
     owner = "tailscale";
