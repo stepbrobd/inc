@@ -1,10 +1,10 @@
 { lib
-, buildGoModule
+, buildGoLatestModule
 , fetchFromGitHub
 , tree-sitter-grammars
 }:
 
-buildGoModule {
+buildGoLatestModule {
   pname = "typenix";
   version = "0-unstable-2026-03-12";
 
