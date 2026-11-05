@@ -1,9 +1,9 @@
 { lib
-, buildGoModule
+, buildGoLatestModule
 , fetchFromGitHub
 }:
 
-buildGoModule (finalAttrs: {
+buildGoLatestModule (finalAttrs: {
   pname = "miruro";
   version = "2026.1020.0";
 
