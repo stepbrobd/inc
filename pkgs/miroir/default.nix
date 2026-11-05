@@ -1,12 +1,12 @@
 { lib
-, buildGoModule
+, buildGoLatestModule
 , fetchFromGitHub
 , installShellFiles
 , versionCheckHook
 , git
 }:
 
-buildGoModule (finalAttrs: {
+buildGoLatestModule (finalAttrs: {
   pname = "miroir";
   version = "2026.920.1";
 
