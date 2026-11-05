@@ -63,7 +63,6 @@
     xfce.enable = false;
 
     # inlined or inherited
-    neovide.enable = false;
     nixvim.enable = false;
     noctalia-shell.enable = false;
     noctalia.enable = false;
