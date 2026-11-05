@@ -1,4 +1,4 @@
-{ terraform-providers }:
+{ terraform-providers, buildGoLatestModule }:
 
 (terraform-providers.mkProvider {
   owner = "stepbrobd";
@@ -7,6 +7,7 @@
   hash = "sha256-KtBHdHEpAp8EcoErNWvKR67TxeII7zTUunfVVnWErpY=";
   vendorHash = "sha256-WiN88BAT9ABtmPPoeSXjIud/MwJEmSCTQQeo7Vf5BQE=";
   spdx = "MIT";
+  mkProviderGoModule = buildGoLatestModule;
   provider-source-address = "registry.terraform.io/stepbrobd/arin";
 }).overrideAttrs (prev: {
   subPackages = [ "cmd/terraform-provider-arin" ];
