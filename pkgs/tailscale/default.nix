@@ -14,9 +14,9 @@ let
   goRev = "7ef7b403648ac3a9481a6e88e8b894eff50b0167";
   goHash = "sha256-sdlgTLTkdhTvGCeQTwAsR+Do8rNwBzBUp5QPc09BPgI=";
 
-  tsVersion = "1.105.188";
-  tsRev = "4290c03d37d0956e6ab0421bbe85fdc764ff1c50";
-  tsHash = "sha256-KcxDAfaa/aEF6ja7IODYGxVegCT+wFpeQfiP0ENtyK0=";
+  tsVersion = "1.105.195";
+  tsRev = "dc698697699625abd97cabb1e88ddd77ae28e06e";
+  tsHash = "sha256-LTC1s8qQdLJc/XDGLWbUjxErYXZMe1wIth0uqJLDops=";
 
   vendorHash = "sha256-Au1/DgsJwHI37CHB2xXQGj8lyrh9xJKAOTAFVnY5dvA=";
 
