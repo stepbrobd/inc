@@ -26,9 +26,7 @@ in
   };
 
   nix = {
-    # wrap with iets
-    # https://github.com/numtide/iets
-    package = inputs.iets.lib.mkClassic pkgs inputs.iets.packages.${pkgs.stdenv.hostPlatform.system}.default pkgs.nix;
+    package = pkgs.nix;
 
     optimise.automatic = true;
     gc = {
@@ -122,6 +120,7 @@ in
 
     file
     inputs.sweep.packages.${pkgs.stdenv.hostPlatform.system}.default
+    nix-eval-jobs
     mtr
   ];
 
