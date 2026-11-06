@@ -11,7 +11,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
     hash = "sha256-s/b70kmv8N85Ri26B0k8jsqnvIBMxDo4iOCT1xjmCw0=";
   };
 
-  cargoHash = "sha256-O7ZzGNvmwGKiUSWRboYj0ukKSr8RTvn34nbnOXtWkPs=";
+  # use system root
+  cargoPatches = [ ./ca.patch ];
+  cargoHash = "sha256-CVu1TwprXFxN0/PK1qH3yGG7KJvG+ESXaD/GiM62/IY=";
 
   passthru.autobump = true;
 

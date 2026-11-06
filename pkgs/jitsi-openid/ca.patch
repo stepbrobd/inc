@@ -1,0 +1,48 @@
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -4,9 +4,9 @@
+ edition = "2021"
+ 
+ [dependencies]
+-reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "rustls-tls-native-roots"] }
++reqwest = { version = "0.12", default-features = false, features = ["rustls-tls-native-roots"] }
+ tokio = { version = "1.44", features = ["macros", "rt-multi-thread", "sync"], default-features = false }
+-openidconnect = { version = "4.0", features = ["reqwest", "rustls-tls"], default-features = false }
++openidconnect = { version = "4.0", features = ["reqwest"], default-features = false }
+ tracing-subscriber = { version = "0.3", features = ["fmt", "ansi"], default-features = false }
+ axum = { version = "0.8", features = ["tokio", "http1", "query"], default-features = false }
+ axum-extra = { version = "0.10", features = ["cookie"], default-features = false }
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -721,7 +721,6 @@
+  "tokio",
+  "tokio-rustls",
+  "tower-service",
+- "webpki-roots",
+ ]
+ 
+ [[package]]
+@@ -1500,7 +1499,6 @@
+  "wasm-bindgen",
+  "wasm-bindgen-futures",
+  "web-sys",
+- "webpki-roots",
+  "windows-registry",
+ ]
+ 
+@@ -2297,15 +2295,6 @@
+ ]
+ 
+ [[package]]
+-name = "webpki-roots"
+-version = "0.26.8"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "2210b291f7ea53617fbafcc4939f10914214ec15aace5ba62293a668f322c5c9"
+-dependencies = [
+- "rustls-pki-types",
+-]
+-
+-[[package]]
+ name = "winapi"
+ version = "0.3.9"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
