@@ -1,6 +1,8 @@
 { lib
 , rustPlatform
 , fetchFromGitHub
+, aws-lc
+, pkg-config
 , versionCheckHook
 }:
 
@@ -18,6 +20,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
   };
 
   cargoHash = "sha256-jYV8+TPJTpDIIZpjUZdNx+uMsvSntbFxf7ekfsRX2qU=";
+
+  env.AWS_LC_SYS_USE_SYSTEM = true;
+  buildInputs = [ aws-lc ];
+  nativeBuildInputs = [ pkg-config ];
 
   cargoBuildFlags = [ "--package" "howfastly" ];
 
