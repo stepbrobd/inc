@@ -2,7 +2,9 @@
 , stdenv
 , rustPlatform
 , fetchFromGitHub
+, aws-lc
 , installShellFiles
+, pkg-config
 , versionCheckHook
 , writableTmpDirAsHomeHook
 , cacert
@@ -24,7 +26,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoHash = "sha256-JaNDnEKdSQAmZ621HDurRyuhB9MCuH8PO9nZacqy+0U=";
 
-  nativeBuildInputs = [ installShellFiles ];
+  env.AWS_LC_SYS_USE_SYSTEM = true;
+  buildInputs = [ aws-lc ];
+
+  nativeBuildInputs = [ installShellFiles pkg-config ];
 
   postInstall = lib.optionalString (stdenv.buildPlatform.canExecute stdenv.hostPlatform) ''
     installShellCompletion --cmd things \
