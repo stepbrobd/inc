@@ -413,6 +413,29 @@
         "type": "github"
       }
     },
+    "iets": {
+      "inputs": {
+        "crane": [
+          "crane"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793876660,
+        "narHash": "sha256-ETtzzDELjbn7WoMm7JW5h6JRTpUQmrJhUdqx/TSpClk=",
+        "owner": "numtide",
+        "repo": "iets",
+        "rev": "ac6d2d885170a560432babbfa957483d3ff1ef29",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "iets",
+        "type": "github"
+      }
+    },
     "import-tree": {
       "locked": {
         "lastModified": 1784254960,
@@ -780,6 +803,7 @@
         "gomod2nix": "gomod2nix",
         "hardware": "hardware",
         "hm": "hm",
+        "iets": "iets",
         "index": "index",
         "lanzaboote": "lanzaboote",
         "llm": "llm",
