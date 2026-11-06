@@ -90,9 +90,6 @@
     hm.url = "github:nix-community/home-manager";
     hm.inputs.nixpkgs.follows = "nixpkgs";
     # i
-    iets.url = "github:numtide/iets";
-    iets.inputs.nixpkgs.follows = "nixpkgs";
-    iets.inputs.crane.follows = "crane";
     index.url = "github:nix-community/nix-index-database";
     index.inputs.nixpkgs.follows = "nixpkgs";
     # l
