@@ -136,8 +136,13 @@ struct Claims {
 }
 
 fn fetch_jwks(uri: &str) -> Result<JwkSet> {
+    let tls = ureq::tls::TlsConfig::builder()
+        .root_certs(ureq::tls::RootCerts::PlatformVerifier)
+        .unversioned_rustls_crypto_provider(Arc::new(rustls::crypto::ring::default_provider()))
+        .build();
     let agent: ureq::Agent = ureq::Agent::config_builder()
         .timeout_global(Some(JWKS_FETCH_TIMEOUT))
+        .tls_config(tls)
         .build()
         .into();
     let body = agent
