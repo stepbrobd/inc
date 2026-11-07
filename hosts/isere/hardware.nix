@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   imports = with inputs.rpi.nixosModules; [
@@ -22,6 +22,10 @@
   hardware.facter.reportPath = ./facter.json;
 
   boot.loader.raspberry-pi.bootloader = "kernel";
+
+  # TODO: FIXME: drop once nixos-raspberrypi applies this or the vendor kernel's tools/include/linux/types.h defines __u128
+  # nixpkgs applies this to its own kernels below 7.3 (vendor kernel missed this)
+  boot.kernelPatches = [ pkgs.kernelPatches.tools_128bit_types ];
 
   boot.blacklistedKernelModules = [ "vc4" "v3d" ];
 
