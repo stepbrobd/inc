@@ -23,7 +23,7 @@ buildDunePackage {
   doCheck = true;
 
   nativeCheckInputs = [
-    mdx.bin
+    mdx.out
   ];
 
   checkInputs = [
