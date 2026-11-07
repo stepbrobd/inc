@@ -13,7 +13,7 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "things";
-  version = "2026.925.1";
+  version = "2026.1106.0";
 
   __structuredAttrs = true;
 
@@ -21,10 +21,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "stepbrobd";
     repo = "things";
     tag = finalAttrs.version;
-    hash = "sha256-GNuTFrUHL+vTAdhOgQ4IO5iVkcR7Df3bOrtcAI3uEDM=";
+    hash = "sha256-uk0MljApQz0iIwFS4NvmajkL1Pk4lLkbrHYZjSzRBqQ=";
   };
 
-  cargoHash = "sha256-JaNDnEKdSQAmZ621HDurRyuhB9MCuH8PO9nZacqy+0U=";
+  cargoHash = "sha256-sstqxcZQRGd8i8tg63vA5ty0wQtMtZvkkVws6chyWL0=";
 
   env.AWS_LC_SYS_USE_SYSTEM = true;
   buildInputs = [ aws-lc ];
