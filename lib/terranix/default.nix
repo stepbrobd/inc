@@ -9,7 +9,6 @@ let
       type = "custom.account";
       ns_set = 1;
     };
-    foundation_dns = false;
     multi_provider = false;
     secondary_overrides = false;
     soa = {
