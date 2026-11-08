@@ -153,11 +153,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790840190,
-        "narHash": "sha256-UjCILT/DJkuE5wsXQi2jUfbS6Fy4uego+I9MoAfRhOw=",
+        "lastModified": 1794165306,
+        "narHash": "sha256-e6xy4ak8eXpcZYJcP6tdaR4pg3S9cPEo0RcsOj0UJ8M=",
         "owner": "stepbrobd",
         "repo": "colmena",
-        "rev": "eee6f1800c4b9b680c925be75da82f467ab6c1b6",
+        "rev": "a8076dd119f4f5fbc2bc26ffcdea17507ac22026",
         "type": "github"
       },
       "original": {
@@ -557,11 +557,11 @@
     "nix": {
       "flake": false,
       "locked": {
-        "lastModified": 1794110371,
-        "narHash": "sha256-sVdek/Ogd1KXnC7+btgH2ymnoX1CpE74+qqyj4XApRs=",
+        "lastModified": 1794159992,
+        "narHash": "sha256-aM7zaVwDNikoDUM082ikIQbTODBuIQnRZgawrDbvKLs=",
         "owner": "nixos",
         "repo": "nix",
-        "rev": "d1ecb78bf7a1c5604726bd72651bd2169c14163d",
+        "rev": "972963bf173d40b134f34732864f5ba44ab5b3d5",
         "type": "github"
       },
       "original": {
@@ -598,11 +598,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1794070417,
-        "narHash": "sha256-leOOarLQ85CtX6NUcHuqNoOCwHbNKLRj6mNK59enKAA=",
+        "lastModified": 1794157196,
+        "narHash": "sha256-Ad+p0TzAFYZBdYL6W6335tl3Qq3iLRdMdu3Fx95N8N8=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "d63e5b96ca17ae27b5d248d29564e31ff7a83f02",
+        "rev": "4d6a01a11146f4691c0991682885ad9e4686e3ee",
         "type": "github"
       },
       "original": {
@@ -645,11 +645,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794105036,
-        "narHash": "sha256-AYPkn9VI9HYd4iIFVhR4rPxqIVvERjhvWmZ7rR2xEpY=",
+        "lastModified": 1794164762,
+        "narHash": "sha256-9bHz1IaOF6HxUD1btzfMIZIGSvQPK7jcsIDE7kZS+jQ=",
         "owner": "noctalia-dev",
         "repo": "noctalia",
-        "rev": "76637f9d42fe55186f2251f53f2d31c924a55e38",
+        "rev": "2f3e3c4f60f03a14f79f47b99af8bff7e6863b8b",
         "type": "github"
       },
       "original": {
@@ -720,11 +720,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794126417,
-        "narHash": "sha256-0RurXYTp57DiF8Rmq83zMQXctQvvbK19ROhyz/zG/Rw=",
+        "lastModified": 1794154542,
+        "narHash": "sha256-HLqjwggnV/I3YTS8RMYin9LlxX7M+s7p3z+qy02pkyw=",
         "owner": "ranet3",
         "repo": "ranet3",
-        "rev": "4ca2070c4e7f528424ee56d5e582b50662fb26aa",
+        "rev": "31afb55620155fbce445c05a6f319ec246990ccd",
         "type": "github"
       },
       "original": {
