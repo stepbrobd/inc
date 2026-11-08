@@ -46,6 +46,8 @@ in
     description = "Next-Gen WAF";
     mode = "block";
 
+    auto_enable_new_virtual_patches = true;
+
     # this block is required
     attack_signal_thresholds = [{
       immediate = true;
