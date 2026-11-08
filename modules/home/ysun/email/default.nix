@@ -150,7 +150,6 @@ in
 
   programs.himalaya = {
     enable = true;
-    package = pkgs.himalaya.override { buildFeatures = [ "native-tls" ]; };
     settings = {
       downloads-dir = config.xdg.userDirs.download;
       message.send.save-copy = "sent";
