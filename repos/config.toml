@@ -415,6 +415,11 @@ description = "forked from gre-nug/gre-nug"
 visibility = "public"
 archived = false
 
+[repo."gvisor"]
+description = "forked from google/gvisor"
+visibility = "public"
+archived = false
+
 [repo."homebrew-cask"]
 description = "forked from homebrew/homebrew-cask"
 visibility = "public"
