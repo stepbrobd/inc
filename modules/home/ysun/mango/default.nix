@@ -235,8 +235,8 @@ in
 
         # lid event toggle internal monitor
         switchbind = [
-          "fold,sleep_monitor,eDP-1"
-          "unfold,wakeup_monitor,eDP-1"
+          "lid_on,sleep_monitor,eDP-1"
+          "lid_off,wakeup_monitor,eDP-1"
         ];
       };
     };
