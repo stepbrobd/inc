@@ -17,7 +17,8 @@ updates:
           - "*"
 
   - package-ecosystem: nix
-    directory: "/"
+    directories:
+      - "**/*"
     schedule:
       interval: cron
       cronjob: "0 0 * * *"
@@ -32,3 +33,17 @@ updates:
           - "*"
     ignore:
       - dependency-name: "ranet3" # bump by hand for now
+
+  - package-ecosystem: cargo
+    directories:
+      - "**/*"
+    schedule:
+      interval: cron
+      cronjob: "0 0 * * *"
+      timezone: "Etc/UTC"
+    commit-message:
+      prefix: "cargo"
+    groups:
+      crates:
+        patterns:
+          - "*"
