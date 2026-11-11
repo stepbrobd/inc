@@ -807,7 +807,6 @@
         "treefmt": "treefmt",
         "uad2": "uad2",
         "utils": "utils",
-        "ysun": "ysun",
         "zen": "zen"
       }
     },
@@ -1204,32 +1203,6 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "ysun": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "parts": [
-          "parts"
-        ],
-        "systems": [
-          "systems"
-        ]
-      },
-      "locked": {
-        "lastModified": 1794394223,
-        "narHash": "sha256-x5gltQ+J5gLhuv+1Z/vv52fja1jJzMEYheSNGuTfMu8=",
-        "owner": "stepbrobd",
-        "repo": "ysun",
-        "rev": "7176341be29829229af0ea29c0de098060640f67",
-        "type": "github"
-      },
-      "original": {
-        "owner": "stepbrobd",
-        "repo": "ysun",
         "type": "github"
       }
     },

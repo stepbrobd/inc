@@ -178,11 +178,6 @@
     uad2.inputs.systems.follows = "systems";
     utils.url = "github:numtide/flake-utils";
     utils.inputs.systems.follows = "systems";
-    # y
-    ysun.url = "github:stepbrobd/ysun";
-    ysun.inputs.nixpkgs.follows = "nixpkgs";
-    ysun.inputs.parts.follows = "parts";
-    ysun.inputs.systems.follows = "systems";
     # z
     zen.url = "github:0xc000022070/zen-browser-flake";
     zen.inputs.nixpkgs.follows = "nixpkgs";
