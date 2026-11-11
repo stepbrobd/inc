@@ -10,15 +10,15 @@
 }:
 
 let
-  goVersion = "1.27.3";
-  goRev = "7ef7b403648ac3a9481a6e88e8b894eff50b0167";
-  goHash = "sha256-sdlgTLTkdhTvGCeQTwAsR+Do8rNwBzBUp5QPc09BPgI=";
+  goVersion = "1.27.4";
+  goRev = "1635316a95598e9fe1bff7267604daa94aa1c8ec";
+  goHash = "sha256-Up4oMG6TVLQkV9inAYF3uYbxu+bMHeU7q9BLcXIllow=";
 
-  tsVersion = "1.105.236";
-  tsRev = "d566ac8ac902d65a50cf64c41b6cf0f970573b4d";
-  tsHash = "sha256-YH37cBFiMup+ThPhfKtg5/TUqnQ+U5D7P0G5CdrDLRk=";
+  tsVersion = "1.105.259";
+  tsRev = "c31b4c133d277c45c7fa6a4b18d5e122437d26e5";
+  tsHash = "sha256-bD2/NUNIhWojHH9hCs9K97BdMWBLCnO1PbokoHr2z9Y=";
 
-  vendorHash = "sha256-M7jMKZAikFtuHU7GZ1TBUme1cHrgKcg3LQObcXoXImU=";
+  vendorHash = "sha256-Ackcupvrl5NqcyZZ7D3X3h/COrZ6Uz/rtxtzeu3ciU8=";
 
   builderArg = lib.findSingle
     (n: lib.hasPrefix "buildGo" n && lib.hasSuffix "Module" n)
