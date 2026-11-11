@@ -1,0 +1,8 @@
+<nav class="flex flex-col gap-2">
+  {%- for item in menu %}
+  <div class="grid grid-cols-3 md:grid-cols-5 gap-4">
+    <time>{{ item.front.created }}</time>
+    <a href="{{ item.route }}" class="col-span-2 md:col-span-4">{{ item.front.title }}</a>
+  </div>
+  {%- endfor %}
+</nav>

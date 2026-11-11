@@ -22,7 +22,6 @@ rustPlatform.buildRustPackage {
   };
 
   cargoLock.lockFile = ./Cargo.lock;
-  buildNoDefaultFeatures = true;
   cargoBuildFlags = [ "-vv" ];
 
   nativeBuildInputs = [ pkg-config tailwindcss_4 ];

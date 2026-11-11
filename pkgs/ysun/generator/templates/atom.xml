@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>{{ origin }}/</id>
+  <title type="text">Yifei Sun</title>
+  <updated>{{ updated }}T00:00:00Z</updated>
+  <author>
+    <name>Yifei Sun</name>
+  </author>
+  <link href="{{ origin }}/atom.xml" rel="self" />
+  <link href="{{ origin }}" rel="alternate" />
+  {%- for entry in entries %}
+  <entry>
+    <id>{{ entry.id }}</id>
+    <title type="text">{{ entry.title }}</title>
+    <updated>{{ entry.updated }}T00:00:00Z</updated>
+    {%- if let Some(summary) = entry.summary %}<summary type="text">{{ summary }}</summary>{% endif %}
+    <link href="{{ entry.link }}" rel="alternate" />
+  </entry>
+  {%- endfor %}
+</feed>

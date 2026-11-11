@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    {%- include "metas.html" %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ link_prefix }}/assets/style/tailwind.css" />
+    <link rel="icon" href="{{ link_prefix }}/favicon.ico" />
+    <title>{{ page.front.title }}</title>
+  </head>
+  <body class="flex flex-col min-h-screen p-4 gap-8">
+    <div class="prose container mx-auto">
+      {%- include "header.html" %}
+    </div>
+    <main class="prose flex-grow container mx-auto">
+      <article lang="en-US" class="prose container mx-auto">
+        {%- match kind %}
+        {%- when ErrorLayout::Generic %}
+        {{ body | safe }}
+        {%- when ErrorLayout::Waf %}
+        {{ body | safe }}
+        <p>These might help you (or not):</p>
+        <ul>
+          <li>Cloudflare Ray ID: ::RAY_ID::</li>
+          <li>Your IP: ::CLIENT_IP::</li>
+          <li>Visiting from: ::GEO::</li>
+        </ul>
+        {%- when ErrorLayout::Widget %}
+        <div>::CF_WIDGET_BOX::</div>
+        {%- endmatch %}
+      </article>
+    </main>
+    <div class="prose container mx-auto">
+      {%- include "footer.html" %}
+    </div>
+  </body>
+</html>

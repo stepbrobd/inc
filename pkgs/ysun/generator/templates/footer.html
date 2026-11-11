@@ -1,0 +1,41 @@
+{%- import "access.html" as access %}
+<footer class="flex flex-col gap-4">
+  <div class="grid grid-cols-3 items-center">
+    <div class="justify-self-start">
+      <small>&#xA9; <script>document.write(new Date().getFullYear());</script></small>
+    </div>
+    <div class="justify-self-center">
+      {%- call access::menu("footer") %}{% endcall %}
+    </div>
+    <div class="justify-self-end">
+      <a href="https://creativecommons.org/licenses/by-nc/4.0/" class="flex flex-row gap-2" aria-label="CC BY-NC License">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-nord-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+          <path d="M10.5 10.5c-.847 -.71 -2.132 -.658 -2.914 .116a1.928 1.928 0 0 0 0 2.768c.782 .774 2.067 .825 2.914 .116"></path>
+          <path d="M16.5 10.5c-.847 -.71 -2.132 -.658 -2.914 .116a1.928 1.928 0 0 0 0 2.768c.782 .774 2.067 .825 2.914 .116"></path>
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-nord-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+          <path d="M12 7m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+          <path d="M9 13v-1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-.5l-.5 4h-2l-.5 -4h-.5a1 1 0 0 1 -1 -1z"></path>
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-nord-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+          <path d="M15 9h-4.5a1.5 1.5 0 0 0 0 3h3a1.5 1.5 0 0 1 0 3h-4.5"></path>
+          <path d="M12 7v2"></path>
+          <path d="M12 15v2"></path>
+          <path d="M6 6l3 3"></path>
+          <path d="M15 15l3 3"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+  {%- if let Some(store) = store %}
+  <pre class="my-0"><code>nix path-info <a href="https://cache.ysun.co/{{ store.hash }}.narinfo">{{ store.path }}</a> --store <a href="https://cache.ysun.co">https://cache.ysun.co</a> --json-format 2 --json</code></pre>
+  {%- else %}
+  <pre class="my-0"><code>Nix store path unavailable (local build)</code></pre>
+  {%- endif %}
+</footer>

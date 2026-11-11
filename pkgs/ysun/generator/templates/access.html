@@ -1,0 +1,43 @@
+{%- macro menu(slot) %}
+<nav class="grid grid-cols-1">
+  <select
+    id="access-{{ slot }}"
+    name="access"
+    onchange="if(this.value) window.open(this.value, '_self')"
+    class="col-start-1 row-start-1 w-20 appearance-none rounded-md bg-nord-1 py-1 pr-4 pl-2 text-sm text-nord-4 outline-1 -outline-offset-1 outline-nord-3 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nord-8"
+  >
+    <option selected="selected" disabled="disabled"
+      hidden="hidden">Access</option>
+    <optgroup label="Public">
+      <option value="https://home.ysun.co">Glance</option>
+      <option value="https://meet.ysun.co">Jitsi</option>
+      <option value="https://time.ysun.co">Time</option>
+    </optgroup>
+    <optgroup label="External">
+      <option value="https://grep.ysun.co">Code Search</option>
+      <option value="https://otel.ysun.co/login">Grafana</option>
+      <option value="https://sso.ysun.co/ui/login">Kanidm</option>
+      <option value="https://read.ysun.co/login?next=%2F">Kavita</option>
+      <option value="https://cache.ysun.co">Nix Binary Cache</option>
+      <option value="https://stats.ysun.co/login">Plausible</option>
+    </optgroup>
+    <optgroup label="Internal">
+      <option value="https://vault.ysun.co/#/vault">Vaultwarden</option>
+      <option value="https://ha.ysun.co/home/overview">Home Assistant</option>
+      <option value="https://dms.ysun.co/dashboard">Paperless</option>
+    </optgroup>
+  </select>
+  <svg
+    viewBox="0 0 16 16"
+    fill="currentColor"
+    aria-hidden="true"
+    class="pointer-events-none col-start-1 row-start-1 mr-1 size-3 self-center justify-self-end text-nord-3"
+  >
+    <path
+      d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+      clip-rule="evenodd"
+      fill-rule="evenodd"
+    />
+  </svg>
+</nav>
+{%- endmacro %}

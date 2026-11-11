@@ -1,0 +1,4 @@
+{%- for (name, content) in page.front.metas %}
+<meta {% if name.starts_with("og:") %}
+  property{% else %}name{% endif %}="{{ name }}" content="{{ content }}" />
+{%- endfor -%}

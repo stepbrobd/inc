@@ -4,7 +4,6 @@ heading: '<span class="flex flex-wrap items-baseline justify-between gap-x-4"><s
 description: Yifei Sun - 孫 奕飛 (そん いーふぇい)
 created: 2019-08-11
 updated: 2026-11-11
-url: /index.html
 ---
 
 <!---

@@ -1,0 +1,41 @@
+{%- extends "base.html" %}
+{%- block head %}
+{%- if let Layout::Redirect(to) = page.front.layout %}
+<meta http-equiv="refresh" content="0; url={{ to }}" />
+{%- endif %}
+{%- endblock %}
+{%- block content %}
+<article lang="en-US" class="prose container mx-auto">
+  <h1>{% if let Some(heading) = page.front.heading %}{{ heading | safe }}{% else %}{{ page.front.title }}{% endif %}</h1>
+  <small class="text-nord-9 flex flex-row items-center gap-2">
+    <time>{{ page.front.created }}<sup class="text-xs text-nord-10">c</sup></time>
+    <span>&#xB7;</span>
+    <span>{{ page.words }} words</span>
+    <span>&#xB7;</span>
+    <span>{{ page.minutes() }} min read</span>
+    <span class="ml-auto"><time>{{ page.front.updated }}<sup class="text-xs text-nord-10">u</sup></time></span>
+  </small>
+  {%- match page.front.layout %}
+  {%- when Layout::Redirect(to) %}
+  <p>You are being redirected. You can navigate to the target URL <a href="{{ to }}">here</a>.</p>
+  {%- when Layout::Embed %}
+  {{ body | safe }}
+  <iframe
+    plausible-embed="plausible-embed"
+    src="https://stats.ysun.co/share/ysun.co?auth=3iFgLFb18-zpNdn_2Ow64&amp;embed=true&amp;theme=dark&amp;background=%232E3440"
+    scrolling="no"
+    class="min-w-full min-h-screen border-0"
+    title="Plausible Analytics"
+  >
+  </iframe>
+  <script async="async" src="https://stats.ysun.co/js/embed.host.js"></script>
+  {%- when _ %}
+  {{ body | safe }}
+  {%- endmatch %}
+  <nav class="container mx-auto">
+    <hr />
+    {%- include "list.html" %}
+    <hr />
+  </nav>
+</article>
+{%- endblock %}

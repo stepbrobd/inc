@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    {%- include "metas.html" %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/style/tailwind.css" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="canonical" href="{{ canonical }}" />
+    <script type="speculationrules">
+      {
+        "prefetch": [
+          {
+            "where": {
+              "and": [
+                { "href_matches": "/*" },
+                { "not": { "href_matches": "/assets/*" } }
+              ]
+            },
+            "eagerness": "moderate"
+          }
+        ]
+      }
+    </script>
+    <script
+      defer="defer"
+      data-domain="ysun.co"
+      src="https://stats.ysun.co/js/script.file-downloads.hash.outbound-links.js"
+    ></script>
+    <title>{{ page.front.title }}</title>
+    {%- for meta in metas %}
+    <meta {{ meta.attr }}="{{ meta.key }}" content="{{ meta.content }}" />
+    {%- endfor %}
+    {%- block head %}{% endblock %}
+  </head>
+  <body class="flex flex-col min-h-screen p-4 gap-8">
+    {%- include "webring.html" %}
+    <div class="prose container mx-auto">
+      {%- include "header.html" %}
+    </div>
+    <main class="prose flex-grow container mx-auto">
+      {%- block content %}{% endblock %}
+    </main>
+    <div class="prose container mx-auto">
+      {%- include "footer.html" %}
+    </div>
+  </body>
+</html>
