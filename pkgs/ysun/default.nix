@@ -22,11 +22,9 @@ rustPlatform.buildRustPackage {
   };
 
   cargoLock.lockFile = ./Cargo.lock;
-  cargoBuildFlags = [ "-vv" ];
 
-  nativeBuildInputs = [ pkg-config tailwindcss_4 ];
   buildInputs = [ zstd ];
-
+  nativeBuildInputs = [ pkg-config tailwindcss_4 ];
   env.BUN_JSC_useJIT = "0";
 
   meta = {
