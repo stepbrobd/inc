@@ -1,27 +1,52 @@
-# https://github.com/stepbrobd/ysun
-
-{ inputs, lib, ... }:
+{ lib, ... }:
 
 { config, pkgs, ... }:
 
 let
   hasTag = lib.hasTag config.networking.hostName;
-  ysun = inputs.ysun.packages.${pkgs.stdenv.hostPlatform.system}.default;
-  etag = lib.head (lib.splitString "-" (baseNameOf ysun));
+  socket = "/run/ysun.sock";
 
   canonical = "ysun.co";
   mirrors = [
+    "ysun.fr"
+    "ysun.jp"
+    "ysun.us"
+
     "deeznuts.phd"
     "internal.center"
     "stepbrobd.com"
     "xdg.sh"
-    "ysun.fr"
-    "ysun.jp"
-    "ysun.us"
   ];
 in
 {
   config = lib.mkIf (hasTag "ysun") {
+    systemd.sockets.ysun = {
+      description = "Homepage";
+      wantedBy = [ "sockets.target" ];
+      before = [ "caddy.service" ];
+      listenStreams = [ socket ];
+      socketConfig = {
+        SocketUser = "root";
+        SocketGroup = config.services.caddy.group;
+        SocketMode = "0660";
+      };
+    };
+
+    systemd.services.ysun = {
+      description = "Homepage";
+      requires = [ "ysun.socket" ];
+      after = [ "ysun.socket" ];
+      unitConfig.StartLimitIntervalSec = 0;
+      serviceConfig = {
+        ExecStart = lib.getExe pkgs.ysun;
+        DynamicUser = true;
+        PrivateNetwork = true;
+        Restart = "always";
+        RestartSec = 1;
+        SyslogLevel = "err";
+      };
+    };
+
     services.caddy = {
       enable = true;
 
@@ -36,26 +61,9 @@ in
         ${canonical}.extraConfig = ''
           import webring
 
-          @static path /assets/static/*
-          @style  path /assets/style/*
-          @pages   not path /assets/*
-
-          header ETag `"${etag}"`
-          header @static Cache-Control "public, max-age=604800"
-          header @style  Cache-Control "public, max-age=300"
-          header @pages   Cache-Control "public, no-cache"
-
           header X-Served-By "${config.networking.fqdn}"
 
-          root * ${ysun}/var/www/html
-          file_server
-
-          handle_errors {
-            root * ${ysun}/var/www/html
-            header Cache-Control "public, no-cache"
-            rewrite * /error
-            file_server
-          }
+          reverse_proxy unix/${socket}
         '';
       };
     };
