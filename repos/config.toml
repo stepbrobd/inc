@@ -297,7 +297,7 @@ archived = true
 [repo."ysun"]
 description = "nix // yocaml"
 visibility = "public"
-archived = false
+archived = true
 
 ## Forks
 [repo."amzn-drivers"]
