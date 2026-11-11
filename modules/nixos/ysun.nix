@@ -26,9 +26,8 @@ in
       before = [ "caddy.service" ];
       listenStreams = [ socket ];
       socketConfig = {
-        SocketUser = "root";
-        SocketGroup = config.services.caddy.group;
-        SocketMode = "0660";
+        SocketUser = config.services.caddy.user;
+        SocketMode = "0600";
       };
     };
 
@@ -39,11 +38,37 @@ in
       unitConfig.StartLimitIntervalSec = 0;
       serviceConfig = {
         ExecStart = lib.getExe pkgs.ysun;
-        DynamicUser = true;
-        PrivateNetwork = true;
         Restart = "always";
         RestartSec = 1;
         SyslogLevel = "err";
+        DynamicUser = true;
+        UMask = "0077";
+        CapabilityBoundingSet = "";
+        LockPersonality = true;
+        MemoryDenyWriteExecute = true;
+        NoNewPrivileges = true;
+        PrivateDevices = true;
+        PrivateIPC = true;
+        PrivateNetwork = true;
+        PrivateTmp = true;
+        PrivateUsers = true;
+        ProcSubset = "pid";
+        ProtectClock = true;
+        ProtectControlGroups = true;
+        ProtectHome = true;
+        ProtectHostname = true;
+        ProtectKernelLogs = true;
+        ProtectKernelModules = true;
+        ProtectKernelTunables = true;
+        ProtectProc = "invisible";
+        ProtectSystem = "strict";
+        RemoveIPC = true;
+        RestrictAddressFamilies = "none";
+        RestrictNamespaces = true;
+        RestrictRealtime = true;
+        RestrictSUIDSGID = true;
+        SystemCallArchitectures = "native";
+        SystemCallFilter = [ "@system-service" "~@privileged" "~@resources" ];
       };
     };
 
