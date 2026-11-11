@@ -19,7 +19,7 @@
 *.adoc text
 *.textile text
 *.mustache text
-*.csv text eol=crlf
+*.csv text
 *.tab text
 *.tsv text
 *.txt text
@@ -42,9 +42,9 @@
 *.fish text eol=lf
 *.sh text eol=lf
 *.zsh text eol=lf
-*.bat text eol=crlf
-*.cmd text eol=crlf
-*.ps1 text eol=crlf
+*.bat text
+*.cmd text
+*.ps1 text
 
 # Serialisation
 *.json text
