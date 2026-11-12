@@ -53,21 +53,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Setup
-        uses: ./.github/actions/setup # zizmor: ignore[self-repository]
+        uses: $/.github/actions/setup
 
       - name: SSH
-        uses: ./.github/actions/ssh # zizmor: ignore[self-repository]
+        uses: $/.github/actions/ssh
         with:
           ssh: ${{ secrets.SSH }}
 
       - name: Tailscale
-        uses: tailscale/github-action@v4
+        uses: tailscale/github-action@v4.4.0
         with:
           tags: tag:ci
           version: unstable

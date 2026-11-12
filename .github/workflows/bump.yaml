@@ -18,13 +18,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@v7.0.1
         with:
           token: ${{ secrets.TOKEN }}
           persist-credentials: true
 
       - name: Setup
-        uses: ./.github/actions/setup # zizmor: ignore[self-repository]
+        uses: $/.github/actions/setup
 
       - name: Install Dependencies
         run: nix profile add nixpkgs#nix-update
