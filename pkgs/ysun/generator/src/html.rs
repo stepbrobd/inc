@@ -60,7 +60,7 @@ struct PageHtml<'a> {
     metas: Vec<Meta>,
     menu: &'a [&'a Page],
     store: Option<&'a StorePath>,
-    link_prefix: &'static str,
+    prefix: &'static str,
 }
 
 #[derive(Template)]
@@ -70,7 +70,7 @@ struct ErrorHtml<'a> {
     body: &'a str,
     kind: ErrorLayout,
     store: Option<&'a StorePath>,
-    link_prefix: &'static str,
+    prefix: &'static str,
 }
 
 struct FeedEntry<'a> {
@@ -115,7 +115,7 @@ pub fn render(
                 body: html.body.trim_end(),
                 kind,
                 store,
-                link_prefix: ORIGIN,
+                prefix: ORIGIN,
             }
             .render(),
             _ => PageHtml {
@@ -125,7 +125,7 @@ pub fn render(
                 metas: metas(page, html.og_image.as_deref()),
                 menu: &menu,
                 store,
-                link_prefix: "",
+                prefix: "",
             }
             .render(),
         }
