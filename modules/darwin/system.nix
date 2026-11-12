@@ -50,6 +50,8 @@
   };
 
   system.defaults = {
+    CustomUserPreferences."~${config.system.primaryUser}/Library/Preferences/ByHost/com.apple.controlcenter".AirplayReceiverEnabled = false;
+
     dock = {
       autohide = true;
       tilesize = 64;
