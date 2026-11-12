@@ -86,8 +86,6 @@ in
               ++ lib.optionals exits (lib.map (r: { prefix = "::/0"; from = r.prefix; }) as.router.static.ipv6.routes);
             cap.egress = {
               advertise = lib.optional exits "0.0.0.0/0";
-              # the exit tracks replies to traffic that came in by another router
-              flows_per_source = 1048576;
               translate =
                 # bgp announces these
                 lib.map (r: { from = r.prefix; to = "none"; }) (as.router.static.ipv4.routes ++ as.router.static.ipv6.routes)
