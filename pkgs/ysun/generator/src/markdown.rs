@@ -186,13 +186,28 @@ impl<'a> Markdown<'a> {
         }
     }
 
-    /// checks href, src, poster and action, not srcset or urls in scripts and styles
+    /// checks href, src, poster and action, not srcset or urls in scripts and styles, and that
+    /// every iframe has a title
     fn check_html(&self, html: &str) -> Result<(), Error> {
         let mut emitter = DefaultEmitter::default();
         // do not interpret markup inside scripts, styles, or comments as links
         emitter.naively_switch_states(true);
         for token in Tokenizer::new_with_emitter(html, emitter) {
             if let Token::StartTag(tag) = token.map_err(Error::new)? {
+                if tag.name.as_slice() == b"iframe" {
+                    let attribute = |want: &[u8]| {
+                        tag.attributes.iter().find_map(|(name, value)| {
+                            let name: &[u8] = name;
+                            (name == want).then(|| String::from_utf8_lossy(value).trim().to_owned())
+                        })
+                    };
+                    if attribute(b"title").is_none_or(|title| title.is_empty()) {
+                        return Err(Error::new(format!(
+                            "iframe of {} has no title",
+                            attribute(b"src").unwrap_or_default()
+                        )));
+                    }
+                }
                 for (name, value) in &tag.attributes {
                     let name: &[u8] = name;
                     if matches!(name, b"href" | b"src" | b"poster" | b"action") {

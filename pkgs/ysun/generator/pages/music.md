@@ -9,6 +9,7 @@ hidden: true
 
 <div class="amembed">
   <iframe
+    title="Apple Music playlist: Perfection"
     allow="autoplay *; encrypted-media *;"
     frameborder="0"
     height="450"
@@ -23,6 +24,7 @@ hidden: true
 
 <div class="amembed">
   <iframe
+    title="Apple Music playlist: Replay 2026"
     allow="autoplay *; encrypted-media *;"
     frameborder="0"
     height="450"
@@ -37,6 +39,7 @@ hidden: true
 
 <div class="amembed">
   <iframe
+    title="Apple Music playlist: Replay 2025"
     allow="autoplay *; encrypted-media *;"
     frameborder="0"
     height="450"
@@ -51,6 +54,7 @@ hidden: true
 
 <div class="amembed">
   <iframe
+    title="Apple Music playlist: Replay 2024"
     allow="autoplay *; encrypted-media *;"
     frameborder="0"
     height="450"
@@ -65,6 +69,7 @@ hidden: true
 
 <div class="amembed">
   <iframe
+    title="Apple Music playlist: Replay 2023"
     allow="autoplay *; encrypted-media *;"
     frameborder="0"
     height="450"
@@ -79,6 +84,7 @@ hidden: true
 
 <div class="amembed">
   <iframe
+    title="Apple Music playlist: Replay 2022"
     allow="autoplay *; encrypted-media *;"
     frameborder="0"
     height="450"
@@ -93,6 +99,7 @@ hidden: true
 
 <div class="amembed">
   <iframe
+    title="Apple Music playlist: Replay 2021"
     allow="autoplay *; encrypted-media *;"
     frameborder="0"
     height="450"
@@ -107,6 +114,7 @@ hidden: true
 
 <div class="amembed">
   <iframe
+    title="Apple Music playlist: Replay 2020"
     allow="autoplay *; encrypted-media *;"
     frameborder="0"
     height="450"
@@ -121,6 +129,7 @@ hidden: true
 
 <div class="amembed">
   <iframe
+    title="Apple Music playlist: Replay 2019"
     allow="autoplay *; encrypted-media *;"
     frameborder="0"
     height="450"
@@ -135,6 +144,7 @@ hidden: true
 
 <div class="amembed">
   <iframe
+    title="Apple Music playlist: Heavy Rotation Mix"
     allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"
     frameborder="0"
     height="450"
@@ -149,6 +159,7 @@ hidden: true
 
 <div class="amembed">
   <iframe
+    title="Apple Music playlist: New Music Mix"
     allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"
     frameborder="0"
     height="450"
