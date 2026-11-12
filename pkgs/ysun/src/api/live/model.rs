@@ -4,8 +4,8 @@ use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 use jiff::{Timestamp, Unit};
 use serde::Serialize;
 
-/// one poll per minute, at an offset of the host's own
-pub const INTERVAL: Duration = Duration::from_secs(60);
+/// one poll every 30 s, at an offset of the host's own
+pub const INTERVAL: Duration = Duration::from_secs(30);
 /// ceiling for the backoff after 429 and 5xx answers
 pub const MAX_INTERVAL: Duration = Duration::from_secs(300);
 /// delay from the start of a play to apple's history entry, about 2 s in the 2026-11-11 probes
