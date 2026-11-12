@@ -12,7 +12,7 @@
 //!     "lang": "ja",
 //!     "duration": 250484,
 //!     "url": "https://music.apple.com/us/album/unrealistic/1882330234?i=1882330235",
-//!     "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/41/81/00/418100f2-464b-b4a3-0b56-a95668949d9a/4540774748402.jpg/216x216bb.jpg"
+//!     "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/41/81/00/418100f2-464b-b4a3-0b56-a95668949d9a/4540774748402.jpg/216x216bb.webp"
 //!   }
 //! }
 //! ```

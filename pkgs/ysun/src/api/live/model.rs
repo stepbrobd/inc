@@ -153,7 +153,12 @@ pub fn origin<'a>(
 /// apple's artwork urls are templates with {w} and {h}
 pub fn artwork(template: &str) -> String {
     let size = ARTWORK_SIZE.to_string();
-    template.replace("{w}", &size).replace("{h}", &size)
+    let url = template.replace("{w}", &size).replace("{h}", &size);
+    // mzstatic encodes to the extension asked for, and webp is under half the bytes of jpeg
+    match url.strip_suffix(".jpg") {
+        Some(stem) => format!("{stem}.webp"),
+        None => url,
+    }
 }
 
 /// time until the next instant of the wall clock that is offset past a multiple of the interval
