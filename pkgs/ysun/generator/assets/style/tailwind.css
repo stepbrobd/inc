@@ -3,6 +3,56 @@
 @source "../../pages";
 @plugin "@tailwindcss/typography";
 
+/* the script sets both variables, the bar runs from where it was to the track's end */
+@keyframes live-bar {
+  from {
+    width: var(--live-from);
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.live-bar {
+  width: var(--live-from);
+  animation: live-bar var(--live-rest) linear forwards;
+}
+
+/* the bar then steps with each refresh of the card */
+@media (prefers-reduced-motion: reduce) {
+  .live-bar {
+    animation: none;
+  }
+}
+
+/* outside the layers to win over .prose a, and a title without a link stays plain text */
+.live-title {
+  @apply text-nord-6;
+}
+
+.live-title[href]:hover {
+  @apply text-nord-8;
+}
+
+/* the skeleton until the first answer, each line keeps the height of the text it stands for */
+#live[aria-busy] :is([data-live="label"], [data-live="title"], [data-live="sub"]) {
+  color: transparent;
+  background: linear-gradient(var(--color-nord-2) 0 0) left center / 100% 0.75em
+    no-repeat;
+}
+
+#live[aria-busy] [data-live="label"] {
+  @apply w-20;
+}
+
+#live[aria-busy] [data-live="title"] {
+  @apply w-48 max-w-full;
+}
+
+#live[aria-busy] [data-live="sub"] {
+  @apply w-32 max-w-full;
+}
+
 @theme {
   --font-sans:
     -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica

@@ -1,0 +1,89 @@
+<section id="live" aria-label="Live" aria-busy="true" hidden="hidden"
+  class="not-prose mt-3 flex items-center gap-3.5 rounded-[10px] bg-nord-1 p-2.5 sm:mt-4 sm:gap-4 sm:p-3">
+  <a data-live="art-link" class="block size-16 shrink-0 overflow-hidden rounded-md bg-nord-2 sm:size-18" tabindex="-1" aria-hidden="true">
+    <img data-live="art" class="block size-full" width="72" height="72" alt="" referrerpolicy="no-referrer" hidden="hidden" />
+  </a>
+  <div class="flex min-w-0 flex-1 flex-col gap-px sm:gap-0.5">
+    <div class="flex items-center gap-1.5 text-xs text-nord-9">
+      <span data-live="dot" class="size-1.5 shrink-0 rounded-full bg-nord-14" aria-hidden="true" hidden="hidden"></span>
+      <span data-live="label">&#xA0;</span>
+      <span data-live="when" hidden="hidden">&#xB7; <time data-live="played"></time></span>
+    </div>
+    <a data-live="title" class="live-title truncate text-base font-semibold">&#xA0;</a>
+    <div data-live="sub" class="truncate text-sm text-nord-4"><span data-live="artist">&#xA0;</span><span data-live="album-sep" class="text-nord-9" hidden="hidden"> / </span><span data-live="album"></span></div>
+    <div data-live="track" class="invisible mt-1.5 h-[3px] overflow-hidden rounded-xs bg-nord-2 sm:mt-2">
+      <div data-live="bar" class="live-bar h-full bg-nord-8"></div>
+    </div>
+  </div>
+  <a class="hidden shrink-0 self-start px-1.5 py-1 text-[13px] leading-5 sm:block" href="/music">Apple Music</a>
+  {% raw %}<script>
+//<![CDATA[
+(() => {
+  const root = document.getElementById("live");
+  const get = (name) => root.querySelector(`[data-live="${name}"]`);
+  const link = (el, url) => (url ? el.setAttribute("href", url) : el.removeAttribute("href"));
+  const pad = (n) => String(n).padStart(2, "0");
+  // the visitor's own time zone, in the site's date format
+  const local = (iso) => {
+    const d = new Date(iso);
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  };
+  const played = (iso) => {
+    get("when").hidden = !iso;
+    const time = get("played");
+    if (iso) {
+      time.dateTime = iso;
+      time.textContent = local(iso);
+    } else time.removeAttribute("datetime");
+  };
+  const show = (data) => {
+    const track = data.track;
+    const playing = data.state === "playing";
+    get("label").textContent = playing ? "Listening to" : "Last played";
+    get("dot").hidden = !playing;
+    // the time shows only once the play is over
+    played(playing ? null : data.played);
+    get("title").textContent = track.title;
+    get("artist").textContent = track.artist;
+    get("album").textContent = track.album ?? "";
+    get("album-sep").hidden = !track.album;
+    for (const name of ["title", "sub"]) get(name).lang = track.lang;
+    for (const name of ["title", "art-link"]) link(get(name), track.url);
+    // no artwork drops the tile, gap included
+    get("art-link").hidden = !track.artwork;
+    const art = get("art");
+    // the skeleton shows the bare tile, browsers outline an image without a source
+    if (track.artwork && art.getAttribute("src") !== track.artwork) art.src = track.artwork;
+    art.hidden = !track.artwork;
+    // the row stays reserved when nothing plays, so every state has the same height
+    get("track").classList.toggle("invisible", !playing);
+    if (playing) {
+      const bar = get("bar");
+      bar.style.setProperty("--live-from", `${(100 * data.position) / track.duration}%`);
+      bar.style.setProperty("--live-rest", `${(track.duration - data.position) / 1000}s`);
+      // the animation restarts only with a style flush between removing and restoring it
+      bar.style.animation = "none";
+      void bar.offsetWidth;
+      bar.style.animation = "";
+    }
+    root.removeAttribute("aria-busy");
+  };
+  // anything but a track, a 204 included, keeps what is shown, the skeleton until a first track
+  const refresh = async () => {
+    try {
+      const response = await fetch("/api/live", { cache: "no-store", signal: AbortSignal.timeout(10000) });
+      if (response.status === 200) show(await response.json());
+    } catch {
+      // offline, the server restarting or no answer within 10 s
+    }
+  };
+  const visible = () => document.visibilityState === "visible";
+  // the card is always on the page with javascript, and stays hidden without it
+  root.hidden = false;
+  refresh();
+  setInterval(() => visible() && refresh(), 15000);
+  document.addEventListener("visibilitychange", () => visible() && refresh());
+})();
+//]]>
+</script>{% endraw %}
+</section>
