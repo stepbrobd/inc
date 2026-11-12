@@ -24,7 +24,7 @@
 //!   before the server started, since apple's history carries no times
 //! - `lang` is the language of title, artist and album, from the storefront they came from
 //! - `album`, `duration`, `url` and `artwork` may be absent
-//! - 204 with no body when there is nothing to show: no tokens, no successful poll yet, or dead tokens
+//! - 204 with no body when there is nothing to show: no successful poll yet, or dead tokens
 
 mod apple;
 mod model;
@@ -53,31 +53,20 @@ const USER_TOKEN: &str = "APPLE_MUSIC_USER_TOKEN";
 /// the newest snapshot, none until a poll succeeds and after the tokens die
 type Feed = watch::Receiver<Option<Arc<Snapshot>>>;
 
-/// the route's handlers with the poll they read from, an error when the tokens are misconfigured
+/// the route's handlers with the poll they read from, an error when a token is missing
 pub fn route() -> Result<MethodRouter, String> {
     Ok(routing::get(get).with_state(start()?))
 }
 
-/// starts the poll, an error when only one token is set or either is empty, and without tokens, as
-/// in the preview, the sender is dropped at once and the feed stays empty
+/// starts the poll, the hosts get both tokens from sops-nix and the devshell from `.envrc`
 fn start() -> Result<Feed, String> {
-    let (publish, feed) = watch::channel(None);
-    let (developer, user) = match (env::var(DEVELOPER_TOKEN), env::var(USER_TOKEN)) {
-        (Err(env::VarError::NotPresent), Err(env::VarError::NotPresent)) => return Ok(feed),
-        (Ok(developer), Ok(user)) => (developer, user),
-        _ => {
-            return Err(format!(
-                "{DEVELOPER_TOKEN} and {USER_TOKEN} must both be set and valid utf-8, or both unset"
-            ));
-        }
+    let token = |name| match env::var(name) {
+        Ok(value) if !value.trim().is_empty() => Ok(value.trim().to_owned()),
+        _ => Err(format!("{name} must be set, valid utf-8 and not empty")),
     };
-    let (developer, user) = (developer.trim(), user.trim());
-    if developer.is_empty() || user.is_empty() {
-        return Err(format!(
-            "{DEVELOPER_TOKEN} and {USER_TOKEN} must not be empty"
-        ));
-    }
-    Poll::new(Apple::new(developer, user), publish)
+    let (developer, user) = (token(DEVELOPER_TOKEN)?, token(USER_TOKEN)?);
+    let (publish, feed) = watch::channel(None);
+    Poll::new(Apple::new(&developer, &user), publish)
         .spawn()
         .map_err(|e| format!("starting the live poll: {e}"))?;
     Ok(feed)
