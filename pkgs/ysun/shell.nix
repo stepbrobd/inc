@@ -17,6 +17,8 @@ let
 in
 pkgs.mkShell {
   packages = with pkgs; [
+    preview
+
     cargo
     clippy
     rust-analyzer
@@ -24,9 +26,9 @@ pkgs.mkShell {
     rustfmt
 
     nixpkgs-fmt
+    sops
     tailwindcss_4
     watchexec
-    preview
   ];
 
   env.BUN_JSC_useJIT = "0";
