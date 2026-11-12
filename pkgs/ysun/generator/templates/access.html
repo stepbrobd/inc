@@ -1,8 +1,5 @@
-{%- macro menu(slot) %}
 <nav class="grid grid-cols-1">
   <select
-    id="access-{{ slot }}"
-    name="access"
     onchange="if(this.value) window.open(this.value, '_self')"
     class="col-start-1 row-start-1 w-20 appearance-none rounded-md bg-nord-1 py-1 pr-4 pl-2 text-sm text-nord-4 outline-1 -outline-offset-1 outline-nord-3 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nord-8"
   >
@@ -40,4 +37,3 @@
     />
   </svg>
 </nav>
-{%- endmacro %}

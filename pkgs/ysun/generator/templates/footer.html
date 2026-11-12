@@ -1,11 +1,13 @@
-{%- import "access.html" as access %}
-<footer class="flex flex-col gap-4">
-  <div class="grid grid-cols-3 items-center">
+<footer class="flex flex-col gap-8">
+  {%- include "webring.html" %}
+  {%- if let Some(store) = store %}
+  <pre class="my-0!"><code>nix path-info <a href="https://cache.ysun.co/{{ store.hash }}.narinfo">{{ store.path }}</a> --store <a href="https://cache.ysun.co">https://cache.ysun.co</a> --json-format 2 --json</code></pre>
+  {%- else %}
+  <pre class="my-0!"><code>Nix store path unavailable (local build)</code></pre>
+  {%- endif %}
+  <div class="grid grid-cols-2 items-center">
     <div class="justify-self-start">
       <small>&#xA9; <script>document.write(new Date().getFullYear());</script></small>
-    </div>
-    <div class="justify-self-center">
-      {%- call access::menu("footer") %}{% endcall %}
     </div>
     <div class="justify-self-end">
       <a href="https://creativecommons.org/licenses/by-nc/4.0/" class="flex flex-row gap-2" aria-label="CC BY-NC License">
@@ -33,9 +35,4 @@
       </a>
     </div>
   </div>
-  {%- if let Some(store) = store %}
-  <pre class="my-0"><code>nix path-info <a href="https://cache.ysun.co/{{ store.hash }}.narinfo">{{ store.path }}</a> --store <a href="https://cache.ysun.co">https://cache.ysun.co</a> --json-format 2 --json</code></pre>
-  {%- else %}
-  <pre class="my-0"><code>Nix store path unavailable (local build)</code></pre>
-  {%- endif %}
 </footer>
