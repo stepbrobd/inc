@@ -2,7 +2,7 @@
   {%- for item in menu %}
   <div class="grid grid-cols-3 md:grid-cols-5 gap-4">
     <time>{{ item.front.created }}</time>
-    <a href="{{ item.route }}" class="col-span-2 md:col-span-4">{{ item.front.title }}</a>
+    <a href="{{ item.route }}" class="col-span-2 md:col-span-4"{% if item.route == page.route %} aria-current="page"{% endif %}>{{ item.front.title }}</a>
   </div>
   {%- endfor %}
 </nav>

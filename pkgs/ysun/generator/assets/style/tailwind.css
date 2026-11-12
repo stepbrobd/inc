@@ -87,6 +87,11 @@
     @apply text-nord-8 hover:text-nord-7;
   }
 
+  .prose a[aria-current="page"],
+  .prose a[aria-current="page"]:hover {
+    @apply text-nord-6 font-semibold;
+  }
+
   .prose h1,
   .prose h2,
   .prose h3,
