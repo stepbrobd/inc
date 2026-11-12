@@ -109,6 +109,8 @@ creation_rules:
   # shared (ysun + hosts)
   - path_regex: pkgs/gravity/secrets\.yaml$
     key_groups: [{ age: *wildcard }]
+  - path_regex: pkgs/ysun/secrets\.yaml$
+    key_groups: [{ age: *wildcard }]
   - path_regex: lib/secrets\.yaml$
     key_groups: [{ age: *wildcard }]
 

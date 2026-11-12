@@ -27,6 +27,8 @@ rustPlatform.buildRustPackage {
   nativeBuildInputs = [ pkg-config tailwindcss_4 ];
   env.BUN_JSC_useJIT = "0";
 
+  passthru.secrets = ./secrets.yaml;
+
   meta = {
     homepage = "https://ysun.co";
     license = lib.licenses.cc-by-nc-40;

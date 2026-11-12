@@ -20,6 +20,12 @@ let
 in
 {
   config = lib.mkIf (hasTag "ysun") {
+    sops.secrets."ysun/environment" = {
+      sopsFile = pkgs.ysun.secrets;
+      key = "environment";
+      restartUnits = [ "ysun.service" ];
+    };
+
     systemd.sockets.ysun = {
       description = "Homepage";
       wantedBy = [ "sockets.target" ];
@@ -40,6 +46,7 @@ in
       unitConfig.StartLimitIntervalSec = 0;
       serviceConfig = {
         ExecStart = lib.getExe pkgs.ysun;
+        EnvironmentFile = config.sops.secrets."ysun/environment".path;
         Restart = "always";
         RestartSec = 1;
         SyslogLevel = "err";
