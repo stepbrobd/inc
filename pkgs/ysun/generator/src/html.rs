@@ -61,6 +61,7 @@ struct PageHtml<'a> {
     menu: &'a [&'a Page],
     store: Option<&'a StorePath>,
     prefix: &'static str,
+    css: &'a str,
 }
 
 #[derive(Template)]
@@ -71,6 +72,7 @@ struct ErrorHtml<'a> {
     kind: ErrorLayout,
     store: Option<&'a StorePath>,
     prefix: &'static str,
+    css: &'a str,
 }
 
 struct FeedEntry<'a> {
@@ -99,6 +101,7 @@ pub fn render(
     pages: &[Page],
     markdown: &Markdown,
     store: Option<&StorePath>,
+    css: &str,
 ) -> Result<Vec<Entry>, Error> {
     markdown.check(OG_IMAGE)?;
     let template = |e: askama::Error| Error::new(format!("template: {e}"));
@@ -116,6 +119,7 @@ pub fn render(
                 kind,
                 store,
                 prefix: ORIGIN,
+                css,
             }
             .render(),
             _ => PageHtml {
@@ -126,6 +130,7 @@ pub fn render(
                 menu: &menu,
                 store,
                 prefix: "",
+                css,
             }
             .render(),
         }

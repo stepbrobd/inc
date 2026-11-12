@@ -66,7 +66,7 @@ pub fn render(root: &Path, store_path: Option<&str>) -> Result<Site, Error> {
     for path in pages
         .iter()
         .map(|page| page.route.as_str())
-        .chain(["/atom.xml", "/sitemap.xml", asset::STYLESHEET])
+        .chain(["/atom.xml", "/sitemap.xml"])
         .chain(files.iter().map(|(url, _)| url.as_str()))
     {
         if !known.insert(path) {
@@ -76,12 +76,8 @@ pub fn render(root: &Path, store_path: Option<&str>) -> Result<Site, Error> {
     let markdown = markdown::Markdown::new(&files, &known)?;
     let store = store_path.map(html::StorePath::parse).transpose()?;
 
-    let mut entries = html::render(&pages, &markdown, store.as_ref())?;
-    entries.push(Entry::bytes(
-        asset::STYLESHEET.to_owned(),
-        Mime::Css,
-        asset::tailwind(root)?,
-    ));
+    let css = asset::tailwind(root)?;
+    let mut entries = html::render(&pages, &markdown, store.as_ref(), &css)?;
     for (url, path) in &files {
         let bytes = fs::read(path).map_err(|e| Error::new(format!("{}: {e}", path.display())))?;
         entries.push(Entry {

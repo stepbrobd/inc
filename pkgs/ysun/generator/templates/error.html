@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     {%- include "metas.html" %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{{ prefix }}/assets/style/tailwind.css" />
+    <style>{{ css | safe }}</style>
     <link rel="icon" href="{{ prefix }}/favicon.ico" />
     <title>{{ page.front.title }}</title>
   </head>

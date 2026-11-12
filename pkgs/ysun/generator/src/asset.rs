@@ -5,8 +5,6 @@ use std::process::Command;
 
 use crate::Error;
 
-pub const STYLESHEET: &str = "/assets/style/tailwind.css";
-
 #[derive(Clone, Copy, Debug)]
 pub enum Mime {
     Atom,
@@ -65,7 +63,6 @@ impl Mime {
 #[derive(Clone, Copy, Debug)]
 pub enum Cache {
     Static,
-    Style,
     Page,
 }
 
@@ -73,8 +70,6 @@ impl Cache {
     pub fn of(path: &str) -> Cache {
         if path.starts_with("/assets/static/") {
             Cache::Static
-        } else if path.starts_with("/assets/style/") {
-            Cache::Style
         } else {
             Cache::Page
         }
@@ -83,7 +78,6 @@ impl Cache {
     pub fn header(self) -> &'static str {
         match self {
             Cache::Static => "public, max-age=604800",
-            Cache::Style => "public, max-age=300",
             Cache::Page => "public, no-cache",
         }
     }
@@ -118,7 +112,8 @@ pub fn files(root: &Path) -> Result<Vec<(String, PathBuf)>, Error> {
     Ok(files)
 }
 
-pub fn tailwind(root: &Path) -> Result<Vec<u8>, Error> {
+/// the stylesheet every page inlines in its head
+pub fn tailwind(root: &Path) -> Result<String, Error> {
     let output = Command::new("tailwindcss")
         .current_dir(root)
         .args(["--input", "assets/style/tailwind.css", "--minify"])
@@ -130,7 +125,7 @@ pub fn tailwind(root: &Path) -> Result<Vec<u8>, Error> {
             String::from_utf8_lossy(&output.stderr)
         )));
     }
-    Ok(output.stdout)
+    String::from_utf8(output.stdout).map_err(|e| Error::new(format!("tailwindcss: {e}")))
 }
 
 /// files under `dir` in name order
