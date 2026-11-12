@@ -15,8 +15,6 @@
     <main class="prose flex-grow container mx-auto">
       <article lang="en-US" class="prose container mx-auto">
         {%- match kind %}
-        {%- when ErrorLayout::Generic %}
-        {{ body | safe }}
         {%- when ErrorLayout::Waf %}
         {{ body | safe }}
         <p>These might help you (or not):</p>

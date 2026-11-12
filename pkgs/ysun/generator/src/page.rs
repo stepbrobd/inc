@@ -72,7 +72,6 @@ pub enum Layout {
 
 #[derive(Clone, Copy)]
 pub enum ErrorLayout {
-    Generic,
     Waf,
     Widget,
 }
@@ -116,7 +115,6 @@ impl TryFrom<RawFront> for Front {
             (_, Some(_)) => return Err(Error::new("redirect needs layout redirect")),
             (None | Some("page"), None) => Layout::Article,
             (Some("embed"), None) => Layout::Embed,
-            (Some("error/generic"), None) => Layout::Error(ErrorLayout::Generic),
             (Some("error/waf"), None) => Layout::Error(ErrorLayout::Waf),
             (Some("error/widget"), None) => Layout::Error(ErrorLayout::Widget),
             (Some(other), None) => return Err(Error::new(format!("unknown layout {other}"))),

@@ -3,11 +3,8 @@ title: What happened?
 description: I have no clue how you got here...
 created: 2025-08-08
 updated: 2026-02-12
-layout: error/generic
 hidden: true
 ---
-
-# What happened?
 
 Either you f*cked up or I did (tbh unlikely). But here's some random cow (or
 not) to cheer you up:
