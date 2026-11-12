@@ -18,7 +18,7 @@ let
         form-action = [ ];
         frame-ancestors = frameAncestors;
         frame-src = [ "https://embed.music.apple.com" ];
-        img-src = [ "https://*.basemaps.cartocdn.com" "data:" ];
+        img-src = [ "https://*.basemaps.cartocdn.com" "https://*.mzstatic.com" "data:" ];
         script-src = [ "'unsafe-inline'" "'unsafe-eval'" ];
         style-src = [ "'unsafe-inline'" ];
         worker-src = [ "blob:" ];
