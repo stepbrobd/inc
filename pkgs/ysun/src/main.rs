@@ -1,3 +1,5 @@
+mod api;
+
 use std::fmt;
 use std::io;
 use std::process;
@@ -18,7 +20,8 @@ struct Static {
     body: &'static [u8],
 }
 
-// SITE sorted by path, and NOT_FOUND, the index of the page served for unknown paths
+// SITE sorted by path, NOT_FOUND, the index of the page served for unknown paths, and API,
+// the prefix the server answers itself
 include!(concat!(env!("OUT_DIR"), "/site.rs"));
 
 fn fail(message: impl fmt::Display) -> ! {
@@ -31,7 +34,10 @@ async fn main() {
     if std::env::args_os().len() != 1 {
         fail("takes no arguments and serves the socket passed by systemd or systemfd");
     }
-    if let Err(e) = serve(Router::new().fallback(handle)).await {
+    let app = Router::new()
+        .nest(API, api::router().unwrap_or_else(|e| fail(e)))
+        .fallback(handle);
+    if let Err(e) = serve(app).await {
         fail(e);
     }
 }
@@ -73,6 +79,15 @@ fn lookup(path: &str) -> Option<&'static Static> {
 }
 
 async fn handle(request: Request) -> Response {
+    // nest leaves API itself, API/ and unknown routes to this fallback, which keeps them off the site
+    let reserved = request
+        .uri()
+        .path()
+        .strip_prefix(API)
+        .is_some_and(|rest| rest.is_empty() || rest.starts_with('/'));
+    if reserved {
+        return StatusCode::NOT_FOUND.into_response();
+    }
     if request.method() != Method::GET && request.method() != Method::HEAD {
         return (StatusCode::METHOD_NOT_ALLOWED, [(ALLOW, "GET, HEAD")]).into_response();
     }

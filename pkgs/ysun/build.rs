@@ -6,6 +6,8 @@ use generator::Body;
 
 // served with status 404 for every path the site lacks
 const NOT_FOUND: &str = "/error";
+// answered by the server itself, so no file of the site may sit at or under it
+const API: &str = "/api";
 
 fn main() {
     // template and code changes rebuild the generator, which reruns this script
@@ -26,6 +28,18 @@ fn main() {
         eprintln!("{e}");
         process::exit(1)
     });
+    if let Some(entry) = site.entries.iter().find(|entry| {
+        entry
+            .path
+            .strip_prefix(API)
+            .is_some_and(|rest| rest.is_empty() || rest.starts_with('/'))
+    }) {
+        eprintln!(
+            "{} is at or under {API}, which the server answers itself",
+            entry.path
+        );
+        process::exit(1);
+    }
     for (i, entry) in site.entries.iter().enumerate() {
         let file = match &entry.body {
             Body::File(path) => path.clone(),
@@ -56,5 +70,6 @@ fn main() {
             process::exit(1)
         });
     writeln!(table, "const NOT_FOUND: usize = {not_found};").expect("writing to a String");
+    writeln!(table, "const API: &str = {API:?};").expect("writing to a String");
     fs::write(out_dir.join("site.rs"), table).expect("OUT_DIR is writable");
 }
