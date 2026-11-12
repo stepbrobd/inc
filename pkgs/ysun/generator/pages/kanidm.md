@@ -101,9 +101,9 @@ let
 in
 {
   services.kanidm = {
-    ...
+    # ...
     serverSettings = {
-      ...
+      # ...
       tls_key = "${directory}/key.pem";
       tls_chain = "${directory}/fullchain.pem";
     };
@@ -111,7 +111,7 @@ in
 
   services.caddy.virtualHosts."sso.ysun.co".extraConfig = ''
       tls "${directory}/fullchain.pem" "${directory}/key.pem"
-      ...
+      # ...
   '';
 }
 ```
@@ -131,11 +131,11 @@ both:
   };
 
   services.kanidm = {
-    ...
+    # ...
     provision = {
       adminPasswordFile = config.sops.secrets.kanidm.path;
       idmAdminPasswordFile = config.sops.secrets.kanidm.path;
-      ...
+      # ...
     };
   };
 }

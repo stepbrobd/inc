@@ -26,7 +26,7 @@ it is merged by the time you read this):
 {
   inputs.hydra.url = "github:ners/hydra/oidc";
   inputs.hydra.inputs.nixpkgs.follows = "nixpkgs";
-  ...
+  # ...
 }
 
 # in hydra config
