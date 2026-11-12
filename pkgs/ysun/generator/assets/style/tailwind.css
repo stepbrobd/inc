@@ -105,26 +105,6 @@
 }
 
 @layer utilities {
-  .bg-primary {
-    @apply bg-nord-1;
-  }
-
-  .bg-secondary {
-    @apply bg-nord-2;
-  }
-
-  .text-primary {
-    @apply text-nord-6;
-  }
-
-  .text-secondary {
-    @apply text-nord-4;
-  }
-
-  .border-primary {
-    @apply border-nord-3;
-  }
-
   .prose {
     @apply text-nord-4;
   }
