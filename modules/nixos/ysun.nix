@@ -34,7 +34,9 @@ in
     systemd.services.ysun = {
       description = "Homepage";
       requires = [ "ysun.socket" ];
-      after = [ "ysun.socket" ];
+      after = [ "ysun.socket" "network-online.target" ];
+      wants = [ "network-online.target" ];
+      wantedBy = [ "multi-user.target" ];
       unitConfig.StartLimitIntervalSec = 0;
       serviceConfig = {
         ExecStart = lib.getExe pkgs.ysun;
@@ -49,7 +51,6 @@ in
         NoNewPrivileges = true;
         PrivateDevices = true;
         PrivateIPC = true;
-        PrivateNetwork = true;
         PrivateTmp = true;
         PrivateUsers = true;
         ProcSubset = "pid";
@@ -63,7 +64,7 @@ in
         ProtectProc = "invisible";
         ProtectSystem = "strict";
         RemoveIPC = true;
-        RestrictAddressFamilies = "none";
+        RestrictAddressFamilies = [ "AF_INET" "AF_INET6" "AF_UNIX" ];
         RestrictNamespaces = true;
         RestrictRealtime = true;
         RestrictSUIDSGID = true;
