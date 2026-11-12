@@ -105,7 +105,11 @@ in
           }
         }
 
-        encode zstd br gzip
+        encode {
+          br 5
+          zstd
+          gzip
+        }
 
         header {
           >Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
