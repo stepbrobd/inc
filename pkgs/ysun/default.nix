@@ -12,7 +12,7 @@ rustPlatform.buildRustPackage {
   src = lib.fileset.toSource {
     root = ./.;
     fileset = lib.fileset.unions [
-      ./src
+      (lib.fileset.fileFilter (file: file.name != "secrets.yaml") ./src)
       ./generator
       ./build.rs
       ./Cargo.toml
