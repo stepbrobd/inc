@@ -243,10 +243,13 @@ in
             ];
           };
 
-          # claude custom mcp connector
+          # claude and chatgpt mcp connectors
           mcp = {
             displayName = "MCP";
-            originUrl = [ "https://claude.ai/api/mcp/auth_callback" ];
+            originUrl = [
+              "https://claude.ai/api/mcp/auth_callback"
+              "https://chatgpt.com/connector/oauth/LrMZYOwkLDCe"
+            ];
             originLanding = "https://${lib.blueprint.services.mcp.domain}/";
             basicSecretFile = config.sops.secrets."kanidm/oauth/mcp".path;
             scopeMaps."mcp.users" = [
