@@ -520,6 +520,16 @@ description = "forked from nixos/nix-eval-jobs"
 visibility = "public"
 archived = false
 
+[repo."nix-installer"]
+description = "forked from nixos/nix-installer"
+visibility = "public"
+archived = false
+
+[repo."nix-installer-action"]
+description = "forked from nixos/nix-installer-action"
+visibility = "public"
+archived = false
+
 [repo."nixos-raspberrypi"]
 description = "forked from nvmd/nixos-raspberrypi"
 visibility = "public"
