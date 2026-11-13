@@ -15,8 +15,6 @@ let
   issuer = "https://${bp.services.kanidm.domain}/oauth2/openid/mcp";
 
   accessLog = "${config.services.caddy.logDir}/access-${domain}.log";
-  # https://platform.claude.com/docs/en/api/ip-addresses, also the caddy anthropic snippet
-  anthropic = "160.79.104.0/21";
 in
 {
   options.services.mcp = {
@@ -50,8 +48,8 @@ in
 
     services.caddy.virtualHosts.${domain}.extraConfig = ''
       import base
-      import anthropic
-      handle @anthropic {
+      @mcp path /mcp /mcp/* /.well-known/oauth-protected-resource /.well-known/oauth-protected-resource/*
+      handle @mcp {
         reverse_proxy unix/${socket} {
           header_up X-Real-IP {client_ip}
           flush_interval -1
@@ -60,30 +58,28 @@ in
       respond 404
     '';
 
-    # caddy only lets anthropic through
     services.fail2ban = {
       enable = lib.mkDefault true;
       jails.mcp = {
         filter.Definition = {
-          failregex = ''^\{.*"client_ip":"<ADDR>"'';
+          failregex = ''^\{.*"client_ip":"<ADDR>".*"uri":"(?!/\.well-known/).*"status":404[,}]'';
           datepattern = ''"ts":{EPOCH}'';
         };
         settings = {
           backend = "auto";
           logpath = accessLog;
           filter = "mcp";
-          maxretry = 1;
+          maxretry = 5;
           port = "443";
           protocol = "tcp,udp";
           banaction = "nftables[type=multiport,blocktype=drop]";
-          ignoreip = lib.concatStringsSep " " (config.services.fail2ban.ignoreIP ++ [ anthropic ] ++ lib.concatMap (n: n.ipv4 ++ n.ipv6) (lib.attrValues bp.net));
+          ignoreip = lib.concatStringsSep " " (config.services.fail2ban.ignoreIP ++ lib.concatMap (n: n.ipv4 ++ n.ipv6) (lib.attrValues bp.net));
         };
       };
     };
 
     systemd.tmpfiles.rules = [
       "d ${socketDir} 2750 ${cfg.user} caddy -"
-      # fail2ban refuses to start when a jail's log does not exist yet
       "f ${accessLog} 0640 caddy caddy -"
     ];
 
