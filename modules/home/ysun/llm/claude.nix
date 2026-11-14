@@ -15,7 +15,6 @@
       editorMode = "vim";
       verbose = true;
       modelSettings.opus.effortLevel = "xhigh";
-      alwaysThinkingEnabled = true;
       autoCompactWindow = 500000;
       subagentPromptCacheTtl = "1h";
       autoMemoryEnabled = false;

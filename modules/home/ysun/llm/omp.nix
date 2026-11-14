@@ -24,6 +24,7 @@
           light = "dark-nord";
         };
         symbolPreset = "ascii";
+        title.icons = "boring";
         composer.shape = "pi";
 
         statusLine = {
@@ -40,22 +41,36 @@
           tight = false;
           resizeScrollback = "rebuild";
           imeSafeCursor = false;
+          vimMode = true;
         };
 
         display = {
           shimmer = "classic";
           hideToolActivity = false;
+          subagentLivePreview = true;
           showTokenUsage = true;
+          showTurnTime = true;
           cacheMissMarker = true;
         };
 
         autocompleteMaxVisible = 10;
         showHardwareCursor = true;
+        recap.enabled = false;
+        error.notify = "on";
 
         doubleEscapeAction = "tree";
         treeFilterMode = "user-only";
         steeringMode = "one-at-a-time";
+        defaultThinkingLevel = "xhigh";
         tools.approvalMode = "yolo";
+        secrets.enabled = true;
+
+        advisor = {
+          enabled = false;
+          reviewMode = "agent-end";
+          continueSeverity = "blocker";
+          syncBacklog = "off";
+        };
 
         compaction = {
           enabled = true;
@@ -73,8 +88,16 @@
           baseDelayMs = 5000;
         };
 
+        astGrep.enabled = true;
         github.enabled = true;
         lsp.diagnosticsOnEdit = true;
+        task = {
+          enableEffort = true;
+          enableLsp = true;
+          isolation.enabled = false;
+          showResolvedModelBadge = true;
+        };
+        worktree.onStart = "off";
 
         terminal = {
           showImages = true;
