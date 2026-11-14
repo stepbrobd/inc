@@ -26,6 +26,8 @@
       worktree.bgIsolation = "none";
       enabledPlugins."superpowers@claude-plugins-official" = true;
 
+      env.CLAUDE_CODE_DISABLE_AGENT_PROGRESS_SUMMARIES = "1";
+
       attribution = {
         commit = "";
         pr = "";
