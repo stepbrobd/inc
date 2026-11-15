@@ -99,6 +99,7 @@ proceed anyway ;)
 | Sponsor                                  | Support          | Since                   |
 | ---------------------------------------- | ---------------- | ----------------------- |
 | [NetActuate](https://netactuate.com)     | Compute, transit | 2026-04-09 - present    |
+| [Vultr](https://vultr.com)               | Compute, transit | 2026-11-06 - present    |
 | [Oxide Computer](https://oxide.computer) | Compute          | 2026-04-03 - 2026-10-06 |
 | [Anthropic](https://anthropic.com)       | Claude for OSS   | 2026-03-03 - 2027-03-04 |
 | [OpenAI](https://openai.com)             | Codex for OSS    | 2026-11-11 - 2027-05-11 |
