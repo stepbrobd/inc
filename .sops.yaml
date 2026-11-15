@@ -11,12 +11,18 @@ keys:
     - &baldy age1z9lj8dhfs84z9gngjgydn5zmyftnn58ns2llxckd2kpd6j7nd4nq0pgya5
     - &butte age1js9g9de2g2hqtzfhaepn9uff3n8f3m0xnkneyslsd28xs4pnmfxsuvthaj
     - &cradle age13ezermywyfeu7c04nka0jm4vj6gqnhg7cqh0lg75k9r0zuqfhajse7zndt
+    - &faber age10r8mqwa6g8wz86ggk5thkekcsdga8vmuh6at02m76fdrudja3ddsqgmlvl
+    - &feldberg age1v84xzrqmq40fdlxjvc0a6w526jmllsfmarql0yhjlqgpdlcpvq8sezuft0
+    - &guadalupe age1aryy8pzkqz9f0vf7kzj66tqw02rwqw4sfr3nkryk50qsydvwdgqs4zdr72
     - &highline age1qvcaxsqwqf4cs83pc646w22g4kq44xuvj2jvy2g3a67pjem2cazqn7x0tl
     - &isere age176zkrrgc4p4r49lm7aeck633t3xlh90dqwzqayqe0evk68q7vy7saacjrv
+    - &kebnekaise age1rd7x9w6f0fet9c3qn4030rgalm77rtjgfa9hjame7wshzq3quspqgtfkpw
     - &kongo age18np64w0h4adalpwxgdysppjy4hqd6adhrrmz7q2xekjyczzfes4qkj52uj
     - &lagern age17q42dw293nnu5pdkargd09f090zlss9ee5wp78vwh54mez729yzqp9kfk6
     - &lantau age1rlm9fps8u5yhpwg0xwa7cp5lengkuz0ws5n7j5szqcr4lhnzzflsazze4g
+    - &montmartre age1j96zq3g2u9hq9urmt74xm3zudsmc730t6l7j0a8fclfnhnx7zewsunhrkq
     - &morasko age1e8lt7zwnd4gf56ew4awdreh8yftyy4c3vmz9nv6l8dsdvue5vshq08ncja
+    - &namsan age1xdv9wenaqszu3rw9kzcf3jafcp82g89k9ftw0e3xt8v4we3nj50q4fm37d
     - &noches age1zsyu735fpj4dkcmhnajsgl2hlqt89ezmgjwm4ntltd8f2t26a5yqqwhpg4
     - &odake age16urcveanputmn5vrt579xnk2pk87mlv0d2fmwzn2059qtzklmq9smj34a5
     - &roraima age1a6ecdm7kqslt2xg52q6grdy8emqrlxz4mzgd707w5k238k9p8stsn5tttp
@@ -24,6 +30,7 @@ keys:
     - &timah age1e466tkanyx0fa5pykvyqggsefnkefg5vp8jw3nmcxjljl5y4j45sm7zh2m
     - &toompea age1ma866cuslrcgvtdjnnezy58smq66p2zsdduetm0deud2c4xxygts9vvm0k
     - &walberla age1s3syz6jhdj9qqz4lcu42uxckpn8na56qa3sehuy6cpwtypf3349qkjry6v
+    - &watchung age1n82h979rchkwuqs7933uhzsn5dq9w2km6uw26ryd353hfh3a6c5qhxere2
 
   wildcard: &wildcard
     - *framework # ysun
@@ -34,12 +41,18 @@ keys:
     - *baldy
     - *butte
     - *cradle
+    - *faber
+    - *feldberg
+    - *guadalupe
     - *highline
     - *isere
+    - *kebnekaise
     - *kongo
     - *lagern
     - *lantau
+    - *montmartre
     - *morasko
+    - *namsan
     - *noches
     - *odake
     - *roraima
@@ -47,6 +60,7 @@ keys:
     - *timah
     - *toompea
     - *walberla
+    - *watchung
 
 creation_rules:
   # hosts/baldy (ysun + baldy)
@@ -58,12 +72,24 @@ creation_rules:
   # hosts/cradle (ysun + cradle)
   - path_regex: hosts/cradle/secrets\.yaml$
     key_groups: [{ age: [*framework, *macbook, *xps, *cradle] }]
+  # hosts/faber (ysun + faber)
+  - path_regex: hosts/faber/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *faber] }]
+  # hosts/feldberg (ysun + feldberg)
+  - path_regex: hosts/feldberg/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *feldberg] }]
+  # hosts/guadalupe (ysun + guadalupe)
+  - path_regex: hosts/guadalupe/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *guadalupe] }]
   # hosts/highline (ysun + highline)
   - path_regex: hosts/highline/secrets\.yaml$
     key_groups: [{ age: [*framework, *macbook, *xps, *highline] }]
   # hosts/isere (ysun + isere)
   - path_regex: hosts/isere/secrets\.yaml$
     key_groups: [{ age: [*framework, *macbook, *xps, *isere] }]
+  # hosts/kebnekaise (ysun + kebnekaise)
+  - path_regex: hosts/kebnekaise/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *kebnekaise] }]
   # hosts/kongo (ysun + kongo)
   - path_regex: hosts/kongo/secrets\.yaml$
     key_groups: [{ age: [*framework, *macbook, *xps, *kongo] }]
@@ -73,9 +99,15 @@ creation_rules:
   # hosts/lantau (ysun + lantau)
   - path_regex: hosts/lantau/secrets\.yaml$
     key_groups: [{ age: [*framework, *macbook, *xps, *lantau] }]
+  # hosts/montmartre (ysun + montmartre)
+  - path_regex: hosts/montmartre/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *montmartre] }]
   # hosts/morasko (ysun + morasko)
   - path_regex: hosts/morasko/secrets\.yaml$
     key_groups: [{ age: [*framework, *macbook, *xps, *morasko] }]
+  # hosts/namsan (ysun + namsan)
+  - path_regex: hosts/namsan/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *namsan] }]
   # hosts/noches (ysun + noches)
   - path_regex: hosts/noches/secrets\.yaml$
     key_groups: [{ age: [*framework, *macbook, *xps, *noches] }]
@@ -97,6 +129,9 @@ creation_rules:
   # hosts/walberla (ysun + walberla)
   - path_regex: hosts/walberla/secrets\.yaml$
     key_groups: [{ age: [*framework, *macbook, *xps, *walberla] }]
+  # hosts/watchung (ysun + watchung)
+  - path_regex: hosts/watchung/secrets\.yaml$
+    key_groups: [{ age: [*framework, *macbook, *xps, *watchung] }]
 
   # terranix (ysun + ci)
   - path_regex: lib/terranix/secrets\.yaml$
