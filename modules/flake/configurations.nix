@@ -92,11 +92,17 @@ let
             "baldy" # NetActuate Los Angeles, 2 vCPU, 8GB RAM, 100GB Storage
             "butte" # Virtua Cloud, 2 vCPU, 2GB RAM, 60GB Storage
             "cradle" # NetActuate Sydney, 2 vCPU, 8GB RAM, 100GB Storage
+            "faber" # Vultr Singapore, 2 vCPU, 4GB RAM, 80GB Storage
+            "feldberg" # Vultr Frankfurt, 4 vCPU, 8GB RAM, 160GB Storage
+            "guadalupe" # Vultr Dallas, 2 vCPU, 4GB RAM, 80GB Storage
             "highline" # Neptune Networks, 2 vCPU, 2GB RAM, 80GB Storage
+            "kebnekaise" # Vultr Stockholm, 2 vCPU, 4GB RAM, 80GB Storage
             "kongo" # Vultr, 2 vCPU, 4GB RAM, 80GB Storage
             "lagern" # AWS, T3.Large, 25GB Storage
             "lantau" # NetActuate Hong Kong, 2 vCPU, 8GB RAM, 100GB Storage
+            "montmartre" # Vultr Paris, 4 vCPU, 8GB RAM, 160GB Storage
             "morasko" # POZMAN Poznań, 2 vCPU, 8GB RAM, 50GB Storage
+            "namsan" # Vultr Seoul, 2 vCPU, 4GB RAM, 80GB Storage
             "noches" # HPE DL380 Gen 10, 2 x Xeon Gold 5218, 128GB RAM, 2 x 512GB SSD RAID1
             "odake" # SSDNodes NRT Performance, 8 vCPU, 32GB RAM, 640GB Storage
             "roraima" # NetActuate Sao Paulo, 2 vCPU, 8GB RAM, 100GB Storage
@@ -104,6 +110,7 @@ let
             "timah" # Misaka Networks, 1 vCPU, 2GB RAM, 32 GB Storage
             "toompea" # V.PS Pro Tallinn, 4 vCPU, 4GB RAM, 40GB Storage
             "walberla" # Hetzner Cloud CX32, 4 vCPU, 8GB RAM, 80GB Storage
+            "watchung" # Vultr New Jersey, 2 vCPU, 4GB RAM, 80GB Storage
           ];
         }
         {
