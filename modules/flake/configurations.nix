@@ -19,7 +19,6 @@ let
         self.nixosModules.go-csp-collector
         self.nixosModules.grafana
         self.nixosModules.home-assistant
-        self.nixosModules.ip-forwarding
         self.nixosModules.jitsi
         self.nixosModules.kanidm
         self.nixosModules.kavita
@@ -50,7 +49,6 @@ let
         self.nixosModules.cross
         self.nixosModules.docker
         self.nixosModules.graphical
-        self.nixosModules.ip-forwarding
         self.nixosModules.minimal
         self.nixosModules.nix-community
         self.nixosModules.nixbuild

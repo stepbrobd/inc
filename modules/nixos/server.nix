@@ -5,6 +5,11 @@
 
   networking.tempAddresses = "disabled";
 
+  boot.kernel.sysctl = {
+    "net.ipv4.conf.all.forwarding" = true;
+    "net.ipv6.conf.all.forwarding" = true;
+  };
+
   environment.systemPackages = with pkgs; [
     cacert
     file
