@@ -64,7 +64,6 @@ let
         common
         fonts
         homebrew
-        linux-builder
         nix-community
         nixbuild
         ntpd-rs

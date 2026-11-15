@@ -22,7 +22,6 @@
     ranet3
     tailscale
     time
-    vxlan
     inputs.ranet3.nixosModules.ranet3
   ];
 
