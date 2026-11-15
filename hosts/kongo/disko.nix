@@ -6,8 +6,7 @@
 
     content.partitions.ESP = {
       type = "ef00";
-      size = "512M";
-      uuid = "cdd9cf6c-73da-4a4c-b6bf-bae3447c2d48";
+      size = "1G";
       content = {
         type = "filesystem";
         format = "vfat";
@@ -18,11 +17,28 @@
     content.partitions.ROOT = {
       type = "8300";
       size = "100%";
-      uuid = "f73abf07-9727-4047-b416-48bafae59e9b";
       content = {
-        type = "filesystem";
-        format = "ext4";
-        mountpoint = "/";
+        type = "btrfs";
+        extraArgs = [ "-f" ];
+        subvolumes = {
+          "@/nix" = {
+            mountpoint = "/nix";
+            mountOptions = [ "nofail" "noatime" "compress=zstd" ];
+          };
+          "@/root" = {
+            mountpoint = "/";
+            mountOptions = [ "nofail" "noatime" "compress=zstd" ];
+          };
+          "@/home" = {
+            mountpoint = "/home";
+            mountOptions = [ "nofail" "compress=zstd" ];
+          };
+          "@/swap" = {
+            mountpoint = "/swap";
+            mountOptions = [ "nofail" "noatime" ];
+            swap.swapfile.size = "8G";
+          };
+        };
       };
     };
   };

@@ -96,7 +96,7 @@ let
             "butte" # Virtua Cloud, 2 vCPU, 2GB RAM, 60GB Storage
             "cradle" # NetActuate Sydney, 2 vCPU, 8GB RAM, 100GB Storage
             "highline" # Neptune Networks, 2 vCPU, 2GB RAM, 80GB Storage
-            "kongo" # Vultr, 1 vCPU, 2GB RAM, 64GB Storage
+            "kongo" # Vultr, 2 vCPU, 4GB RAM, 80GB Storage
             "lagern" # AWS, T3.Large, 25GB Storage
             "lantau" # NetActuate Hong Kong, 2 vCPU, 8GB RAM, 100GB Storage
             "morasko" # POZMAN Poznań, 2 vCPU, 8GB RAM, 50GB Storage

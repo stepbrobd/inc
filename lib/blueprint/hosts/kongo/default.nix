@@ -9,10 +9,10 @@ newHost (lib.fix (self: {
   providerName = "Vultr";
   type = "server";
   tags = [ "ysun" "router" "ranet3" "prometheus" "loki" "ci" ];
-  meta = { city = "Osaka"; region = "JP-27"; country = "JP"; continent = "Asia"; postal = "540-0001"; };
+  meta = { city = "Tokyo"; region = "JP-13"; country = "JP"; continent = "Asia"; postal = "100-0001"; };
   interface = "enp1s0";
-  ipv4 = "45.32.59.137";
-  ipv6 = "2001:19f0:7002:327:5400:5ff:febb:599b";
+  ipv4 = "167.179.116.147";
+  ipv6 = "2401:c080:1000:514e:5400:7ff:fe0c:b3ad";
   ipam = {
     interface = "dummy0";
     ipv4 = "23.161.104.130";
