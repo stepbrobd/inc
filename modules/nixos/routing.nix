@@ -200,7 +200,7 @@ in
         # but an exit node SYN ACK egresses its native primary iface at 1500
         # so the kernel advertises a 1500 derived mss (1460 on the wire)
         # big segments (e.g. a post quantum TLS ClientHello) then overshoot the 1400 ingress and get undropped
-        mssClamp =
+        mssclamp =
           let
             mss = 1328; # 1400 - 20 - 20 - 12
             addrs = lib.concatMapStringsSep ", " (a: lib.head (lib.splitString "/" a));
