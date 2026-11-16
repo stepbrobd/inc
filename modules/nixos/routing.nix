@@ -171,25 +171,13 @@ in
       };
 
       networking.nftables.tables = {
-        outbound4 = {
-          name = "nat";
-          family = "ip";
+        outbound = {
+          family = "inet";
           content = ''
             chain postrouting {
               type nat hook postrouting priority srcnat; policy accept;
-              ip saddr != { ${lib.concatStringsSep ", " (prefixes "ipv4")} } oifname "${host.interface}" masquerade
-            }
-          '';
-        };
-        outbound6 = {
-          name = "nat";
-          family = "ip6";
-          content = ''
-            chain postrouting {
-              type nat hook postrouting priority srcnat; policy accept;
-              # a packet for the node's own uplink address leaves by the uplink only while that address is tentative
-              # masquerading it binds the flow to lo's first global address for as long as the peer keeps sending
-              ${lib.optionalString (host != null && host ? ipv6) "ip6 daddr ${host.ipv6} return"}
+              ${lib.optionalString (host ? ipv6) "ip6 daddr ${host.ipv6} return"}
+              ip  saddr != { ${lib.concatStringsSep ", " (prefixes "ipv4")} } oifname "${host.interface}" masquerade
               ip6 saddr != { ${lib.concatStringsSep ", " (prefixes "ipv6")} } oifname "${host.interface}" masquerade
             }
           '';

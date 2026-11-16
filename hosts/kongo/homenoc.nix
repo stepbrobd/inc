@@ -47,7 +47,7 @@ in
   };
 
   # outer packets leave with node's own provider address as source
-  # the outbound6 masquerade chain matches them and binds a NAT
+  # the outbound masquerade chain matches them and binds a NAT
   # to the flow conntrack keys proto 4/41 on addresses alone (these carry no ports)
   # a stale binding blackholes every IPv4-in-IPv6 packet until conntrack is flushed
   # transit tunnel packets have no business being tracked at all
