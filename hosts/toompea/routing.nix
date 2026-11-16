@@ -57,7 +57,7 @@ in
   };
 
   # the announced space leaves by the bgp gateway
-  systemd.network.networks."40-dummy0".routingPolicyRules = lib.concatMap
+  systemd.network.networks."40-${lib.blueprint.hosts.toompea.ipam.interface}".routingPolicyRules = lib.concatMap
     (protocol: lib.map (route: { From = route.prefix; Table = table; Priority = 10000; }) protocol.route)
     [ static.static4 static.static6 ];
 
