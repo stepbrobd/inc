@@ -96,8 +96,10 @@ in
         '';
 
       sops.secrets.bgp = {
-        # modules are copied to the store apart from hosts, so the path goes through the flake source
-        sopsFile = "${inputs.self}/hosts/${config.networking.hostName}/secrets.yaml";
+        # modules are copied to the store apart from hosts
+        # the file need to be copied out of flake source on its own
+        # also lib.path is nixpkgs path library (we need the primop here)
+        sopsFile = builtins.path { path = "${inputs.self}/hosts/${config.networking.hostName}/secrets.yaml"; };
         mode = "440";
         owner = config.systemd.services.bird.serviceConfig.User;
         group = config.systemd.services.bird.serviceConfig.Group;
