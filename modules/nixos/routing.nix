@@ -80,8 +80,9 @@ in
       services.bird.enable = true;
       # router's settings only render for the bird source they were generated from
       services.bird.package = inputs.router.packages.${pkgs.stdenv.hostPlatform.system}.bird;
-      # the included secret only exists at runtime
-      # so the check reads a fixture defining each session's password symbol instead
+      # bird resolves the relative include next to bird.conf, the secret at runtime
+      # and in the check a fixture defining each session's password symbol
+      environment.etc."bird/bgp.conf".source = config.sops.secrets.bgp.path;
       services.bird.preCheckConfig =
         let
           fixture = pkgs.writeText "bgp.conf" (lib.concatMapStrings
@@ -91,8 +92,7 @@ in
             (lib.unique (lib.catAttrs "value" (lib.catAttrs "password" bgp))));
         in
         ''
-          rm bird.conf
-          sed 's|^include "${config.sops.secrets.bgp.path}";$|include "${fixture}";|' $out > bird.conf
+          cp ${fixture} bgp.conf
         '';
 
       sops.secrets.bgp = {
@@ -108,7 +108,7 @@ in
 
       services.bird.settings = {
         router-id = host.ipv4;
-        include = [ config.sops.secrets.bgp.path ];
+        include = [ "bgp.conf" ];
         template.bgp = {
           upstream4 = upstream "ipv4";
           upstream6 = upstream "ipv6";
