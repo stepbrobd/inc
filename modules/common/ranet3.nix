@@ -70,8 +70,8 @@ in
     ({ options, ... }: {
       config = lib.optionalAttrs (options ? systemd) (lib.mkIf (hasTag "ranet3" && hasTag "router") (
         let
-          as = config.services.as10779;
-          exits = as.router.exit && as.router.advertiseDefault;
+          # the static protocols of modules/nixos/routing.nix
+          announced = family: lib.map (route: route.prefix) config.services.bird.settings.protocol.static."static${family}".route;
         in
         {
           boot.kernelModules = [ "nf_conntrack" ];
@@ -81,14 +81,14 @@ in
             cap.route.announce =
               # the anycast pair stays on dummy0
               # since the kernel takes a source for a route through the tun from the tun's own addresses
-              lib.subtractLists [ ipam4 ipam6 ] (as.local.ipv4.addresses ++ as.local.ipv6.addresses)
+              bp.prefixes.anycast.ipv4 ++ bp.prefixes.anycast.ipv6
               # ipv6 exits only for the sources bgp announces
-              ++ lib.optionals exits (lib.map (r: { prefix = "::/0"; from = r.prefix; }) as.router.static.ipv6.routes);
+              ++ lib.map (prefix: { prefix = "::/0"; from = prefix; }) (announced "6");
             cap.egress = {
-              advertise = lib.optional exits "0.0.0.0/0";
+              advertise = [ "0.0.0.0/0" ];
               translate =
                 # bgp announces these
-                lib.map (r: { from = r.prefix; to = "none"; }) (as.router.static.ipv4.routes ++ as.router.static.ipv6.routes)
+                lib.map (prefix: { from = prefix; to = "none"; }) (announced "4" ++ announced "6")
                 # any other source leaves as this node's ipam pair
                 ++ [
                   { from = "0.0.0.0/0"; to = host.ipam.ipv4; }

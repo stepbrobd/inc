@@ -10,7 +10,6 @@ let
       serverModules = with inputs; [
         disko.nixosModules.disko
         self.nixosModules.acme
-        self.nixosModules.as10779
         self.nixosModules.caddy
         self.nixosModules.ci
         self.nixosModules.common
@@ -32,6 +31,7 @@ let
         self.nixosModules.paperless
         self.nixosModules.passwordless
         self.nixosModules.plausible
+        self.nixosModules.routing
         self.nixosModules.server
         self.nixosModules.vaultwarden
         self.nixosModules.ysun
@@ -126,7 +126,6 @@ let
           os = "nixos";
           platform = "x86_64-linux";
           modules = laptopModules ++ (with inputs; [
-            self.nixosModules.as10779
             hardware.nixosModules.framework-13th-gen-intel
           ]);
           users = laptopUsers;

@@ -114,25 +114,29 @@ in
   };
 
   prefixes = {
+    # every host's ipam pair comes from these
+    unicast = {
+      ipv4 = [ "23.161.104.0/24" ];
+      ipv6 = [ "2602:f590::/36" ];
+    };
+
+    # the personal site, held on dummy0 of every router
+    anycast = {
+      ipv4 = [ "23.161.104.17/32" ];
+      ipv6 = [ "2602:f590::23:161:104:17/128" ];
+    };
+
+    # routers announce these as originated by AS18932, see modules/nixos/routing.nix
     experimental = {
       ipv4 = [ ];
-      ipv6 = lib.map
-        (prefix: {
-          inherit prefix;
-          option = lib.trim ''
-            reject {
-                bgp_path.prepend(18932);
-              }
-          '';
-        })
-        [
-          "2602:f590:a::/48"
-          "2602:f590:b::/48"
-          "2602:f590:c::/48"
-          "2602:f590:d::/48"
-          "2602:f590:e::/48"
-          "2602:f590:f::/48"
-        ];
+      ipv6 = [
+        "2602:f590:a::/48"
+        "2602:f590:b::/48"
+        "2602:f590:c::/48"
+        "2602:f590:d::/48"
+        "2602:f590:e::/48"
+        "2602:f590:f::/48"
+      ];
     };
   };
 }
