@@ -844,11 +844,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794824903,
-        "narHash": "sha256-DblcOIoYfdVhuRBIpCo5PsmemWBwkK2Nciwi1bYiAHY=",
+        "lastModified": 1794838911,
+        "narHash": "sha256-f/qBrH3VWnP1RHk9v1ns2QJNvEKnIWLOjyU61CUFnsg=",
         "owner": "stepbrobd",
         "repo": "router",
-        "rev": "c431f1a4f0a5dff1c33b9fea02b031ff94c730bd",
+        "rev": "49cf7f6f1545f8f2e7bb9c944eead03d21757de6",
         "type": "github"
       },
       "original": {
