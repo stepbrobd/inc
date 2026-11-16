@@ -178,8 +178,8 @@ in
               type nat hook postrouting priority srcnat - 1; policy accept;
               ${lib.optionalString (host ? ipv6) "ip6 daddr ${host.ipv6} return"}
               ${lib.optionalString exit ''
-                meta nfproto ipv4 iifname "${config.services.tailscale.interfaceName}" oifname "${host.interface}" snat ip to ${host.ipam.ipv4}
-                meta nfproto ipv6 iifname "${config.services.tailscale.interfaceName}" oifname "${host.interface}" snat ip6 to ${host.ipam.ipv6}
+                meta nfproto ipv4 iifname "${config.services.tailscale.interfaceName}" oifname != "${config.services.tailscale.interfaceName}" snat ip  to ${host.ipam.ipv4}
+                meta nfproto ipv6 iifname "${config.services.tailscale.interfaceName}" oifname != "${config.services.tailscale.interfaceName}" snat ip6 to ${host.ipam.ipv6}
               ''}
               ip  saddr != { ${lib.concatStringsSep ", " (prefixes "ipv4")} } oifname "${host.interface}" masquerade
               ip6 saddr != { ${lib.concatStringsSep ", " (prefixes "ipv6")} } oifname "${host.interface}" masquerade
