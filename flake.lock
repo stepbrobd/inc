@@ -110,6 +110,25 @@
         "type": "github"
       }
     },
+    "bird": {
+      "flake": false,
+      "locked": {
+        "host": "gitlab.nic.cz",
+        "lastModified": 1794329523,
+        "narHash": "sha256-KwYajmJ2xahbyjHjzhfYorsfvz8//TJMshL4YSzYWS8=",
+        "owner": "labs",
+        "repo": "bird",
+        "rev": "68953fa98daab0726c592dd229dbaa369b56d0e9",
+        "type": "gitlab"
+      },
+      "original": {
+        "host": "gitlab.nic.cz",
+        "owner": "labs",
+        "ref": "thread-next",
+        "repo": "bird",
+        "type": "gitlab"
+      }
+    },
     "bun2nix": {
       "inputs": {
         "flake-parts": [
@@ -793,12 +812,12 @@
         "parts": "parts",
         "ranet3": "ranet3",
         "rfm": "rfm",
+        "router": "router",
         "rpi": "rpi",
         "rust-overlay": "rust-overlay",
         "schemas": "schemas",
         "sops": "sops",
         "srvos": "srvos",
-        "std": "std",
         "stylix": "stylix",
         "sweep": "sweep",
         "systems": "systems",
@@ -808,6 +827,36 @@
         "uad2": "uad2",
         "utils": "utils",
         "zen": "zen"
+      }
+    },
+    "router": {
+      "inputs": {
+        "autopilot": [
+          "autopilot"
+        ],
+        "bird": "bird",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "parts": [
+          "parts"
+        ],
+        "systems": [
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794823284,
+        "narHash": "sha256-t92dP58cgqiBTznFPV2e4vTs85qvkyQ9WOqtriiUIq0=",
+        "owner": "stepbrobd",
+        "repo": "router",
+        "rev": "05a3fce46156849a386c33ef17620c4dc91d4c0b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "stepbrobd",
+        "repo": "router",
+        "type": "github"
       }
     },
     "rpi": {
@@ -933,21 +982,6 @@
       "original": {
         "owner": "nix-community",
         "repo": "srvos",
-        "type": "github"
-      }
-    },
-    "std": {
-      "locked": {
-        "lastModified": 1710870712,
-        "narHash": "sha256-e+7MJF2gsgTBuOWv4mCimSP0D9+naeFSw9a7N3yEmv4=",
-        "owner": "chessai",
-        "repo": "nix-std",
-        "rev": "31bbc925750cc9d8f828fe55cee1a2bd985e0c00",
-        "type": "github"
-      },
-      "original": {
-        "owner": "chessai",
-        "repo": "nix-std",
         "type": "github"
       }
     },

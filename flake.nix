@@ -20,7 +20,7 @@
               parts.lib
               terranix.lib
               utils.lib
-              { std = inputs.std.lib; }
+              { inherit (inputs.router.lib) router; }
             ];
           };
 
@@ -140,6 +140,11 @@
     rfm.inputs.utils.follows = "utils";
     rfm.inputs.systems.follows = "systems";
     rfm.inputs.gomod2nix.follows = "gomod2nix";
+    router.url = "github:stepbrobd/router";
+    router.inputs.nixpkgs.follows = "nixpkgs";
+    router.inputs.autopilot.follows = "autopilot";
+    router.inputs.parts.follows = "parts";
+    router.inputs.systems.follows = "systems";
     rpi.url = "github:nvmd/nixos-raspberrypi";
     rpi.inputs.nixpkgs.follows = "nixpkgs";
     rpi.inputs.flake-compat.follows = "compat";
@@ -151,7 +156,6 @@
     sops.inputs.nixpkgs.follows = "nixpkgs";
     srvos.url = "github:nix-community/srvos";
     srvos.inputs.nixpkgs.follows = "nixpkgs";
-    std.url = "github:chessai/nix-std";
     stylix.url = "github:nix-community/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     stylix.inputs.systems.follows = "systems";
