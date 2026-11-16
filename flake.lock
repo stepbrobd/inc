@@ -113,20 +113,18 @@
     "bird": {
       "flake": false,
       "locked": {
-        "host": "gitlab.nic.cz",
         "lastModified": 1794329523,
         "narHash": "sha256-KwYajmJ2xahbyjHjzhfYorsfvz8//TJMshL4YSzYWS8=",
-        "owner": "labs",
+        "owner": "cz-nic",
         "repo": "bird",
         "rev": "68953fa98daab0726c592dd229dbaa369b56d0e9",
-        "type": "gitlab"
+        "type": "github"
       },
       "original": {
-        "host": "gitlab.nic.cz",
-        "owner": "labs",
+        "owner": "cz-nic",
         "ref": "thread-next",
         "repo": "bird",
-        "type": "gitlab"
+        "type": "github"
       }
     },
     "bun2nix": {
@@ -846,11 +844,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794823284,
-        "narHash": "sha256-t92dP58cgqiBTznFPV2e4vTs85qvkyQ9WOqtriiUIq0=",
+        "lastModified": 1794824903,
+        "narHash": "sha256-DblcOIoYfdVhuRBIpCo5PsmemWBwkK2Nciwi1bYiAHY=",
         "owner": "stepbrobd",
         "repo": "router",
-        "rev": "05a3fce46156849a386c33ef17620c4dc91d4c0b",
+        "rev": "c431f1a4f0a5dff1c33b9fea02b031ff94c730bd",
         "type": "github"
       },
       "original": {
