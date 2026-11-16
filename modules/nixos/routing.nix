@@ -177,18 +177,6 @@ in
           content = ''
             chain postrouting {
               type nat hook postrouting priority srcnat; policy accept;
-              ${if exit then
-              # if node have BGP session, SNAT Tailscale exit node traffic to announced IP
-              # ''
-              #   meta mark & 0x0000ff00 == 0x00000400 oifname "${host.interface}" snat to ${lib.head (addresses "ipv4")}
-              # ''
-              ""
-              else
-              # if no BGP session, outbound traffic will be SNATed to the primary interface address
-              # ''
-              #   ip saddr { ${lib.concatStringsSep ", " (prefixes "ipv4")} } oifname "${host.interface}" masquerade
-              # ''}
-              ""}
               ip saddr != { ${lib.concatStringsSep ", " (prefixes "ipv4")} } oifname "${host.interface}" masquerade
             }
           '';
@@ -199,18 +187,6 @@ in
           content = ''
             chain postrouting {
               type nat hook postrouting priority srcnat; policy accept;
-              ${if exit then
-              # if node have BGP session, SNAT Tailscale exit node traffic to announced IP
-              # ''
-              #   meta mark & 0x0000ff00 == 0x00000400 oifname "${host.interface}" snat to ${lib.head (addresses "ipv6")}
-              # ''
-              ""
-              else
-              # if no BGP session, outbound traffic will be SNATed to the primary interface address
-              # ''
-              #   ip6 saddr { ${lib.concatStringsSep ", " (prefixes "ipv6")} } oifname "${host.interface}" masquerade
-              # ''}
-              ""}
               # a packet for the node's own uplink address leaves by the uplink only while that address is tentative
               # masquerading it binds the flow to lo's first global address for as long as the peer keeps sending
               ${lib.optionalString (host != null && host ? ipv6) "ip6 daddr ${host.ipv6} return"}
