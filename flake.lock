@@ -110,23 +110,6 @@
         "type": "github"
       }
     },
-    "bird": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1794329523,
-        "narHash": "sha256-KwYajmJ2xahbyjHjzhfYorsfvz8//TJMshL4YSzYWS8=",
-        "owner": "cz-nic",
-        "repo": "bird",
-        "rev": "68953fa98daab0726c592dd229dbaa369b56d0e9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "cz-nic",
-        "ref": "thread-next",
-        "repo": "bird",
-        "type": "github"
-      }
-    },
     "bun2nix": {
       "inputs": {
         "flake-parts": [
@@ -832,7 +815,7 @@
         "autopilot": [
           "autopilot"
         ],
-        "bird": "bird",
+        "bird": [],
         "nixpkgs": [
           "nixpkgs"
         ],

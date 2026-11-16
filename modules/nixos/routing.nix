@@ -76,10 +76,9 @@ in
         in
         rule "ip" "ipv4" + rule "ip6" "ipv6";
 
-      # bird speaks bgp alone, ranet3 speaks babel
       services.bird.enable = true;
-      # router's settings only render for the bird source they were generated from
-      services.bird.package = inputs.router.packages.${pkgs.stdenv.hostPlatform.system}.bird;
+      services.bird.package = pkgs.bird3;
+
       # bird resolves the relative include next to bird.conf, the secret at runtime
       # and in the check a fixture defining each session's password symbol
       environment.etc."bird/bgp.conf".source = config.sops.secrets.bgp.path;

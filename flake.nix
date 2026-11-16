@@ -145,6 +145,7 @@
     router.inputs.autopilot.follows = "autopilot";
     router.inputs.parts.follows = "parts";
     router.inputs.systems.follows = "systems";
+    router.inputs.bird.follows = "";
     rpi.url = "github:nvmd/nixos-raspberrypi";
     rpi.inputs.nixpkgs.follows = "nixpkgs";
     rpi.inputs.flake-compat.follows = "compat";
