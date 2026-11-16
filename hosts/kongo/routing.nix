@@ -25,7 +25,7 @@ let
 
   password = lib.router.bird.symbol "PASS_AS64515";
 
-  # the metadata routes below never go back to vultr
+  # vultr's own neighbor address never goes back to it
   export = static: net: {
     filter.body = ''
       if proto != "${static}" then reject;
@@ -42,6 +42,8 @@ in
     function.origin.body = option;
 
     protocol.bgp = {
+      # https://skym.fi/blog/2020/07/vultr-trouble/
+      # importing nothing keeps the multihop neighbors reachable without static routes
       vultr4 = {
         from = "upstream4";
         multihop = true;
@@ -71,8 +73,4 @@ in
       };
     };
   };
-
-  # https://skym.fi/blog/2020/07/vultr-trouble/
-  # services.bird.settings.protocol.static.static4.route = [{ prefix = "169.254.169.254/32"; via = lib.router.bird.ip lib.blueprint.hosts.kongo.ipv4; }];
-  # services.bird.settings.protocol.static.static6.route = [{ prefix = "2001:19f0:ffff::1/128"; via = lib.router.bird.ip lib.blueprint.hosts.kongo.ipv6; }];
 }
