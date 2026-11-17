@@ -113,26 +113,7 @@ in
           upstream6 = upstream "ipv6";
         };
         protocol = {
-          device.device0.scan-time = 10;
-          direct.direct0 = {
-            interface = [{ pattern = host.ipam.interface; }];
-            ipv4 = { };
-            ipv6 = { };
-          };
-          kernel = {
-            kernel4 = {
-              scan-time = 10;
-              learn = true;
-              persist = true;
-              ipv4 = { import = "none"; export = "none"; };
-            };
-            kernel6 = {
-              scan-time = 10;
-              learn = true;
-              persist = true;
-              ipv6 = { import = "none"; export = "none"; };
-            };
-          };
+          device.device0 = { };
           static = {
             static4 = {
               ipv4 = { };
