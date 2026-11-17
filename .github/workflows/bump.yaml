@@ -27,7 +27,7 @@ jobs:
         uses: $/.github/actions/setup
 
       - name: Install Dependencies
-        run: nix profile add nixpkgs#nix-update
+        run: nix profile add .#nix-update
 
       - name: Bump
         env:
@@ -68,6 +68,8 @@ jobs:
             [[ "$val" == "true" ]]
           }
 
+          failed=()
+
           update_package() {
             local attr="$1"
             local legacy_path="legacyPackages.${SYSTEM}.${attr}"
@@ -75,6 +77,7 @@ jobs:
             local old_version
             old_version=$(nix eval --raw ".#${legacy_path}.version" 2>/dev/null) || {
               echo "::warning::Could not evaluate version for ${attr}, skipping."
+              failed+=("$attr")
               return 0
             }
 
@@ -88,6 +91,7 @@ jobs:
             echo "::group::Updating ${attr} (current: ${old_version})"
             if ! nix-update --flake --use-update-script "${extra[@]}" "$legacy_path"; then
               echo "::warning::nix-update failed for ${attr}"
+              failed+=("$attr")
               git checkout -- .
               git clean -fd
               echo "::endgroup::"
@@ -107,6 +111,13 @@ jobs:
             git commit -m "pkgs/${attr//.//}: ${old_version} -> ${new_version}"
           }
 
+          report() {
+            if [[ ${#failed[@]} -gt 0 ]]; then
+              echo "::error::Bump failed for: ${failed[*]}"
+              exit 1
+            fi
+          }
+
           # update every opted-in package
           while IFS= read -r attr; do
             [[ -n "$attr" ]] || continue
@@ -117,6 +128,7 @@ jobs:
           # create PR if there are updates
           if [[ $(git log origin/master..HEAD --oneline | wc -l) -eq 0 ]]; then
             echo "No packages updated."
+            report
             exit 0
           fi
 
@@ -135,3 +147,5 @@ jobs:
             --body "$body" || true
 
           gh pr edit "$BRANCH" --add-reviewer stepbrobd 2>/dev/null || true
+
+          report
