@@ -5,6 +5,7 @@ let
   virtua = upstream: {
     from = upstream;
     multihop = true;
+    authentication = "md5";
     password = lib.router.bird.symbol "PASS_AS35661";
   };
 in

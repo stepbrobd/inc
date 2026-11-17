@@ -58,11 +58,13 @@ in
     protocol.bgp = {
       xtom4 = {
         from = "upstream4";
+        authentication = "md5";
         inherit password;
         neighbor = { address = gateway.ipv4; as = 3204; };
       };
       xtom6 = {
         from = "upstream6";
+        authentication = "md5";
         inherit password;
         neighbor = { address = gateway.ipv6; as = 3204; };
       };
