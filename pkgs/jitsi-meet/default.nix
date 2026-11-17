@@ -3,11 +3,11 @@
 }:
 
 pkgsPrev.jitsi-meet.overrideAttrs (final: prev: {
-  version = "1.0.9442";
+  version = "1.0.9644";
 
   src = fetchurl {
     url = "https://download.jitsi.org/jitsi-meet/src/jitsi-meet-${final.version}.tar.bz2";
-    hash = "sha256-Kkttfi7tw+5l9IcxaH7a1QtVmTTutQDke6CgeIPpW/g=";
+    hash = "sha256-byfBziQnP20OD0uZhOYaUE7IGfaBEr2i+AXVuAABkxs=";
   };
 
   patches = [ ./plausible.patch ];
