@@ -3,6 +3,7 @@
     netactuate4 = {
       from = "upstream4";
       neighbor = { address = "148.163.220.95"; as = 36236; };
+      ipv4.gateway = "recursive";
     };
     netactuate6 = {
       from = "upstream6";
