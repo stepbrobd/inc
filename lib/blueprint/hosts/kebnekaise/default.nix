@@ -8,7 +8,7 @@ newHost (lib.fix (self: {
   provider = "vultr";
   providerName = "Vultr";
   type = "server";
-  tags = [ "ysun" "router" "kanidm" "glance" "backup" "ranet3" "prometheus" "loki" "csp" "ci" ];
+  tags = [ "ysun" "router" "kanidm" "glance" "stump" "backup" "ranet3" "prometheus" "loki" "csp" "ci" ];
   meta = { city = "Stockholm"; region = "SE-AB"; country = "SE"; continent = "Europe"; postal = "111 20"; };
   interface = "enp1s0";
   ipv4 = "70.34.200.17";

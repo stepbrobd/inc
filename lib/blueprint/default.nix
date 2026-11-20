@@ -110,6 +110,7 @@ in
     ntpd-rs.domain = "time.ysun.co";
     paperless.domain = "dms.ysun.co";
     plausible.domain = "stats.ysun.co";
+    stump.domain = "read.ysun.co";
     vaultwarden.domain = "vault.ysun.co";
   };
 

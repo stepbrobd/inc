@@ -33,6 +33,7 @@ let
         self.nixosModules.plausible
         self.nixosModules.routing
         self.nixosModules.server
+        self.nixosModules.stump
         self.nixosModules.vaultwarden
         self.nixosModules.ysun
         rfm.nixosModules.default

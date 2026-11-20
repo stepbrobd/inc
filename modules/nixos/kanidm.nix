@@ -48,6 +48,8 @@ in
     sops.secrets."kanidm/oauth/vaultwarden".mode = "440";
     sops.secrets."kanidm/oauth/mcp".group = "kanidm";
     sops.secrets."kanidm/oauth/mcp".mode = "440";
+    sops.secrets."kanidm/oauth/stump".group = "kanidm";
+    sops.secrets."kanidm/oauth/stump".mode = "440";
 
     # kanidm dumps its own database and restic just takes the dumps
     services.kanidm.server.settings.online_backup = lib.mkIf (hasTag "backup") {
@@ -92,6 +94,8 @@ in
           "kavita.admins" = { };
           "kavita.users" = { };
 
+          "stump.users" = { };
+
           "paperless.users" = { };
 
           "jitsi.users" = { };
@@ -124,6 +128,8 @@ in
 
               "kavita.admins"
               "kavita.users"
+
+              "stump.users"
 
               "paperless.users"
 
@@ -200,6 +206,19 @@ in
                 ];
               };
             };
+          };
+
+          stump = {
+            displayName = "Stump";
+            originUrl = "https://${lib.blueprint.services.stump.domain}/api/v2/auth/oidc/callback";
+            originLanding = "https://${lib.blueprint.services.stump.domain}/";
+            basicSecretFile = config.sops.secrets."kanidm/oauth/stump".path;
+            preferShortUsername = true;
+            scopeMaps."stump.users" = [
+              "openid"
+              "email"
+              "profile"
+            ];
           };
 
           paperless = {
