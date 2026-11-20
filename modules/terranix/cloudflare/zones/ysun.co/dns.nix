@@ -128,16 +128,16 @@ in
         type = "CNAME";
         proxied = false;
         name = "home";
-        content = "walberla.sd.ysun.co";
-        comment = "Hetzner - Glance";
+        content = "kebnekaise.sd.ysun.co";
+        comment = "Vultr - Stockholm - Glance";
       };
 
       co_ysun_ldap = {
         type = "CNAME";
         proxied = false;
         name = "ldap";
-        content = "walberla.ts.ysun.co";
-        comment = "Hetzner - Kanidm";
+        content = "kebnekaise.ts.ysun.co";
+        comment = "Vultr - Stockholm - Kanidm";
       };
 
       co_ysun_mcp = {
@@ -152,8 +152,8 @@ in
         type = "CNAME";
         proxied = false;
         name = "meet";
-        content = "lagern.sd.ysun.co";
-        comment = "AWS - EU Central 2 - Jitsi Meet";
+        content = "feldberg.sd.ysun.co";
+        comment = "Vultr - Frankfurt - Jitsi Meet";
       };
 
       co_ysun_grep = {
@@ -168,8 +168,8 @@ in
         type = "CNAME";
         proxied = false;
         name = "otel";
-        content = "walberla.sd.ysun.co";
-        comment = "Hetzner - Grafana";
+        content = "rysy.sd.ysun.co";
+        comment = "NetActuate - Warsaw - Grafana";
       };
 
       co_ysun_read = {
@@ -184,24 +184,24 @@ in
         type = "CNAME";
         proxied = false;
         name = "report";
-        content = "lagern.sd.ysun.co";
-        comment = "AWS - Zurich - CSP/NEL Collector";
+        content = "ysun.co";
+        comment = "AS10779 - Anycast - CSP/NEL Collector";
       };
 
       co_ysun_sso = {
         type = "CNAME";
         proxied = false;
         name = "sso";
-        content = "walberla.sd.ysun.co";
-        comment = "Hetzner - Kanidm";
+        content = "kebnekaise.sd.ysun.co";
+        comment = "Vultr - Stockholm - Kanidm";
       };
 
       co_ysun_stats = {
         type = "CNAME";
         proxied = false;
         name = "stats";
-        content = "toompea.sd.ysun.co";
-        comment = "V.PS - Tallinn, Estonia - Plausible Analytics";
+        content = "watchung.sd.ysun.co";
+        comment = "Vultr - Piscataway - Plausible Analytics";
       };
 
       co_ysun_tailscale = {
