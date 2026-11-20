@@ -45,6 +45,14 @@ in
         "d '${cfg.configLocation}/books' 0750 ${cfg.user} ${cfg.group} - -"
       ];
 
+      services.restic.backups.s3 = lib.mkIf (hasTag "backup") {
+        paths = [ "${cfg.configLocation}/books" ];
+        sqlite.stump = {
+          path = "${cfg.configLocation}/stump.db";
+          inherit (cfg) user;
+        };
+      };
+
       services.caddy = {
         enable = true;
         virtualHosts.${domain}.extraConfig = ''

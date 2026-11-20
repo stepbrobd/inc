@@ -176,8 +176,8 @@ in
         type = "CNAME";
         proxied = false;
         name = "read";
-        content = "toompea.sd.ysun.co";
-        comment = "V.PS - Tallinn, Estonia - Kavita";
+        content = "kebnekaise.sd.ysun.co";
+        comment = "Vultr - Stockholm - Stump";
       };
 
       co_ysun_report = {
