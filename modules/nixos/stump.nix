@@ -7,15 +7,6 @@ let
   inherit (lib.blueprint.services.stump) domain;
 
   cfg = config.services.stump;
-
-  # stump serves its web client from a directory, so the stats script goes into a copy of it
-  # the precompressed copies of index.html would otherwise win over the patched one
-  frontend = pkgs.runCommand "stump-frontend-stats" { } ''
-    cp -r ${cfg.package.frontend} $out
-    chmod -R u+w $out
-    rm -f $out/index.html.br $out/index.html.gz
-    substituteInPlace $out/index.html --replace-fail '</head>' '<script defer data-domain="${domain}" src="https://${lib.blueprint.services.plausible.domain}/js/script.file-downloads.hash.outbound-links.js"></script></head>'
-  '';
 in
 {
   config = lib.mkMerge [
@@ -30,17 +21,29 @@ in
         ip = "::1";
         secretFiles.STUMP_OIDC_CLIENT_SECRET = config.sops.secrets."stump/oidc".path;
         environment = {
-          STUMP_CLIENT_DIR = "${frontend}";
+          STUMP_CLIENT_DIR = "${pkgs.runCommand "client" { } ''
+            cp -r ${cfg.package.frontend} $out
+            chmod -R u+w $out
+            rm -f $out/index.html.br $out/index.html.gz
+            substituteInPlace $out/index.html --replace-fail '</head>' '<script defer data-domain="${domain}" src="https://${lib.blueprint.services.plausible.domain}/js/script.file-downloads.hash.outbound-links.js"></script></head>'
+          ''}";
           STUMP_TRUST_PROXY_HEADERS = "true";
           STUMP_OIDC_ENABLED = "true";
           STUMP_OIDC_ISSUER_URL = "https://${lib.blueprint.services.kanidm.domain}/oauth2/openid/stump";
           STUMP_OIDC_CLIENT_ID = "stump";
           STUMP_OIDC_SCOPES = "openid email profile";
           STUMP_OIDC_ALLOW_REGISTRATION = "true";
+          STUMP_OIDC_DISABLE_LOCAL_AUTH = "true";
         };
       };
 
-      # library folder, added as a library from the admin ui
+      # the database holds the token signing secrets
+      systemd.services.stump.serviceConfig = {
+        StateDirectoryMode = "0750";
+        UMask = "0027";
+      };
+
+      # library
       systemd.tmpfiles.rules = [
         "d '${cfg.configLocation}/books' 0750 ${cfg.user} ${cfg.group} - -"
       ];

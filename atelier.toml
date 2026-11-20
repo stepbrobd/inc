@@ -19,8 +19,6 @@ exclude = [
   "legacyPackages.aarch64-darwin.jitsi-openid", # unused
   "legacyPackages.aarch64-linux.jitsi-openid",  # unused
 
-  "legacyPackages.aarch64-darwin.kavita", # unsupported
-
   "legacyPackages.aarch64-darwin.plausible", # unsupported
 
   "legacyPackages.aarch64-darwin.mangomon", # unsupported

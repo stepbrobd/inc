@@ -40,8 +40,6 @@ in
     sops.secrets."kanidm/oauth/grafana".mode = "440";
     sops.secrets."kanidm/oauth/jitsi".group = "kanidm";
     sops.secrets."kanidm/oauth/jitsi".mode = "440";
-    sops.secrets."kanidm/oauth/kavita".group = "kanidm";
-    sops.secrets."kanidm/oauth/kavita".mode = "440";
     sops.secrets."kanidm/oauth/paperless".group = "kanidm";
     sops.secrets."kanidm/oauth/paperless".mode = "440";
     sops.secrets."kanidm/oauth/vaultwarden".group = "kanidm";
@@ -91,9 +89,6 @@ in
           "sso.admins" = { };
           "sso.users" = { };
 
-          "kavita.admins" = { };
-          "kavita.users" = { };
-
           "stump.users" = { };
 
           "paperless.users" = { };
@@ -125,9 +120,6 @@ in
             groups = [
               "sso.admins"
               "sso.users"
-
-              "kavita.admins"
-              "kavita.users"
 
               "stump.users"
 
@@ -182,30 +174,6 @@ in
               "email"
               "profile"
             ];
-          };
-
-          kavita = {
-            displayName = "Kavita";
-            originUrl = "https://${lib.blueprint.services.kavita.domain}/signin-oidc";
-            originLanding = "https://${lib.blueprint.services.kavita.domain}/";
-            basicSecretFile = config.sops.secrets."kanidm/oauth/kavita".path;
-            preferShortUsername = true;
-            scopeMaps."kavita.users" = [
-              "openid"
-              "email"
-              "profile"
-            ];
-            claimMaps.groups = {
-              joinType = "array";
-              valuesByGroup = {
-                "kavita.admins" = [ "Admin" ];
-                "kavita.users" = [
-                  "Login"
-                  "Download"
-                  "Bookmark"
-                ];
-              };
-            };
           };
 
           stump = {

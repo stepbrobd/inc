@@ -160,7 +160,7 @@ in
                       { title = "Vaultwarden"; url = "https://vault.ysun.co"; icon = "si:vaultwarden"; same-tab = true; }
                       { title = "Paperless"; url = "https://dms.ysun.co"; icon = "si:paperlessngx"; same-tab = true; }
                       { title = "Home Assistant"; url = "https://ha.ysun.co"; icon = "si:homeassistant"; same-tab = true; }
-                      { title = "Kavita"; url = "https://read.ysun.co"; icon = "si:calibreweb"; same-tab = true; }
+                      { title = "Stump"; url = "https://read.ysun.co"; icon = "si:calibreweb"; same-tab = true; }
                       { title = "Glance"; url = "https://home.ysun.co"; icon = "si:glance"; same-tab = true; }
                     ];
                   }

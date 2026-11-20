@@ -20,7 +20,6 @@ let
         self.nixosModules.home-assistant
         self.nixosModules.jitsi
         self.nixosModules.kanidm
-        self.nixosModules.kavita
         self.nixosModules.maxmind
         self.nixosModules.minimal
         self.nixosModules.monitoring
