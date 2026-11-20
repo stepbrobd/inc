@@ -7,7 +7,7 @@ let
   inherit (lib.blueprint.services.go-csp-collector) domain;
 in
 {
-  config = lib.mkIf (hasTag "go-csp-collector") {
+  config = lib.mkIf (hasTag "csp") {
     services.go-csp-collector = {
       enable = true;
 
