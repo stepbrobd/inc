@@ -160,8 +160,8 @@ in
         type = "CNAME";
         proxied = false;
         name = "grep";
-        content = "odake.sd.ysun.co";
-        comment = "SSDNodes - Tokyo 2 - Neogrok";
+        content = "montmartre.sd.ysun.co";
+        comment = "Vultr - Paris - Neogrok";
       };
 
       co_ysun_otel = {
