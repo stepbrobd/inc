@@ -8,11 +8,11 @@ exclude           = ["assets", "pages", "public"]
 
 [dependencies]
 askama       = "0.16"
-comrak       = { version = "0.59", default-features = false }
+comrak       = { version = "1.1", default-features = false }
 giallo       = { version = "0.6", features = ["dump"] }
 html5gum     = { version = "0.9", default-features = false }
 imagesize    = "0.15"
-jiff         = { version = "0.2", features = ["serde"] }
+jiff         = { version = "1", features = ["serde"] }
 math-core    = "0.9"
 serde        = { version = "1", features = ["derive"] }
-serde-saphyr = "2.1"
+serde-saphyr = "2.2"

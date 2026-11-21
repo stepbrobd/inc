@@ -5,7 +5,7 @@ use std::sync::Mutex;
 
 use comrak::adapters::{HeadingAdapter, HeadingMeta};
 use comrak::html::{escape, escape_href};
-use comrak::nodes::{AstNode, NodeHtmlBlock, NodeValue, Sourcepos};
+use comrak::nodes::{AstNode, NodeHtmlBlock, NodeValue};
 use comrak::options::Plugins;
 use comrak::{Anchorizer, Arena, Options, format_html_with_plugins, parse_document};
 use giallo::{HighlightOptions, HtmlRenderer, Registry, RenderOptions, ThemeVariant};
@@ -124,10 +124,7 @@ impl<'a> Markdown<'a> {
                         self.image(node, &image.url, &image.title, path, figure.is_some())?;
                     Some(if let Some(parent) = figure {
                         target = parent;
-                        NodeValue::HtmlBlock(NodeHtmlBlock {
-                            block_type: 0,
-                            literal,
-                        })
+                        NodeValue::HtmlBlock(NodeHtmlBlock::new(literal))
                     } else {
                         NodeValue::HtmlInline(literal)
                     })
@@ -138,15 +135,13 @@ impl<'a> Markdown<'a> {
                 NodeValue::CodeBlock(code)
                     if code.info.split_whitespace().next() == Some("math") =>
                 {
-                    Some(NodeValue::HtmlBlock(NodeHtmlBlock {
-                        block_type: 0,
-                        literal: self.math(&code.literal, true)?,
-                    }))
+                    Some(NodeValue::HtmlBlock(NodeHtmlBlock::new(
+                        self.math(&code.literal, true)?,
+                    )))
                 }
-                NodeValue::CodeBlock(code) => Some(NodeValue::HtmlBlock(NodeHtmlBlock {
-                    block_type: 0,
-                    literal: self.code(&code.info, &code.literal)?,
-                })),
+                NodeValue::CodeBlock(code) => Some(NodeValue::HtmlBlock(NodeHtmlBlock::new(
+                    self.code(&code.info, &code.literal)?,
+                ))),
                 _ => None,
             };
             if let Some(value) = replacement {
@@ -308,12 +303,7 @@ impl<'a> Markdown<'a> {
 struct Headings(Mutex<Anchorizer>);
 
 impl HeadingAdapter for Headings {
-    fn enter(
-        &self,
-        output: &mut dyn fmt::Write,
-        heading: &HeadingMeta,
-        _: Option<Sourcepos>,
-    ) -> fmt::Result {
+    fn enter(&self, output: &mut dyn fmt::Write, heading: &HeadingMeta) -> fmt::Result {
         let id = self
             .0
             .lock()
