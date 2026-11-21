@@ -542,7 +542,9 @@ fn main() -> ExitCode {
         .unwrap_or_else(|err| fail(format!("Could not read the local time zone: {err}")));
     println!(
         "Timezone: {}",
-        Timestamp::now().to_zoned(tz.clone()).strftime("%Z %z")
+        Timestamp::now()
+            .to_zoned_datetime(tz.clone())
+            .strftime("%Z %z")
     );
     let media = anilist(&user);
     let mut rows = episodes(&media, &tz);
