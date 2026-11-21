@@ -12,7 +12,7 @@ anyhow             = "1"
 axum               = "0.8"
 jsonwebtoken       = { version = "12", features = ["rust_crypto"] }
 nix                = { version = "0.32", features = ["signal"] }
-rmcp               = { version = "3.8", features = ["server", "macros", "transport-streamable-http-server"] }
+rmcp               = { version = "3.11", features = ["server", "macros", "transport-streamable-http-server"] }
 rustls             = { version = "0.23", default-features = false, features = ["ring", "std"] }
 schemars           = "1"
 serde              = { version = "1", features = ["derive"] }
