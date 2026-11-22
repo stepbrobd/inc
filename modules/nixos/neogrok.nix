@@ -81,6 +81,11 @@ in
         }";
           Restart = "on-failure";
           StateDirectory = "miroir";
+          ProtectSystem = "strict";
+          PrivateTmp = true;
+          NoNewPrivileges = true;
+          PrivateDevices = true;
+          CapabilityBoundingSet = "";
         };
       };
 
@@ -97,6 +102,10 @@ in
           ExecStart = "${pkgs.neogrok}/bin/neogrok";
           Restart = "on-failure";
           DynamicUser = true;
+          CapabilityBoundingSet = "";
+        } // lib.optionalAttrs (cfg.host == "::1") {
+          IPAddressDeny = "any";
+          IPAddressAllow = "localhost";
         };
       };
     })
