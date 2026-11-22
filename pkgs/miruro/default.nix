@@ -5,7 +5,7 @@
 
 buildGoLatestModule (finalAttrs: {
   pname = "miruro";
-  version = "2026.1020.0";
+  version = "2026.1121.0";
 
   __structuredAttrs = true;
   __darwinAllowLocalNetworking = true;
@@ -14,10 +14,10 @@ buildGoLatestModule (finalAttrs: {
     owner = "stepbrobd";
     repo = "miruro";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-KCyn38aSBJHt03i+YIPYGG7jTjRODk4+CViF4ziD+1o=";
+    hash = "sha256-HW7YLZvrkA5ItA4WnihkVR0kG+L2pJVOp3EOvkHD0xo=";
   };
 
-  vendorHash = "sha256-M54APrsTVPjNGmeLfmZFzV29fLuHGsukV8pU1I+xnBg=";
+  vendorHash = "sha256-syZcXQm+MMmzW5BwWf/bcndrdJGTObyPRlRosTFqRAY=";
 
   ldflags = [
     "-s"
