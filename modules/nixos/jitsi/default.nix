@@ -89,6 +89,8 @@ in
         serviceConfig = {
           ExecStart = lib.getExe pkgs.jitsi-openid;
           DynamicUser = true;
+          CapabilityBoundingSet = "";
+          PrivateDevices = true;
           LoadCredential = [
             "jwt:${config.sops.secrets."jitsi/jwt".path}"
             "oidc:${config.sops.secrets."jitsi/oidc".path}"
