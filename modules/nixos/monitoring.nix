@@ -9,6 +9,13 @@ let
   hasProm = hasTag "prometheus";
   hasLoki = hasTag "loki";
   tsDomain = "${config.networking.hostName}.${lib.blueprint.tailscale.tailnet}";
+
+  logServiceConfig = {
+    CapabilityBoundingSet = "";
+    PrivateDevices = true;
+    IPAddressDeny = "any";
+    IPAddressAllow = "localhost";
+  };
 in
 {
   # "prometheus" tag: VictoriaMetrics (drop in prometheus replacement) + node exporter + RFM
@@ -188,6 +195,11 @@ in
         };
       };
 
+      systemd.services.loki.serviceConfig = logServiceConfig // {
+        ProtectSystem = mkForce "strict";
+        ReadWritePaths = [ config.services.loki.dataDir ];
+      };
+
       # expose loki metrics to VictoriaMetrics when both tags are present
       services.victoriametrics.prometheusConfig.scrape_configs = lib.mkIf hasProm [{
         job_name = "loki";
@@ -295,7 +307,9 @@ in
         };
       };
 
-      systemd.services.fluent-bit.serviceConfig.StateDirectory = "fluent-bit";
+      systemd.services.fluent-bit.serviceConfig = logServiceConfig // {
+        StateDirectory = "fluent-bit";
+      };
 
       services.geoipupdate.enable = true;
 
