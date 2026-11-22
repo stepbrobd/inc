@@ -15,6 +15,8 @@ let
 
   hasDumps = job: job.postgresql != [ ] || job.clickhouse != [ ] || job.sqlite != { };
   dumps = lib.filterAttrs (_: hasDumps) config.services.restic.backups;
+  clickhouseDirs = lib.mapAttrsToList (name: _: "${dir}/${name}/clickhouse")
+    (lib.filterAttrs (_: job: job.clickhouse != [ ]) dumps);
 
   # every dump is one file or directory that one identity writes with one command
   # postgres and clickhouse dump as the identity their server runs as and sqlite as the declared owner
@@ -149,11 +151,18 @@ in
 
       # dumps run in the unit's own preStart after restic reached the repository (a failed dump fails the snapshot)
       systemd.services = lib.mapAttrs' (name: job: lib.nameValuePair "restic-backups-${name}" { preStart = lib.mkAfter (dumpScript name job); }) dumps;
-
-      # File() backups may only land under an allowed path
-      services.clickhouse.serverConfig = lib.mkIf (lib.any (job: job.clickhouse != [ ]) (lib.attrValues dumps)) {
-        backups.allowed_path = "${dir}/";
-      };
     }
+
+    (lib.mkIf (clickhouseDirs != [ ]) {
+      services.clickhouse.serverConfig.backups.allowed_path = "${dir}/";
+
+      # ClickHouse writes the dump itself, including on a fresh installation
+      systemd.tmpfiles.settings."clickhouse-backups" =
+        let inherit (config.systemd.services.clickhouse.serviceConfig) User Group; in
+        lib.genAttrs clickhouseDirs (_: {
+          d = { user = User; group = Group; mode = "0700"; };
+        });
+      systemd.services.clickhouse.serviceConfig.ReadWritePaths = clickhouseDirs;
+    })
   ];
 }

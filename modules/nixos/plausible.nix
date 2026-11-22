@@ -19,9 +19,11 @@ in
       sops.secrets."plausible/smtp" = { };
       sops.secrets."plausible/keybase" = { };
       sops.secrets."plausible/environment" = { };
-      systemd.services.plausible.serviceConfig.EnvironmentFile = [
-        config.sops.secrets."plausible/environment".path
-      ];
+      systemd.services.plausible.serviceConfig = {
+        EnvironmentFile = [ config.sops.secrets."plausible/environment".path ];
+        CapabilityBoundingSet = "";
+        PrivateDevices = true;
+      };
 
       # sso feature is guarded
       # https://github.com/plausible/analytics/blob/master/config/.env.load
@@ -31,6 +33,13 @@ in
         postgresql = [ postgres.dbname ];
         # events are in the database url names
         clickhouse = [ (lib.last (lib.splitString "/" clickhouse.url)) ];
+      };
+
+      systemd.services.clickhouse.serviceConfig = mkIf config.services.clickhouse.enable {
+        CapabilityBoundingSet = "CAP_SYS_NICE";
+        NoNewPrivileges = true;
+        PrivateTmp = true;
+        ProtectSystem = "strict";
       };
 
       # clickhouse eats massive amount of disk space; disable its log tables to
