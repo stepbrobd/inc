@@ -14,11 +14,11 @@ let
   goRev = "ee691292343f9e120054d09de48b27f42af2af6c";
   goHash = "sha256-Qmy06FkeFkjqCo1FLSD9dO7hTvdo/gC2VACJniuiQBU=";
 
-  tsVersion = "1.105.361";
-  tsRev = "36780d60ef6469f163bc3e567d3ede29fed3d66c";
-  tsHash = "sha256-agIc2Vg3FHt6r+twal/YBcY0KNpS9zO45Q1IN6ig6eU=";
+  tsVersion = "1.105.366";
+  tsRev = "a33097932f7282002b9317d7cf87975ba5425f70";
+  tsHash = "sha256-gYqMrqlIMPcBTZSpLXggKeDTfQ0Y0flu4xYT+S6EfMA=";
 
-  vendorHash = "sha256-BqLElx5MlGtEXEkh+2PTo3A38vQjHsQWjHLrXK1K7Zg=";
+  vendorHash = "sha256-nOGMprgdGfL3xU7R3La0aHEJNpVYkP9Inc0Fs8+KfiI=";
 
   builderArg = lib.findSingle
     (n: lib.hasPrefix "buildGo" n && lib.hasSuffix "Module" n)
