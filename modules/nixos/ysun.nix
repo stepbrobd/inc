@@ -51,6 +51,7 @@ in
         RestartSec = 1;
         SyslogLevel = "err";
         DynamicUser = true;
+        User = "homepage";
         UMask = "0077";
         CapabilityBoundingSet = "";
         LockPersonality = true;
