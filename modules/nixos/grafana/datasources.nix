@@ -6,7 +6,7 @@ let
   inherit (lib) mkIf filterAttrs foldlAttrs elem toLower blueprint;
 
   # deterministic UID shared between datasource provisioning and alert rules
-  # e.g. dsUid "walberla" "prometheus" -> "datasource-walberla-prometheus"
+  # e.g. dsUid "rysy" "prometheus" -> "datasource-rysy-prometheus"
   dsUid = name: type: "datasource-${name}-${type}";
 
   mkDatasources = label: jsonData:

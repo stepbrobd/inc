@@ -24,12 +24,10 @@ keys:
     - &morasko age1e8lt7zwnd4gf56ew4awdreh8yftyy4c3vmz9nv6l8dsdvue5vshq08ncja
     - &namsan age1xdv9wenaqszu3rw9kzcf3jafcp82g89k9ftw0e3xt8v4we3nj50q4fm37d
     - &noches age1zsyu735fpj4dkcmhnajsgl2hlqt89ezmgjwm4ntltd8f2t26a5yqqwhpg4
-    - &odake age16urcveanputmn5vrt579xnk2pk87mlv0d2fmwzn2059qtzklmq9smj34a5
     - &roraima age1a6ecdm7kqslt2xg52q6grdy8emqrlxz4mzgd707w5k238k9p8stsn5tttp
     - &rysy age1224uy4x89k8qg5ml3wvfx9w707necz44g7kk83aytjgvenzwmphqd9ynsj
     - &timah age1e466tkanyx0fa5pykvyqggsefnkefg5vp8jw3nmcxjljl5y4j45sm7zh2m
     - &toompea age1ma866cuslrcgvtdjnnezy58smq66p2zsdduetm0deud2c4xxygts9vvm0k
-    - &walberla age1s3syz6jhdj9qqz4lcu42uxckpn8na56qa3sehuy6cpwtypf3349qkjry6v
     - &watchung age1n82h979rchkwuqs7933uhzsn5dq9w2km6uw26ryd353hfh3a6c5qhxere2
 
   wildcard: &wildcard
@@ -54,12 +52,10 @@ keys:
     - *morasko
     - *namsan
     - *noches
-    - *odake
     - *roraima
     - *rysy
     - *timah
     - *toompea
-    - *walberla
     - *watchung
 
 creation_rules:
@@ -111,9 +107,6 @@ creation_rules:
   # hosts/noches (ysun + noches)
   - path_regex: hosts/noches/secrets\.yaml$
     key_groups: [{ age: [*framework, *macbook, *xps, *noches] }]
-  # hosts/odake (ysun + odake)
-  - path_regex: hosts/odake/secrets\.yaml$
-    key_groups: [{ age: [*framework, *macbook, *xps, *odake] }]
   # hosts/roraima (ysun + roraima)
   - path_regex: hosts/roraima/secrets\.yaml$
     key_groups: [{ age: [*framework, *macbook, *xps, *roraima] }]
@@ -126,9 +119,6 @@ creation_rules:
   # hosts/toompea (ysun + toompea)
   - path_regex: hosts/toompea/secrets\.yaml$
     key_groups: [{ age: [*framework, *macbook, *xps, *toompea] }]
-  # hosts/walberla (ysun + walberla)
-  - path_regex: hosts/walberla/secrets\.yaml$
-    key_groups: [{ age: [*framework, *macbook, *xps, *walberla] }]
   # hosts/watchung (ysun + watchung)
   - path_regex: hosts/watchung/secrets\.yaml$
     key_groups: [{ age: [*framework, *macbook, *xps, *watchung] }]

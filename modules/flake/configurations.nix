@@ -104,12 +104,10 @@ let
             "morasko" # POZMAN, Poznań, 2 vCPU, 8GB RAM, 50GB Storage
             "namsan" # Vultr, Seoul, 2 vCPU, 4GB RAM, 80GB Storage
             "noches" # HPE DL380 Gen 10, Grenoble, 2 x Xeon Gold 5218, 128GB RAM, 2 x 512GB SSD RAID1
-            "odake" # SSDNodes, Tokyo, Performance, 8 vCPU, 32GB RAM, 640GB Storage
             "roraima" # NetActuate, Sao Paulo, 2 vCPU, 8GB RAM, 100GB Storage
             "rysy" # NetActuate, Warsaw, 2 vCPU, 8GB RAM, 100GB Storage
             "timah" # Misaka Networks, Singapore, 1 vCPU, 2GB RAM, 32 GB Storage
             "toompea" # V.PS, Tallinn, Pro, 4 vCPU, 4GB RAM, 40GB Storage
-            "walberla" # Hetzner Cloud, Falkenstein, CX32, 4 vCPU, 8GB RAM, 80GB Storage
             "watchung" # Vultr, Piscataway, 2 vCPU, 4GB RAM, 80GB Storage
           ];
         }
