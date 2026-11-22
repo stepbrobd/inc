@@ -7,8 +7,8 @@ in
   systemd.services."serial-getty@ttyAMA0".enable = false;
 
   services.udev.extraRules = ''
-    SUBSYSTEM=="tty", KERNEL=="ttyAMA0", OWNER="root", GROUP="gpsd", MODE="0666"
-    SUBSYSTEM=="pps", KERNEL=="pps0", OWNER="root", GROUP="gpsd", MODE="0666"
+    SUBSYSTEM=="tty", KERNEL=="ttyAMA0", OWNER:="gpsd", GROUP:="gpsd", MODE:="0600"
+    SUBSYSTEM=="pps", KERNEL=="pps0", OWNER:="gpsd", GROUP:="ntpd-rs", MODE:="0640"
   '';
 
   srvos.boot.consoles = lib.mkForce [ ];
@@ -159,6 +159,7 @@ in
   systemd.services.gpsd = {
     after = [ "gpsd-socket-shim.service" ];
     wants = [ "gpsd-socket-shim.service" ];
+    serviceConfig.CapabilityBoundingSet = "~CAP_FOWNER";
   };
 
   # embed the public grafana dashboard
