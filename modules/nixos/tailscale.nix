@@ -4,15 +4,6 @@
 
 let
   hasTag = lib.hasTag config.networking.hostName;
-
-  # https://tailscale.com/kb/1320/performance-best-practices#linux-optimizations-for-subnet-routers-and-exit-nodes
-  script = ''
-    #!${pkgs.runtimeShell}
-
-    export PATH=${pkgs.lib.makeBinPath (with pkgs; [ coreutils ethtool iproute2 ])}
-
-    ethtool -K "$(ip -o route get 1.1.1.1 | cut -f 5 -d ' ')" rx-udp-gro-forwarding on rx-gro-list off
-  '';
 in
 {
   services.tailscale = {
@@ -52,17 +43,4 @@ in
     static_configs = [{ targets = [ "100.100.100.100:80" ]; }];
     metrics_path = "/metrics";
   }];
-
-  networking.networkmanager.dispatcherScripts = [{
-    type = "basic";
-    source = pkgs.writeText "50-tailscale" script;
-  }];
-
-  services.networkd-dispatcher = {
-    enable = !config.networking.networkmanager.enable;
-    rules."50-tailscale" = {
-      onState = [ "routable" ];
-      inherit script;
-    };
-  };
 }
