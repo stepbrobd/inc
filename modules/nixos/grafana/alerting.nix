@@ -174,19 +174,6 @@ in
 
     services.grafana.provision.alerting.rules.settings = {
       apiVersion = 1;
-      # one-time cleanup: remove after deploy
-      deleteRules = lib.concatMap
-        (name: map (rule: { orgId = 1; uid = "alert-${name}-${rule}"; }) [
-          "scrape-down"
-          "systemd-failed"
-          "disk-low"
-          "rfm-ring-drops"
-          "rfm-forced-evictions"
-          "rfm-ipfix-errors"
-          "conntrack-full"
-          "pg-collation"
-        ])
-        [ "walberla" "odake" ];
       groups =
         (foldlAttrs
           (acc: name: host: acc ++ [
