@@ -37,6 +37,14 @@
 
   users.mutableUsers = false;
 
+  systemd.services.nextdns.serviceConfig = lib.mkIf config.services.nextdns.enable {
+    CapabilityBoundingSet = "CAP_NET_BIND_SERVICE";
+    NoNewPrivileges = true;
+    PrivateDevices = true;
+    ProtectHome = true;
+    ProtectSystem = "full";
+  };
+
   environment.etc."ssh/ca.pub".text = lib.blueprint.ssh.ca;
   services.openssh = {
     enable = true;
