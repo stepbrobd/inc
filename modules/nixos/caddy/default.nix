@@ -187,7 +187,15 @@ in
       EnvironmentFile = [ config.sops.secrets.caddy.path ];
       AmbientCapabilities = "CAP_NET_BIND_SERVICE";
       RestartPreventExitStatus = lib.mkForce [ ];
-      # note that do NOT allow https://github.com/nixos/nixpkgs/pull/471670 hardening
+      # leave syscall filtering out
+      # plugin build will hit SIGSYS under nixpkgs#471670
+      CapabilityBoundingSet = "CAP_NET_BIND_SERVICE CAP_NET_ADMIN";
+      ProtectSystem = "strict";
+      ReadWritePaths = [ config.services.caddy.logDir ];
+      ProtectControlGroups = true;
+      ProtectKernelLogs = true;
+      ProtectKernelModules = true;
+      ProtectKernelTunables = true;
     };
   };
 }
