@@ -54,6 +54,15 @@ in
         };
       };
 
+      systemd.services.paperless-exporter = lib.mkIf cfg.exporter.enable {
+        serviceConfig = {
+          NoNewPrivileges = true;
+          CapabilityBoundingSet = "";
+          ProtectHome = true;
+          PrivateDevices = true;
+        };
+      };
+
       services.caddy = {
         enable = true;
 
