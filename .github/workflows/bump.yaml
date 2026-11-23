@@ -27,7 +27,7 @@ jobs:
         uses: $/.github/actions/setup
 
       - name: Install Dependencies
-        run: nix profile add .#nix-update
+        run: nix profile add --inputs-from . nixpkgs#nix-update
 
       - name: Bump
         env:
