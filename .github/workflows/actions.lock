@@ -5,26 +5,26 @@ version: 'v0.0.3'
 workflows:
     '.github/workflows/bump.yaml':
         - 'actions/checkout@v7.0.1'
-        - 'cachix/install-nix-action@v31.11.5'
+        - 'cachix/install-nix-action@v32.0.0'
     '.github/workflows/ci.yaml': []
     '.github/workflows/deploy.yaml':
         - 'actions/checkout@v7.0.1'
-        - 'cachix/install-nix-action@v31.11.5'
+        - 'cachix/install-nix-action@v32.0.0'
         - 'tailscale/github-action@v4.4.0'
     '.github/workflows/merge.yaml': []
     '.github/workflows/sync.yaml': []
     '.github/workflows/terranix.yaml':
         - 'actions/checkout@v7.0.1'
-        - 'cachix/install-nix-action@v31.11.5'
+        - 'cachix/install-nix-action@v32.0.0'
 dependencies:
     'actions/checkout@v7.0.1':
         ref: 'v7.0.1'
         commit: 'sha1-3d3c42e5aac5ba805825da76410c181273ba90b1'
         owner_id: 44036562
         repo_id: 197814629
-    'cachix/install-nix-action@v31.11.5':
-        ref: 'v31.11.5'
-        commit: 'sha1-3dc140bfc76c49fbd4dd958429132e3746bcb086'
+    'cachix/install-nix-action@v32.0.0':
+        ref: 'v32.0.0'
+        commit: 'sha1-bb0495a1086c46893eee56f32fd192dfe4a15bb9'
         owner_id: 36824654
         repo_id: 212301524
     'tailscale/github-action@v4.4.0':
