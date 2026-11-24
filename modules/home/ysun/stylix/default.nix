@@ -5,9 +5,6 @@
 {
   imports = [ inputs.stylix.homeModules.stylix ];
 
-  # TODO: FIXME: drop when nix-community/stylix#2559 or #2557 merge
-  disabledModules = [ "${inputs.stylix}/modules/wayprompt/hm.nix" ];
-
   stylix.enable = true;
   stylix.overlays.enable = lib.mkForce false;
 
