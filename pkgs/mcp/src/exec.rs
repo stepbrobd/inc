@@ -3,6 +3,7 @@ use std::time::Duration;
 
 use anyhow::{Context, Result};
 use tokio::io::AsyncReadExt;
+use tokio::process::Command;
 
 const PIPE_CHUNK: usize = 8192;
 
@@ -13,32 +14,8 @@ pub struct RunResult {
     pub truncated: bool,
 }
 
-pub async fn execute(
-    shell: &str,
-    packages: &[String],
-    command: &str,
-    cwd: &str,
-    timeout: Duration,
-    cap: usize,
-) -> Result<RunResult> {
-    // with no extra packages run the shell directly; otherwise wrap it in
-    // `nix shell nixpkgs#<pkg> ... --command <shell> -c <command>` so the call
-    // sees those packages on PATH. argv is passed literally, never through a shell.
-    let mut cmd = if packages.is_empty() {
-        let mut c = tokio::process::Command::new(shell);
-        c.arg("-c").arg(command);
-        c
-    } else {
-        let mut c = tokio::process::Command::new("nix");
-        c.arg("shell");
-        for p in packages {
-            c.arg(format!("nixpkgs#{p}"));
-        }
-        c.arg("--command").arg(shell).arg("-c").arg(command);
-        c
-    };
-    cmd.current_dir(cwd)
-        .stdin(Stdio::null())
+pub async fn execute(mut cmd: Command, timeout: Duration, cap: usize) -> Result<RunResult> {
+    cmd.stdin(Stdio::null())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .kill_on_drop(true);

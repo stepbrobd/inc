@@ -17,6 +17,8 @@ rustPlatform.buildRustPackage {
 
   cargoLock.lockFile = ./Cargo.lock;
 
+  useNextest = true;
+
   meta = {
     mainProgram = "mcp";
     platforms = lib.platforms.unix;

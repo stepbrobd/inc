@@ -7,7 +7,7 @@
 use std::os::fd::FromRawFd;
 use std::sync::Arc;
 
-use anyhow::Result;
+use anyhow::{Context, Result};
 use axum::routing::get;
 use jsonwebtoken::jwk::JwkSet;
 use rmcp::transport::streamable_http_server::session::local::LocalSessionManager;
@@ -21,6 +21,7 @@ mod auth;
 mod config;
 mod exec;
 mod prompts;
+mod target;
 mod tools;
 
 use audit::Audit;
@@ -97,12 +98,25 @@ async fn main() -> Result<()> {
         json!({ "issuer": settings.issuer, "resource": settings.resource }),
     );
     auth::spawn_jwks_refresh(state.clone());
+    // children start in the service user's home unless a call names a cwd
+    std::env::set_current_dir(&settings.home)
+        .with_context(|| format!("entering HOME {}", settings.home))?;
+    let hostname: Arc<str> = nix::unistd::gethostname()
+        .context("gethostname")?
+        .to_string_lossy()
+        .into();
 
     let mcp = StreamableHttpService::new(
         {
             let settings = settings.clone();
             let audit = audit.clone();
-            move || Ok(tools::Shell::new(settings.clone(), audit.clone()))
+            move || {
+                Ok(tools::Shell::new(
+                    settings.clone(),
+                    audit.clone(),
+                    hostname.clone(),
+                ))
+            }
         },
         LocalSessionManager::default().into(),
         StreamableHttpServerConfig::default().with_allowed_hosts([settings.host.clone()]),

@@ -10,8 +10,9 @@ path = "src/main.rs"
 [dependencies]
 anyhow             = "1"
 axum               = "0.8"
+base64             = "0.23"
 jsonwebtoken       = { version = "12", features = ["rust_crypto"] }
-nix                = { version = "0.32", features = ["signal"] }
+nix                = { version = "0.32", features = ["hostname", "signal"] }
 rmcp               = { version = "3.11", features = ["server", "macros", "transport-streamable-http-server"] }
 rustls             = { version = "0.23", default-features = false, features = ["ring", "std"] }
 schemars           = "1"
@@ -22,6 +23,9 @@ tower              = "0.5"
 tracing            = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
 ureq               = { version = "3", default-features = false, features = ["gzip", "platform-verifier", "rustls-no-provider"] }
+
+[dev-dependencies]
+proptest = "1"
 
 [profile.release]
 strip = true
