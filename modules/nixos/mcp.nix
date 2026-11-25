@@ -43,8 +43,6 @@ in
     };
 
     services.caddy.enable = true;
-    # request bodies are shell commands which the ngwaf would read as attacks
-    services.sigsci-agent.enable = lib.mkForce false;
 
     services.caddy.virtualHosts.${domain}.extraConfig = ''
       import base

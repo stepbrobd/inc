@@ -8,7 +8,7 @@ let
 
   is = field: value: { inherit field value; operator = "equals"; };
 
-  # like = field: value: { inherit field value; operator = "like"; };
+  like = field: value: { inherit field value; operator = "like"; };
 
   any = condition: { group_operator = "any"; inherit condition; };
 
@@ -71,6 +71,7 @@ in
       kanidm = { name = "Kanidm Credential"; description = "Passwords and codes posted to the Kanidm login forms and auth API."; };
       grafana = { name = "Grafana Session"; description = "Requests from a signed in Grafana browser session."; };
       neogrok = { name = "Neogrok Search"; description = "Code searches from a session that passed the Caddy OIDC gate."; };
+      mcp = { name = "MCP Client"; description = "Tool calls carrying an access token and transfers through short lived links of the MCP server."; };
     };
 
   resource.fastly_ngwaf_workspace_rule = {
@@ -140,6 +141,21 @@ in
       signal = "neogrok";
       condition = [ (is "domain" services.neogrok.domain) ];
       multival_condition = [ (cookie "session") ];
+    };
+
+    # tool calls carry a bearer token the server checks before any tool runs
+    # bodies are shell commands by design
+    # transfer links carry their token in the path
+    # an unknown token gets 404 or 410 before any body is read
+    mcp = allow {
+      description = "Allow authenticated MCP calls and transfer links on ${services.mcp.domain}.";
+      signal = "mcp";
+      condition = [ (is "domain" services.mcp.domain) ];
+      group_condition = [{
+        group_operator = "any";
+        condition = [ (like "path" "/files/*") ];
+        multival_condition = [ (header "Authorization") ];
+      }];
     };
   };
 }
