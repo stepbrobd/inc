@@ -48,7 +48,7 @@ in
 
     services.caddy.virtualHosts.${domain}.extraConfig = ''
       import base
-      @mcp path /mcp /mcp/* /.well-known/oauth-protected-resource /.well-known/oauth-protected-resource/*
+      @mcp path /mcp /mcp/* /files/* /.well-known/oauth-protected-resource /.well-known/oauth-protected-resource/*
       handle @mcp {
         reverse_proxy unix/${socket} {
           header_up X-Real-IP {client_ip}
