@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   imports = with inputs.rpi.nixosModules; [
@@ -22,6 +22,18 @@
   hardware.facter.reportPath = ./facter.json;
 
   boot.loader.raspberry-pi.bootloader = "kernel";
+
+  # TODO: FIXME: drop once the vendor kernel's tools/include/linux/types.h defines __u128
+  boot.kernelPatches = [
+    rec {
+      name = "tools-add-128-bit-integer-types-for-aarch64";
+      patch = pkgs.fetchpatch {
+        name = name + ".patch";
+        url = "https://github.com/torvalds/linux/commit/10a47fb67340bca274276faf855d7d460afd9a7a.patch";
+        hash = "sha256-w6ZnvodW2kS3bqtZVvVN5qDt1Zc7fJvnywki3MBsER0=";
+      };
+    }
+  ];
 
   boot.blacklistedKernelModules = [ "vc4" "v3d" ];
 
