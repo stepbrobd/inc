@@ -40,7 +40,7 @@ index 6ce32af..768beee 100644
 -            "frame-ancestors 'none'; ",
 +            "script-src 'self' 'unsafe-eval'{} https://stats.ysun.co; ",
 +            "connect-src 'self' https://stats.ysun.co; ",
-+            "report-uri https://ysun.co/csp;"
++            "report-uri https://report.ysun.co/csp;"
          ),
          js_checksums
      );
@@ -57,7 +57,7 @@ index 6ce32af..768beee 100644
 -            "frame-ancestors 'none'; ",
 +            "script-src 'self' 'unsafe-eval'{} https://stats.ysun.co; ",
 +            "connect-src 'self' https://stats.ysun.co; ",
-+            "report-uri https://ysun.co/csp;"
++            "report-uri https://report.ysun.co/csp;"
          ),
          js_checksums
      );
