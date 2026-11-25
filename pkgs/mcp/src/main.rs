@@ -20,18 +20,22 @@ mod audit;
 mod auth;
 mod config;
 mod exec;
+mod links;
 mod prompts;
 mod target;
 mod tools;
 
 use audit::Audit;
 use config::Settings;
+use links::Links;
 
 #[derive(Clone)]
 pub struct AppState {
     settings: Arc<Settings>,
     jwks: Arc<RwLock<JwkSet>>,
     audit: Arc<Audit>,
+    links: Arc<Links>,
+    hostname: Arc<str>,
 }
 
 enum Listener {
@@ -88,10 +92,16 @@ async fn main() -> Result<()> {
     let settings = Arc::new(Settings::from_env()?);
     let audit = Arc::new(Audit::new(settings.audit_log.as_deref())?);
     let jwks = auth::fetch_jwks(&settings.jwks_uri)?;
+    let hostname: Arc<str> = nix::unistd::gethostname()
+        .context("gethostname")?
+        .to_string_lossy()
+        .into();
     let state = AppState {
         settings: settings.clone(),
         jwks: Arc::new(RwLock::new(jwks)),
         audit: audit.clone(),
+        links: Arc::new(Links::new(settings.link_ttl)),
+        hostname,
     };
     audit.record(
         "startup",
@@ -101,22 +111,11 @@ async fn main() -> Result<()> {
     // children start in the service user's home unless a call names a cwd
     std::env::set_current_dir(&settings.home)
         .with_context(|| format!("entering HOME {}", settings.home))?;
-    let hostname: Arc<str> = nix::unistd::gethostname()
-        .context("gethostname")?
-        .to_string_lossy()
-        .into();
 
     let mcp = StreamableHttpService::new(
         {
-            let settings = settings.clone();
-            let audit = audit.clone();
-            move || {
-                Ok(tools::Shell::new(
-                    settings.clone(),
-                    audit.clone(),
-                    hostname.clone(),
-                ))
-            }
+            let state = state.clone();
+            move || Ok(tools::Shell::new(state.clone()))
         },
         LocalSessionManager::default().into(),
         StreamableHttpServerConfig::default().with_allowed_hosts([settings.host.clone()]),
@@ -137,6 +136,7 @@ async fn main() -> Result<()> {
             "/.well-known/oauth-protected-resource/mcp",
             get(auth::protected_resource_metadata),
         )
+        .route("/files/{token}", get(links::get).put(links::put))
         .nest_service("/mcp", guarded)
         .with_state(state);
 

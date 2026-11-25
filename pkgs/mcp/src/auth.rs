@@ -8,7 +8,7 @@ use anyhow::{Context, Result};
 use axum::{
     body::Body,
     extract::State,
-    http::{HeaderValue, Request, StatusCode, header},
+    http::{HeaderMap, HeaderValue, Request, StatusCode, header},
     middleware::Next,
     response::{IntoResponse, Response},
 };
@@ -129,9 +129,9 @@ fn challenge(state: &AppState, error: Option<&str>) -> HeaderValue {
     HeaderValue::from_str(&v).expect("ascii challenge")
 }
 
-pub fn peer(req: &Request<Body>) -> Option<String> {
+pub fn peer(headers: &HeaderMap) -> Option<String> {
     for h in ["x-real-ip", "x-forwarded-for"] {
-        if let Some(v) = req.headers().get(h).and_then(|v| v.to_str().ok()) {
+        if let Some(v) = headers.get(h).and_then(|v| v.to_str().ok()) {
             return Some(v.to_string());
         }
     }
@@ -155,7 +155,7 @@ pub async fn layer(State(state): State<AppState>, mut req: Request<Body>, next: 
             next.run(req).await
         }
         Err(deny) => {
-            let addr = peer(&req);
+            let addr = peer(req.headers());
             let (status, error, reason) = match deny {
                 Deny::Missing => (StatusCode::UNAUTHORIZED, None, "missing"),
                 Deny::Invalid => (

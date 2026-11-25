@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Upload</title>
+  <link rel="icon" href="data:,">
+  <style>
+  body {
+    font: 16px/1.5 system-ui, sans-serif;
+    margin: 2rem 1rem;
+    max-width: 40rem;
+  }
+  code {
+    word-break: break-all;
+  }
+  </style>
+  <p>Upload one file to <code>{{ dest }}</code>. The link works once and expires in {{ ttl }}.</p>
+  <p><input type="file" id="file"> <button id="send">Upload</button></p>
+  <p id="out"></p>
+  <script>
+  send.onclick = async () => {
+    const f = file.files[0];
+    if (!f) return;
+    send.disabled = true;
+    out.textContent = `Uploading ${f.size} bytes...`;
+    try {
+      const r = await fetch(location.href, { method: "PUT", body: f });
+      out.textContent = await r.text();
+    } catch (e) {
+      out.textContent = String(e);
+    }
+    send.disabled = false;
+  };
+  </script>
+</html>

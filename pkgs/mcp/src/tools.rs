@@ -1,4 +1,3 @@
-use std::sync::Arc;
 use std::time::{Duration, Instant};
 
 use rmcp::handler::server::wrapper::Parameters;
@@ -8,9 +7,9 @@ use rmcp::{ErrorData, RoleServer, ServerHandler, tool, tool_handler, tool_router
 use serde::Deserialize;
 use serde_json::json;
 
-use crate::audit::Audit;
+use crate::AppState;
 use crate::auth::{HDR_SESSION, HDR_SUBJECT};
-use crate::config::Settings;
+use crate::links::{self, Direction};
 use crate::target::Target;
 use crate::{exec, prompts};
 
@@ -43,21 +42,25 @@ struct RunArgs {
     timeout_secs: Option<u64>,
 }
 
+#[derive(Debug, Deserialize, schemars::JsonSchema)]
+struct LinkArgs {
+    /// file path, absolute, ~/ or relative to the user's home on the machine
+    /// that holds the file
+    path: String,
+    /// ssh destination that holds the file instead of this server, as for `run`
+    #[serde(default)]
+    host: Option<String>,
+}
+
 #[derive(Clone)]
 pub struct Shell {
-    settings: Arc<Settings>,
-    audit: Arc<Audit>,
-    hostname: Arc<str>,
+    state: AppState,
 }
 
 #[tool_router]
 impl Shell {
-    pub fn new(settings: Arc<Settings>, audit: Arc<Audit>, hostname: Arc<str>) -> Self {
-        Self {
-            settings,
-            audit,
-            hostname,
-        }
+    pub fn new(state: AppState) -> Self {
+        Self { state }
     }
 
     #[tool(
@@ -69,7 +72,8 @@ impl Shell {
         Parameters(args): Parameters<RunArgs>,
         ctx: RequestContext<RoleServer>,
     ) -> Result<CallToolResult, ErrorData> {
-        let s = &self.settings;
+        let s = &self.state.settings;
+        let audit = &self.state.audit;
         let (subject, session) = caller(&ctx);
         let timeout = args
             .timeout_secs
@@ -79,8 +83,8 @@ impl Shell {
         let shell = args.shell.as_deref().unwrap_or(DEFAULT_SHELL);
         let target = Target::new(args.host.clone());
 
-        let call = self.audit.next_call();
-        self.audit.record(
+        let call = audit.next_call();
+        audit.record(
             "run_start",
             json!({
                 "call": call, "subject": subject, "session": session,
@@ -99,7 +103,7 @@ impl Shell {
 
         match outcome {
             Ok(r) => {
-                self.audit.record(
+                audit.record(
                     "run_end",
                     json!({
                         "call": call, "subject": subject,
@@ -129,7 +133,7 @@ impl Shell {
                 ))]))
             }
             Err(e) => {
-                self.audit.record(
+                audit.record(
                     "run_error",
                     json!({ "call": call, "subject": subject, "error": e.to_string() }),
                 );
@@ -140,6 +144,81 @@ impl Shell {
             }
         }
     }
+
+    #[tool(
+        description = prompts::UPLOAD_TOOL,
+        annotations(destructive_hint = true, open_world_hint = true)
+    )]
+    async fn upload(
+        &self,
+        Parameters(args): Parameters<LinkArgs>,
+        ctx: RequestContext<RoleServer>,
+    ) -> Result<CallToolResult, ErrorData> {
+        Ok(self.link(Direction::Upload, args, &ctx).await)
+    }
+
+    #[tool(
+        description = prompts::DOWNLOAD_TOOL,
+        annotations(read_only_hint = true, open_world_hint = true)
+    )]
+    async fn download(
+        &self,
+        Parameters(args): Parameters<LinkArgs>,
+        ctx: RequestContext<RoleServer>,
+    ) -> Result<CallToolResult, ErrorData> {
+        Ok(self.link(Direction::Download, args, &ctx).await)
+    }
+
+    async fn link(
+        &self,
+        direction: Direction,
+        args: LinkArgs,
+        ctx: &RequestContext<RoleServer>,
+    ) -> CallToolResult {
+        let st = &self.state;
+        let (subject, session) = caller(ctx);
+        let target = Target::new(args.host);
+        let call = st.audit.next_call();
+        let verb = match direction {
+            Direction::Upload => "dest",
+            Direction::Download => "size",
+        };
+        let size = match links::probe(&target, verb, &args.path).await {
+            Ok(out) => out,
+            Err(e) => {
+                st.audit.record(
+                    "link_refused",
+                    json!({
+                        "call": call, "subject": subject, "direction": direction.as_str(),
+                        "host": target.host(), "path": args.path, "error": format!("{e:#}"),
+                    }),
+                );
+                return CallToolResult::error(vec![ContentBlock::text(format!("{e:#}"))]);
+            }
+        };
+        let host = target.host().map(String::from);
+        let token = st.links.mint(direction, target, args.path.clone(), call);
+        st.audit.record(
+            "link_create",
+            json!({
+                "call": call, "subject": subject, "session": session,
+                "direction": direction.as_str(), "host": host, "path": args.path,
+                "ttl_s": st.links.ttl.as_secs(),
+            }),
+        );
+        let url = format!("{}/files/{token}", st.settings.origin);
+        let ttl = links::minutes(st.links.ttl);
+        let text = match direction {
+            Direction::Upload => format!(
+                "url: {url}\nvalid for {ttl}, for one upload of at most {} bytes\n\nOpen the url in a browser to pick a file, or send one with `curl -fT <file> '{url}'`. It replaces {} atomically and keeps the mode of a file it replaces.",
+                st.settings.max_upload_bytes, args.path
+            ),
+            Direction::Download => format!(
+                "url: {url}\nsize: {size} bytes\nvalid for {ttl}, any number of downloads\n\nOpen the url in a browser, or fetch it with `curl -fo <file> '{url}'`."
+            ),
+        };
+        CallToolResult::success(vec![ContentBlock::text(text)])
+    }
 }
 
 #[tool_handler]
@@ -147,7 +226,7 @@ impl ServerHandler for Shell {
     fn get_info(&self) -> ServerConfig {
         ServerConfig::new(ServerCapabilities::builder().enable_tools().build())
             .with_server_info(Implementation::from_build_env())
-            .with_instructions(prompts::instructions(&self.hostname))
+            .with_instructions(prompts::instructions(&self.state.hostname))
     }
 }
 
