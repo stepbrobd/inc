@@ -19,6 +19,8 @@
 
     openssh.authorizedKeys = { inherit (lib.blueprint.users.ysun.openssh.authorizedKeys) keys; };
   } // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+    linger = true;
+
     isNormalUser = true;
 
     hashedPassword = "$y$j9T$.4YGom.yj/t0BqlWv3ysg.$f.LzZrxQpB.vpmKd7mu4yxYWiERgEtTAxJHIGti2vg2";
