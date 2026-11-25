@@ -8,8 +8,6 @@ python3Packages.buildPythonApplication (finalAttrs: {
   version = "0.14.0";
   pyproject = true;
 
-  __structuredAttrs = true;
-
   src = fetchFromGitHub {
     owner = "subdavis";
     repo = "kobo-book-downloader";
