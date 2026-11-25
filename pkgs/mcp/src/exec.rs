@@ -63,8 +63,8 @@ pub async fn execute(
         );
     }
     let status = child.wait().await.context("wait")?;
-    let (o, o_cut) = out_task.await.unwrap_or_default();
-    let (e, e_cut) = err_task.await.unwrap_or_default();
+    let (o, o_cut) = out_task.await.context("stdout reader")?;
+    let (e, e_cut) = err_task.await.context("stderr reader")?;
 
     let mut body = String::from_utf8_lossy(&o).into_owned();
     if !e.is_empty() {

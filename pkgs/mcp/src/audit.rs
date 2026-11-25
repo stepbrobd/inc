@@ -50,11 +50,11 @@ impl Audit {
             map.insert("ts".into(), json!(ts as u64));
         }
         tracing::info!(target: "audit", %fields);
-        if let Some(f) = &self.file
-            && let Ok(mut g) = f.lock()
-        {
-            let _ = writeln!(g, "{fields}");
-            let _ = g.flush();
+        if let Some(f) = &self.file {
+            let mut g = f.lock().unwrap_or_else(|e| e.into_inner());
+            if let Err(e) = writeln!(g, "{fields}").and_then(|_| g.flush()) {
+                tracing::error!(target: "audit", error = %e, "audit log write failed");
+            }
         }
     }
 }

@@ -62,8 +62,7 @@ impl Shell {
             .map(Duration::from_secs)
             .unwrap_or(s.default_timeout)
             .min(s.max_timeout);
-        let home = std::env::var("HOME").unwrap_or_else(|_| "/".to_string());
-        let cwd = args.cwd.clone().unwrap_or(home);
+        let cwd = args.cwd.clone().unwrap_or_else(|| s.home.clone());
         let shell = args.shell.as_deref().unwrap_or(DEFAULT_SHELL);
 
         let call = self.audit.next_call();

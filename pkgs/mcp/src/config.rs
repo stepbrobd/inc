@@ -18,6 +18,7 @@ pub struct Settings {
     pub max_timeout: Duration,
     pub max_output_bytes: usize,
     pub audit_log: Option<String>,
+    pub home: String,
 }
 
 impl Settings {
@@ -43,12 +44,13 @@ impl Settings {
             resource,
             host,
             resource_metadata_url,
-            leeway_secs: env_u64("MCP_LEEWAY_SECS", 60),
-            jwks_refresh_secs: env_u64("MCP_JWKS_REFRESH_SECS", 3600),
-            default_timeout: Duration::from_secs(env_u64("MCP_DEFAULT_TIMEOUT_SECS", 60)),
-            max_timeout: Duration::from_secs(env_u64("MCP_MAX_TIMEOUT_SECS", 200)),
-            max_output_bytes: env_u64("MCP_MAX_OUTPUT_BYTES", 100_000) as usize,
+            leeway_secs: env_u64("MCP_LEEWAY_SECS", 60)?,
+            jwks_refresh_secs: env_u64("MCP_JWKS_REFRESH_SECS", 3600)?,
+            default_timeout: Duration::from_secs(env_u64("MCP_DEFAULT_TIMEOUT_SECS", 60)?),
+            max_timeout: Duration::from_secs(env_u64("MCP_MAX_TIMEOUT_SECS", 200)?),
+            max_output_bytes: env_u64("MCP_MAX_OUTPUT_BYTES", 100_000)? as usize,
             audit_log: std::env::var("MCP_AUDIT_LOG").ok(),
+            home: req_env("HOME")?,
         })
     }
 }
@@ -57,11 +59,13 @@ fn req_env(key: &str) -> Result<String> {
     std::env::var(key).with_context(|| format!("{key} must be set"))
 }
 
-fn env_u64(key: &str, default: u64) -> u64 {
-    std::env::var(key)
-        .ok()
-        .and_then(|v| v.parse().ok())
-        .unwrap_or(default)
+fn env_u64(key: &str, default: u64) -> Result<u64> {
+    match std::env::var(key) {
+        Ok(v) => v
+            .parse()
+            .with_context(|| format!("{key}={v} is not an unsigned integer")),
+        Err(_) => Ok(default),
+    }
 }
 
 // last path segment of the issuer, which kanidm uses as the client_id and the
