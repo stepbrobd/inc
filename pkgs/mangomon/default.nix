@@ -9,7 +9,7 @@
 
 buildGoLatestModule (finalAttrs: {
   pname = "mangomon";
-  version = "2026.823.0";
+  version = "2026.1126.0";
 
   __structuredAttrs = true;
 
@@ -17,10 +17,10 @@ buildGoLatestModule (finalAttrs: {
     owner = "stepbrobd";
     repo = "mangomon";
     tag = finalAttrs.version;
-    hash = "sha256-q/SwM2YKxWyv0+uMDvtPSS77ZoVYXd2BcPWin1HXEDg=";
+    hash = "sha256-QzsSIyK8HmpGeARmY5kbGGyagoSixHKCfII0Njtk69w=";
   };
 
-  vendorHash = "sha256-eSKuDWtzRxwrRvBKA6z85P/+Lqf7djgqMVu3xv7ttDM=";
+  vendorHash = "sha256-epGoM+T3XfTYn0THDogJ4rhXLeDsGeEEHHEWdE9X+Aw=";
 
   ldflags = [
     "-s"
