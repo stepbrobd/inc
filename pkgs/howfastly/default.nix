@@ -8,7 +8,7 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "howfastly";
-  version = "2026.1015.0";
+  version = "2026.1125.0";
 
   __structuredAttrs = true;
 
@@ -16,10 +16,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "stepbrobd";
     repo = "howfastly";
     tag = finalAttrs.version;
-    hash = "sha256-exfdVbq5ciHGKmf7if+6XvRUU/VX3w4cayki9edG2to=";
+    hash = "sha256-sAHhAQo9dYJnXCNFhP5rnmCFG7DXPWQweDLcNA/JzOE=";
   };
 
-  cargoHash = "sha256-jYV8+TPJTpDIIZpjUZdNx+uMsvSntbFxf7ekfsRX2qU=";
+  cargoHash = "sha256-vlSXYr6KGTbsu2ISRR61JFZ7GP0rAOlci6mHQAAlQ2o=";
 
   env.AWS_LC_SYS_USE_SYSTEM = true;
   buildInputs = [ aws-lc ];
