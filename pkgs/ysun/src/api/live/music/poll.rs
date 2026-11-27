@@ -54,7 +54,7 @@ impl Poll {
     /// process, since a dead poll would leave a stale track behind
     pub fn spawn(self) -> io::Result<()> {
         thread::Builder::new()
-            .name("live".to_owned())
+            .name("music".to_owned())
             .spawn(move || {
                 // the panic hook has already printed the panic
                 let _ = panic::catch_unwind(AssertUnwindSafe(|| self.run()));
@@ -99,12 +99,12 @@ impl Poll {
                     .failure(now, matches!(failure, Failure::Auth(_)))
                 {
                     eprintln!(
-                        "live: {failure} {} minutes after the last success, clearing the track until a poll succeeds",
+                        "music: {failure} {} minutes after the last success, clearing the track until a poll succeeds",
                         DEAD_AFTER.as_secs() / 60
                     );
                     self.publish.send_replace(None);
                 } else if !self.reported {
-                    eprintln!("live: {failure}, keeping the last track");
+                    eprintln!("music: {failure}, keeping the last track");
                 }
                 self.reported = true;
             }
@@ -140,7 +140,7 @@ impl Poll {
                     Ok(song) => song.map(|song| (song, store)),
                     Err(failure) => {
                         eprintln!(
-                            "live: {failure} looking up {id} in {store}, showing the account's metadata"
+                            "music: {failure} looking up {id} in {store}, showing the account's metadata"
                         );
                         None
                     }

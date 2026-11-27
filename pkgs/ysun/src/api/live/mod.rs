@@ -26,61 +26,23 @@
 //! - `album`, `duration`, `url` and `artwork` may be absent
 //! - 204 with no body when there is nothing to show: no successful poll yet, or dead tokens
 
-mod apple;
-mod model;
-mod poll;
+mod music;
 
-use std::sync::Arc;
 use std::time::Instant;
 
 use axum::extract::State;
 use axum::response::Response;
 use axum::routing::{self, MethodRouter};
-use jiff::Timestamp;
-use serde::Serialize;
-use tokio::sync::watch;
 
-use apple::Apple;
-use model::{Snapshot, Track};
-use poll::Poll;
-
-const DEVELOPER_TOKEN: &str = "APPLE_MUSIC_DEVELOPER_TOKEN";
-const USER_TOKEN: &str = "APPLE_MUSIC_USER_TOKEN";
-
-/// the newest snapshot, none until a poll succeeds and after the tokens die
-type Feed = watch::Receiver<Option<Arc<Snapshot>>>;
-
-/// the route's handlers with the poll they read from, an error when a token is missing
+/// the route with the poll started, an error when a token is missing
 pub fn route() -> Result<MethodRouter, String> {
-    Ok(routing::get(get).with_state(start()?))
+    Ok(routing::get(get).with_state(music::start()?))
 }
 
-/// starts the poll, an error when a token is missing
-fn start() -> Result<Feed, String> {
-    let developer = super::secret(DEVELOPER_TOKEN)?;
-    let user = super::secret(USER_TOKEN)?;
-    let (publish, feed) = watch::channel(None);
-    Poll::new(Apple::new(&developer, &user), publish)
-        .spawn()
-        .map_err(|e| format!("starting the live poll: {e}"))?;
-    Ok(feed)
-}
-
-/// the response, documented above
-#[derive(Serialize)]
-struct Body<'a> {
-    #[serde(flatten)]
-    state: model::State,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    played: Option<Timestamp>,
-    track: &'a Track,
-}
-
-async fn get(State(feed): State<Feed>) -> Response {
-    let snapshot = feed.borrow().clone();
-    super::json(snapshot.as_deref().map(|snapshot| Body {
-        state: snapshot.state(Instant::now()),
-        played: snapshot.played,
-        track: &snapshot.track,
-    }))
+async fn get(State(feed): State<music::Feed>) -> Response {
+    let song = feed.borrow().clone();
+    super::json(
+        song.as_deref()
+            .map(|song| music::Body::new(song, Instant::now())),
+    )
 }
