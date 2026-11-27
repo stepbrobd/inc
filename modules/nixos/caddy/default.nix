@@ -12,7 +12,7 @@ let
     (lib.mapAttrsToList (directive: extra: lib.concatStringsSep " " ([ directive ] ++ site ++ extra))
       {
         base-uri = [ ];
-        connect-src = [ "https://api.github.com" ];
+        connect-src = [ "https://api.github.com" "https://basemaps.cartocdn.com" "https://*.basemaps.cartocdn.com" ];
         default-src = [ ];
         font-src = [ "data:" ];
         form-action = [ ];
