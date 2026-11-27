@@ -30,14 +30,11 @@ mod apple;
 mod model;
 mod poll;
 
-use std::env;
 use std::sync::Arc;
 use std::time::Instant;
 
 use axum::extract::State;
-use axum::http::StatusCode;
-use axum::http::header::{ACCESS_CONTROL_ALLOW_ORIGIN, CACHE_CONTROL, CONTENT_TYPE};
-use axum::response::{IntoResponse, Response};
+use axum::response::Response;
 use axum::routing::{self, MethodRouter};
 use jiff::Timestamp;
 use serde::Serialize;
@@ -58,13 +55,10 @@ pub fn route() -> Result<MethodRouter, String> {
     Ok(routing::get(get).with_state(start()?))
 }
 
-/// starts the poll, the hosts get both tokens from sops-nix and the devshell from `.envrc`
+/// starts the poll, an error when a token is missing
 fn start() -> Result<Feed, String> {
-    let token = |name| match env::var(name) {
-        Ok(value) if !value.trim().is_empty() => Ok(value.trim().to_owned()),
-        _ => Err(format!("{name} must be set, valid utf-8 and not empty")),
-    };
-    let (developer, user) = (token(DEVELOPER_TOKEN)?, token(USER_TOKEN)?);
+    let developer = super::secret(DEVELOPER_TOKEN)?;
+    let user = super::secret(USER_TOKEN)?;
     let (publish, feed) = watch::channel(None);
     Poll::new(Apple::new(&developer, &user), publish)
         .spawn()
@@ -83,21 +77,10 @@ struct Body<'a> {
 }
 
 async fn get(State(feed): State<Feed>) -> Response {
-    let headers = [
-        (CACHE_CONTROL, "no-store"),
-        (ACCESS_CONTROL_ALLOW_ORIGIN, "*"),
-    ];
     let snapshot = feed.borrow().clone();
-    match snapshot {
-        Some(snapshot) => {
-            let body = Body {
-                state: snapshot.state(Instant::now()),
-                played: snapshot.played,
-                track: &snapshot.track,
-            };
-            let json = serde_json::to_string(&body).expect("strings and numbers serialize");
-            (headers, [(CONTENT_TYPE, "application/json")], json).into_response()
-        }
-        None => (StatusCode::NO_CONTENT, headers).into_response(),
-    }
+    super::json(snapshot.as_deref().map(|snapshot| Body {
+        state: snapshot.state(Instant::now()),
+        played: snapshot.played,
+        track: &snapshot.track,
+    }))
 }

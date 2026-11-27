@@ -1,15 +1,12 @@
 use std::collections::HashMap;
 use std::fmt;
-use std::sync::Arc;
 use std::thread;
 use std::time::Duration;
 
 use serde::Deserialize;
 use serde::de::DeserializeOwned;
-use ureq::tls::{RootCerts, TlsConfig};
 
 const API: &str = "https://api.music.apple.com";
-const TIMEOUT: Duration = Duration::from_secs(10);
 /// apple answers a few percent of calls with an empty 401 that the next call does not repeat
 const RETRIES: u32 = 3;
 const RETRY_DELAY: Duration = Duration::from_secs(1);
@@ -97,18 +94,8 @@ pub struct Apple {
 
 impl Apple {
     pub fn new(developer: &str, user: &str) -> Apple {
-        let tls = TlsConfig::builder()
-            .root_certs(RootCerts::PlatformVerifier)
-            .unversioned_rustls_crypto_provider(Arc::new(rustls::crypto::ring::default_provider()))
-            .build();
-        let agent = ureq::Agent::config_builder()
-            .timeout_global(Some(TIMEOUT))
-            .http_status_as_error(false)
-            .tls_config(tls)
-            .build()
-            .into();
         Apple {
-            agent,
+            agent: crate::api::agent(),
             authorization: format!("Bearer {developer}"),
             user: user.to_owned(),
         }
