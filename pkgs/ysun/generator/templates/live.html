@@ -4,10 +4,11 @@
     <img data-live="art" class="block size-full" width="72" height="72" alt="" referrerpolicy="no-referrer" hidden="hidden" />
   </a>
   <div class="flex min-w-0 flex-1 flex-col gap-px sm:gap-0.5">
-    <div class="flex items-center gap-1.5 text-xs text-nord-8">
+    <div class="flex min-w-0 items-center gap-1.5 text-xs text-nord-8">
       <span data-live="dot" class="size-1.5 shrink-0 rounded-full bg-nord-14" aria-hidden="true" hidden="hidden"></span>
-      <span data-live="label">&#xA0;</span>
-      <span data-live="when" hidden="hidden">&#xB7; <time data-live="played"></time></span>
+      <span data-live="grade" class="shrink-0 font-semibold" hidden="hidden"></span>
+      <span data-live="label" class="truncate">&#xA0;</span>
+      <span data-live="when" class="shrink-0 whitespace-nowrap" hidden="hidden">&#xB7; <time data-live="played"></time></span>
     </div>
     <a data-live="title" class="live-title truncate text-base font-semibold">&#xA0;</a>
     <div data-live="sub" class="truncate text-sm text-nord-4"><span data-live="artist">&#xA0;</span><span data-live="album-sep" class="text-nord-9" hidden="hidden"> / </span><span data-live="album"></span></div>
@@ -15,13 +16,13 @@
       <div data-live="bar" class="live-bar h-full bg-nord-8"></div>
     </div>
   </div>
-  <a class="hidden shrink-0 self-start px-1.5 py-1 text-[13px] leading-5 sm:block" href="/music">Apple Music</a>
+  <a data-live="source" class="hidden shrink-0 self-start px-1.5 py-1 text-[13px] leading-5 sm:block" href="/music">Apple Music</a>
   {% raw %}<script>
 //<![CDATA[
 (() => {
   const root = document.getElementById("live");
   const get = (name) => root.querySelector(`[data-live="${name}"]`);
-  const link = (el, url) => (url ? el.setAttribute("href", url) : el.removeAttribute("href"));
+  const attr = (el, name, value) => (value ? el.setAttribute(name, value) : el.removeAttribute(name));
   const pad = (n) => String(n).padStart(2, "0");
   // the visitor's own time zone, in the site's date format
   const local = (iso) => {
@@ -36,39 +37,100 @@
       time.textContent = local(iso);
     } else time.removeAttribute("datetime");
   };
-  const show = (data) => {
-    const track = data.track;
-    const playing = data.state === "playing";
-    get("label").textContent = playing ? "Listening to" : "Last played";
-    get("dot").hidden = !playing;
+  // osu!'s grades as players see them, the silver ones are for hidden and flashlight
+  const grades = { XH: "SS", X: "SS", SH: "S" };
+  // what a song and an osu! play have in common
+  const fill = (card) => {
+    get("label").textContent = card.label;
+    const grade = get("grade");
+    grade.hidden = !card.rank;
+    grade.textContent = grades[card.rank] ?? card.rank ?? "";
+    attr(grade, "data-rank", card.rank);
+    get("dot").hidden = !card.playing;
     // the time shows only once the play is over
-    played(playing ? null : data.played);
-    get("title").textContent = track.title;
-    get("artist").textContent = track.artist;
-    get("album").textContent = track.album ?? "";
-    get("album-sep").hidden = !track.album;
-    for (const name of ["title", "sub"]) get(name).lang = track.lang;
-    for (const name of ["title", "art-link"]) link(get(name), track.url);
+    played(card.playing ? null : card.played);
+    get("title").textContent = card.title;
+    get("artist").textContent = card.artist;
+    get("album").textContent = card.album ?? "";
+    get("album-sep").hidden = !card.album;
+    for (const name of ["title", "sub"]) attr(get(name), "lang", card.lang);
+    for (const name of ["title", "art-link"]) attr(get(name), "href", card.url);
     // no artwork drops the tile, gap included
-    get("art-link").hidden = !track.artwork;
+    get("art-link").hidden = !card.artwork;
     const art = get("art");
     // the skeleton shows the bare tile, browsers outline an image without a source
-    if (track.artwork && art.getAttribute("src") !== track.artwork) art.src = track.artwork;
-    art.hidden = !track.artwork;
-    // the row stays reserved when nothing plays, so every state has the same height
-    get("track").classList.toggle("invisible", !playing);
+    if (card.artwork && art.getAttribute("src") !== card.artwork) art.src = card.artwork;
+    art.hidden = !card.artwork;
+    // the row stays reserved without a bar, so every state has the same height
+    get("track").classList.toggle("invisible", card.bar == null);
+    get("bar").style.setProperty("--live-from", `${100 * (card.bar ?? 0)}%`);
+    const source = get("source");
+    source.textContent = card.source;
+    source.href = card.page;
+    root.removeAttribute("aria-busy");
+  };
+  const song = (data) => {
+    const track = data.track;
+    const playing = data.state === "playing";
+    fill({
+      label: playing ? "Listening to" : "Last played",
+      playing,
+      played: data.played,
+      title: track.title,
+      artist: track.artist,
+      album: track.album,
+      lang: track.lang,
+      url: track.url,
+      artwork: track.artwork,
+      source: "Apple Music",
+      page: "/music",
+      bar: playing ? data.position / track.duration : null,
+    });
+    // a song's bar runs to its end
     if (playing) {
       const bar = get("bar");
-      bar.style.setProperty("--live-from", `${(100 * data.position) / track.duration}%`);
       bar.style.setProperty("--live-rest", `${(track.duration - data.position) / 1000}s`);
       // the animation restarts only with a style flush between removing and restoring it
       bar.style.animation = "none";
       void bar.offsetWidth;
       bar.style.animation = "";
     }
-    root.removeAttribute("aria-busy");
   };
-  // anything but a track, a 204 included, keeps what is shown, the skeleton until a first track
+  const play = (data) => {
+    const { map, score } = data;
+    const combo = score.perfect ? "FC" : `${score.combo}${map.combo ? `/${map.combo}` : ""}x`;
+    const result = [
+      `${(100 * score.accuracy).toFixed(2)}%`,
+      score.pp != null && `${Math.round(score.pp)}pp`,
+      score.mods.length > 0 && `+${score.mods.join("")}`,
+      combo,
+      !score.perfect && score.misses > 0 && `${score.misses} miss`,
+    ];
+    fill({
+      label: result.filter(Boolean).join(" \u00B7 "),
+      rank: score.rank,
+      playing: false,
+      played: data.played,
+      title: map.title,
+      artist: map.artist,
+      album: `${map.difficulty} \u2605${map.stars.toFixed(2)}`,
+      lang: map.lang,
+      url: map.url,
+      artwork: map.artwork,
+      source: "osu!",
+      page: "/osu",
+      bar: score.perfect ? 1 : map.combo && score.combo / map.combo,
+    });
+    // a play's bar is its longest combo against the map's, and stands still
+    get("bar").style.animation = "none";
+  };
+  // a song playing wins, otherwise whichever was played last, and a song whose start the server
+  // never saw loses to a play
+  const show = ({ music, osu }) => {
+    if (music && (music.state === "playing" || !osu || Date.parse(music.played) > Date.parse(osu.played))) song(music);
+    else play(osu);
+  };
+  // anything but 200, a 204 included, keeps what is shown, the skeleton until a first answer
   const refresh = async () => {
     try {
       const response = await fetch("/api/live", { cache: "no-store", signal: AbortSignal.timeout(10000) });

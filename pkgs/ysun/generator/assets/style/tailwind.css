@@ -34,6 +34,29 @@
   @apply text-nord-8;
 }
 
+/* osu! grades in the game's colors, b keeps the label's */
+#live [data-rank="X"],
+#live [data-rank="S"] {
+  @apply text-nord-13;
+}
+
+#live [data-rank="XH"],
+#live [data-rank="SH"] {
+  @apply text-nord-4;
+}
+
+#live [data-rank="A"] {
+  @apply text-nord-14;
+}
+
+#live [data-rank="C"] {
+  @apply text-nord-15;
+}
+
+#live [data-rank="D"] {
+  @apply text-nord-11;
+}
+
 /* the skeleton until the first answer, each line keeps the height of the text it stands for */
 #live[aria-busy] :is([data-live="label"], [data-live="title"], [data-live="sub"]) {
   color: transparent;
