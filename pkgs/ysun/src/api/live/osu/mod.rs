@@ -14,6 +14,7 @@ use poll::Poll;
 
 const CLIENT_ID: &str = "OSU_CLIENT_ID";
 const CLIENT_SECRET: &str = "OSU_CLIENT_SECRET";
+pub const SECRETS: [&str; 2] = [CLIENT_ID, CLIENT_SECRET];
 
 /// the newest pass, none until a poll succeeds, without a pass in the last day and after the
 /// credentials die

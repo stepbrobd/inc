@@ -17,6 +17,7 @@ use poll::Poll;
 
 const DEVELOPER_TOKEN: &str = "APPLE_MUSIC_DEVELOPER_TOKEN";
 const USER_TOKEN: &str = "APPLE_MUSIC_USER_TOKEN";
+pub const SECRETS: [&str; 2] = [DEVELOPER_TOKEN, USER_TOKEN];
 
 /// the newest snapshot, none until a poll succeeds and after the tokens die
 pub type Feed = watch::Receiver<Option<Arc<Snapshot>>>;

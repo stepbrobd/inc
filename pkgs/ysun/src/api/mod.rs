@@ -18,11 +18,18 @@ const TIMEOUT: Duration = Duration::from_secs(10);
 
 /// the routes relative to API, for nesting under it, with what they serve from started, an unknown
 /// path falls through to the site's fallback, which answers everything under API with a bare 404
+///
+/// no routes when no secret is set, for a host that serves only the site, and an error when only
+/// some are
 pub fn router() -> Result<Router, String> {
+    if live::secrets().all(|name| env::var_os(name).is_none()) {
+        return Ok(Router::new());
+    }
     Ok(Router::new().route("/live", live::route()?))
 }
 
-/// a secret from the environment, the hosts get them from sops-nix and the devshell from `.envrc`
+/// a secret from the environment, the api host gets them from sops-nix and the devshell from
+/// `.envrc`
 fn secret(name: &str) -> Result<String, String> {
     match env::var(name) {
         Ok(value) if !value.trim().is_empty() => Ok(value.trim().to_owned()),

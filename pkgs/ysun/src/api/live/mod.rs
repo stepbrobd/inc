@@ -76,6 +76,11 @@ use axum::response::Response;
 use axum::routing::{self, MethodRouter};
 use serde::Serialize;
 
+/// every variable the polls read
+pub fn secrets() -> impl Iterator<Item = &'static str> {
+    music::SECRETS.into_iter().chain(osu::SECRETS)
+}
+
 /// the route with both polls started, an error when a secret is missing
 pub fn route() -> Result<MethodRouter, String> {
     let feeds = Feeds {
