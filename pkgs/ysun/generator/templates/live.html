@@ -143,7 +143,7 @@
   // the card is always on the page with javascript, and stays hidden without it
   root.hidden = false;
   refresh();
-  setInterval(() => visible() && refresh(), 15000);
+  setInterval(() => visible() && refresh(), 10000);
   document.addEventListener("visibilitychange", () => visible() && refresh());
 })();
 //]]>
