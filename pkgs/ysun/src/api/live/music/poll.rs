@@ -1,20 +1,17 @@
 use std::collections::HashMap;
-use std::collections::hash_map::RandomState;
-use std::hash::BuildHasher;
 use std::io;
 use std::panic::{self, AssertUnwindSafe};
 use std::process;
 use std::sync::Arc;
 use std::thread;
-use std::time::{Duration, Instant, SystemTime};
+use std::time::{Duration, Instant};
 
 use jiff::Timestamp;
 use tokio::sync::watch;
 
 use super::apple::{Apple, Attributes, Failure};
 use super::model::{
-    DEAD_AFTER, INTERVAL, MAX_INTERVAL, Snapshot, Step, Track, Tracker, artwork, delay, origin,
-    wall,
+    DEAD_AFTER, INTERVAL, MAX_INTERVAL, Snapshot, Step, Track, Tracker, artwork, origin, wall,
 };
 
 /// storefront ids with their default language, and the account's storefront
@@ -26,7 +23,6 @@ struct Storefronts {
 pub struct Poll {
     apple: Apple,
     publish: watch::Sender<Option<Arc<Snapshot>>>,
-    offset: Duration,
     tracker: Tracker,
     storefronts: Option<Storefronts>,
     interval: Duration,
@@ -36,13 +32,9 @@ pub struct Poll {
 
 impl Poll {
     pub fn new(apple: Apple, publish: watch::Sender<Option<Arc<Snapshot>>>) -> Poll {
-        // a random offset keeps the hosts from calling apple at the same moment
-        let offset =
-            Duration::from_millis(RandomState::new().hash_one(()) % INTERVAL.as_millis() as u64);
         Poll {
             apple,
             publish,
-            offset,
             tracker: Tracker::default(),
             storefronts: None,
             interval: INTERVAL,
@@ -67,7 +59,7 @@ impl Poll {
     fn run(mut self) -> ! {
         loop {
             self.tick(Instant::now());
-            thread::sleep(delay(SystemTime::now(), self.offset, self.interval));
+            thread::sleep(self.interval);
         }
     }
 

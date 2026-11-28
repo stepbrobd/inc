@@ -1,10 +1,10 @@
 use std::collections::HashMap;
-use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
+use std::time::{Duration, Instant};
 
 use jiff::{Timestamp, Unit};
 use serde::Serialize;
 
-/// one poll every 30 s, at an offset of the host's own
+/// one poll every 30 s
 pub const INTERVAL: Duration = Duration::from_secs(30);
 /// ceiling for the backoff after 429 and 5xx answers
 pub const MAX_INTERVAL: Duration = Duration::from_secs(300);
@@ -159,15 +159,4 @@ pub fn artwork(template: &str) -> String {
         Some(stem) => format!("{stem}.webp"),
         None => url,
     }
-}
-
-/// time until the next instant of the wall clock that is offset past a multiple of the interval
-pub fn delay(now: SystemTime, offset: Duration, interval: Duration) -> Duration {
-    let now = now
-        .duration_since(UNIX_EPOCH)
-        .expect("the clock is past 1970")
-        .as_millis();
-    let period = interval.as_millis();
-    let phase = (now + period - offset.as_millis() % period) % period;
-    Duration::from_millis((period - phase) as u64)
 }
