@@ -2,7 +2,7 @@
 members = ["generator"]
 
 [workspace.package]
-version = "2026.1127.0"
+version = "2026.1128.0"
 edition = "2024"
 license = "CC-BY-NC-4.0"
 

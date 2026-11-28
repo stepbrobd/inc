@@ -418,7 +418,7 @@ dependencies = [
 
 [[package]]
 name = "generator"
-version = "2026.1127.0"
+version = "2026.1128.0"
 dependencies = [
  "askama",
  "comrak",
@@ -1700,7 +1700,7 @@ dependencies = [
 
 [[package]]
 name = "ysun"
-version = "2026.1127.0"
+version = "2026.1128.0"
 dependencies = [
  "axum",
  "generator",
